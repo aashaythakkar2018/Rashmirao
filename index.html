@@ -280,6 +280,44 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     linear-gradient(to top,    rgba(17,17,17,0.7) 0%, rgba(17,17,17,0) 50%),
     linear-gradient(to bottom, rgba(17,17,17,0.2) 0%, rgba(17,17,17,0) 35%);
 }
+.hero-sound-btn {
+  position: absolute;
+  bottom: 32px;
+  right: 48px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(17, 17, 17, 0.48);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(250, 248, 245, 0.28);
+  border-radius: 30px;
+  color: #FAF8F5;
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background .25s, border-color .25s, transform .2s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.hero-sound-btn:hover {
+  background: rgba(17, 17, 17, 0.82);
+  border-color: rgba(250, 248, 245, 0.65);
+  transform: translateY(-2px);
+}
+.hero-sound-btn svg { flex-shrink: 0; }
+@media (max-width: 768px) {
+  .hero-sound-btn {
+    bottom: 20px;
+    right: 24px;
+    padding: 8px 14px;
+    font-size: 10px;
+  }
+}
 .hero-content {
   position: relative;
   z-index: 3;
@@ -1033,6 +1071,20 @@ footer {
       <a href="about.html" class="btn-ghost-light">Meet the Artist</a>
     </div>
   </div>
+
+  <!-- Sound Mute/Unmute Toggle Button (Bottom Right) -->
+  <button class="hero-sound-btn" id="heroSoundBtn" onclick="toggleHeroSound()" aria-label="Toggle hero video sound">
+    <svg class="sound-icon-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+    <svg class="sound-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    <span id="heroSoundText">Sound Off</span>
+  </button>
 </section>
 
 <!-- ========== ABOUT ========== -->
@@ -1489,6 +1541,30 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img => {
   if (img.complete) { img.classList.remove('loading'); }
   else { img.addEventListener('load', () => img.classList.remove('loading')); }
 });
+
+/* -- Hero Sound Mute/Unmute Toggle -- */
+function toggleHeroSound() {
+  const video = document.getElementById('heroBg');
+  const iconOff = document.querySelector('.sound-icon-off');
+  const iconOn = document.querySelector('.sound-icon-on');
+  const text = document.getElementById('heroSoundText');
+  
+  if (!video) return;
+  
+  if (video.muted) {
+    video.muted = false;
+    video.volume = 1.0;
+    video.play().catch(err => console.log('Audio playback prevented:', err));
+    if (iconOff) iconOff.style.display = 'none';
+    if (iconOn) iconOn.style.display = 'inline-block';
+    if (text) text.textContent = 'Sound On';
+  } else {
+    video.muted = true;
+    if (iconOff) iconOff.style.display = 'inline-block';
+    if (iconOn) iconOn.style.display = 'none';
+    if (text) text.textContent = 'Sound Off';
+  }
+}
 </script>
 
 <!-- -- Text Reveal - animate-skill text-reveal.tsx pattern --
