@@ -101,7 +101,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   letter-spacing: 0.1em; text-transform: uppercase;
   color: var(--text); white-space: nowrap;
 }
-.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-links a {
   font-family: var(--ff-sans); font-size: 11px;
   letter-spacing: 0.15em; text-transform: uppercase;
@@ -136,7 +136,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ============================================================
    SHARED
 ============================================================ */
-.wrap { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
 .section { padding: 100px 0; }
 .eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
@@ -239,7 +239,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* left: inquiry type list */
 .inq-types {
   border-right: 1px solid var(--beige);
-  padding: 60px 48px 60px 0;
+  padding: 48px 40px 48px 0;
 }
 .inq-types-label {
   font-family: var(--ff-sans); font-size: 10px;
@@ -288,7 +288,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* right: form panel */
 .inq-form-panel {
-  padding: 60px 0 60px 64px;
+  padding: 48px 0 48px 48px;
 }
 .form-heading {
   font-family: var(--ff-serif);
@@ -465,11 +465,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   bottom: 0; left: 0; right: 0;
   padding: 22px 28px;
-  background: linear-gradient(to top, rgba(17,17,17,0.72) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(17,17,17,0.85) 0%, rgba(17,17,17,0.4) 70%, transparent 100%);
   z-index: 3;
 }
-.press-gallery-card:nth-child(4) .press-gallery-copy h3 { color: #FAF8F5; }
-.press-gallery-card:nth-child(4) .press-gallery-copy p { color: rgba(250,248,245,0.55); }
+.press-gallery-card:nth-child(4) .press-gallery-copy h3 { color: #FAF8F5; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+.press-gallery-card:nth-child(4) .press-gallery-copy p { color: rgba(250,248,245,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
 
 .press-gallery-copy h3 {
   font-family: var(--ff-serif);
@@ -717,15 +717,18 @@ footer {
   padding: 68px 0 40px;
 }
 .ft-grid {
-  max-width: 1400px; margin: 0 auto; padding: 0 60px;
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+  max-width: 1400px; margin: 0 auto; padding: 0 52px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
 }
 .ft-brand {
-  font-family: var(--ff-serif); font-size: 19px;
-  color: #FAF8F5; font-weight: 400;
-  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px;
+  font-family: var(--ff-serif);
+  font-size: 19px; color: #FAF8F5;
+  font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 14px;
 }
-.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 230px; }
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 260px; }
 .ft-hd {
   font-family: var(--ff-sans); font-size: 10px;
   letter-spacing: .22em; text-transform: uppercase;
@@ -737,8 +740,10 @@ footer {
 .ft-links a:hover { color: rgba(250,248,245,0.85); }
 .ft-bottom {
   max-width: 1400px; margin: 40px auto 0;
-  padding: 24px 60px 0; border-top: 1px solid rgba(250,248,245,0.06);
-  display: flex; justify-content: space-between; align-items: center; font-size: 11px;
+  padding: 24px 52px 0;
+  border-top: 1px solid rgba(250,248,245,0.06);
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 11px;
 }
 
 /* ============================================================

@@ -129,7 +129,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .nav-links {
   display: flex;
-  gap: 40px;
+  gap: 32px;
   list-style: none;
 }
 .nav-links a {
@@ -404,11 +404,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ============================================================
    SHARED SECTION LAYOUT
 ============================================================ */
-.section { padding: 130px 0; }
+.section { padding: 100px 0; }
 .wrap {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 60px;
+  padding: 0 52px;
 }
 .eyebrow {
   font-family: var(--ff-sans);
@@ -473,7 +473,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-img-col { overflow: hidden; min-height: 580px; }
 .about-img-col .img-wrap { height: 100%; min-height: 580px; }
 .about-copy-col {
-  padding: 80px 72px;
+  padding: 64px 56px;
   display: flex; flex-direction: column; justify-content: center;
 }
 .about-copy-col .eyebrow { margin-bottom: 14px; }
@@ -515,7 +515,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .coll-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 .coll-card {
   position: relative;
@@ -582,7 +582,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: grid;
   grid-template-columns: 55% 45%;
   align-items: center;
-  margin-bottom: 120px;
+  margin-bottom: 80px;
+}
+.art-row:last-of-type {
+  margin-bottom: 48px;
 }
 .art-row.flip { grid-template-columns: 45% 55%; }
 .art-row.flip .art-img-col { order: 2; }
@@ -611,8 +614,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .badge-cert  { background: var(--gold); color: #fff; }
 
 /* artwork copy column */
-.art-copy-col { padding: 56px 68px; }
-.art-row.flip .art-copy-col { padding-left: 0; }
+.art-copy-col { padding: 48px 56px; }
+.art-row.flip .art-copy-col { padding: 48px 56px 48px 0; }
 
 .art-coll {
   font-family: var(--ff-sans);
@@ -632,8 +635,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .art-story {
   font-family: var(--ff-serif);
-  font-size: 18px; font-weight: 400; font-style: italic;
-  line-height: 1.7; color: #555; max-width: 380px;
+  font-size: 16px; font-weight: 400; font-style: italic;
+  line-height: 1.7; color: #555; max-width: 420px;
 }
 .art-rule { width: 32px; height: 1px; background: var(--beige); margin: 28px 0; }
 .art-price {
@@ -659,7 +662,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex; align-items: center; justify-content: center;
   font-size: 8px; flex-shrink: 0;
 }
-.art-footer { text-align: right; margin-top: -48px; }
+.art-footer { text-align: right; margin-top: 24px; }
 
 /* ============================================================
    WEARABLE ART
@@ -674,7 +677,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .wear-img-col .img-wrap { height: 100%; min-height: 560px; }
 .wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
 .wear-img-col .img-wrap img { height: 100%; }
-.wear-copy-col { padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+.wear-copy-col { padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; }
 .wear-lead { margin-top: 24px; max-width: 430px; }
 .process { margin-top: 44px; }
 .p-step {
@@ -813,10 +816,10 @@ footer {
   padding: 68px 0 40px;
 }
 .ft-grid {
-  max-width: 1400px; margin: 0 auto; padding: 0 60px;
+  max-width: 1400px; margin: 0 auto; padding: 0 52px;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 60px;
+  gap: 48px;
 }
 .ft-brand {
   font-family: var(--ff-serif);
@@ -824,7 +827,7 @@ footer {
   font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
   margin-bottom: 14px;
 }
-.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 230px; }
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 260px; }
 .ft-hd {
   font-family: var(--ff-sans); font-size: 10px;
   letter-spacing: .22em; text-transform: uppercase;
@@ -836,7 +839,7 @@ footer {
 .ft-links a:hover { color: rgba(250,248,245,0.85); }
 .ft-bottom {
   max-width: 1400px; margin: 40px auto 0;
-  padding: 24px 60px 0;
+  padding: 24px 52px 0;
   border-top: 1px solid rgba(250,248,245,0.06);
   display: flex; justify-content: space-between;
   align-items: center; font-size: 11px;
@@ -1051,7 +1054,6 @@ footer {
       </div>
     </div>
     <div class="about-copy-col">
-      <span class="eyebrow rv">The Artist</span>
       <h2 class="h2 rv">Rashmi Rao</h2>
       <div class="about-bio body-text">
         <p class="rv">An internationally exhibited multidisciplinary artist who transforms emotion into visual language, working across alcohol ink, abstract acrylic, and graphic art to create works that breathe.</p>
