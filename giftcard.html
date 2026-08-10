@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gift Cards | Rashmi Rao Designs</title>
+<meta name="description" content="Give the gift of original art. Rashmi Rao gift cards are redeemable against paintings, wearable art, and limited-edition prints.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap">
+
+<style>
+:root {
+  --bg:#FAF8F5;--white:#FFFFFF;--text:#111111;--muted:#6B6B6B;
+  --beige:#E9E3DB;--olive:#6D7550;--olive-dk:#5a6142;--gold:#C9A84C;
+  --dark:#111111;--rust:#7a5248;
+  --ff-serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --ff-sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ff-mono:'DM Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ff-sans);background:var(--bg);color:var(--text);overflow-x:hidden;font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{display:block;max-width:100%;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ANN BAR */
+.ann{background:var(--rust);color:#FAF8F5;text-align:center;padding:11px 48px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;position:relative;z-index:500;height:42px;overflow:hidden;}
+.ann-close{position:absolute;right:20px;top:50%;transform:translateY(-50%);color:rgba(250,248,245,0.55);font-size:20px;line-height:1;transition:color .2s;padding:4px 8px;}
+.ann-close:hover{color:#FAF8F5;}
+
+/* NAV */
+.nav{position:fixed;left:0;right:0;top:42px;z-index:400;background:rgba(250,248,245,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(17,17,17,0.08);transition:top .35s;}
+.nav.no-ann{top:0;}
+.nav-inner{max-width:1440px;margin:0 auto;padding:0 52px;height:72px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:var(--ff-serif);font-size:18px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text);white-space:nowrap;}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-family:var(--ff-sans);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:400;transition:color .25s;position:relative;padding-bottom:2px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .3s ease;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);transform-origin:left;}
+.nav-actions{display:flex;align-items:center;gap:20px;}
+.nav-icon-btn{display:flex;align-items:center;gap:6px;color:var(--muted);font-family:var(--ff-sans);font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .25s;}
+.nav-icon-btn:hover{color:var(--text);}
+.cart-badge{background:var(--olive);color:#fff;font-family:var(--ff-mono);font-size:9px;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.nav-burger{display:none;flex-direction:column;gap:5px;padding:4px;color:var(--text);}
+.nav-burger span{display:block;width:22px;height:1.5px;background:currentColor;border-radius:2px;}
+.currency-toggle{display:flex;align-items:center;gap:7px;}
+.curr-lbl{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);transition:color .25s;user-select:none;line-height:1;}
+.curr-lbl.active{color:var(--text);}
+.toggle-track{position:relative;width:36px;height:20px;background:var(--beige);border-radius:10px;cursor:pointer;border:1px solid rgba(17,17,17,0.14);transition:background .28s,border-color .28s;flex-shrink:0;}
+.toggle-track.usd{background:var(--olive);border-color:var(--olive);}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--white);border-radius:50%;transition:transform .28s cubic-bezier(.25,.46,.45,.94);box-shadow:0 1px 4px rgba(0,0,0,0.2);pointer-events:none;}
+.toggle-track.usd .toggle-thumb{transform:translateX(16px);}
+
+/* SHARED */
+.wrap{max-width:1440px;margin:0 auto;padding:0 60px;}
+.section{padding:100px 0;}
+
+/* HERO */
+.page-hero{padding-top:156px;padding-bottom:80px;background:var(--bg);border-bottom:1px solid var(--beige);}
+.hero-split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.hero-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block;font-weight:400;}
+.hero-h1{font-family:var(--ff-serif);font-size:clamp(52px,6.5vw,88px);font-weight:400;line-height:1.0;color:var(--text);letter-spacing:-.02em;margin-bottom:28px;}
+.hero-h1 em{font-style:italic;font-weight:300;color:var(--olive);}
+.hero-desc{font-family:var(--ff-sans);font-size:15px;font-weight:300;color:#3a3a3a;line-height:1.85;max-width:420px;margin-bottom:36px;}
+.hero-badges{display:flex;gap:20px;flex-wrap:wrap;}
+.hero-badge{display:flex;align-items:center;gap:9px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:400;}
+.hero-badge svg{color:var(--olive);flex-shrink:0;}
+
+/* GIFT CARD CANVAS */
+.gift-card-preview{position:relative;}
+.gift-card-canvas{width:100%;aspect-ratio:16/10;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 40px 80px rgba(17,17,17,0.22),0 8px 20px rgba(17,17,17,0.1);background:linear-gradient(135deg,#1a1f14 0%,#2d3520 35%,#1e2818 60%,#111a0c 100%);transition:transform 0.6s cubic-bezier(.25,.46,.45,.94);}
+.gift-card-canvas:hover{transform:perspective(1200px) rotateY(-4deg) rotateX(2deg) scale(1.01);}
+.gc-blob{position:absolute;border-radius:50%;filter:blur(60px);animation:gcBlob 8s ease-in-out infinite;pointer-events:none;}
+.gc-blob-1{width:55%;height:55%;background:radial-gradient(circle,rgba(109,117,80,0.55) 0%,transparent 70%);top:-10%;left:-5%;animation-delay:0s;}
+.gc-blob-2{width:40%;height:40%;background:radial-gradient(circle,rgba(201,168,76,0.35) 0%,transparent 70%);bottom:-10%;right:10%;animation-delay:3s;}
+.gc-blob-3{width:30%;height:30%;background:radial-gradient(circle,rgba(122,82,72,0.3) 0%,transparent 70%);top:30%;right:-5%;animation-delay:5s;}
+@keyframes gcBlob{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(8%,-6%) scale(1.08);}66%{transform:translate(-5%,8%) scale(0.94);}}
+.gc-shimmer{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.06) 50%,transparent 70%);background-size:200% 100%;animation:gcShimmer 4s linear infinite;pointer-events:none;}
+@keyframes gcShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.gc-content{position:absolute;inset:0;padding:36px 40px;display:flex;flex-direction:column;justify-content:space-between;}
+.gc-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.gc-logo{font-family:var(--ff-serif);font-size:16px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,248,245,0.92);}
+.gc-amount-display{font-family:var(--ff-mono);font-size:26px;color:var(--gold);font-weight:300;text-align:right;transition:all 0.4s ease;}
+.gc-amount-label{font-family:var(--ff-sans);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,248,245,0.3);display:block;margin-bottom:4px;}
+.gc-mid{text-align:center;}
+.gc-tagline{font-family:var(--ff-serif);font-size:clamp(16px,2.2vw,24px);font-style:italic;font-weight:300;color:rgba(250,248,245,0.72);line-height:1.4;}
+.gc-bottom{display:flex;justify-content:space-between;align-items:flex-end;}
+.gc-recipient{font-family:var(--ff-sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,248,245,0.35);}
+.gc-recipient-name{font-family:var(--ff-serif);font-size:16px;color:rgba(250,248,245,0.7);font-weight:400;margin-top:4px;min-height:24px;transition:all 0.3s ease;}
+.gc-code{font-family:var(--ff-mono);font-size:10px;color:rgba(250,248,245,0.2);letter-spacing:.18em;text-align:right;}
+.gift-card-shadow{position:absolute;bottom:-16px;left:5%;right:5%;height:100%;border-radius:24px;background:rgba(17,17,17,0.2);z-index:-1;filter:blur(16px);}
+
+/* CONFIGURATOR */
+.configurator-section{background:var(--white);}
+.configurator-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.config-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block;}
+.config-heading{font-family:var(--ff-serif);font-size:clamp(36px,4vw,54px);font-weight:400;line-height:1.06;margin-bottom:14px;}
+.config-heading em{font-style:italic;font-weight:300;}
+.config-sub{font-family:var(--ff-sans);font-size:14px;font-weight:300;color:#3a3a3a;line-height:1.85;margin-bottom:48px;}
+.denom-label{font-family:var(--ff-sans);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:block;}
+.denom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px;}
+.denom-pill{padding:18px 12px;border:1.5px solid var(--beige);background:transparent;color:var(--text);font-family:var(--ff-mono);font-size:15px;letter-spacing:.04em;cursor:pointer;transition:border-color .22s,background .22s,color .22s;text-align:center;border-radius:4px;}
+.denom-pill:hover{border-color:var(--olive);}
+.denom-pill.active{border-color:var(--olive);background:var(--olive);color:#fff;}
+.denom-pill .denom-sub{display:block;font-family:var(--ff-sans);font-size:9px;letter-spacing:.12em;text-transform:uppercase;opacity:.6;margin-top:4px;}
+.custom-amount-row{display:flex;gap:10px;margin-bottom:40px;}
+.custom-amount-input{flex:1;border:1.5px solid var(--beige);background:var(--bg);padding:13px 16px;font-family:var(--ff-mono);font-size:14px;color:var(--text);outline:none;transition:border-color .25s;border-radius:4px;}
+.custom-amount-input:focus{border-color:var(--olive);}
+.custom-amount-input::placeholder{color:rgba(17,17,17,0.25);}
+.custom-amount-btn{padding:13px 20px;background:var(--beige);color:var(--text);font-family:var(--ff-sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;border-radius:4px;}
+.custom-amount-btn:hover{background:var(--olive);color:#fff;}
+.config-right{padding-top:72px;}
+.form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.form-label{font-family:var(--ff-sans);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:400;}
+.form-input,.form-textarea{border:1px solid var(--beige);background:var(--bg);padding:13px 16px;font-family:var(--ff-sans);font-size:14px;font-weight:300;color:var(--text);outline:none;transition:border-color .25s,background .25s;border-radius:4px;}
+.form-input:focus,.form-textarea:focus{border-color:var(--olive);background:var(--white);}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(17,17,17,0.25);}
+.form-textarea{resize:vertical;min-height:110px;line-height:1.7;}
+.delivery-options{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.delivery-opt{flex:1;min-width:140px;border:1.5px solid var(--beige);padding:16px 18px;cursor:pointer;transition:border-color .22s,background .22s;border-radius:6px;}
+.delivery-opt.active{border-color:var(--olive);background:rgba(109,117,80,0.04);}
+.delivery-opt-title{font-family:var(--ff-sans);font-size:12px;letter-spacing:.08em;font-weight:500;text-transform:uppercase;color:var(--text);display:block;margin-bottom:4px;}
+.delivery-opt-desc{font-family:var(--ff-sans);font-size:11px;color:var(--muted);font-weight:300;}
+.btn-olive{display:inline-flex;align-items:center;gap:10px;background:var(--olive);color:#fff;padding:16px 36px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;border:2px solid var(--olive);cursor:pointer;transition:background .25s,transform .2s;width:100%;justify-content:center;}
+.btn-olive:hover{background:var(--olive-dk);border-color:var(--olive-dk);transform:translateY(-2px);}
+.form-note{font-family:var(--ff-sans);font-size:11px;color:var(--muted);font-weight:300;line-height:1.65;margin-top:12px;text-align:center;}
+
+/* HOW IT WORKS */
+.how-bg{background:var(--beige);}
+.how-heading-row{text-align:center;margin-bottom:64px;}
+.how-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block;}
+.how-h2{font-family:var(--ff-serif);font-size:clamp(36px,4vw,56px);font-weight:400;line-height:1.06;}
+.how-h2 em{font-style:italic;font-weight:300;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.step{padding:36px 28px;background:var(--white);border-radius:16px;position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;}
+.step:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(17,17,17,0.09);}
+.step-num{font-family:var(--ff-serif);font-size:72px;font-weight:400;color:rgba(17,17,17,0.05);position:absolute;top:-8px;right:14px;line-height:1;}
+.step-icon{width:44px;height:44px;border-radius:50%;background:rgba(109,117,80,0.1);display:flex;align-items:center;justify-content:center;color:var(--olive);margin-bottom:20px;}
+.step-title{font-family:var(--ff-serif);font-size:20px;font-weight:400;margin-bottom:10px;}
+.step-desc{font-family:var(--ff-sans);font-size:13px;font-weight:300;color:var(--muted);line-height:1.8;}
+
+/* DARK CTA */
+.dark-cta{background:var(--dark);padding:100px 0;}
+.dark-cta-inner{display:flex;justify-content:space-between;align-items:center;gap:60px;flex-wrap:wrap;}
+.dark-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive);margin-bottom:18px;display:block;}
+.dark-h2{font-family:var(--ff-serif);font-size:clamp(36px,4vw,56px);font-weight:400;color:#FAF8F5;line-height:1.06;max-width:560px;}
+.dark-h2 em{font-style:italic;font-weight:300;}
+.dark-body{font-family:var(--ff-sans);font-size:14px;font-weight:300;color:rgba(250,248,245,0.42);line-height:1.85;max-width:380px;margin-top:18px;}
+.dark-cta-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-light{display:inline-flex;align-items:center;gap:10px;padding:15px 34px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;color:var(--dark);background:#FAF8F5;border:2px solid #FAF8F5;cursor:pointer;transition:background .25s,transform .2s;}
+.btn-light:hover{background:var(--beige);border-color:var(--beige);transform:translateY(-2px);}
+.btn-ghost-light{display:inline-flex;align-items:center;gap:10px;padding:15px 34px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;color:rgba(250,248,245,0.6);border:1px solid rgba(250,248,245,0.2);background:none;cursor:pointer;transition:all .25s;}
+.btn-ghost-light:hover{color:#FAF8F5;border-color:rgba(250,248,245,0.5);}
+
+/* FOOTER */
+footer{background:#0e0e0e;color:rgba(250,248,245,0.38);padding:68px 0 40px;}
+.ft-grid{max-width:1440px;margin:0 auto;padding:0 60px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;}
+.ft-brand{font-family:var(--ff-serif);font-size:19px;color:#FAF8F5;font-weight:400;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.ft-tagline{font-size:13px;font-weight:300;line-height:1.65;max-width:220px;}
+.ft-hd{font-family:var(--ff-sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(250,248,245,0.22);margin-bottom:20px;font-weight:400;}
+.ft-links{list-style:none;}
+.ft-links li+li{margin-top:10px;}
+.ft-links a{font-size:13px;font-weight:300;transition:color .25s;}
+.ft-links a:hover{color:rgba(250,248,245,0.85);}
+.ft-bottom{max-width:1440px;margin:40px auto 0;padding:24px 60px 0;border-top:1px solid rgba(250,248,245,0.06);display:flex;justify-content:space-between;align-items:center;font-size:11px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--olive);color:#fff;font-family:var(--ff-sans);font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;z-index:900;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.hero-split{grid-template-columns:1fr;gap:48px;}.configurator-layout{grid-template-columns:1fr;gap:52px;}.config-right{padding-top:0;}.steps-grid{grid-template-columns:1fr 1fr;gap:24px;}.dark-cta-inner{flex-direction:column;gap:40px;}.ft-grid{grid-template-columns:1fr 1fr;gap:44px;}}
+@media(max-width:768px){.wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.nav-links{display:none;}.nav-burger{display:flex;}.section{padding:72px 0;}.page-hero{padding-top:130px;padding-bottom:56px;}.denom-grid{grid-template-columns:repeat(2,1fr);}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
+</style>
+<link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+<!-- ANNOUNCEMENT -->
+<div class="ann" id="ann">
+  Gift a piece of original art — beautifully delivered, forever remembered
+  <button class="ann-close" onclick="closeAnn()">×</button>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Rashmi Rao</a>
+    <ul class="nav-links">
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="giftcard.html" class="active">Gift Cards</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="currency-toggle" role="group" aria-label="Currency selector">
+        <span class="curr-lbl active" id="currLabelINR">INR ₹</span>
+        <button class="toggle-track" id="currencyTrack" onclick="toggleCurrency()" role="switch" aria-checked="false" aria-label="Toggle currency">
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="curr-lbl" id="currLabelUSD">$ USD</span>
+      </div>
+      <button class="nav-icon-btn" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge">0</span>
+      </button>
+      <button class="nav-burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="hero-split">
+      <div class="hero-left">
+        <span class="hero-eyebrow">Studio Gift Cards</span>
+        <h1 class="hero-h1">Give the Gift<br>of <em>Original</em><br>Art.</h1>
+        <p class="hero-desc">A Rashmi Rao gift card is an invitation into a world of original paintings, wearable art, and limited editions. Thoughtful, lasting, and beautifully presented.</p>
+        <div class="hero-badges">
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 2l-11 20-3-8-8-3z"/></svg>
+            Delivered by Email
+          </div>
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            No Expiry Date
+          </div>
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Redeemable Sitewide
+          </div>
+        </div>
+      </div>
+
+      <!-- Gift Card Visual -->
+      <div class="gift-card-preview">
+        <div class="gift-card-canvas" id="gcCanvas">
+          <div class="gc-blob gc-blob-1"></div>
+          <div class="gc-blob gc-blob-2"></div>
+          <div class="gc-blob gc-blob-3"></div>
+          <div class="gc-shimmer"></div>
+          <div class="gc-content">
+            <div class="gc-top">
+              <div class="gc-logo">Rashmi Rao</div>
+              <div style="text-align:right;">
+                <span class="gc-amount-label">Gift Value</span>
+                <div class="gc-amount-display" id="gcAmountDisplay">₹5,000</div>
+              </div>
+            </div>
+            <div class="gc-mid">
+              <p class="gc-tagline">Where art becomes story.<br><em>A gift that lives forever.</em></p>
+            </div>
+            <div class="gc-bottom">
+              <div>
+                <div class="gc-recipient">For</div>
+                <div class="gc-recipient-name" id="gcRecipientName">Your Loved One</div>
+              </div>
+              <div class="gc-code">RRD · GIFT · 2025</div>
+            </div>
+          </div>
+        </div>
+        <div class="gift-card-shadow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIGURATOR -->
+<section class="configurator-section section">
+  <div class="wrap">
+    <div class="configurator-layout">
+
+      <div class="config-left">
+        <span class="config-eyebrow">Choose Your Gift</span>
+        <h2 class="config-heading">Select a<br><em>Denomination</em></h2>
+        <p class="config-sub">Choose a value or enter your own. Gift cards are valid for all original works, wearable art collections, and limited prints.</p>
+
+        <span class="denom-label">Gift Card Value (INR)</span>
+        <div class="denom-grid" id="denomGrid">
+          <button class="denom-pill" onclick="selectDenom(this,'₹2,500',2500)">₹2,500<span class="denom-sub">Starter</span></button>
+          <button class="denom-pill active" onclick="selectDenom(this,'₹5,000',5000)">₹5,000<span class="denom-sub">Popular</span></button>
+          <button class="denom-pill" onclick="selectDenom(this,'₹10,000',10000)">₹10,000<span class="denom-sub">Collector</span></button>
+          <button class="denom-pill" onclick="selectDenom(this,'₹18,500',18500)">₹18,500<span class="denom-sub">Wearable</span></button>
+          <button class="denom-pill" onclick="selectDenom(this,'₹25,000',25000)">₹25,000<span class="denom-sub">Signature</span></button>
+          <button class="denom-pill" onclick="selectDenom(this,'₹50,000',50000)">₹50,000<span class="denom-sub">Original Art</span></button>
+        </div>
+
+        <span class="denom-label">Or enter a custom amount</span>
+        <div class="custom-amount-row">
+          <input type="number" class="custom-amount-input" id="customAmountInput" placeholder="e.g. 7500" min="500">
+          <button class="custom-amount-btn" onclick="applyCustomAmount()">Apply</button>
+        </div>
+
+        <div style="padding:20px 0;border-top:1px solid var(--beige);border-bottom:1px solid var(--beige);display:flex;gap:28px;flex-wrap:wrap;">
+          <div style="font-family:var(--ff-sans);font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;"><strong style="color:var(--text);font-weight:400;">Instant delivery</strong><br>Sent to email within seconds</div>
+          <div style="font-family:var(--ff-sans);font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;"><strong style="color:var(--text);font-weight:400;">No expiry</strong><br>Use it whenever you're ready</div>
+          <div style="font-family:var(--ff-sans);font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;"><strong style="color:var(--text);font-weight:400;">Fully redeemable</strong><br>Across all collections</div>
+        </div>
+      </div>
+
+      <div class="config-right">
+        <span class="config-eyebrow">Personalise the Card</span>
+        <h2 class="config-heading" style="font-size:clamp(28px,3vw,40px);margin-bottom:32px;">Make it<br><em>Memorable</em></h2>
+
+        <div class="form-group">
+          <label class="form-label" for="gc-recipient">Recipient's Name</label>
+          <input id="gc-recipient" class="form-input" type="text" placeholder="Name on the gift card" oninput="updateCardName(this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gc-sender">Your Name</label>
+          <input id="gc-sender" class="form-input" type="text" placeholder="From">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="gc-message">Personal Message</label>
+          <textarea id="gc-message" class="form-textarea" placeholder="Write a personal note to accompany your gift..."></textarea>
+        </div>
+
+        <span class="denom-label" style="margin-bottom:10px;">Delivery Method</span>
+        <div class="delivery-options">
+          <div class="delivery-opt active" onclick="selectDelivery(this)">
+            <span class="delivery-opt-title">Email</span>
+            <span class="delivery-opt-desc">Instant · Free</span>
+          </div>
+          <div class="delivery-opt" onclick="selectDelivery(this)">
+            <span class="delivery-opt-title">PDF Download</span>
+            <span class="delivery-opt-desc">Print at home · Free</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="gc-email">Recipient's Email</label>
+          <input id="gc-email" class="form-input" type="email" placeholder="Email to send the gift card to">
+        </div>
+
+        <button class="btn-olive" onclick="purchaseGiftCard()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h6"/><path d="M16 2l6 6-8 8H8v-6l8-8z"/></svg>
+          Purchase Gift Card
+        </button>
+        <p class="form-note">Your gift card code will be emailed instantly. Secure checkout via your chosen payment provider.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-bg section">
+  <div class="wrap">
+    <div class="how-heading-row">
+      <span class="how-eyebrow">Simple &amp; Thoughtful</span>
+      <h2 class="how-h2">How It <em>Works</em></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
+        <div class="step-title">Choose &amp; Personalise</div>
+        <p class="step-desc">Select your gift card value, write a personal message, and add the recipient's name.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+        <div class="step-title">Secure Payment</div>
+        <p class="step-desc">Complete a secure checkout. Your card is processed instantly with a confirmation to both of you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 2l-11 20-3-8-8-3z"/></svg></div>
+        <div class="step-title">Delivered Instantly</div>
+        <p class="step-desc">The recipient receives a beautifully designed digital card with their unique redemption code by email.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="step-title">Redeem for Art</div>
+        <p class="step-desc">Apply the code at checkout against any original painting, wearable, or limited edition. No expiry, ever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK CTA -->
+<section class="dark-cta">
+  <div class="wrap">
+    <div class="dark-cta-inner">
+      <div class="dark-cta-copy">
+        <span class="dark-eyebrow">Need Something More Personal?</span>
+        <h2 class="dark-h2">Commission a<br><em>Bespoke Work</em><br>as a Gift.</h2>
+        <p class="dark-body">For truly unforgettable gifts, Rashmi takes on a limited number of commissions each quarter — personalised artworks created specifically for your recipient.</p>
+      </div>
+      <div class="dark-cta-actions">
+        <a href="contact.html" class="btn-light">
+          Enquire about Commission
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="collections.html" class="btn-ghost-light">Browse All Collections →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">Rashmi Rao</div>
+      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">All Works</a></li>
+        <li><a href="collections.html">Alcohol Ink</a></li>
+        <li><a href="collections.html">Wearable Art</a></li>
+        <li><a href="giftcard.html">Gift Cards</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Enquiries</p>
+      <ul class="ft-links">
+        <li><a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a></li>
+        <li><a href="contact.html">Commission</a></li>
+        <li><a href="contact.html">Let's Collaborate</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>&copy; 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>Privacy Policy &middot; Terms of Service</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">Gift card added!</div>
+
+<script src="site.js" defer></script>
+<script>
+  let isUSD = false, USD_RATE = 0.012, currentValueINR = 5000;
+
+  function closeAnn() {
+    const ann = document.getElementById('ann');
+    const nav = document.getElementById('nav');
+    if(ann) ann.style.display = 'none';
+    if(nav) nav.classList.add('no-ann');
+  }
+
+  function toggleCurrency() {
+    isUSD = !isUSD;
+    const track = document.getElementById('currencyTrack');
+    const lINR  = document.getElementById('currLabelINR');
+    const lUSD  = document.getElementById('currLabelUSD');
+    track && track.classList.toggle('usd', isUSD);
+    lINR && lINR.classList.toggle('active', !isUSD);
+    lUSD && lUSD.classList.toggle('active', isUSD);
+    updateCardAmount(currentValueINR);
+  }
+
+  function selectDenom(btn, label, valueINR) {
+    document.querySelectorAll('.denom-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    currentValueINR = valueINR;
+    updateCardAmount(valueINR);
+  }
+
+  function updateCardAmount(valueINR) {
+    const d = document.getElementById('gcAmountDisplay');
+    if(!d) return;
+    d.textContent = isUSD
+      ? '$' + Math.round(valueINR * USD_RATE).toLocaleString()
+      : '₹' + valueINR.toLocaleString('en-IN');
+  }
+
+  function applyCustomAmount() {
+    const input = document.getElementById('customAmountInput');
+    const val = parseInt(input.value);
+    if(!val || val < 500) { input.style.borderColor='#c0392b'; setTimeout(()=>input.style.borderColor='',1200); return; }
+    document.querySelectorAll('.denom-pill').forEach(p => p.classList.remove('active'));
+    currentValueINR = val;
+    updateCardAmount(val);
+  }
+
+  function updateCardName(val) {
+    const el = document.getElementById('gcRecipientName');
+    if(el) el.textContent = val || 'Your Loved One';
+  }
+
+  function selectDelivery(el) {
+    document.querySelectorAll('.delivery-opt').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function purchaseGiftCard() {
+    const email = document.getElementById('gc-email').value;
+    if(!email) {
+      const el = document.getElementById('gc-email');
+      el.style.borderColor = '#c0392b';
+      setTimeout(() => el.style.borderColor = '', 1500);
+      return;
+    }
+    const toast = document.getElementById('toast');
+    if(toast) {
+      toast.textContent = 'Gift card purchased! Check your email.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('nav');
+    const ann = document.getElementById('ann');
+    if(!nav) return;
+    if(ann && ann.style.display !== 'none') {
+      nav.style.top = window.scrollY > 42 ? '0' : '42px';
+    }
+  }, { passive: true });
+</script>
+</body>
+</html>

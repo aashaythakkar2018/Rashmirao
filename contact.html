@@ -367,63 +367,160 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-width: 260px; line-height: 1.6;
 }
 
+/*
+   PRESS & GALLERY BENTO GRID - 21st.dev bento pattern
+   A rich, editorial-style masonry bento grid.
+   Row 1: one tall hero card (spans 2 rows) + one standard card
+   Row 2: hero continues + second standard card
+   Row 3: two wide landscape cards
+*/
 .press-gallery-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 28px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 16px;
+  margin-top: 32px;
 }
 
 .press-gallery-card {
-  background: rgba(255,255,255,0.95);
-  border: 1px solid rgba(17,17,17,0.08);
-  border-radius: 22px;
+  background: var(--bg);
+  border: 1px solid rgba(17,17,17,0.07);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 18px 35px rgba(8, 12, 14, 0.06);
-  display: grid;
-  grid-template-rows: auto minmax(112px, auto);
+  position: relative;
+  transition: transform 0.35s cubic-bezier(.25,.46,.45,.94), box-shadow 0.35s ease;
+}
+
+.press-gallery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(17,17,17,0.10);
+}
+
+/* Card 1: tall hero, left col */
+.press-gallery-card:nth-child(1) {
+  grid-column: 1 / 6;
+  grid-row: 1 / 3;
+}
+/* Card 2: top-right standard */
+.press-gallery-card:nth-child(2) {
+  grid-column: 6 / 13;
+  grid-row: 1 / 2;
+}
+/* Card 3: bottom-right standard */
+.press-gallery-card:nth-child(3) {
+  grid-column: 6 / 13;
+  grid-row: 2 / 3;
+}
+/* Card 4: full-width landscape strip */
+.press-gallery-card:nth-child(4) {
+  grid-column: 1 / 13;
+  grid-row: 3 / 4;
 }
 
 .press-gallery-thumb {
   overflow: hidden;
+  width: 100%;
 }
+
+.press-gallery-card:nth-child(1) .press-gallery-thumb { height: 380px; }
+.press-gallery-card:nth-child(2) .press-gallery-thumb { height: 200px; }
+.press-gallery-card:nth-child(3) .press-gallery-thumb { height: 170px; }
+.press-gallery-card:nth-child(4) .press-gallery-thumb { height: 260px; }
 
 .press-gallery-thumb img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 0.45s ease;
+  transition: transform 0.55s cubic-bezier(.25,.46,.45,.94);
 }
 
 .press-gallery-card:hover .press-gallery-thumb img {
-  transform: scale(1.05);
+  transform: scale(1.06);
+}
+
+/* Dark overlay on hover */
+.press-gallery-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(17,17,17,0.55) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 18px;
+}
+.press-gallery-card:hover::after {
+  opacity: 1;
 }
 
 .press-gallery-copy {
-  padding: 22px 22px 24px;
+  padding: 18px 20px 22px;
+  position: relative;
+  z-index: 3;
 }
+
+.press-gallery-card:nth-child(4) .press-gallery-copy {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 22px 28px;
+  background: linear-gradient(to top, rgba(17,17,17,0.72) 0%, transparent 100%);
+  z-index: 3;
+}
+.press-gallery-card:nth-child(4) .press-gallery-copy h3 { color: #FAF8F5; }
+.press-gallery-card:nth-child(4) .press-gallery-copy p { color: rgba(250,248,245,0.55); }
 
 .press-gallery-copy h3 {
   font-family: var(--ff-serif);
-  font-size: 18px;
-  line-height: 1.2;
-  margin-bottom: 10px;
+  font-size: 17px;
+  line-height: 1.25;
+  margin-bottom: 6px;
   color: var(--text);
 }
 
 .press-gallery-copy p {
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted);
-  line-height: 1.75;
+  line-height: 1.7;
   margin: 0;
+}
+
+/* tag badge on each card */
+.press-gallery-tag {
+  display: inline-block;
+  font-family: var(--ff-sans);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--olive);
+  background: rgba(109,117,80,0.1);
+  border: 1px solid rgba(109,117,80,0.2);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  display: block;
 }
 
 @media (max-width: 860px) {
   .press-gallery-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
+  .press-gallery-card:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+  .press-gallery-card:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 2; }
+  .press-gallery-card:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
+  .press-gallery-card:nth-child(4) { grid-column: 2 / 3; grid-row: 2 / 3; }
+  .press-gallery-card:nth-child(1) .press-gallery-thumb,
+  .press-gallery-card:nth-child(2) .press-gallery-thumb,
+  .press-gallery-card:nth-child(3) .press-gallery-thumb,
+  .press-gallery-card:nth-child(4) .press-gallery-thumb { height: 200px; }
+}
+
+@media (max-width: 540px) {
+  .press-gallery-grid { grid-template-columns: 1fr; }
+  .press-gallery-card:nth-child(n) { grid-column: 1 / -1; grid-row: auto; }
+  .press-gallery-card:nth-child(n) .press-gallery-thumb { height: 220px; }
 }
 
 /* dynamic form panels */
@@ -743,6 +840,7 @@ footer {
       <li><a href="collections.html">Collections</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="collections.html">Shop</a></li>
+      <li><a href="giftcard.html">Gift Cards</a></li>
       <li><a href="contact.html" class="active">Contact</a></li>
     </ul>
     <div class="nav-actions">
@@ -811,9 +909,9 @@ footer {
         </div>
 
         <div class="inq-type rv" data-target="panel-license" onclick="selectInquiry(this)">
-          <span class="inq-type-icon">⬡</span>
+          <span class="inq-type-icon">⧡</span>
           <div class="inq-type-copy">
-            <span class="inq-type-name">License the Work</span>
+            <span class="inq-type-name">Lets Collaborate</span>
             <span class="inq-type-desc">Interior design, hospitality, brand collaboration</span>
           </div>
         </div>
@@ -855,9 +953,9 @@ footer {
           </form>
         </div>
 
-        <!-- LICENSE -->
+        <!-- COLLABORATE -->
         <div class="form-panel" id="panel-license">
-          <h2 class="form-heading rv">License the <em>Work.</em></h2>
+          <h2 class="form-heading rv">Let's <em>Collaborate.</em></h2>
           <p class="form-sub rv">Rashmi's work has been licensed for hotel installations, interior design projects, and brand collaborations across India and internationally. Tell us about your project.</p>
           <form class="form-grid rv" onsubmit="submitForm(event)">
             <div class="form-group">
@@ -905,8 +1003,9 @@ footer {
                 <img src="images/story-1.jpg" alt="Studio installation image" />
               </figure>
               <div class="press-gallery-copy">
-                <h3>Studio installation</h3>
-                <p>Textural work staged for editorial and exhibition spaces.</p>
+                <span class="press-gallery-tag">Studio · 2024</span>
+                <h3>Studio Installation</h3>
+                <p>Textural work staged for editorial and exhibition spaces. Available for press use.</p>
               </div>
             </article>
             <article class="press-gallery-card">
@@ -914,7 +1013,8 @@ footer {
                 <img src="images/story-2.jpg" alt="Material detail image" />
               </figure>
               <div class="press-gallery-copy">
-                <h3>Material detail</h3>
+                <span class="press-gallery-tag">Detail · Close-up</span>
+                <h3>Material Detail</h3>
                 <p>Close-up imagery that highlights colour, surface, and depth.</p>
               </div>
             </article>
@@ -923,7 +1023,8 @@ footer {
                 <img src="images/story-3.jpg" alt="Textured colour study" />
               </figure>
               <div class="press-gallery-copy">
-                <h3>Colour study</h3>
+                <span class="press-gallery-tag">Editorial · 2024</span>
+                <h3>Colour Study</h3>
                 <p>Editorial visuals that feel intimate, layered, and expressive.</p>
               </div>
             </article>
@@ -932,7 +1033,8 @@ footer {
                 <img src="images/collection-original.jpg" alt="Original work presentation" />
               </figure>
               <div class="press-gallery-copy">
-                <h3>Original presentation</h3>
+                <span class="press-gallery-tag">Gallery · Exhibition</span>
+                <h3>Original Presentation</h3>
                 <p>Signature pieces shown in gallery-ready compositions.</p>
               </div>
             </article>
