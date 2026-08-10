@@ -1,0 +1,690 @@
+/* -----------------------------------------------
+   RASHMI RAO DESIGNS - ANIMATION SYSTEM
+   Based on animate-skill (Emil Kowalski · "Animations on the Web")
+   -----------------------------------------------
+
+   Golden rules from the skill:
+   1. Only animate transform + opacity (GPU-accelerated)
+   2. Exits 75% of enter duration
+   3. 200-300ms is the sweet spot
+   4. Springs for interruptible / physical animations
+   5. Always respect prefers-reduced-motion
+*/
+
+/* -- Easing Variables (animate-skill SKILL.md) -------- */
+:root {
+  --ease-out-quint:    cubic-bezier(.23, 1, .32, 1);       /* signature ease - most enters */
+  --ease-in-out-cubic: cubic-bezier(.645, .045, .355, 1);  /* elements moving on screen */
+  --ease-out-cubic:    cubic-bezier(.33, 1, .68, 1);       /* lighter enters */
+  --ease-in-cubic:     cubic-bezier(.32, 0, .67, 0);       /* exits */
+  --ease-out-back:     cubic-bezier(.34, 1.56, .64, 1);    /* spring-feel / micro interactions */
+}
+
+
+/* -----------------------------------------------
+   KEYFRAMES
+   ----------------------------------------------- */
+
+/* Text reveal - from text-reveal.tsx example
+   Parent must have overflow:hidden to clip the rising word */
+@keyframes rr-reveal {
+  from {
+    transform: translateY(108%);
+    opacity:   0;
+  }
+  to {
+    transform: translateY(0);
+    opacity:   1;
+  }
+}
+
+/* Generic fade-up for non-GSAP scroll reveals */
+@keyframes rr-fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Scale in - badges, price pill, edition badge */
+@keyframes rr-scale-in {
+  from { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+/* Line draw - decorative horizontal rules */
+@keyframes rr-line-draw {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Subtle breathing for hero images - brand asset animation */
+@keyframes rr-breathe {
+  0%, 100% { transform: scale(1);     }
+  50%       { transform: scale(1.014); }
+}
+
+
+/* -----------------------------------------------
+   TEXT REVEAL - animate-skill text-reveal.tsx pattern
+   JS splits hero h1 words into:
+     <span class="rr-word-wrap">
+       <span class="rr-word" style="--index:N">word</span>
+     </span>
+   ----------------------------------------------- */
+.rr-word-wrap {
+  display: inline-block;
+  overflow: hidden;           /* clips the rising word */
+  vertical-align: bottom;
+  line-height: inherit;
+}
+/* preserve italic em tags inside words */
+.rr-word-wrap em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+.rr-word {
+  display: inline-block;
+  animation: rr-reveal 1s var(--ease-out-quint) backwards;
+  /* stagger: each word 0.065s after the previous, with a base 0.1s offset */
+  animation-delay: calc(var(--index, 0) * 0.065s + 0.1s);
+}
+
+
+/* -----------------------------------------------
+   CARD HOVER - animate-skill card-hover.tsx pattern
+   Collections art cards: .art-card-reveal slides up from bottom
+
+   UPGRADE: replace cubic-bezier(.25,.46,.45,.94) with
+   --ease-out-quint for a more decisive, premium feel.
+   Duration: 320ms (skill's ~350ms sweet spot).
+   Content children: staggered with --ease-out-cubic.
+   ----------------------------------------------- */
+
+/* Container panel slides up */
+.art-card-reveal {
+  transition: transform 320ms var(--ease-out-quint) !important;
+}
+
+/* Content children stagger - upgrade from 'ease' to --ease-out-cubic */
+.reveal-eyebrow {
+  transition: transform 300ms calc(0.00s + 0.05s) var(--ease-out-cubic),
+              opacity   280ms calc(0.00s + 0.05s) var(--ease-out-cubic) !important;
+}
+.reveal-title {
+  transition: transform 300ms calc(0.04s + 0.05s) var(--ease-out-cubic),
+              opacity   280ms calc(0.04s + 0.05s) var(--ease-out-cubic) !important;
+}
+.reveal-meta {
+  transition: transform 300ms calc(0.08s + 0.05s) var(--ease-out-cubic),
+              opacity   280ms calc(0.08s + 0.05s) var(--ease-out-cubic) !important;
+}
+.reveal-desc {
+  transition: transform 300ms calc(0.12s + 0.05s) var(--ease-out-cubic),
+              opacity   280ms calc(0.12s + 0.05s) var(--ease-out-cubic) !important;
+}
+.reveal-footer {
+  transition: transform 300ms calc(0.16s + 0.05s) var(--ease-out-cubic),
+              opacity   280ms calc(0.16s + 0.05s) var(--ease-out-cubic) !important;
+}
+
+/* Reveal action buttons - upgrade hover micro-interaction */
+.reveal-btn-add {
+  transition: background 180ms ease,
+              transform  180ms var(--ease-out-back) !important;
+}
+.reveal-btn-add:hover  { transform: translateY(-2px) !important; }
+.reveal-btn-add:active { transform: scale(0.96) !important; transition-duration: 100ms !important; }
+
+.reveal-btn-inq {
+  transition: background 180ms ease, opacity 180ms ease !important;
+}
+
+
+/* -----------------------------------------------
+   IMAGE HOVER ZOOM
+   Consistent 1.05 scale across all artwork image contexts.
+   Duration 650ms --ease-out-quint = smooth, unhurried luxury.
+   ----------------------------------------------- */
+
+/* Collections grid cards */
+.art-card-img-wrap img {
+  transition: transform 650ms var(--ease-out-quint),
+              opacity   400ms ease !important;
+  will-change: transform;
+}
+.art-card:hover .art-card-img-wrap img {
+  transform: scale(1.055) !important;
+}
+
+/* Homepage featured artwork rows */
+.art-img-col .img-wrap {
+  overflow: hidden;
+}
+.art-img-col .img-wrap img {
+  transition: transform 700ms var(--ease-out-quint);
+  will-change: transform;
+}
+.art-img-col:hover .img-wrap img,
+.art-img-col .img-wrap a:hover img {
+  transform: scale(1.04);
+}
+
+/* Product page related works */
+.rel-img-wrap {
+  overflow: hidden;
+}
+.rel-img-wrap img {
+  transition: transform 600ms var(--ease-out-quint);
+  will-change: transform;
+}
+.rel-card:hover .rel-img-wrap img {
+  transform: scale(1.06);
+}
+
+
+/* -----------------------------------------------
+   BUTTON HOVER LIFT - animate-skill button pattern
+   translateY(-2px) + shadow = premium feel
+   active scale(0.97) = physical press feedback
+   ----------------------------------------------- */
+
+/* Primary CTAs */
+.btn-primary,
+.pi-btn-primary,
+[class*="cta-btn"]:not(.btn-secondary) {
+  transition: transform  200ms var(--ease-out-quint),
+              box-shadow 200ms var(--ease-out-quint),
+              background 200ms ease !important;
+  will-change: transform;
+}
+.btn-primary:hover,
+.pi-btn-primary:hover {
+  transform:  translateY(-2px);
+  box-shadow: 0 8px 28px rgba(109, 117, 80, 0.24);
+}
+.btn-primary:active,
+.pi-btn-primary:active {
+  transform: scale(0.97);
+  transition-duration: 100ms !important;
+}
+
+/* Secondary / outline buttons */
+.btn-secondary {
+  transition: transform 180ms var(--ease-out-quint),
+              border-color 180ms ease !important;
+}
+.btn-secondary:hover { transform: translateY(-1px); }
+
+/* Product page Add to Cart */
+#addToCartBtn {
+  transition: transform  150ms var(--ease-out-quint),
+              box-shadow 150ms var(--ease-out-quint) !important;
+}
+#addToCartBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(109, 117, 80, 0.20);
+}
+
+
+/* -----------------------------------------------
+   NAV LOGO - subtle letter-spacing breathe on hover
+   (brand signature: the name expands slightly)
+   ----------------------------------------------- */
+.nav-logo {
+  transition: letter-spacing 400ms var(--ease-out-quint),
+              opacity        200ms ease !important;
+}
+.nav-logo:hover { letter-spacing: .14em; }
+
+/* Nav links - underline draw left→right on hover (already scaleX exists,
+   upgrade timing to skill easing) */
+.nav-links a::after {
+  transition: transform 250ms var(--ease-out-quint) !important;
+}
+
+
+/* -----------------------------------------------
+   RELATED CARD LIFT - product page
+   ----------------------------------------------- */
+.rel-card {
+  transition: transform 250ms var(--ease-out-quint) !important;
+}
+.rel-card:hover { transform: translateY(-5px); }
+
+
+/* -----------------------------------------------
+   TEXT LINKS - underline draw (from left, collapses to right)
+   ----------------------------------------------- */
+.text-link,
+.about-link,
+.wear-link {
+  position: relative;
+  text-decoration: none !important;
+}
+.text-link::after,
+.about-link::after,
+.wear-link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -1px;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 260ms var(--ease-out-quint);
+}
+.text-link:hover::after,
+.about-link:hover::after,
+.wear-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+
+/* -----------------------------------------------
+   ACCORDION - smooth height + opacity transition
+   Product page, About page accordions
+   ----------------------------------------------- */
+.acc-body {
+  transition: max-height 340ms var(--ease-in-out-cubic),
+              opacity    250ms ease !important;
+}
+.acc-chevron {
+  transition: transform 280ms var(--ease-out-cubic) !important;
+}
+.accordion-item.open .acc-chevron {
+  transform: rotate(180deg);
+}
+
+
+/* -----------------------------------------------
+   CURRENCY TOGGLE - price number micro-animation on switch
+   ----------------------------------------------- */
+.pi-price,
+#productPrice {
+  transition: opacity 180ms ease, transform 180ms var(--ease-out-back);
+  display: inline-block;
+}
+/* JS adds .price-switching class momentarily during currency change */
+.price-switching {
+  opacity: 0 !important;
+  transform: translateY(6px) !important;
+}
+
+
+/* -----------------------------------------------
+   EDITION BADGE - scale in on page load (product page)
+   ----------------------------------------------- */
+.edition-badge {
+  animation: rr-scale-in 0.5s var(--ease-out-back) 0.6s backwards;
+}
+
+
+/* -----------------------------------------------
+   FILTER TAB INDICATOR - upgrade sliding underline timing
+   ----------------------------------------------- */
+.tab-indicator-bar,
+.tab-underline {
+  transition: left   280ms var(--ease-out-quint),
+              width  280ms var(--ease-out-quint) !important;
+}
+
+/* Filter pills on collections page */
+.filter-btn {
+  transition: color 200ms ease,
+              background 200ms ease,
+              transform  150ms var(--ease-out-back) !important;
+}
+.filter-btn:hover  { transform: translateY(-1px); }
+.filter-btn:active { transform: scale(0.96); }
+.filter-btn.active {
+  transition: color 200ms ease, background 200ms ease !important;
+}
+
+
+/* -----------------------------------------------
+   COLLECTION CARDS (homepage) - hover lift
+   ----------------------------------------------- */
+.coll-card {
+  transition: transform 250ms var(--ease-out-quint),
+              box-shadow 250ms var(--ease-out-quint) !important;
+}
+.coll-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(17,17,17,0.09);
+}
+
+
+/* -----------------------------------------------
+   PREFERS-REDUCED-MOTION
+   Skill rule: "Always respect prefers-reduced-motion"
+   performance-accessibility.md: "Provide alternatives.
+   Ensure content is accessible without animation."
+   ----------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  /* Kill all our custom keyframe animations */
+  .rr-word,
+  .edition-badge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Remove wrapper overflow:hidden so text isn't clipped */
+  .rr-word-wrap {
+    overflow: visible !important;
+  }
+
+  /* Reduce card reveal to opacity-only (no slide) */
+  .art-card-reveal {
+    transform: none !important;
+    opacity: 0;
+    transition: opacity 150ms ease !important;
+  }
+  .art-card:hover .art-card-reveal { opacity: 1 !important; }
+  .reveal-eyebrow,
+  .reveal-title,
+  .reveal-meta,
+  .reveal-desc,
+  .reveal-footer {
+    transform: none !important;
+    transition: opacity 150ms ease !important;
+  }
+
+  /* Remove image zoom */
+  .art-card-img-wrap img,
+  .art-img-col .img-wrap img,
+  .rel-img-wrap img {
+    transition: opacity 400ms ease !important;
+    will-change: auto;
+  }
+  .art-card:hover .art-card-img-wrap img,
+  .art-img-col:hover .img-wrap img,
+  .rel-card:hover .rel-img-wrap img {
+    transform: none !important;
+  }
+
+  /* Remove all lifts */
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .reveal-btn-add:hover,
+  .rel-card:hover,
+  .coll-card:hover,
+  .filter-btn:hover,
+  #addToCartBtn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .nav-logo:hover { letter-spacing: inherit !important; }
+
+  /* Reduce all transitions to 150ms or none */
+  *,
+  *::before,
+  *::after {
+    transition-duration: 150ms !important;
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+/* ===============================================================
+   TASTE-SKILL REFINEMENT LAYER
+   Loaded after every page's inline <style>, so it wins on equal
+   specificity. Central corrections applied here rather than
+   duplicated across five files.
+   =============================================================== */
+
+/* ---------------------------------------------------------------
+   1. FOCUS VISIBILITY  (was: no focus styles anywhere on the site)
+   Brand spec calls for a thin olive outline. Keyboard users
+   previously had no visible focus target on any control.
+   --------------------------------------------------------------- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--olive, #6D7550);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+/* Dark sections need a light ring to stay visible */
+.journey-bg :focus-visible,
+.press-bg :focus-visible,
+.social-bg :focus-visible,
+.studio-bg :focus-visible,
+.find-bg :focus-visible,
+.lic-bg :focus-visible,
+.series-dark :focus-visible,
+footer :focus-visible,
+.art-card-reveal :focus-visible {
+  outline-color: #C9A84C;
+}
+/* Never suppress focus without a replacement */
+:focus:not(:focus-visible) { outline: none; }
+
+/* Skip link: first tab stop on every page */
+.skip-link {
+  position: absolute; left: 12px; top: -60px;
+  z-index: 999;
+  background: var(--olive, #6D7550); color: #fff;
+  font-family: var(--ff-sans, sans-serif);
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 12px 20px;
+  transition: top .2s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* ---------------------------------------------------------------
+   2. VIEWPORT STABILITY
+   100vh causes the hero to jump when the mobile browser chrome
+   collapses. dvh tracks the real viewport.
+   --------------------------------------------------------------- */
+.hero {
+  height: auto;
+  min-height: 100dvh;
+}
+
+/* ---------------------------------------------------------------
+   3. PLACEHOLDER TONES
+   Replaces the five infinitely-animating mesh gradients behind the
+   collection cards. Brand guidelines forbid gradients outright, and
+   a perpetual loop behind artwork competes with the artwork.
+   Flat brand-neutral tints still reserve layout space (no CLS).
+   --------------------------------------------------------------- */
+.art-card:nth-child(n) .art-card-img-wrap::before {
+  animation: none !important;
+  background: var(--beige, #E9E3DB) !important;
+  background-size: auto !important;
+}
+.art-card:nth-child(1) .art-card-img-wrap::before { background: #D8DCCF !important; }
+.art-card:nth-child(2) .art-card-img-wrap::before { background: #DCCCC6 !important; }
+.art-card:nth-child(3) .art-card-img-wrap::before { background: #E0D6BC !important; }
+.art-card:nth-child(4) .art-card-img-wrap::before { background: #CDD5DD !important; }
+.art-card:nth-child(5) .art-card-img-wrap::before { background: #DCCED6 !important; }
+
+/* Product gallery: same treatment for the main image + border frame */
+.main-image-wrap { animation: none !important; background: var(--beige, #E9E3DB) !important; }
+.gallery-border { display: none !important; }
+.rel-img-wrap { background: var(--beige, #E9E3DB) !important; }
+.thumb { background: var(--beige, #E9E3DB) !important; }
+
+/* ---------------------------------------------------------------
+   4. MOTION RESTRAINT
+   Sibling cards were blurred 2px on hover. Blurring artwork to
+   emphasise other artwork works against a gallery. Dim only.
+   --------------------------------------------------------------- */
+.artwork-grid:has(.art-card:hover) .art-card:not(:hover) {
+  filter: none !important;
+  opacity: 0.62 !important;
+  transform: none !important;
+}
+
+/* Decorative blur on controls: brand guidelines forbid glassmorphism.
+   The nav keeps a light scrim; the rest become solid. */
+.art-heart, .g-arrow, .zoom-icon {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(250,248,245,0.97) !important;
+}
+.art-card-reveal {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(14,14,14,0.95) !important;
+}
+
+/* ---------------------------------------------------------------
+   5. FORM CONTRAST
+   Placeholder text was rgba(17,17,17,0.25), roughly 1.9:1.
+   --------------------------------------------------------------- */
+.form-input::placeholder,
+.form-textarea::placeholder,
+.nl-input::placeholder {
+  color: #6B6B6B !important;
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   6. PRICE TREATMENT
+   Struck-through prices read as a discount. Sold works are not
+   on sale; they are unavailable.
+   --------------------------------------------------------------- */
+.rel-price.sold,
+.art-card-price.sold { text-decoration: none !important; }
+
+/* ---------------------------------------------------------------
+   7. MOBILE NAVIGATION
+   The burger existed on four pages with no handler, leaving the
+   site unnavigable below 768px. Shared drawer, driven by site.js.
+   --------------------------------------------------------------- */
+.nav-burger { background: none; border: none; }
+.nav-burger span { transition: transform .3s var(--ease-out-quint), opacity .2s; }
+.nav[data-menu="open"] .nav-burger span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav[data-menu="open"] .nav-burger span:nth-child(2) { opacity: 0; }
+.nav[data-menu="open"] .nav-burger span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .nav-links.mobile-open {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0;
+    position: fixed;
+    left: 0; right: 0;
+    top: var(--nav-offset, 114px);
+    background: var(--bg, #FAF8F5);
+    border-top: 1px solid var(--beige, #E9E3DB);
+    padding: 8px 24px 28px;
+    z-index: 390;
+    max-height: calc(100dvh - var(--nav-offset, 114px));
+    overflow-y: auto;
+  }
+  .nav-links.mobile-open li { border-bottom: 1px solid var(--beige, #E9E3DB); }
+  .nav-links.mobile-open li:last-child { border-bottom: none; }
+  .nav-links.mobile-open a {
+    display: block;
+    padding: 18px 0;
+    font-family: var(--ff-serif, Georgia, serif);
+    font-size: 22px;
+    letter-spacing: .02em;
+    text-transform: none;
+    color: var(--text, #111);
+  }
+  .nav-links.mobile-open a::after { display: none; }
+}
+
+/* Product page nav collapses at 600px, so its drawer matches */
+@media (max-width: 600px) {
+  .nav .nav-links.mobile-open { display: flex !important; top: var(--nav-offset, 70px); }
+}
+
+/* ---------------------------------------------------------------
+   8. TOUCH TARGETS
+   Master prompt requires 44x44 minimum for interactive elements.
+   --------------------------------------------------------------- */
+@media (hover: none) {
+  .ann-close, .cart-x, .cart-rm, .nav-burger, .g-arrow, .art-heart {
+    min-width: 44px; min-height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .g-dot { padding: 8px; background-clip: content-box; }
+}
+
+/* ---------------------------------------------------------------
+   9. REDUCED MOTION HARDENING
+   Covers the product page, whose Framer Motion entrances had no
+   reduced-motion guard at all.
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .gallery, .product-info, .breadcrumb, .trust-badge, .rel-card,
+  .accordion-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .marquee-inner { animation-play-state: paused !important; }
+  .main-image-wrap.zoomed .main-img { transform: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+
+/* ---------------------------------------------------------------
+   10. LAYOUT REPETITION
+   Three consecutive 50/50 image+text rows on the homepage, and four
+   on the about page, read as one repeating template. Each run is
+   broken with a different layout family.
+   --------------------------------------------------------------- */
+
+/* Homepage: third artwork becomes a full-width plate with copy beneath */
+.art-row--wide { grid-template-columns: 1fr !important; gap: 0 !important; }
+.art-row--wide .art-img-col .img-wrap { aspect-ratio: 16 / 8; }
+.art-row--wide .art-copy-col { padding: 44px 0 0 !important; max-width: 760px; }
+.art-row--wide .art-story { max-width: 100%; }
+@media (max-width: 768px) {
+  .art-row--wide .art-img-col .img-wrap { aspect-ratio: 4 / 3; }
+  .art-row--wide .art-copy-col { padding: 28px 0 0 !important; }
+}
+
+/* About page: the fourth split becomes a stacked band with a triptych */
+.purpose-split { grid-template-columns: 1fr !important; gap: 48px !important; }
+.purpose-split .purpose-copy { order: 1; max-width: 720px; }
+.purpose-split .purpose-imgs { order: 2; grid-template-columns: repeat(3, 1fr) !important; }
+.purpose-imgs .img-wrap:nth-child(1),
+.purpose-imgs .img-wrap:nth-child(2) { aspect-ratio: 3 / 4 !important; margin-top: 0 !important; }
+.purpose-imgs .img-wrap:nth-child(3) { aspect-ratio: 3 / 4 !important; grid-column: auto !important; }
+@media (max-width: 768px) {
+  .purpose-split .purpose-imgs { grid-template-columns: 1fr 1fr !important; }
+  .purpose-imgs .img-wrap:nth-child(3) { grid-column: 1 / -1 !important; aspect-ratio: 3 / 2 !important; }
+}
+
+
+/* ---------------------------------------------------------------
+   11. PINNED HEADER
+   The announcement bar sat in normal flow while the nav was fixed at
+   a constant top:42px. Once the bar scrolled away nothing occupied
+   viewport 0-42px, so page content scrolled visibly through that band.
+   The bar now joins the nav in the fixed layer, so no gap can open.
+   --------------------------------------------------------------- */
+.ann { position: fixed; top: 0; left: 0; right: 0; }
+
+/* Replaces the 42px of flow space the bar used to occupy, so every
+   downstream offset (page-hero padding, filter-bar sticky top) keeps
+   its existing value. closeAnn() removes the element, which stops this
+   selector matching, so the padding clears itself with no JS change. */
+body:has(.ann) { padding-top: 42px; }
+
+/* ---------------------------------------------------------------
+   12. CURRENCY TOGGLE FIT
+   Labels changed from bare glyphs to INR / USD plus symbol, which
+   roughly doubles the control's width. Below 768px the nav is
+   logo + search + toggle + cart + burger and would overflow.
+   --------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .nav-actions { gap: 12px; }
+  .currency-toggle { gap: 5px; }
+  .curr-lbl { font-size: 10px; }
+  /* The search button has no handler on any page. It is a dead control,
+     so it is the first thing that should yield space. */
+  .nav-icon-btn[aria-label="Search"] { display: none; }
+}
+@media (max-width: 400px) {
+  /* Keep the currency code, drop the now-redundant glyph */
+  #currLabelINR, #currLabelUSD { font-size: 0; }
+  #currLabelINR::after { content: "INR"; font-size: 10px; }
+  #currLabelUSD::after { content: "USD"; font-size: 10px; }
+}

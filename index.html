@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rashmi Rao Designs | Where Art Becomes Story.</title>
+<meta name="description" content="Original contemporary paintings, wearable art, and limited-edition collections by Rashmi Rao.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root {
+  --bg:       #FAF8F5;
+  --white:    #FFFFFF;
+  --text:     #111111;
+  --muted:    #6B6B6B;
+  --beige:    #E9E3DB;
+  --olive:    #6D7550;
+  --olive-dk: #5a6142;
+  --gold:     #C9A84C;
+  --dark:     #111111;
+
+  --ff-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --ff-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ff-mono:  'DM Mono', 'Courier New', monospace;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-sans);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ============================================================
+   CRITICAL FIX - .rv elements are VISIBLE by default.
+   GSAP will handle hiding + animating them once it loads.
+   This prevents the blank-page bug if CDN is slow/blocked.
+============================================================ */
+.rv {
+  /* intentionally empty - opacity & transform set only via JS */
+  transition: none;
+}
+
+/* ============================================================
+   ANNOUNCEMENT BAR
+============================================================ */
+.ann {
+  background: #7a5248;
+  color: #FAF8F5;
+  text-align: center;
+  padding: 11px 48px;
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  z-index: 500;
+  height: 42px;
+  overflow: hidden;
+}
+.ann-close {
+  position: absolute;
+  right: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(250,248,245,0.55);
+  font-size: 20px;
+  line-height: 1;
+  transition: color .2s;
+  padding: 4px 8px;
+}
+.ann-close:hover { color: #FAF8F5; }
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+.nav {
+  position: fixed;
+  left: 0; right: 0;
+  top: 42px; /* accounts for ann bar */
+  z-index: 400;
+  transition: background .35s, box-shadow .35s, top .35s;
+}
+.nav.no-ann { top: 0; }
+.nav.scrolled {
+  background: rgba(250,248,245,0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(17,17,17,0.08);
+}
+.nav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--ff-serif);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FAF8F5;
+  transition: color .3s;
+  white-space: nowrap;
+}
+.nav.scrolled .nav-logo { color: var(--text); }
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(250,248,245,0.75);
+  font-weight: 400;
+  transition: color .25s;
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .3s ease;
+}
+.nav-links a:hover { color: #FAF8F5; }
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav.scrolled .nav-links a { color: var(--muted); }
+.nav.scrolled .nav-links a:hover { color: var(--text); }
+
+/* -- CURRENCY TOGGLE -- */
+.currency-toggle {
+  display: flex; align-items: center; gap: 7px;
+}
+.curr-lbl {
+  font-family: var(--ff-mono); font-size: 11px;
+  letter-spacing: .08em; color: rgba(250,248,245,0.4);
+  transition: color .25s; user-select: none; line-height: 1;
+}
+.curr-lbl.active { color: rgba(250,248,245,0.92); }
+.nav.scrolled .curr-lbl { color: var(--muted); }
+.nav.scrolled .curr-lbl.active { color: var(--text); }
+.toggle-track {
+  position: relative; width: 36px; height: 20px;
+  background: rgba(250,248,245,0.18);
+  border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(250,248,245,0.22);
+  transition: background .28s, border-color .28s;
+  flex-shrink: 0;
+}
+.nav.scrolled .toggle-track { background: var(--beige); border-color: rgba(17,17,17,0.14); }
+.toggle-track.usd { background: var(--olive); border-color: var(--olive); }
+.toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: #FAF8F5; border-radius: 50%;
+  transition: transform .28s cubic-bezier(.25,.46,.45,.94);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.22);
+  pointer-events: none;
+}
+.toggle-track.usd .toggle-thumb { transform: translateX(16px); }
+
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(250,248,245,0.75);
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: color .25s;
+}
+.nav.scrolled .nav-icon-btn { color: var(--muted); }
+.nav-icon-btn:hover { color: #FAF8F5 !important; }
+.nav.scrolled .nav-icon-btn:hover { color: var(--text) !important; }
+.cart-badge {
+  background: var(--olive);
+  color: #fff;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 400;
+}
+
+/* hamburger (mobile) */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+  color: rgba(250,248,245,0.85);
+  transition: color .25s;
+}
+.nav.scrolled .nav-burger { color: var(--text); }
+.nav-burger span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  /* dvh tracks the real viewport, so the hero does not jump when
+     mobile browser chrome collapses on first scroll */
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 96px;
+  overflow: hidden;
+  background: #2a2018; /* fallback if image fails */
+}
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  /* slightly taller image and shifted down so lower subjects remain visible */
+  height: 120%;
+  top: -15%;
+  object-fit: cover;
+  object-position: center 82%;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  /* tablet and small laptops: nudge focal point lower */
+  .hero-img { object-position: center 88%; top: -10%; }
+}
+
+@media (max-width: 480px) {
+  /* phones: focus on the very bottom so feet + water are visible */
+  .hero-img { object-position: center 100%; top: 0%; height: 110%; }
+}
+/* Beautiful CSS fallback gradient - always visible if image fails */
+.hero-img-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(109,117,80,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.15) 0%, transparent 50%),
+    linear-gradient(160deg, #1a1510 0%, #2e2418 40%, #1c1a12 100%);
+  z-index: 0;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to right,  rgba(17,17,17,0.6) 0%, rgba(17,17,17,0.1) 65%),
+    linear-gradient(to top,    rgba(17,17,17,0.7) 0%, rgba(17,17,17,0) 50%),
+    linear-gradient(to bottom, rgba(17,17,17,0.2) 0%, rgba(17,17,17,0) 35%);
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+  width: 100%;
+}
+.hero-eyebrow {
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(250,248,245,0.5);
+  margin-bottom: 22px;
+  font-weight: 400;
+}
+.hero-h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 400;
+  line-height: 1.0;
+  color: #FAF8F5;
+  letter-spacing: -0.01em;
+  max-width: 680px;
+  margin-bottom: 26px;
+}
+.hero-h1 em { font-style: italic; font-weight: 300; }
+.hero-sub {
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(250,248,245,0.65);
+  max-width: 400px;
+  line-height: 1.75;
+  margin-bottom: 44px;
+}
+.hero-ctas { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn-olive {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--olive); color: #fff;
+  padding: 15px 34px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  border: 2px solid var(--olive);
+  transition: background .25s, transform .25s;
+  cursor: pointer;
+}
+.btn-olive:hover { background: var(--olive-dk); border-color: var(--olive-dk); transform: translateY(-2px); }
+
+.btn-ghost-light {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(250,248,245,0.85); font-weight: 400;
+  border-bottom: 1px solid rgba(250,248,245,0.4);
+  padding-bottom: 3px;
+  transition: color .25s, border-color .25s;
+}
+.btn-ghost-light:hover { color: #FAF8F5; border-color: rgba(250,248,245,0.8); }
+
+.btn-dark {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--olive); color: #fff;
+  padding: 14px 28px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  border: 2px solid var(--olive);
+  transition: background .25s, transform .2s;
+  cursor: pointer;
+}
+.btn-dark:hover { background: var(--olive-dk); border-color: var(--olive-dk); transform: translateY(-1px); }
+
+.btn-outline {
+  display: inline-flex; align-items: center;
+  padding: 14px 28px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  color: var(--text);
+  border: 1px solid rgba(17,17,17,0.3);
+  background: none;
+  transition: border-color .25s;
+  cursor: pointer;
+}
+.btn-outline:hover { border-color: var(--text); }
+
+.btn-outline-light {
+  display: inline-block;
+  padding: 15px 34px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  color: #FAF8F5;
+  border: 1px solid rgba(250,248,245,0.35);
+  background: none;
+  transition: border-color .25s, background .25s;
+  cursor: pointer;
+}
+.btn-outline-light:hover { border-color: rgba(250,248,245,0.8); background: rgba(250,248,245,0.06); }
+
+.text-link {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400;
+  color: var(--text);
+  border-bottom: 1px solid rgba(17,17,17,0.3);
+  padding-bottom: 2px;
+  transition: color .25s, border-color .25s;
+}
+.text-link:hover { color: var(--olive); border-color: var(--olive); }
+
+/* ============================================================
+   SHARED SECTION LAYOUT
+============================================================ */
+.section { padding: 130px 0; }
+.wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+.eyebrow {
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  margin-bottom: 18px;
+  display: block;
+}
+.h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(40px, 4.5vw, 64px);
+  font-weight: 400;
+  line-height: 1.06;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.body-text {
+  font-family: var(--ff-sans);
+  font-size: 16px; font-weight: 300;
+  line-height: 1.8; color: #3a3a3a;
+}
+
+/* ============================================================
+   ARTWORK IMAGE PLACEHOLDER - shows while img loads
+============================================================ */
+.img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--beige);
+}
+.img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #e9e3db 0%, #d5cdc4 100%);
+  z-index: 0;
+}
+.img-wrap img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .8s cubic-bezier(.25,.46,.45,.94), opacity .4s;
+}
+.img-wrap img.loading { opacity: 0; }
+.img-wrap:hover img { transform: scale(1.04); }
+
+/* ============================================================
+   ABOUT
+============================================================ */
+.about-bg { background: var(--bg); }
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 680px;
+}
+.about-img-col { overflow: hidden; min-height: 580px; }
+.about-img-col .img-wrap { height: 100%; min-height: 580px; }
+.about-copy-col {
+  padding: 80px 72px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.about-copy-col .eyebrow { margin-bottom: 14px; }
+.about-bio { margin-top: 24px; max-width: 440px; }
+.about-bio p + p { margin-top: 16px; }
+.about-stats {
+  display: flex; gap: 40px; flex-wrap: wrap;
+  margin-top: 48px; padding-top: 40px;
+  border-top: 1px solid var(--beige);
+}
+.stat-n {
+  font-family: var(--ff-serif);
+  font-size: 42px; font-weight: 400;
+  color: var(--olive); display: block; line-height: 1;
+}
+.stat-l {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+  display: block; margin-top: 7px;
+}
+.about-link {
+  margin-top: 44px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.about-link svg { transition: transform .25s; }
+.about-link:hover svg { transform: translateX(5px); }
+
+/* ============================================================
+   COLLECTIONS
+============================================================ */
+.coll-bg { background: var(--white); }
+.coll-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 52px;
+}
+.coll-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.coll-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  display: block;
+  background: var(--beige);
+  cursor: pointer;
+}
+/* each card gets a different warm tone */
+.coll-card:nth-child(1) .img-wrap::before { background: linear-gradient(135deg,#c9b8a3,#a0896e); }
+.coll-card:nth-child(2) .img-wrap::before { background: linear-gradient(135deg,#b5c4a8,#7a916a); }
+.coll-card:nth-child(3) .img-wrap::before { background: linear-gradient(135deg,#c2b5c8,#8a7898); }
+.coll-card:nth-child(4) .img-wrap::before { background: linear-gradient(135deg,#c4b89a,#9a8868); }
+.coll-card .img-wrap { height: 100%; }
+.coll-card .img-wrap img { height: 100%; }
+.coll-num {
+  position: absolute; top: 16px; left: 18px; z-index: 3;
+  font-family: var(--ff-mono); font-size: 10px;
+  color: rgba(250,248,245,0.7); letter-spacing: .1em;
+  background: rgba(17,17,17,0.3);
+  padding: 4px 9px;
+}
+.coll-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to top, rgba(17,17,17,0.75) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity .4s;
+}
+.coll-card:hover .coll-overlay { opacity: 1; }
+.coll-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 22px 20px; z-index: 3;
+  transform: translateY(5px);
+  transition: transform .4s ease;
+}
+.coll-card:hover .coll-info { transform: translateY(0); }
+.coll-name {
+  font-family: var(--ff-serif);
+  font-size: 20px; font-weight: 400;
+  color: #FAF8F5; display: block;
+}
+.coll-count {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(250,248,245,0.55); display: block; margin-top: 4px;
+}
+.coll-go {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+  color: rgba(250,248,245,0.8);
+  margin-top: 12px; display: block;
+  opacity: 0; transition: opacity .3s;
+}
+.coll-card:hover .coll-go { opacity: 1; }
+
+/* ============================================================
+   FEATURED ARTWORKS - 3 PRODUCTS
+============================================================ */
+.art-bg { background: var(--bg); }
+.art-hd { margin-bottom: 80px; }
+
+.art-row {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  align-items: center;
+  margin-bottom: 120px;
+}
+.art-row.flip { grid-template-columns: 45% 55%; }
+.art-row.flip .art-img-col { order: 2; }
+.art-row.flip .art-copy-col { order: 1; }
+
+/* artwork image column */
+.art-img-col { position: relative; }
+.art-img-col .img-wrap { aspect-ratio: 3/4; }
+.art-img-col .img-wrap img { width: 100%; height: 100%; }
+/* unique warm tones per artwork */
+.art-1 .img-wrap::before { background: linear-gradient(160deg,#c8d0be,#8a9a7a,#6d8560); }
+.art-2 .img-wrap::before { background: linear-gradient(160deg,#c8a8a0,#a07068,#8a4840); }
+.art-3 .img-wrap::before { background: linear-gradient(160deg,#c8b890,#a89060,#8a7040); }
+
+.art-badges {
+  position: absolute; top: 16px; right: 16px;
+  display: flex; flex-direction: column; gap: 6px; z-index: 2;
+}
+.badge {
+  font-family: var(--ff-sans);
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 5px 11px; font-weight: 500;
+}
+.badge-avail { background: var(--bg); color: var(--olive); }
+.badge-sold  { background: var(--bg); color: var(--muted); }
+.badge-cert  { background: var(--gold); color: #fff; }
+
+/* artwork copy column */
+.art-copy-col { padding: 56px 68px; }
+.art-row.flip .art-copy-col { padding-left: 0; }
+
+.art-coll {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px; display: block;
+}
+.art-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(36px, 3.5vw, 52px);
+  font-weight: 400; line-height: 1.08;
+  color: var(--text); margin-bottom: 12px;
+}
+.art-meta {
+  font-family: var(--ff-sans);
+  font-size: 12px; color: var(--muted);
+  font-weight: 300; letter-spacing: .04em; margin-bottom: 22px;
+}
+.art-story {
+  font-family: var(--ff-serif);
+  font-size: 18px; font-weight: 400; font-style: italic;
+  line-height: 1.7; color: #555; max-width: 380px;
+}
+.art-rule { width: 32px; height: 1px; background: var(--beige); margin: 28px 0; }
+.art-price {
+  font-family: var(--ff-mono);
+  font-size: 23px; color: var(--olive); font-weight: 300;
+  letter-spacing: .02em; margin-bottom: 5px;
+}
+.art-edition {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 28px;
+}
+.art-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.cert-line {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 20px;
+  font-family: var(--ff-sans); font-size: 11px;
+  color: var(--gold); letter-spacing: .06em;
+}
+.cert-seal {
+  width: 18px; height: 18px;
+  border: 1px solid var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; flex-shrink: 0;
+}
+.art-footer { text-align: right; margin-top: -48px; }
+
+/* ============================================================
+   WEARABLE ART
+============================================================ */
+.wear-bg { background: var(--beige); }
+.wear-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 620px;
+}
+.wear-img-col { overflow: hidden; min-height: 560px; }
+.wear-img-col .img-wrap { height: 100%; min-height: 560px; }
+.wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
+.wear-img-col .img-wrap img { height: 100%; }
+.wear-copy-col { padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+.wear-lead { margin-top: 24px; max-width: 430px; }
+.process { margin-top: 44px; }
+.p-step {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(17,17,17,0.09);
+}
+.p-step:first-child { border-top: 1px solid rgba(17,17,17,0.09); }
+.p-num {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--olive); font-weight: 300;
+  min-width: 24px; margin-top: 1px;
+}
+.p-text {
+  font-family: var(--ff-sans); font-size: 14px;
+  color: #3a3a3a; font-weight: 300; line-height: 1.55;
+}
+.wear-link { margin-top: 40px; display: inline-flex; align-items: center; gap: 10px; }
+.wear-link svg { transition: transform .25s; }
+.wear-link:hover svg { transform: translateX(5px); }
+
+/* ============================================================
+   LICENSING - DARK SECTION
+============================================================ */
+.lic-bg { background: var(--dark); }
+.lic-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.lic-bg .eyebrow { color: var(--olive); }
+.lic-bg .h2 { color: #FAF8F5; }
+.lic-statement {
+  font-family: var(--ff-sans);
+  font-size: 15px; font-weight: 300; line-height: 1.8;
+  color: rgba(250,248,245,0.5);
+  margin-top: 24px; max-width: 400px;
+}
+.lic-col-hd {
+  font-family: var(--ff-sans);
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.25); margin-bottom: 8px; font-weight: 400;
+}
+.lic-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(250,248,245,0.07);
+  cursor: default;
+  transition: padding-left .25s;
+}
+.lic-row:first-of-type { border-top: 1px solid rgba(250,248,245,0.07); }
+.lic-row:hover { padding-left: 8px; }
+.lic-label {
+  font-family: var(--ff-sans); font-size: 14px;
+  color: rgba(250,248,245,0.45); font-weight: 300;
+  transition: color .25s;
+}
+.lic-row:hover .lic-label { color: rgba(250,248,245,0.88); }
+.lic-arrow {
+  color: var(--olive); opacity: 0;
+  transition: opacity .25s; font-size: 15px;
+}
+.lic-row:hover .lic-arrow { opacity: 1; }
+
+/* ============================================================
+   CONTACT
+============================================================ */
+.contact-bg { background: var(--bg); text-align: center; }
+.contact-sub {
+  font-family: var(--ff-sans); font-size: 16px; font-weight: 300;
+  color: var(--muted); max-width: 380px;
+  margin: 20px auto 60px; line-height: 1.75;
+}
+.inq-list { max-width: 640px; margin: 0 auto; }
+.inq-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--beige);
+  cursor: pointer;
+  transition: padding-left .25s;
+}
+.inq-row:first-child { border-top: 1px solid var(--beige); }
+.inq-row:hover { padding-left: 14px; }
+.inq-label {
+  font-family: var(--ff-serif); font-size: 24px;
+  font-weight: 400; color: var(--text);
+}
+.inq-arr {
+  color: var(--olive); font-size: 20px;
+  transition: transform .25s;
+}
+.inq-row:hover .inq-arr { transform: translateX(8px); }
+.contact-extra { margin-top: 68px; }
+.newsletter {
+  display: flex; max-width: 360px;
+  margin: 0 auto 36px;
+}
+.nl-input {
+  flex: 1;
+  border: 1px solid var(--beige); border-right: none;
+  background: var(--white);
+  padding: 13px 16px;
+  font-family: var(--ff-sans); font-size: 13px; font-weight: 300;
+  color: var(--text); outline: none;
+  transition: border-color .25s;
+}
+.nl-input::placeholder { color: var(--muted); }
+.nl-input:focus { border-color: var(--olive); }
+.nl-btn {
+  background: var(--olive); color: #fff;
+  border: 1px solid var(--olive);
+  padding: 13px 20px;
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .15em; text-transform: uppercase; font-weight: 400;
+  transition: background .25s; cursor: pointer;
+}
+.nl-btn:hover { background: var(--olive-dk); }
+.contact-links {
+  display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+}
+.contact-links a {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400;
+  transition: color .25s;
+}
+.contact-links a:hover { color: var(--text); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  background: #0e0e0e;
+  color: rgba(250,248,245,0.38);
+  padding: 68px 0 40px;
+}
+.ft-grid {
+  max-width: 1400px; margin: 0 auto; padding: 0 60px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+}
+.ft-brand {
+  font-family: var(--ff-serif);
+  font-size: 19px; color: #FAF8F5;
+  font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 230px; }
+.ft-hd {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400;
+}
+.ft-links { list-style: none; }
+.ft-links li + li { margin-top: 10px; }
+.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
+.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-bottom {
+  max-width: 1400px; margin: 40px auto 0;
+  padding: 24px 60px 0;
+  border-top: 1px solid rgba(250,248,245,0.06);
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 11px;
+}
+
+/* ============================================================
+   CART DRAWER
+============================================================ */
+.cart-scrim {
+  position: fixed; inset: 0;
+  background: rgba(17,17,17,0.45);
+  z-index: 600;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s;
+}
+.cart-scrim.show { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 400px; max-width: 96vw;
+  background: var(--white);
+  z-index: 700;
+  display: flex; flex-direction: column;
+  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 26px 30px;
+  border-bottom: 1px solid var(--beige);
+  flex-shrink: 0;
+}
+.cart-ttl { font-family: var(--ff-serif); font-size: 22px; font-weight: 400; }
+.cart-x { font-size: 22px; color: var(--muted); transition: color .2s; padding: 4px; }
+.cart-x:hover { color: var(--text); }
+.cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.cart-empty-msg { text-align: center; padding: 52px 0; }
+.cart-empty-msg p:first-child {
+  font-family: var(--ff-serif); font-size: 22px;
+  color: var(--text); margin-bottom: 10px; font-weight: 400;
+}
+.cart-empty-msg p { font-size: 13px; color: var(--muted); font-weight: 300; }
+.cart-item {
+  display: flex; gap: 16px;
+  margin-bottom: 22px; padding-bottom: 22px;
+  border-bottom: 1px solid var(--beige);
+}
+.cart-item-img {
+  width: 76px; height: 96px;
+  object-fit: cover; flex-shrink: 0;
+  background: var(--beige);
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-family: var(--ff-serif); font-size: 16px; font-weight: 400; margin-bottom: 4px; }
+.cart-item-sub { font-size: 11px; color: var(--muted); letter-spacing: .05em; }
+.cart-item-price { font-family: var(--ff-mono); font-size: 14px; color: var(--olive); margin-top: 8px; }
+.cart-rm { font-size: 18px; color: rgba(17,17,17,0.2); align-self: flex-start; transition: color .2s; padding: 2px; }
+.cart-rm:hover { color: #c00; }
+.cart-foot {
+  padding: 22px 30px;
+  border-top: 1px solid var(--beige);
+  flex-shrink: 0;
+}
+.cart-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 18px;
+}
+.cart-total-lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.cart-total-val { font-family: var(--ff-mono); font-size: 18px; color: var(--text); }
+.cart-continue { text-align: center; margin-top: 10px; }
+.cart-continue button {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--muted); background: none; border: none;
+  cursor: pointer; transition: color .2s;
+}
+.cart-continue button:hover { color: var(--text); }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1100px) {
+  .coll-grid { grid-template-columns: repeat(2,1fr); }
+  .art-row, .art-row.flip { grid-template-columns: 1fr; }
+  .art-row.flip .art-img-col { order: unset; }
+  .art-row.flip .art-copy-col { order: unset; }
+  .art-copy-col { padding: 36px 0 0; }
+  .art-row.flip .art-copy-col { padding-left: 0; }
+  .art-story { max-width: 100%; }
+  .about-split, .wear-split { grid-template-columns: 1fr; }
+  .about-copy-col { padding: 48px 60px; }
+  .wear-copy-col { padding: 48px 60px; }
+  .lic-inner { grid-template-columns: 1fr; gap: 52px; }
+  .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .hero-content { padding: 0 24px; }
+  .hero-h1 { font-size: 44px; }
+  .hero-sub { font-size: 14px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section { padding: 80px 0; }
+  .coll-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .coll-hd { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .art-row { margin-bottom: 72px; }
+  .art-copy-col { padding: 28px 0 0; }
+  .about-stats { gap: 24px; }
+  .about-copy-col, .wear-copy-col { padding: 36px 24px; }
+  .ft-grid { grid-template-columns: 1fr; gap: 36px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  .inq-label { font-size: 19px; }
+  .contact-links { gap: 18px; }
+}
+@media (max-width: 480px) {
+  .hero-h1 { font-size: 36px; }
+  .coll-grid { grid-template-columns: 1fr; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+<link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+<!-- ========== ANNOUNCEMENT ========== -->
+<div class="ann" id="ann">
+  New In: Original Alcohol Ink Works from The Monsoon Series
+  <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">×</button>
+</div>
+
+<!-- ========== NAV ========== -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Rashmi Rao Designs home">Rashmi Rao</a>
+
+    <ul class="nav-links" role="list">
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <!-- -- Currency Toggle -- -->
+      <div class="currency-toggle" role="group" aria-label="Currency selector">
+        <span class="curr-lbl active" id="currLabelINR" aria-hidden="true">INR ₹</span>
+        <button class="toggle-track" id="currencyTrack"
+          onclick="toggleCurrency()"
+          role="switch" aria-checked="false"
+          aria-label="Toggle currency between INR and USD">
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="curr-lbl" id="currLabelUSD" aria-hidden="true">$ USD</span>
+      </div>
+
+      <button class="nav-icon-btn" onclick="openCart()" aria-label="Open cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="nav-burger" id="burger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero" aria-label="Hero">
+  <div class="hero-img-fallback" aria-hidden="true"></div>
+  <img
+    class="hero-img"
+    id="heroBg"
+    src="images/hero-beach-2.jpg"
+    alt="Rashmi Rao wearable art on location"
+    onerror="this.style.display='none'"
+    fetchpriority="high"
+  >
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Rashmi Rao Designs</p>
+    <h1 class="hero-h1">Where Art<br><em>Becomes</em> Story.</h1>
+    <p class="hero-sub">Original contemporary paintings, wearable art, and limited-edition collections.</p>
+    <div class="hero-ctas">
+      <a href="collections.html" class="btn-olive">
+        Explore Collection
+        <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M0 3.5h12M9 1l3 2.5L9 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+      <a href="about.html" class="btn-ghost-light">Meet the Artist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="about-bg section" id="about">
+  <div class="about-split">
+    <div class="about-img-col rv">
+      <div class="img-wrap">
+        <img
+          src="images/about-portrait.jpg"
+          alt="Portrait of Rashmi Rao Designs"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        >
+      </div>
+    </div>
+    <div class="about-copy-col">
+      <span class="eyebrow rv">The Artist</span>
+      <h2 class="h2 rv">Rashmi Rao</h2>
+      <div class="about-bio body-text">
+        <p class="rv">An internationally exhibited multidisciplinary artist who transforms emotion into visual language, working across alcohol ink, abstract acrylic, and graphic art to create works that breathe.</p>
+        <p class="rv">Her practice spans solo exhibitions, gallery showcases, and commercial collaborations across three continents. Her alcohol ink works are celebrated for their organic movement: controlled, yet entirely free.</p>
+        <p class="rv">Every piece begins with feeling, not planning. The canvas becomes a record of that moment.</p>
+      </div>
+      <div class="about-stats">
+        <div>
+          <span class="stat-n rv">12+</span>
+          <span class="stat-l rv">Exhibitions</span>
+        </div>
+        <div>
+          <span class="stat-n rv">3</span>
+          <span class="stat-l rv">Countries</span>
+        </div>
+        <div>
+          <span class="stat-n rv">200+</span>
+          <span class="stat-l rv">Artworks</span>
+        </div>
+      </div>
+      <a href="contact.html" class="about-link text-link rv">
+        Read the full story
+        <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== COLLECTIONS ========== -->
+<section class="coll-bg section" id="collections">
+  <div class="wrap">
+    <div class="coll-hd">
+      <div>
+        <h2 class="h2 rv">Collections</h2>
+      </div>
+      <a href="collections.html" class="text-link rv">View all →</a>
+    </div>
+    <div class="coll-grid" id="collGrid">
+      <a href="collections.html" class="coll-card">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/collection-original.jpg" alt="Original Paintings" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <span class="coll-num">01</span>
+        <div class="coll-overlay"></div>
+        <div class="coll-info">
+          <span class="coll-name">Original Paintings</span>
+          <span class="coll-count">48 Works</span>
+          <span class="coll-go">View Collection →</span>
+        </div>
+      </a>
+      <a href="collections.html" class="coll-card">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/collection-ink.jpg" alt="Alcohol Ink" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <span class="coll-num">02</span>
+        <div class="coll-overlay"></div>
+        <div class="coll-info">
+          <span class="coll-name">Alcohol Ink</span>
+          <span class="coll-count">32 Works</span>
+          <span class="coll-go">View Collection →</span>
+        </div>
+      </a>
+      <a href="collections.html" class="coll-card">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/collection-wearable.jpg" alt="Wearable Art" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <span class="coll-num">03</span>
+        <div class="coll-overlay"></div>
+        <div class="coll-info">
+          <span class="coll-name">Wearable Art</span>
+          <span class="coll-count">12 Pieces</span>
+          <span class="coll-go">View Collection →</span>
+        </div>
+      </a>
+      <a href="collections.html" class="coll-card">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/collection-limited.jpg" alt="Limited Editions" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <span class="coll-num">04</span>
+        <div class="coll-overlay"></div>
+        <div class="coll-info">
+          <span class="coll-name">Limited Editions</span>
+          <span class="coll-count">18 Prints</span>
+          <span class="coll-go">View Collection →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURED ARTWORKS ========== -->
+<section class="art-bg section" id="artworks">
+  <div class="wrap">
+    <div class="art-hd">
+      <h2 class="h2 rv">Featured Artworks</h2>
+    </div>
+
+    <!-- ARTWORK 1 -->
+    <div class="art-row">
+      <div class="art-img-col art-1 rv" id="artA">
+        <a href="product.html?id=monsoon-dream" class="img-wrap">
+          <img
+            src="images/hero-beach.jpg"
+            alt="Monsoon Dream by Rashmi Rao"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        </a>
+        <div class="art-badges">
+          <span class="badge badge-avail">✓ Available</span>
+          <span class="badge badge-cert">Certificate</span>
+        </div>
+      </div>
+      <div class="art-copy-col">
+        <span class="art-coll rv">Alcohol Ink Collection</span>
+        <h3 class="art-title rv">Monsoon Dream</h3>
+        <p class="art-meta rv">Alcohol Ink on Yupo Paper &nbsp;·&nbsp; 36 × 48 in &nbsp;·&nbsp; 2024</p>
+        <p class="art-story rv">"Painted during the first rains of June. The ink moved the way the sky felt: unrushed, inevitable, and completely beyond control."</p>
+        <div class="art-rule"></div>
+        <p class="art-price rv" data-price-inr="85000">₹ 85,000</p>
+        <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
+        <div class="art-actions rv">
+          <a href="product.html?id=monsoon-dream" class="btn-dark">View Work</a>
+          <button class="btn-dark" onclick="addToCart('Monsoon Dream',85000,'images/hero-beach.jpg')">Purchase</button>
+          <a href="contact.html" class="btn-outline">Inquire</a>
+        </div>
+        <div class="cert-line rv">
+          <span class="cert-seal">◈</span>
+          Certificate of Authenticity Included
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTWORK 2 -->
+    <div class="art-row flip">
+      <div class="art-img-col art-2 rv" id="artB">
+        <a href="product.html?id=crimson-solitude" class="img-wrap">
+          <img
+            src="images/collection-ink.jpg"
+            alt="Crimson Solitude by Rashmi Rao"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        </a>
+        <div class="art-badges">
+          <span class="badge badge-avail">✓ Available</span>
+          <span class="badge badge-cert">Certificate</span>
+        </div>
+      </div>
+      <div class="art-copy-col">
+        <span class="art-coll rv">Abstract Collection</span>
+        <h3 class="art-title rv">Crimson Solitude</h3>
+        <p class="art-meta rv">Abstract Acrylic on Canvas &nbsp;·&nbsp; 24 × 36 in &nbsp;·&nbsp; 2023</p>
+        <p class="art-story rv">"There is a particular red that appears only in solitude, when the noise falls away and all that remains is the raw truth of the moment."</p>
+        <div class="art-rule"></div>
+        <p class="art-price rv" data-price-inr="65000">₹ 65,000</p>
+        <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
+        <div class="art-actions rv">
+          <a href="product.html?id=crimson-solitude" class="btn-dark">View Work</a>
+          <button class="btn-dark" onclick="addToCart('Crimson Solitude',65000,'images/collection-ink.jpg')">Purchase</button>
+          <a href="contact.html" class="btn-outline">Inquire</a>
+        </div>
+        <div class="cert-line rv">
+          <span class="cert-seal">◈</span>
+          Certificate of Authenticity Included
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTWORK 3 -->
+    <div class="art-row art-row--wide">
+      <div class="art-img-col art-3 rv" id="artC">
+        <a href="product.html?id=whispers-of-ochre" class="img-wrap">
+          <img
+            src="images/collection-original.jpg"
+            alt="Whispers of Ochre by Rashmi Rao"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        </a>
+        <div class="art-badges">
+          <span class="badge badge-sold">✕ Sold</span>
+          <span class="badge badge-cert">Certificate</span>
+        </div>
+      </div>
+      <div class="art-copy-col">
+        <span class="art-coll rv">Original Paintings</span>
+        <h3 class="art-title rv">Whispers of Ochre</h3>
+        <p class="art-meta rv">Mixed Media on Canvas &nbsp;·&nbsp; 30 × 40 in &nbsp;·&nbsp; 2024</p>
+        <p class="art-story rv">"The ochres of Rajasthan, layered over decades of memory, compressed into 40 minutes of paint. Some works paint themselves."</p>
+        <div class="art-rule"></div>
+        <p class="art-price rv" style="color:var(--muted);font-size:18px;" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</p>
+        <p class="art-edition rv">Original &nbsp;·&nbsp; Similar available on request</p>
+        <div class="art-actions rv">
+          <a href="product.html?id=whispers-of-ochre" class="btn-dark">View Work</a>
+          <a href="contact.html" class="btn-outline">Inquire</a>
+        </div>
+        <div class="cert-line rv">
+          <span class="cert-seal">◈</span>
+          Certificate of Authenticity Included
+        </div>
+      </div>
+    </div>
+
+    <div class="art-footer rv">
+      <a href="collections.html" class="text-link">View all artworks →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WEARABLE ART ========== -->
+<section class="wear-bg section" id="wearable">
+  <div class="wear-split">
+    <div class="wear-img-col rv">
+      <div class="img-wrap">
+        <img
+          src="images/wearable-2.jpg"
+          alt="Wearable art sarees by Rashmi Rao"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        >
+      </div>
+    </div>
+    <div class="wear-copy-col">
+      <span class="eyebrow rv">Wearable Art</span>
+      <h2 class="h2 rv">When Paintings<br>Become Fabric.</h2>
+      <p class="wear-lead body-text rv">Each saree begins as an original painting. Adapted for textile, printed on premium fabric with archival pigments, hand-finished, and limited to 8 pieces per design.</p>
+      <div class="process rv">
+        <div class="p-step"><span class="p-num">01</span><span class="p-text">Original painting created on canvas</span></div>
+        <div class="p-step"><span class="p-num">02</span><span class="p-text">Artwork digitally adapted for textile proportions</span></div>
+        <div class="p-step"><span class="p-num">03</span><span class="p-text">Premium silk or georgette selected per design</span></div>
+        <div class="p-step"><span class="p-num">04</span><span class="p-text">Printed with archival-grade pigments, hand-finished</span></div>
+        <div class="p-step"><span class="p-num">05</span><span class="p-text">Numbered, signed, and dispatched with certificate</span></div>
+      </div>
+      <a href="collections.html" class="wear-link text-link rv">
+        Explore Saree Collection
+        <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== LICENSING ========== -->
+<section class="lic-bg section" id="licensing">
+  <div class="wrap">
+    <div class="lic-inner">
+      <div>
+        <h2 class="h2 rv">Art for Interiors,<br>Hospitality &amp;<br>Brand Identity.</h2>
+        <p class="lic-statement rv">Rashmi's work has been licensed for hotel installations, interior design projects, and brand collaborations across India and internationally. Every arrangement is handled directly.</p>
+        <a href="contact.html" class="btn-outline-light rv" style="margin-top:40px;">Request Licensing Information</a>
+      </div>
+      <div>
+        <p class="lic-col-hd rv">Who We Work With</p>
+        <div class="lic-row rv"><span class="lic-label">Interior Designers</span><span class="lic-arrow">→</span></div>
+        <div class="lic-row rv"><span class="lic-label">Hotels &amp; Resorts</span><span class="lic-arrow">→</span></div>
+        <div class="lic-row rv"><span class="lic-label">Architects</span><span class="lic-arrow">→</span></div>
+        <div class="lic-row rv"><span class="lic-label">Corporate Offices</span><span class="lic-arrow">→</span></div>
+        <div class="lic-row rv"><span class="lic-label">Fashion &amp; Print Brands</span><span class="lic-arrow">→</span></div>
+        <div class="lic-row rv"><span class="lic-label">Surface Pattern Licensing</span><span class="lic-arrow">→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="contact-bg section" id="contact">
+  <div class="wrap">
+    <h2 class="h2 rv">Start a Conversation.</h2>
+    <p class="contact-sub rv">Whether you are collecting, commissioning, or collaborating, every inquiry is answered personally by Rashmi.</p>
+    <div class="inq-list">
+      <a href="mailto:studio@rashmirao.com" class="inq-row rv">
+        <span class="inq-label">Purchase an artwork</span><span class="inq-arr">→</span>
+      </a>
+      <a href="mailto:studio@rashmirao.com?subject=Commission" class="inq-row rv">
+        <span class="inq-label">Commission a new piece</span><span class="inq-arr">→</span>
+      </a>
+      <a href="mailto:studio@rashmirao.com?subject=Licensing" class="inq-row rv">
+        <span class="inq-label">Licensing inquiry</span><span class="inq-arr">→</span>
+      </a>
+      <a href="mailto:studio@rashmirao.com?subject=Gallery" class="inq-row rv">
+        <span class="inq-label">Gallery collaboration</span><span class="inq-arr">→</span>
+      </a>
+    </div>
+    <div class="contact-extra rv">
+      <div class="newsletter">
+        <input type="email" class="nl-input" placeholder="Your email address" aria-label="Subscribe to newsletter">
+        <button class="nl-btn" onclick="this.textContent='✓'">Join</button>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener">@rashmiRAOdesigns</a>
+        <a href="mailto:studio@rashmirao.com?subject=Press">Press Inquiries</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">Rashmi Rao Designs</div>
+      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">Original Paintings</a></li>
+        <li><a href="collections.html">Alcohol Ink</a></li>
+        <li><a href="collections.html">Wearable Art</a></li>
+        <li><a href="collections.html">Limited Editions</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html">Exhibitions</a></li>
+        <li><a href="about.html">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Services</p>
+      <ul class="ft-links">
+        <li><a href="contact.html">Commission</a></li>
+        <li><a href="contact.html">Licensing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html">Shipping &amp; Returns</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>Privacy Policy &nbsp;·&nbsp; Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cart-top">
+    <span class="cart-ttl">Your Cart</span>
+    <button class="cart-x" onclick="closeCart()" aria-label="Close cart">×</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">Subtotal</span>
+      <span class="cart-total-val" id="cartTotal">₹ 0</span>
+    </div>
+    <a href="contact.html" class="btn-olive" style="width:100%;justify-content:center;" onclick="closeCart()">Proceed to Checkout</a>
+    <div class="cart-continue">
+      <button onclick="closeCart()">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- Shared currency module (live rate + INR↔USD toggle) -->
+<script src="currency.js"></script>
+<script src="site.js" defer></script>
+
+<!-- ========== GSAP (loaded ASYNC - page is fully visible without it) ========== -->
+<script>
+/* -- CART -- */
+let cart = [];
+
+function openCart()  {
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('cartScrim').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderCart();
+}
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('cartScrim').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function addToCart(name, priceInr, img) {
+  if (!cart.find(i => i.name === name)) {
+    cart.push({ name, priceInr, img });
+    updateBadge();
+  }
+  openCart();
+}
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  updateBadge();
+  renderCart();
+}
+function updateBadge() {
+  document.getElementById('cartBadge').textContent = cart.length;
+}
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  const foot = document.getElementById('cartFoot');
+  if (cart.length === 0) {
+    body.innerHTML = '<div class="cart-empty-msg"><p>Your cart is empty.</p><p>Discover original artworks ready to collect.</p></div>';
+    foot.style.display = 'none';
+    return;
+  }
+  foot.style.display = 'block';
+  body.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.background='var(--beige)'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-sub">Original · 1 of 1</div>
+        <div class="cart-item-price">${formatPrice(item.priceInr)}</div>
+      </div>
+      <button class="cart-rm" onclick="removeFromCart(${i})" aria-label="Remove ${item.name}">×</button>
+    </div>
+  `).join('');
+  const totalInr = cart.reduce((s, item) => s + item.priceInr, 0);
+  document.getElementById('cartTotal').textContent = formatPrice(totalInr);
+}
+renderCart();
+initCurrency();
+
+/* -- Announcement -- */
+function closeAnn() {
+  const el = document.getElementById('ann');
+  el.style.transition = 'height .3s ease, opacity .3s ease, padding .3s ease';
+  el.style.height = '0'; el.style.opacity = '0'; el.style.padding = '0';
+  setTimeout(() => {
+    el.remove();
+    document.getElementById('nav').classList.add('no-ann');
+  }, 320);
+}
+
+/* Mobile menu is handled by site.js */
+
+/* Nav scroll state is handled by site.js via IntersectionObserver */
+
+/* -- Lazy load imgs -- */
+document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+  img.classList.add('loading');
+  if (img.complete) { img.classList.remove('loading'); }
+  else { img.addEventListener('load', () => img.classList.remove('loading')); }
+});
+</script>
+
+<!-- -- Text Reveal - animate-skill text-reveal.tsx pattern --
+     Splits hero h1 words into rr-word-wrap > rr-word spans so each
+     word rises from its own overflow:hidden container (staggered via --index).
+     Runs BEFORE GSAP so the h1 is never hidden by gsap.set('.rv').          -->
+<script>
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /**
+   * Walk an element's text nodes and wrap each word in:
+   *   <span class="rr-word-wrap"><span class="rr-word" style="--index:N">word</span></span>
+   * Preserves <br>, <em>, and other inline elements.
+   */
+  function splitWords(el, counter) {
+    Array.from(el.childNodes).forEach(function(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        var parts = node.textContent.split(/(\s+)/);
+        var frag  = document.createDocumentFragment();
+        parts.forEach(function(part) {
+          if (!part || /^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part || ''));
+          } else {
+            var wrap  = document.createElement('span');
+            wrap.className = 'rr-word-wrap';
+            var inner = document.createElement('span');
+            inner.className = 'rr-word';
+            inner.style.setProperty('--index', counter.i++);
+            inner.textContent = part;
+            wrap.appendChild(inner);
+            frag.appendChild(wrap);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        // recurse into inline elements (em, strong, span) but not block-level
+        splitWords(node, counter);
+      }
+    });
+  }
+
+  function revealHero(selector) {
+    var h1 = document.querySelector(selector);
+    if (!h1) return;
+    // Remove from GSAP scope - CSS animation handles this element
+    h1.classList.remove('rv');
+    splitWords(h1, { i: 0 });
+    // Safety net: after 2.5s force all words visible (CSS fallback)
+    setTimeout(function() {
+      h1.querySelectorAll('.rr-word').forEach(function(w) {
+        w.style.animation = 'none';
+        w.style.opacity   = '1';
+        w.style.transform = 'none';
+      });
+    }, 2500);
+  }
+
+  revealHero('.hero-h1');
+})();
+</script>
+
+<!-- GSAP loaded AFTER page renders - animations are a progressive enhancement -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+  crossorigin="anonymous"
+  onerror="console.warn('GSAP CDN failed - page remains fully visible')"
+></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+  crossorigin="anonymous"
+  onerror="console.warn('ScrollTrigger CDN failed')"
+></script>
+
+<script>
+/* -- GSAP animations - only run if library loaded -- */
+if (typeof gsap !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* Set initial hidden state via JS - NOT CSS.
+     This is the fix: if GSAP fails, .rv is never hidden. */
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduced) {
+    /* Hide all .rv elements NOW that GSAP is confirmed loaded */
+    gsap.set('.rv', { opacity: 0, y: 28 });
+
+    /* Hero parallax */
+    gsap.to('#heroBg', {
+      yPercent: 18, ease: 'none',
+      scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: 0.5 }
+    });
+
+    /* Hero entrance - .hero-h1 is handled by CSS text-reveal; animate the rest
+       Skill: ease-out-quint = cubic-bezier(.23,1,.32,1) = GSAP 'power4.out' approx */
+    gsap.to('.hero-eyebrow, .hero-sub, .hero-ctas', {
+      opacity: 1, y: 0,
+      duration: 1.0, stagger: 0.16, ease: 'power4.out', delay: 0.25,
+    });
+
+    /* Collection cards stagger - skill: ease-out-back for physical, springy feel */
+    gsap.to('.coll-card', {
+      opacity: 1, y: 0, scale: 1,
+      duration: 0.65, stagger: 0.07,
+      ease: 'back.out(1.7)',
+      scrollTrigger: { trigger: '#collGrid', start: 'top 88%' }
+    });
+
+    /* Image clip-path reveals - skill: decisive ease-in-out, slightly longer for gravity */
+    ['#artA','#artB','#artC','.about-img-col','.wear-img-col'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      gsap.fromTo(el,
+        { clipPath: 'inset(100% 0 0 0)', opacity: 1 },
+        {
+          clipPath: 'inset(0% 0 0 0)',
+          duration: 1.3, ease: 'power4.inOut',
+          scrollTrigger: { trigger: el, start: 'top 90%' }
+        }
+      );
+    });
+
+    /* All other .rv scroll reveals - skill: ease-out-quint, 0.7s */
+    gsap.utils.toArray('.rv:not(.coll-card):not(#artA):not(#artB):not(#artC):not(.about-img-col):not(.wear-img-col)').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0,
+        duration: 0.7, ease: 'power4.out',
+        scrollTrigger: { trigger: el, start: 'top 92%' }
+      });
+    });
+
+    /* Safety net: after 5s make everything visible regardless */
+    setTimeout(() => {
+      gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' });
+    }, 5000);
+
+  } else {
+    /* Respect prefers-reduced-motion */
+    gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' });
+  }
+} else {
+  /* GSAP never loaded - ensure everything visible */
+  document.querySelectorAll('.rv').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+</script>
+</body>
+</html>

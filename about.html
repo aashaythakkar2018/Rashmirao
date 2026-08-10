@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Rashmi Rao Designs</title>
+<meta name="description" content="The story behind Rashmi Rao Designs: original paintings, wearable art, and licensed collections born from a practice of feeling first, planning never.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root {
+  --bg:        #FAF8F5;
+  --white:     #FFFFFF;
+  --text:      #111111;
+  --muted:     #6B6B6B;
+  --beige:     #E9E3DB;
+  --olive:     #6D7550;
+  --olive-dk:  #5a6142;
+  --gold:      #C9A84C;
+  --dark:      #111111;
+  --rust:      #7a5248;
+
+  --ff-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --ff-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ff-mono:  'DM Mono', 'Courier New', monospace;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-sans);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* .rv - visible by default; JS sets opacity/transform only after GSAP confirms loaded */
+.rv { /* intentionally empty */ }
+
+/* ============================================================
+   ANNOUNCEMENT BAR
+============================================================ */
+.ann {
+  background: var(--rust);
+  color: #FAF8F5;
+  text-align: center;
+  padding: 11px 48px;
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  z-index: 500;
+  height: 42px;
+  overflow: hidden;
+}
+.ann-close {
+  position: absolute;
+  right: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(250,248,245,0.55);
+  font-size: 20px; line-height: 1;
+  transition: color .2s; padding: 4px 8px;
+}
+.ann-close:hover { color: #FAF8F5; }
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+.nav {
+  position: fixed;
+  left: 0; right: 0; top: 42px;
+  z-index: 400;
+  transition: background .35s, box-shadow .35s, top .35s;
+}
+.nav.no-ann { top: 0; }
+.nav.scrolled {
+  background: rgba(250,248,245,0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(17,17,17,0.08);
+}
+.nav-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 48px;
+  height: 72px; display: flex;
+  align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--ff-serif);
+  font-size: 18px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text); /* always dark on about page */
+  transition: color .3s; white-space: nowrap;
+}
+.nav-links {
+  display: flex; gap: 40px; list-style: none;
+}
+.nav-links a {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400;
+  transition: color .25s; position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right;
+  transition: transform .3s ease;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--text); }
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); transform-origin: left; }
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+.nav-icon-btn {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--muted);
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase;
+  transition: color .25s;
+}
+.nav-icon-btn:hover { color: var(--text); }
+.cart-badge {
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-mono); font-size: 9px;
+  width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-burger {
+  display: none; flex-direction: column;
+  gap: 5px; padding: 4px; color: var(--text);
+}
+.nav-burger span {
+  display: block; width: 22px; height: 1.5px;
+  background: currentColor; border-radius: 2px;
+}
+
+.page-hero {
+  padding-top: 120px; /* nav + ann height */
+  padding-bottom: 64px;
+  background: var(--bg);
+}
+.page-hero .wrap { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+.page-hero-eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px; display: block;
+}
+.page-hero-h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(52px, 6vw, 82px);
+  font-weight: 400; line-height: 1.02;
+  color: var(--text); letter-spacing: -.01em;
+  max-width: 560px;
+}
+.page-hero-h1 em { font-style: italic; font-weight: 300; }
+.page-hero-tagline {
+  font-family: var(--ff-sans); font-size: 15px;
+  font-weight: 300; color: var(--muted);
+  max-width: 320px; line-height: 1.8; text-align: right;
+  padding-bottom: 8px;
+}
+.hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 60px; }
+
+.page-hero-h1 em { font-style: italic; font-weight: 300; }
+
+/* ============================================================
+  SHARED LAYOUT
+  Reduced vertical rhythm for tighter section spacing
+============================================================ */
+.section { padding: 80px 0; }
+.section-lg { padding: 100px 0; }
+.wrap {
+  max-width: 1400px; margin: 0 auto; padding: 0 60px;
+}
+.eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px; display: block;
+}
+.h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(36px, 4vw, 58px);
+  font-weight: 400; line-height: 1.06; letter-spacing: -.01em;
+}
+.body-text {
+  font-family: var(--ff-sans);
+  font-size: 15px; font-weight: 300;
+  line-height: 1.85; color: #3a3a3a;
+}
+
+/* image wrapper - warm fallback always visible */
+.img-wrap {
+  position: relative; overflow: hidden; background: var(--beige);
+}
+.img-wrap::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, #e9e3db 0%, #d5cdc4 100%); z-index: 0;
+}
+.img-wrap img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .8s cubic-bezier(.25,.46,.45,.94), opacity .4s;
+}
+.img-wrap img.loading { opacity: 0; }
+.img-wrap:hover img { transform: scale(1.04); }
+
+/* ============================================================
+   1. OUR STORY  - text left + 2-col image grid right
+   Mirrors: Cord Studio "Our Story" - intro para + 4×2 img grid
+============================================================ */
+.story-bg { background: var(--white); }
+.story-split {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 80px;
+  align-items: flex-start;
+}
+.story-copy { padding-top: 8px; }
+.story-copy .h2 { margin-bottom: 28px; }
+.story-copy .body-text p + p { margin-top: 16px; }
+.story-pull {
+  font-family: var(--ff-serif);
+  font-size: 22px; font-style: italic; font-weight: 400;
+  line-height: 1.6; color: var(--olive);
+  border-left: 2px solid var(--olive);
+  padding-left: 22px; margin-top: 36px; max-width: 340px;
+}
+
+/* 4-row × 2-col image grid - mirrors Cord's 8-image mosaic */
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.story-grid .img-wrap { aspect-ratio: 3/4; }
+/* warm palette per slot */
+.story-grid .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c8d0be,#8a9a7a); }
+.story-grid .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#c8b090,#9a7050); }
+.story-grid .img-wrap:nth-child(3)::before { background: linear-gradient(135deg,#c0b8d0,#8078a0); }
+.story-grid .img-wrap:nth-child(4)::before { background: linear-gradient(135deg,#c8b8a0,#a08060); }
+.story-grid .img-wrap:nth-child(5)::before { background: linear-gradient(135deg,#b8d0c8,#78a090); }
+.story-grid .img-wrap:nth-child(6)::before { background: linear-gradient(135deg,#d0c0b8,#a08880); }
+.story-grid .img-wrap:nth-child(7)::before { background: linear-gradient(135deg,#c8d8a0,#98a860); }
+.story-grid .img-wrap:nth-child(8)::before { background: linear-gradient(135deg,#d8c0a8,#b09070); }
+
+/* brand medallion - sits between the two rows like Cord's logo mark */
+.story-medallion {
+  grid-column: 1 / -1;
+  display: flex; justify-content: center; padding: 14px 0;
+}
+.medallion {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: var(--beige); border: 1px solid rgba(17,17,17,0.1);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+}
+.medallion-name {
+  font-family: var(--ff-serif); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text); text-align: center;
+}
+.medallion-year {
+  font-family: var(--ff-mono); font-size: 9px;
+  color: var(--muted); letter-spacing: .1em;
+}
+
+/* ============================================================
+   2. THE JOURNEY - dark bg, refined step connector timeline
+============================================================ */
+.journey-bg { background: var(--dark); }
+.journey-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 420px);
+  gap: 80px;
+  align-items: center;
+}
+.journey-bg .eyebrow { color: var(--olive); letter-spacing: .22em; }
+.journey-bg .h2 { color: #FAF8F5; margin-bottom: 34px; }
+.journey-copy p {
+  font-family: var(--ff-sans); font-size: 15px;
+  font-weight: 300; line-height: 1.9;
+  color: rgba(250,248,245,0.62);
+  max-width: 56ch;
+}
+.journey-copy p + p { margin-top: 20px; }
+
+.journey-panel-col {
+  display: grid;
+  gap: 28px;
+  width: 100%;
+  max-width: 760px;
+}
+.journey-copy {
+  display: grid;
+  gap: 36px;
+}
+.journey-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(250,248,245,0.08);
+  border-radius: 30px;
+  padding: 38px 38px 34px;
+  box-shadow: 0 22px 56px rgba(0,0,0,0.16);
+}
+.journey-steps {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding-left: 42px;
+}
+
+.journey-panel { margin-bottom: 8px; }
+.journey-copy { gap: 28px; }
+.journey-steps::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: rgba(250,248,245,0.15);
+}
+.journey-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 18px;
+  align-items: start;
+  padding-bottom: 12px;
+}
+.journey-step:last-child { padding-bottom: 0; }
+.journey-step::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--olive);
+  box-shadow: 0 0 0 6px rgba(78,96,58,0.12);
+}
+.journey-step-year {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--olive);
+}
+.journey-step-copy h3 {
+  font-family: var(--ff-serif);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 0;
+  color: #FAF8F5;
+}
+.journey-step-copy p {
+  margin: 10px 0 0;
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(250,248,245,0.58);
+}
+.journey-panel-note {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(250,248,245,0.06);
+  color: rgba(250,248,245,0.44);
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  line-height: 1.85;
+}
+.journey-img-col .img-wrap {
+  aspect-ratio: 4 / 5;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 28px 70px rgba(0,0,0,0.34);
+}
+.journey-img-col .img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.journey-img-col .img-wrap:hover img {
+  transform: scale(1.03);
+}
+
+@media (max-width: 980px) {
+  .journey-split { grid-template-columns: 1fr; }
+  .journey-img-col { order: 2; }
+  .journey-panel-col { width: 100%; }
+}
+
+@media (max-width: 680px) {
+  .journey-panel { padding: 28px 22px 24px; }
+  .journey-steps { padding-left: 24px; }
+  .journey-step { grid-template-columns: 70px 1fr; }
+  .journey-step::before { left: -26px; }
+  .journey-step-year { min-width: 70px; }
+
+  /* Small extra spacing under the panel for clarity on narrow screens */
+  .journey-panel { margin-bottom: 20px; }
+  .journey-copy { gap: 20px; }
+}
+
+/* ============================================================
+   3. PHILOSOPHY - beige bg, text + 2-col editorial grid
+   Mirrors: Cord Studio "Philosophy"
+============================================================ */
+.phil-bg { background: var(--beige); }
+.phil-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: start;
+}
+.phil-copy .h2 { margin-bottom: 28px; }
+.phil-body p + p { margin-top: 16px; }
+.phil-body { max-width: 480px; }
+
+/* philosophy values list */
+.phil-values { margin-top: 48px; }
+.phil-value {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(17,17,17,0.1);
+}
+.phil-value:first-child { border-top: 1px solid rgba(17,17,17,0.1); }
+.phil-v-num {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--olive); min-width: 24px; padding-top: 1px;
+}
+.phil-v-text {
+  font-family: var(--ff-sans); font-size: 14px;
+  color: #3a3a3a; font-weight: 300; line-height: 1.55;
+}
+
+/* philosophy image grid - 2 tall + 3 small */
+.phil-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 10px;
+}
+.phil-imgs .img-wrap:nth-child(1) { aspect-ratio: 2/3; }
+.phil-imgs .img-wrap:nth-child(2) { aspect-ratio: 2/3; }
+.phil-imgs .img-wrap:nth-child(3) { aspect-ratio: 3/2; grid-column: 1 / -1; }
+.phil-imgs .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c8d0be,#6d8560); }
+.phil-imgs .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#c8a8a0,#8a4840); }
+.phil-imgs .img-wrap:nth-child(3)::before { background: linear-gradient(135deg,#d0c0b0,#9a8060); }
+
+/* ============================================================
+   4. MADE WITH PURPOSE - light bg, editorial callout
+   Mirrors: Cord Studio "Crafted in India"
+============================================================ */
+.purpose-bg { background: var(--white); }
+.purpose-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.purpose-imgs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.purpose-imgs .img-wrap:nth-child(1) { aspect-ratio: 3/4; }
+.purpose-imgs .img-wrap:nth-child(2) { aspect-ratio: 3/4; margin-top: 36px; }
+.purpose-imgs .img-wrap:nth-child(3) { aspect-ratio: 3/2; grid-column: 1 / -1; }
+.purpose-imgs .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c0d0c8,#608070); }
+.purpose-imgs .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#d0c0b8,#9a7868); }
+.purpose-imgs .img-wrap:nth-child(3)::before { background: linear-gradient(135deg,#d8c8a0,#a89060); }
+
+.purpose-copy .eyebrow { margin-bottom: 14px; }
+.purpose-copy .h2 { margin-bottom: 28px; }
+.purpose-copy .body-text p + p { margin-top: 16px; }
+
+.purpose-pillars { display: flex; flex-direction: column; gap: 0; margin-top: 48px; }
+.pillar {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 16px 0; border-bottom: 1px solid var(--beige);
+}
+.pillar:first-child { border-top: 1px solid var(--beige); }
+.pillar-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(109,117,80,0.1);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.pillar-text strong {
+  display: block; font-family: var(--ff-sans); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 500; color: var(--text); margin-bottom: 3px;
+}
+.pillar-text span {
+  font-family: var(--ff-sans); font-size: 13px;
+  font-weight: 300; color: var(--muted); line-height: 1.5;
+}
+
+/* ============================================================
+   5. IN THE PRESS  - Marquee ticker + Article cards
+============================================================ */
+.press-bg { background: var(--dark); overflow: hidden; }
+
+/* section header */
+.press-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-end; margin-bottom: 68px;
+}
+.press-bg .eyebrow { color: var(--olive); }
+.press-bg .h2 { color: #FAF8F5; }
+.press-hd-right {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(250,248,245,0.35); font-weight: 400;
+  padding-bottom: 4px;
+}
+
+/* ---- MARQUEE TICKER ---- */
+.marquee-track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid rgba(250,248,245,0.07);
+  border-bottom: 1px solid rgba(250,248,245,0.07);
+  padding: 28px 0;
+  margin-bottom: 72px;
+}
+/* fade edges */
+.marquee-track::before,
+.marquee-track::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0;
+  width: 120px; z-index: 2; pointer-events: none;
+}
+.marquee-track::before { left: 0;  background: linear-gradient(to right, var(--dark) 0%, transparent 100%); }
+.marquee-track::after  { right: 0; background: linear-gradient(to left,  var(--dark) 0%, transparent 100%); }
+
+.marquee-inner {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-inner:hover { animation-play-state: paused; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  display: flex; align-items: center; gap: 52px;
+  padding: 0 52px;
+  white-space: nowrap;
+}
+.marquee-pub {
+  font-family: var(--ff-serif);
+  font-size: 20px; font-weight: 400;
+  letter-spacing: .04em;
+  color: rgba(250,248,245,0.22);
+  transition: color .3s;
+}
+.marquee-inner:hover .marquee-pub { color: rgba(250,248,245,0.35); }
+.marquee-sep {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(250,248,245,0.1); flex-shrink: 0;
+}
+
+/* ---- PULL QUOTE ---- */
+.press-pullquote {
+  max-width: 860px; margin: 0 auto 80px;
+  text-align: center;
+  position: relative; padding: 0 40px;
+}
+.pq-mark {
+  font-family: var(--ff-serif);
+  font-size: 80px; line-height: .5;
+  color: var(--olive); opacity: .4;
+  display: block; margin-bottom: 20px;
+}
+.pq-text {
+  font-family: var(--ff-serif);
+  font-size: clamp(24px, 3.2vw, 38px);
+  font-style: italic; font-weight: 400;
+  line-height: 1.45; color: #FAF8F5;
+}
+.pq-attr {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(250,248,245,0.3); margin-top: 22px; display: block;
+}
+
+/* ---- ARTICLE CARDS (horizontal scroll) ---- */
+.press-cards-wrap {
+  position: relative;
+  overflow: hidden;
+  /* fade right edge */
+}
+.press-cards-wrap::after {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 80px;
+  background: linear-gradient(to left, var(--dark), transparent);
+  pointer-events: none; z-index: 2;
+}
+.press-cards {
+  display: flex; gap: 16px;
+  overflow-x: auto; padding-bottom: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.press-cards::-webkit-scrollbar { display: none; }
+
+.press-card {
+  flex: 0 0 360px; scroll-snap-align: start;
+  border: 1px solid rgba(250,248,245,0.07);
+  background: rgba(250,248,245,0.03);
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+  transition: border-color .3s, background .3s;
+  cursor: default;
+}
+.press-card:hover {
+  border-color: rgba(250,248,245,0.15);
+  background: rgba(250,248,245,0.05);
+}
+.pc-pub {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--olive); margin-bottom: 20px; font-weight: 400;
+}
+.pc-headline {
+  font-family: var(--ff-serif);
+  font-size: 19px; font-weight: 400;
+  line-height: 1.4; color: #FAF8F5;
+  flex: 1;
+}
+.pc-excerpt {
+  font-family: var(--ff-sans); font-size: 13px;
+  font-weight: 300; line-height: 1.7;
+  color: rgba(250,248,245,0.35);
+  margin-top: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pc-footer {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(250,248,245,0.07);
+}
+.pc-date {
+  font-family: var(--ff-mono); font-size: 10px;
+  color: rgba(250,248,245,0.2); letter-spacing: .06em;
+}
+.pc-arrow {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(250,248,245,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(250,248,245,0.35);
+  transition: border-color .25s, color .25s, transform .25s;
+}
+.press-card:hover .pc-arrow {
+  border-color: var(--olive);
+  color: var(--olive);
+  transform: translateX(3px);
+}
+
+/* cards scroll controls */
+.press-nav {
+  display: flex; gap: 10px;
+  margin-top: 28px; justify-content: flex-end;
+}
+.press-nav-btn {
+  width: 40px; height: 40px;
+  border: 1px solid rgba(250,248,245,0.12);
+  background: none; color: rgba(250,248,245,0.4);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color .25s, color .25s;
+  border-radius: 50%;
+}
+.press-nav-btn:hover { border-color: var(--olive); color: var(--olive); }
+
+/* ============================================================
+   6. SOCIAL / COMMUNITY - mirrors Cord "You in #CORD"
+============================================================ */
+.social-bg { background: var(--dark); }
+.social-hd { text-align: center; margin-bottom: 52px; }
+.social-bg .eyebrow { color: var(--olive); }
+.social-bg .h2 { color: #FAF8F5; margin-top: 8px; }
+.social-tag {
+  font-family: var(--ff-mono); font-size: 14px;
+  color: rgba(250,248,245,0.35); margin-top: 14px;
+  display: block; letter-spacing: .06em;
+}
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.social-card {
+  position: relative; overflow: hidden;
+  aspect-ratio: 1; cursor: pointer;
+  display: block;
+}
+.social-card .img-wrap { height: 100%; }
+.social-card .img-wrap::before { background: linear-gradient(135deg, #2a2010, #1a1508); }
+.social-card:nth-child(1) .img-wrap::before { background: linear-gradient(135deg,#1a2010,#2a3820); }
+.social-card:nth-child(2) .img-wrap::before { background: linear-gradient(135deg,#201018,#380820); }
+.social-card:nth-child(3) .img-wrap::before { background: linear-gradient(135deg,#201808,#382808); }
+.social-card:nth-child(4) .img-wrap::before { background: linear-gradient(135deg,#101820,#082038); }
+.social-card .img-wrap img { height: 100%; }
+.social-overlay {
+  position: absolute; inset: 0; z-index: 2;
+  background: rgba(17,17,17,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .35s;
+}
+.social-card:hover .social-overlay { opacity: 1; }
+.social-ig {
+  width: 40px; height: 40px; border: 1.5px solid rgba(250,248,245,0.7);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.social-cta {
+  text-align: center; margin-top: 52px;
+  display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.social-handle {
+  font-family: var(--ff-mono); font-size: 15px;
+  letter-spacing: .04em; color: rgba(250,248,245,0.5);
+  transition: color .25s;
+}
+.social-handle:hover { color: rgba(250,248,245,0.9); }
+
+/* ============================================================
+   7. CTA / CONNECT - mirrors Cord's footer band
+============================================================ */
+.connect-bg { background: var(--beige); }
+.connect-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.connect-copy .h2 { margin-bottom: 20px; }
+.connect-copy .body-text { max-width: 400px; }
+.connect-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 40px; }
+
+.btn-olive {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--olive); color: #fff;
+  padding: 15px 34px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  border: 2px solid var(--olive);
+  transition: background .25s, transform .2s; cursor: pointer;
+}
+.btn-olive:hover { background: var(--olive-dk); border-color: var(--olive-dk); transform: translateY(-2px); }
+
+.btn-outline {
+  display: inline-flex; align-items: center;
+  padding: 15px 34px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  color: var(--text); border: 1px solid rgba(17,17,17,0.3);
+  background: none; transition: border-color .25s; cursor: pointer;
+}
+.btn-outline:hover { border-color: var(--text); }
+
+.text-link {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .15em; text-transform: uppercase; font-weight: 400;
+  color: var(--text); border-bottom: 1px solid rgba(17,17,17,0.3);
+  padding-bottom: 2px; transition: color .25s, border-color .25s;
+}
+.text-link:hover { color: var(--olive); border-color: var(--olive); }
+
+/* newsletter */
+.connect-nl { display: flex; flex-direction: column; justify-content: center; gap: 0; }
+.connect-nl-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+.nl-row { display: flex; }
+.nl-input {
+  flex: 1; border: 1px solid rgba(17,17,17,0.2); border-right: none;
+  background: var(--white); padding: 14px 18px;
+  font-family: var(--ff-sans); font-size: 13px; font-weight: 300;
+  color: var(--text); outline: none; transition: border-color .25s;
+}
+.nl-input::placeholder { color: var(--muted); }
+.nl-input:focus { border-color: var(--olive); }
+.nl-btn {
+  background: var(--olive); color: #fff;
+  border: 1px solid var(--olive); padding: 14px 22px;
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .15em; text-transform: uppercase;
+  transition: background .25s; cursor: pointer;
+}
+.nl-btn:hover { background: var(--olive-dk); }
+.nl-sub {
+  font-family: var(--ff-sans); font-size: 11px;
+  color: var(--muted); margin-top: 12px; font-weight: 300; line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  background: #0e0e0e;
+  color: rgba(250,248,245,0.38);
+  padding: 68px 0 40px;
+}
+.ft-grid {
+  max-width: 1400px; margin: 0 auto; padding: 0 60px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+}
+.ft-brand {
+  font-family: var(--ff-serif); font-size: 19px;
+  color: #FAF8F5; font-weight: 400;
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px;
+}
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 230px; }
+.ft-hd {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400;
+}
+.ft-links { list-style: none; }
+.ft-links li + li { margin-top: 10px; }
+.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
+.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-bottom {
+  max-width: 1400px; margin: 40px auto 0;
+  padding: 24px 60px 0; border-top: 1px solid rgba(250,248,245,0.06);
+  display: flex; justify-content: space-between; align-items: center; font-size: 11px;
+}
+
+/* ============================================================
+   CART DRAWER (identical to homepage)
+============================================================ */
+.cart-scrim {
+  position: fixed; inset: 0;
+  background: rgba(17,17,17,0.45); z-index: 600;
+  opacity: 0; pointer-events: none; transition: opacity .35s;
+}
+.cart-scrim.show { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 400px; max-width: 96vw;
+  background: var(--white); z-index: 700;
+  display: flex; flex-direction: column;
+  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0;
+}
+.cart-ttl { font-family: var(--ff-serif); font-size: 22px; font-weight: 400; }
+.cart-x { font-size: 22px; color: var(--muted); transition: color .2s; padding: 4px; }
+.cart-x:hover { color: var(--text); }
+.cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.cart-empty {
+  text-align: center; padding: 52px 0;
+  font-family: var(--ff-serif); font-size: 22px;
+  color: var(--text); font-weight: 400;
+}
+.cart-empty span { display: block; font-family: var(--ff-sans); font-size: 13px; color: var(--muted); font-weight: 300; margin-top: 8px; font-style: normal; }
+.cart-foot { padding: 22px 30px; border-top: 1px solid var(--beige); flex-shrink: 0; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1100px) {
+  .story-split { grid-template-columns: 1fr; gap: 52px; }
+  .story-grid { grid-template-columns: 1fr 1fr; }
+  .journey-split, .phil-split, .purpose-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
+  .social-grid { grid-template-columns: repeat(2, 1fr); }
+  .press-logo:nth-child(4n) { border-right: 1px solid var(--beige); }
+  .press-logo:nth-child(2n) { border-right: none; }
+  .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section, .section-lg { padding: 72px 0; }
+  .page-hero { padding-top: 110px; padding-bottom: 48px; }
+  .page-hero .wrap { flex-direction: column; gap: 24px; }
+  .page-hero-tagline { text-align: left; }
+  .story-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .social-grid { grid-template-columns: repeat(2, 1fr); }
+  .ft-grid { grid-template-columns: 1fr; gap: 36px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+<link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+<!-- ========== ANNOUNCEMENT ========== -->
+<div class="ann" id="ann">
+  New In: Original Alcohol Ink Works from The Monsoon Series
+  <button class="ann-close" onclick="closeAnn()" aria-label="Close">×</button>
+</div>
+
+<!-- ========== NAVIGATION ========== -->
+<nav class="nav scrolled" id="nav" data-nav-solid="true">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Rashmi Rao</a>
+    <ul class="nav-links">
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="nav-burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== PAGE HERO ========== -->
+<section class="page-hero">
+  <div class="wrap">
+    <div>
+      <span class="page-hero-eyebrow rv">Our Story</span>
+      <h1 class="page-hero-h1 rv">Art That<br>Begins With<br><em>Feeling.</em></h1>
+    </div>
+    <p class="page-hero-tagline rv">A practice of making things that outlast the moment they were made in.</p>
+  </div>
+  <div class="wrap"><div class="hero-rule rv"></div></div>
+</section>
+
+<!-- ========== 1. OUR STORY ========== -->
+<section class="story-bg section">
+  <div class="wrap">
+    <div class="story-split">
+      <!-- Copy -->
+      <div class="story-copy">
+        <h2 class="h2 rv">Where Art<br>Becomes Story.</h2>
+        <div class="body-text rv" style="margin-top:24px;">
+          <p>Amidst the richness of India's visual heritage and the restless energy of the contemporary art world, Rashmi Rao Designs sits at an unusual intersection: original paintings that breathe, wearable art that travels with you, and licensed collections that carry the same warmth into interior spaces.</p>
+          <p>Every work begins with a feeling, not a plan. The canvas, the Yupo paper, the silk: each becomes a record of a specific moment in the studio. That moment is then preserved and offered to collectors who want something genuinely alive on their walls.</p>
+        </div>
+        <blockquote class="story-pull rv">
+          "The ink moved the way the sky felt: unrushed, inevitable, and completely beyond control."
+        </blockquote>
+      </div>
+
+      <!-- 8-image grid with medallion at mid -->
+      <div>
+        <div class="story-grid">
+          <div class="img-wrap rv">
+            <img src="images/story-1.jpg" alt="Studio" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/story-2.jpg" alt="Artwork detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/hero-beach.jpg" alt="Paintings" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/about-portrait.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
+          </div>
+
+          <!-- brand medallion - sits at midpoint, mirrors Cord's logo mark -->
+          <div class="story-medallion rv">
+            <div class="medallion">
+              <span class="medallion-name">Rashmi<br>Rao</span>
+              <span class="medallion-year">Est. 2014</span>
+            </div>
+          </div>
+
+          <div class="img-wrap rv">
+            <img src="images/collection-original.jpg" alt="Ochre" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/about-portrait.jpg" alt="Artist" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/story-3.jpg" alt="Detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap rv">
+            <img src="images/wearable-2.jpg" alt="Wearable" loading="lazy" onerror="this.style.display='none'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2. THE JOURNEY ========== -->
+<section class="journey-bg section-lg">
+  <div class="wrap">
+    <div class="journey-split">
+      <div class="journey-copy">
+        <span class="eyebrow rv">The Journey</span>
+        <h2 class="h2 rv">A Practice<br>Built Over<br><em>Years.</em></h2>
+        <div class="journey-intro-copy rv">
+          <p>Driven by a lifelong immersion in art, colour, and cultural heritage, Rashmi Rao began her practice in 2014 with a commitment to making works that hold genuine emotional weight. Not decorative. Felt.</p>
+          <p>From early mixed-media experimentations in small formats to large-scale alcohol ink commissions spanning three continents, the practice has grown without losing its core instinct: every piece begins with feeling, not planning.</p>
+        </div>
+
+        <div class="journey-panel-col">
+          <div class="journey-panel rv">
+            <div class="journey-steps">
+              <div class="journey-step">
+                <span class="journey-step-year">2014</span>
+                <div class="journey-step-copy">
+                  <h3>Studio founded</h3>
+                  <p>Rashmi's first solo exhibition opened in Mumbai as the practice took its first quiet shape.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2016</span>
+                <div class="journey-step-copy">
+                  <h3>Alcohol ink introduced</h3>
+                  <p>The Yupo Paper series began, giving the work a new immediacy and translucence.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2018</span>
+                <div class="journey-step-copy">
+                  <h3>First international commission</h3>
+                  <p>A hotel installation in Singapore marked the practice's first global presentation.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2020</span>
+                <div class="journey-step-copy">
+                  <h3>Wearable Art launched</h3>
+                  <p>Sarees printed from original paintings brought the studio's colour work into motion.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2022</span>
+                <div class="journey-step-copy">
+                  <h3>India Art Fair feature</h3>
+                  <p>New Delhi press and exhibition coverage introduced the work to a wider contemporary audience.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2024</span>
+                <div class="journey-step-copy">
+                  <h3>Monsoon Series</h3>
+                  <p>The largest alcohol ink works to date were created, expanding the scale and emotional intensity.</p>
+                </div>
+              </div>
+            </div>
+            <p class="journey-panel-note">A subtle sequence of years and moments — a quiet connector between the artist's evolving intuition and the material experience of the work.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-img-col rv">
+        <div class="img-wrap">
+          <img
+            src="images/story-2.jpg"
+            alt="Rashmi Rao in the studio"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. PHILOSOPHY ========== -->
+<section class="phil-bg section">
+  <div class="wrap">
+    <div class="phil-split">
+      <div class="phil-copy">
+        <span class="eyebrow rv">Philosophy</span>
+        <h2 class="h2 rv">Beauty That<br>Earns Its<br><em>Place.</em></h2>
+        <div class="phil-body body-text rv" style="margin-top:24px;">
+          <p>We have always believed in creating works that do not perform. They simply exist, confidently. Every decision in a painting, from the amount of ink to the moment of stopping, is made in service of that idea.</p>
+          <p>Craftsmanship, material honesty, and form are not afterthoughts. They are where a painting begins. The art of knowing when a work is finished, not overdone, is the hardest thing to teach.</p>
+        </div>
+
+        <div class="phil-values rv">
+          <div class="phil-value">
+            <span class="phil-v-num">01</span>
+            <span class="phil-v-text">Feeling over formula. No two works follow a predetermined outcome</span>
+          </div>
+          <div class="phil-value">
+            <span class="phil-v-num">02</span>
+            <span class="phil-v-text">Material integrity. Only archival-grade inks, pigments, and substrates</span>
+          </div>
+          <div class="phil-value">
+            <span class="phil-v-num">03</span>
+            <span class="phil-v-text">Originals only. No mass reproduction without artist authorisation</span>
+          </div>
+          <div class="phil-value">
+            <span class="phil-v-num">04</span>
+            <span class="phil-v-text">Every piece ships with a certificate of authenticity and provenance document</span>
+          </div>
+          <div class="phil-value">
+            <span class="phil-v-num">05</span>
+            <span class="phil-v-text">Direct collector relationship. No middlemen, no gallery markup</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phil-imgs rv">
+        <div class="img-wrap">
+          <img src="images/story-3.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="img-wrap">
+          <img src="images/story-1.jpg" alt="Painting" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="img-wrap">
+          <img src="images/hero-beach.jpg" alt="Collections" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. MADE WITH PURPOSE ========== -->
+<section class="purpose-bg section">
+  <div class="wrap">
+    <div class="purpose-split">
+      <div class="purpose-imgs rv">
+        <div class="img-wrap">
+          <img src="images/collection-ink.jpg" alt="Ink detail" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="img-wrap">
+          <img src="images/collection-original.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="img-wrap">
+          <img src="images/collection-wearable.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <div class="purpose-copy">
+        <h2 class="h2 rv">Every Piece<br>Has a<br><em>Reason.</em></h2>
+        <div class="body-text rv" style="margin-top:24px;">
+          <p>The Rashmi Rao studio operates on a principle of intentional making. Each artwork is created without a production quota. A painting is done when it is done, not when the schedule says so.</p>
+          <p>The same care that governs the paintings extends to the wearable art line: sarees printed from original artworks, limited to 8 pieces per design, on fabrics selected for each work specifically.</p>
+        </div>
+
+        <div class="purpose-pillars rv">
+          <div class="pillar">
+            <span class="pillar-icon">◈</span>
+            <div class="pillar-text">
+              <strong>Certificate of Authenticity</strong>
+              <span>Every original ships with a signed provenance document and studio seal</span>
+            </div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">✦</span>
+            <div class="pillar-text">
+              <strong>Archival Materials</strong>
+              <span>Only museum-grade inks, pigments, and substrates used across all works</span>
+            </div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">✧</span>
+            <div class="pillar-text">
+              <strong>Limited Wearable Editions</strong>
+              <span>Each saree print is capped at 8 pieces. Numbered, signed, and hand-finished</span>
+            </div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">⬡</span>
+            <div class="pillar-text">
+              <strong>Direct from Studio</strong>
+              <span>No gallery markup. Every sale is a direct conversation between artist and collector</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. IN THE PRESS ========== -->
+<section class="press-bg section-lg">
+  <div class="wrap">
+    <div class="press-header">
+      <div>
+        <h2 class="h2 rv">In the Press</h2>
+      </div>
+      <span class="press-hd-right rv">8 Publications · 12+ Features</span>
+    </div>
+  </div>
+
+  <!-- MARQUEE TICKER - infinite scroll of publication names -->
+  <div class="marquee-track">
+    <div class="marquee-inner" id="marqueeInner">
+      <!-- Set A -->
+      <div class="marquee-item">
+        <span class="marquee-pub">Vogue India</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Elle Décor</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Architectural Digest</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Harper's Bazaar</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">India Art Fair</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Condé Nast Traveller</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Better Homes &amp; Gardens</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">T Magazine</span>
+        <span class="marquee-sep"></span>
+      </div>
+      <!-- Set B - exact duplicate for seamless loop -->
+      <div class="marquee-item" aria-hidden="true">
+        <span class="marquee-pub">Vogue India</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Elle Décor</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Architectural Digest</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Harper's Bazaar</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">India Art Fair</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Condé Nast Traveller</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">Better Homes &amp; Gardens</span>
+        <span class="marquee-sep"></span>
+        <span class="marquee-pub">T Magazine</span>
+        <span class="marquee-sep"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PULL QUOTE -->
+  <div class="wrap">
+    <div class="press-pullquote rv">
+      <span class="pq-mark">"</span>
+      <p class="pq-text">Works that do not announce themselves loudly. They simply hold their ground, and hold your eye.</p>
+      <span class="pq-attr">Elle Décor India, 2023</span>
+    </div>
+
+    <!-- ARTICLE CARDS -->
+    <div class="press-cards-wrap">
+      <div class="press-cards" id="pressCards">
+
+        <div class="press-card rv">
+          <span class="pc-pub">Vogue India</span>
+          <h3 class="pc-headline">"The Indian Artists Redefining What It Means to Collect Art"</h3>
+          <p class="pc-excerpt">Rashmi Rao's alcohol ink series on Yupo Paper has drawn comparisons to the great Japanese ink masters, yet remains entirely, unmistakably Indian in its emotional register.</p>
+          <div class="pc-footer">
+            <span class="pc-date">March 2024</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">Elle Décor India</span>
+          <h3 class="pc-headline">"The Art of Staying: Works Designed to Outlive Their Moment"</h3>
+          <p class="pc-excerpt">In a market saturated with decorative gestures, Rashmi Rao's practice stands apart for its refusal to perform. These are paintings that hold their ground.</p>
+          <div class="pc-footer">
+            <span class="pc-date">October 2023</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">Architectural Digest</span>
+          <h3 class="pc-headline">"The Collectors' New Favourite: Art That Lives on the Wall and the Body"</h3>
+          <p class="pc-excerpt">The wearable art saree collection, limited to 8 pieces per design, has found its way into wardrobes as far as Singapore and London. Each one carries its certificate of origin.</p>
+          <div class="pc-footer">
+            <span class="pc-date">June 2023</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">Harper's Bazaar</span>
+          <h3 class="pc-headline">"Monsoon on Paper: The Alcohol Ink Series That Stopped a Room"</h3>
+          <p class="pc-excerpt">Rashmi's Monsoon Dream, exhibited at the India Art Fair, drew the longest crowd of the afternoon, quietly, without a placard demanding attention.</p>
+          <div class="pc-footer">
+            <span class="pc-date">February 2024</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">T Magazine</span>
+          <h3 class="pc-headline">"Ten Studios in India Where the Work is Actually Worth Owning"</h3>
+          <p class="pc-excerpt">A rare list that skips the gallery system entirely. Rashmi Rao Designs appears alongside names that have been collected internationally for a decade or more.</p>
+          <div class="pc-footer">
+            <span class="pc-date">November 2023</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">Condé Nast Traveller</span>
+          <h3 class="pc-headline">"Art Worth Travelling For: India's Most Compelling Studio Destinations"</h3>
+          <p class="pc-excerpt">The studio visit, by appointment only, has become something collectors quietly pass on to each other. It is the kind of place that explains why people still travel to see art.</p>
+          <div class="pc-footer">
+            <span class="pc-date">April 2023</span>
+            <span class="pc-arrow">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- scroll nav buttons -->
+    <div class="press-nav rv">
+      <button class="press-nav-btn" id="pressPrev" aria-label="Previous">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+      <button class="press-nav-btn" id="pressNext" aria-label="Next">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. SOCIAL COMMUNITY ========== -->
+<section class="social-bg section">
+  <div class="wrap">
+    <div class="social-hd">
+      <h2 class="h2">Living With<br><em>the Work.</em></h2>
+      <span class="social-tag">#rashmiRaoDesigns</span>
+    </div>
+
+    <div class="social-grid">
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/story-1.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="social-overlay">
+          <div class="social-ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,0.9)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/story-2.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="social-overlay">
+          <div class="social-ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,0.9)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/story-3.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="social-overlay">
+          <div class="social-ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,0.9)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
+        <div class="img-wrap" style="height:100%;">
+          <img src="images/hero-beach.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="social-overlay">
+          <div class="social-ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,0.9)" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="social-cta rv">
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-handle">@rashmiRaoDesigns</a>
+      <span style="color:rgba(250,248,245,0.15);">·</span>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="btn-olive" style="padding:12px 28px;">Follow on Instagram</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. CONNECT ========== -->
+<section class="connect-bg section">
+  <div class="wrap">
+    <div class="connect-inner">
+      <div class="connect-copy">
+        <h2 class="h2 rv">Start a<br><em>Conversation.</em></h2>
+        <p class="body-text rv" style="margin-top:20px;max-width:400px;">Whether you are collecting, commissioning, or considering a collaboration. Every inquiry is answered personally. No assistants, no automated replies.</p>
+        <div class="connect-btns">
+          <a href="contact.html" class="btn-olive rv">Commission a Piece</a>
+          <a href="collections.html" class="btn-outline rv">View Available Works</a>
+        </div>
+        <a href="mailto:studio@rashmirao.com" class="text-link rv" style="display:inline-block;margin-top:20px;">studio@rashmirao.com</a>
+      </div>
+
+      <div class="connect-nl">
+        <span class="connect-nl-label rv">Stay in the Loop</span>
+        <p class="body-text rv" style="margin-bottom:24px;font-size:14px;">New works, exhibition invites, and studio notes, when there is something worth sharing.</p>
+        <div class="nl-row rv">
+          <input type="email" class="nl-input" placeholder="Your email address" aria-label="Newsletter email">
+          <button class="nl-btn" onclick="this.textContent='✓ Joined'">Join</button>
+        </div>
+        <p class="nl-sub rv">No noise. No promotions. Only work that matters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">Rashmi Rao Designs</div>
+      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">Original Paintings</a></li>
+        <li><a href="collections.html">Alcohol Ink</a></li>
+        <li><a href="collections.html">Wearable Art</a></li>
+        <li><a href="collections.html">Limited Editions</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html">Exhibitions</a></li>
+        <li><a href="about.html">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Services</p>
+      <ul class="ft-links">
+        <li><a href="contact.html">Commission</a></li>
+        <li><a href="contact.html">Licensing</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="contact.html">Shipping &amp; Returns</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cart-top">
+    <span class="cart-ttl">Your Cart</span>
+    <button class="cart-x" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-body">
+    <div class="cart-empty">Empty for now.<span>Discover original artworks ready to collect.</span></div>
+  </div>
+  <div class="cart-foot" style="padding:22px 30px;border-top:1px solid var(--beige);">
+    <a href="collections.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;">Explore Works</a>
+  </div>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="site.js" defer></script>
+<script>
+/* Cart */
+function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartScrim').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+
+/* Announcement */
+function closeAnn() {
+  const el = document.getElementById('ann');
+  el.style.transition = 'height .3s ease, opacity .3s ease, padding .3s ease';
+  el.style.height = '0'; el.style.opacity = '0'; el.style.padding = '0';
+  setTimeout(() => { el.remove(); document.getElementById('nav').classList.add('no-ann'); }, 320);
+}
+
+/* Nav is solid on this page; site.js handles the rest */
+
+/* Lazy images */
+document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+  img.classList.add('loading');
+  if (img.complete) { img.classList.remove('loading'); }
+  else { img.addEventListener('load', () => img.classList.remove('loading')); }
+});
+</script>
+
+<!-- Press cards scroll nav -->
+<script>
+(function() {
+  const cards = document.getElementById('pressCards');
+  const prev  = document.getElementById('pressPrev');
+  const next  = document.getElementById('pressNext');
+  if (!cards || !prev || !next) return;
+  const step = 376; /* card width + gap */
+  next.addEventListener('click', () => cards.scrollBy({ left: step, behavior: 'smooth' }));
+  prev.addEventListener('click', () => cards.scrollBy({ left: -step, behavior: 'smooth' }));
+})();
+
+/* Pause marquee when user prefers reduced motion */
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const m = document.getElementById('marqueeInner');
+  if (m) m.style.animationPlayState = 'paused';
+}
+</script>
+
+<!-- -- Text Reveal - animate-skill text-reveal.tsx pattern -- -->
+<script>
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function splitWords(el, counter) {
+    Array.from(el.childNodes).forEach(function(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        var parts = node.textContent.split(/(\s+)/);
+        var frag  = document.createDocumentFragment();
+        parts.forEach(function(part) {
+          if (!part || /^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part || ''));
+          } else {
+            var wrap  = document.createElement('span');
+            wrap.className = 'rr-word-wrap';
+            var inner = document.createElement('span');
+            inner.className = 'rr-word';
+            inner.style.setProperty('--index', counter.i++);
+            inner.textContent = part;
+            wrap.appendChild(inner);
+            frag.appendChild(wrap);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        splitWords(node, counter);
+      }
+    });
+  }
+  function revealHero(selector) {
+    var h1 = document.querySelector(selector);
+    if (!h1) return;
+    h1.classList.remove('rv'); // exclude from GSAP's opacity:0 set
+    splitWords(h1, { i: 0 });
+    setTimeout(function() {
+      h1.querySelectorAll('.rr-word').forEach(function(w) {
+        w.style.animation = 'none'; w.style.opacity = '1'; w.style.transform = 'none';
+      });
+    }, 2500);
+  }
+  revealHero('.page-hero-h1');
+})();
+</script>
+
+<!-- GSAP - progressive enhancement only -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+  crossorigin="anonymous"
+  onerror="console.warn('GSAP CDN unavailable - page remains fully visible')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+  crossorigin="anonymous"
+  onerror="console.warn('ScrollTrigger unavailable')"></script>
+
+<script>
+if (typeof gsap !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduced) {
+    /* Set hidden state via JS only - NEVER via CSS */
+    gsap.set('.rv', { opacity: 0, y: 24 });
+
+    /* Page hero entrance - .page-hero-h1 handled by CSS text-reveal
+       Skill: power4.out → ease-out-quint; exits faster (not relevant here) */
+    gsap.to('.page-hero .rv', {
+      opacity: 1, y: 0, duration: 1.0, stagger: 0.14, ease: 'power4.out', delay: 0.18
+    });
+
+    /* Clip-path reveals for image grids - skill: decisive ease-in-out, 1.3s */
+    ['.story-grid', '.journey-img-col', '.phil-imgs', '.purpose-imgs', '.social-grid'].forEach(sel => {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      gsap.fromTo(el,
+        { clipPath: 'inset(100% 0 0 0)', opacity: 1 },
+        { clipPath: 'inset(0% 0 0 0)', duration: 1.3, ease: 'power4.inOut',
+          scrollTrigger: { trigger: el, start: 'top 90%' } }
+      );
+    });
+
+    /* Timeline rows stagger - skill: ease-out-quint, slightly longer for gravitas */
+    gsap.to('.tl-row', {
+      opacity: 1, y: 0, duration: 0.65, stagger: 0.09, ease: 'power4.out',
+      scrollTrigger: { trigger: '.timeline', start: 'top 88%' }
+    });
+
+    /* All remaining .rv - skill: 0.7s power4.out */
+    gsap.utils.toArray('.rv:not(.page-hero .rv):not(.tl-row)').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power4.out',
+        scrollTrigger: { trigger: el, start: 'top 92%' }
+      });
+    });
+
+    /* Safety net */
+    setTimeout(() => gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' }), 5000);
+
+  } else {
+    gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' });
+  }
+} else {
+  /* Fallback - GSAP never loaded */
+  document.querySelectorAll('.rv').forEach(el => {
+    el.style.opacity = '1'; el.style.transform = 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monsoon Dream | Rashmi Rao Designs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ----------- DESIGN TOKENS ----------- */
+    :root {
+      --bg:       #FAF8F5;
+      --text:     #111111;
+      --muted:    #6B6B6B;
+      --beige:    #E9E3DB;
+      --olive:    #6D7550;
+      --olive-dk: #5a6142;
+      --gold:     #C9A84C;
+      --dark:     #111111;
+      --rust:     #7a5248;
+      --nav-h:    70px;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'DM Sans', system-ui, sans-serif;
+      --font-mono:  'DM Mono', 'Courier New', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ----------- NAV ----------- */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      height: var(--nav-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--beige);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 52px;
+      will-change: transform;
+    }
+    .nav-logo {
+      font-family: var(--font-serif); font-size: 18px; font-weight: 400;
+      letter-spacing: .1em; text-transform: uppercase;
+      text-decoration: none; color: var(--text);
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-actions { display: flex; align-items: center; gap: 20px; }
+    .nav-cart-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); background: none; border: none; cursor: pointer;
+      transition: color .2s;
+    }
+    .nav-cart-btn:hover { color: var(--text); }
+    .nav-burger {
+      display: none; flex-direction: column; gap: 5px;
+      padding: 4px; background: none; border: none; color: var(--text);
+    }
+    .nav-burger span {
+      display: block; width: 22px; height: 1.5px;
+      background: currentColor; border-radius: 2px;
+    }
+    @media (max-width: 600px) { .nav-burger { display: flex; } }
+
+    /* -- CURRENCY TOGGLE -- */
+    .currency-toggle {
+      display: flex; align-items: center; gap: 7px;
+    }
+    .curr-lbl {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: .08em; color: var(--muted);
+      transition: color .25s; user-select: none; line-height: 1;
+    }
+    .curr-lbl.active { color: var(--text); }
+    .toggle-track {
+      position: relative; width: 36px; height: 20px;
+      background: var(--beige);
+      border-radius: 10px; cursor: pointer;
+      border: 1px solid rgba(17,17,17,0.14);
+      transition: background .28s, border-color .28s;
+      flex-shrink: 0;
+    }
+    .toggle-track.usd { background: var(--olive); border-color: var(--olive); }
+    .toggle-thumb {
+      position: absolute; top: 2px; left: 2px;
+      width: 14px; height: 14px;
+      background: #FAF8F5; border-radius: 50%;
+      transition: transform .28s cubic-bezier(.25,.46,.45,.94);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.22);
+      pointer-events: none;
+    }
+    .toggle-track.usd .toggle-thumb { transform: translateX(16px); }
+    .cart-count {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--olive); color: #fff;
+      font-family: var(--font-mono); font-size: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ----------- BREADCRUMB ----------- */
+    .breadcrumb {
+      padding: 18px 52px 0;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 11px; color: var(--muted); letter-spacing: .08em;
+    }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .breadcrumb a:hover { color: var(--text); }
+    .breadcrumb-sep { opacity: .35; }
+
+    /* ----------- PAGE GRID ----------- */
+    .product-page {
+      max-width: 1440px; margin: 0 auto;
+      padding: 24px 52px 80px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ------------------------------------------
+       GALLERY - HIGHLIGHTED IMAGE CONTAINER
+       ------------------------------------------ */
+    .gallery {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 14px;
+      will-change: transform, opacity;
+    }
+
+    /* Animated gradient border - the highlight */
+    .gallery-border {
+      position: absolute;
+      inset: -3px;
+      border-radius: 3px;
+      background: linear-gradient(135deg, var(--olive), var(--gold), var(--beige), var(--olive));
+      background-size: 300% 300%;
+      animation: borderBreath 6s ease infinite;
+      z-index: -1;
+      opacity: .5;
+    }
+    @keyframes borderBreath {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* -- Thumbnail strip -- */
+    .thumbs {
+      display: flex; flex-direction: column; gap: 8px;
+      background: var(--bg); padding: 3px;
+    }
+    .thumb {
+      width: 68px; height: 82px;
+      overflow: hidden; cursor: pointer; flex-shrink: 0;
+      border: 1.5px solid transparent;
+      transition: border-color .25s, opacity .25s;
+      opacity: .48;
+      background: linear-gradient(135deg, #c8d4c0, #e9e3db);
+      position: relative;
+    }
+    .thumb.active { border-color: var(--olive); opacity: 1; }
+    .thumb:hover { opacity: .82; }
+    .thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; transition: transform .4s;
+    }
+    .thumb:hover img { transform: scale(1.05); }
+
+    /* Thumb gradient fallback */
+    .thumb-fallback {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; letter-spacing: .1em; color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* -- Main image wrapper -- */
+    .main-image-wrap {
+      position: relative; overflow: hidden;
+      aspect-ratio: 4/5; cursor: zoom-in;
+      background: linear-gradient(-45deg, #c8d4c0 0%, #e9e3db 40%, #d8c890 70%, #b8c8d8 100%);
+      background-size: 300% 300%;
+      animation: gradPlaceholder 7s ease infinite;
+    }
+    @keyframes gradPlaceholder {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .main-image-wrap.zoomed { cursor: zoom-out; }
+
+    /* Shimmer overlay - shown while loading */
+    .shimmer {
+      position: absolute; inset: 0; z-index: 3;
+      overflow: hidden;
+      transition: opacity .35s;
+    }
+    .shimmer::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(100deg,
+        transparent 20%, rgba(255,255,255,.6) 50%, transparent 80%);
+      background-size: 200% 100%;
+      animation: shimmerSweep 1.4s infinite;
+    }
+    .shimmer.hidden { opacity: 0; pointer-events: none; }
+    @keyframes shimmerSweep {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* The actual image */
+    .main-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      opacity: 0;               /* faded in after load */
+      transition: transform .55s cubic-bezier(.25,.46,.45,.94);
+      will-change: transform, opacity;
+    }
+    .main-img.loaded { opacity: 1; }
+    .main-image-wrap:not(.zoomed):hover .main-img { transform: scale(1.04); }
+    .main-image-wrap.zoomed .main-img {
+      transform: scale(2.2);
+      transform-origin: var(--ox,50%) var(--oy,50%);
+      transition: transform-origin 0s;
+    }
+
+    /* Image load error fallback */
+    .img-error-label {
+      position: absolute; inset: 0;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      color: var(--muted); font-size: 11px; letter-spacing: .1em;
+      text-transform: uppercase; text-align: center; padding: 20px;
+    }
+    .img-error-label.show { display: flex; }
+
+    /* Badge */
+    .img-badge {
+      position: absolute; top: 14px; left: 14px; z-index: 5;
+      background: var(--olive); color: #fff;
+      font-size: 9px; letter-spacing: .16em; text-transform: uppercase;
+      padding: 5px 12px; font-family: var(--font-sans); font-weight: 500;
+    }
+
+    /* Zoom icon */
+    .zoom-icon {
+      position: absolute; bottom: 14px; right: 14px; z-index: 5;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(250,248,245,.88); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); pointer-events: none;
+      opacity: 0; transition: opacity .25s;
+    }
+    .main-image-wrap:hover .zoom-icon { opacity: 1; }
+
+    /* Arrows */
+    .g-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(250,248,245,.9); backdrop-filter: blur(8px);
+      border: 1px solid var(--beige);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); z-index: 5;
+      opacity: 0; transition: opacity .25s, background .2s;
+    }
+    .main-image-wrap:hover .g-arrow { opacity: 1; }
+    .g-arrow:hover { background: #fff; }
+    .g-arrow.prev { left: 12px; }
+    .g-arrow.next { right: 12px; }
+
+    /* Dot indicators */
+    .g-dots {
+      position: absolute; bottom: 14px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 5;
+    }
+    .g-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(17,17,17,.25); cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .g-dot.active { background: var(--text); transform: scale(1.35); }
+
+    /* ----------- PRODUCT INFO ----------- */
+    .product-info {
+      padding-top: 4px;
+      will-change: transform, opacity;
+    }
+    .pi-category {
+      font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+    }
+    .pi-title {
+      font-family: var(--font-serif);
+      font-size: clamp(34px, 3.5vw, 52px);
+      font-weight: 300; line-height: 1.05;
+      letter-spacing: -.02em; margin-bottom: 6px;
+    }
+    .pi-medium {
+      font-size: 12px; color: var(--muted);
+      font-weight: 300; letter-spacing: .04em; margin-bottom: 18px;
+    }
+    .pi-divider { height: 1px; background: var(--beige); margin: 18px 0; }
+
+    .edition-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border: 1px solid var(--gold);
+      font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+
+    .pi-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+    .pi-price {
+      font-family: var(--font-mono); font-size: 30px;
+      font-weight: 300; color: var(--olive);
+    }
+    .pi-price-label {
+      font-size: 10px; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .pi-tax-note { font-size: 11px; color: var(--muted); font-weight: 300; margin-bottom: 4px; }
+
+    .pi-availability {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; color: var(--muted); margin-bottom: 18px;
+    }
+    .avail-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--olive);
+    }
+
+    /* -- Options -- */
+    .option-group { margin-bottom: 18px; }
+    .option-label {
+      font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .option-label a { color: var(--olive); text-decoration: none; font-size: 10px; }
+    .option-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .option-pill {
+      padding: 9px 18px; border: 1px solid var(--beige);
+      font-size: 11px; letter-spacing: .08em;
+      cursor: pointer; background: transparent; color: var(--text);
+      font-family: var(--font-sans);
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .option-pill:hover { border-color: var(--text); }
+    .option-pill.active { border-color: var(--olive); background: var(--olive); color: #fff; }
+
+    /* -- CTAs -- */
+    .cta-stack { display: flex; flex-direction: column; gap: 10px; margin: 22px 0; }
+    .btn-primary {
+      width: 100%; padding: 16px 24px;
+      background: var(--olive); color: #fff; border: none;
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: .18em; text-transform: uppercase; cursor: pointer;
+      transition: background .25s; will-change: transform;
+    }
+    .btn-primary:hover { background: var(--olive-dk); }
+    .btn-secondary {
+      width: 100%; padding: 15px 24px;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--beige); font-family: var(--font-sans);
+      font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+      cursor: pointer; transition: border-color .25s; will-change: transform;
+      text-decoration: none; display: block; text-align: center;
+    }
+    .btn-secondary:hover { border-color: var(--text); }
+
+    /* Ships in */
+    .ships-in {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 12px; color: var(--muted); font-weight: 300; padding: 12px 0;
+    }
+    .ships-in svg { flex-shrink: 0; color: var(--olive); }
+
+    /* -- Trust badges -- */
+    .trust-badges {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      padding: 16px 0;
+      border-top: 1px solid var(--beige); border-bottom: 1px solid var(--beige);
+      margin: 14px 0;
+    }
+    .trust-badge {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 7px; text-align: center;
+    }
+    .trust-badge svg { color: var(--olive); }
+    .trust-badge span {
+      font-size: 9px; letter-spacing: .11em; text-transform: uppercase;
+      color: var(--muted); line-height: 1.45;
+    }
+
+    /* -- Accordion -- */
+    .accordion { border-top: 1px solid var(--beige); }
+    .accordion-item { border-bottom: 1px solid var(--beige); }
+    .acc-trigger {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; background: none; border: none; cursor: pointer;
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--text); text-align: left;
+    }
+    .acc-chevron {
+      width: 14px; height: 14px; color: var(--muted);
+      transition: transform .35s cubic-bezier(.25,.46,.45,.94); flex-shrink: 0;
+    }
+    .accordion-item.open .acc-chevron { transform: rotate(180deg); }
+    .acc-body { max-height: 0; overflow: hidden; transition: max-height .42s cubic-bezier(.25,.46,.45,.94); }
+    .accordion-item.open .acc-body { max-height: 700px; }
+    .acc-content {
+      padding-bottom: 20px;
+      font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.9;
+    }
+    .acc-content table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
+    .acc-content table td { padding: 8px 0; border-bottom: 1px solid var(--beige); vertical-align: top; }
+    .acc-content table td:first-child {
+      color: var(--text); width: 42%; font-weight: 400; letter-spacing: .04em;
+    }
+
+    /* ----------- RELATED WORKS ----------- */
+    .related {
+      max-width: 1240px; margin: 0 auto;
+      padding: 56px 52px 80px;
+      border-top: 1px solid var(--beige);
+    }
+    .related-header {
+      display: flex; justify-content: space-between; align-items: baseline; gap: 18px;
+      margin-bottom: 32px;
+    }
+    .related-title {
+      font-family: var(--font-serif); font-size: 32px; font-weight: 300;
+      line-height: 1.05;
+    }
+    .related-link {
+      font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+      white-space: nowrap;
+    }
+    .related-link:hover { color: var(--text); }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .rel-card { cursor: pointer; }
+    .rel-img-wrap {
+      overflow: hidden; margin-bottom: 12px; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #c8d4c0, #e9e3db, #d8c890);
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid rgba(17,17,17,0.06);
+    }
+    .rel-img-wrap img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transition: transform .6s cubic-bezier(.25,.46,.45,.94), opacity .4s;
+    }
+    .rel-img-wrap img.loaded { opacity: 1; }
+    .rel-card:hover .rel-img-wrap img { transform: scale(1.06); }
+    .rel-medium { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+    .rel-title { font-family: var(--font-serif); font-size: 18px; margin: 5px 0 4px; }
+    .rel-price { font-family: var(--font-mono); font-size: 13px; color: var(--olive); }
+    .rel-price.sold { color: var(--muted); text-decoration: line-through; font-size: 11px; }
+
+    /* ----------- PRODUCT FOOTER ----------- */
+    .pp-footer {
+      background: var(--bg);
+      border-top: 1px solid var(--beige);
+      padding: 60px 52px 40px;
+      color: var(--text);
+    }
+    .pp-footer-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+      gap: 32px;
+      align-items: start;
+    }
+    .pp-ft-brand {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      margin-bottom: 16px;
+      letter-spacing: .05em;
+    }
+    .pp-ft-tagline {
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 360px;
+    }
+    .pp-ft-hd {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+    .pp-ft-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .pp-ft-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.8;
+      transition: color .2s;
+    }
+    .pp-ft-links a:hover { color: var(--text); }
+    .pp-ft-bottom {
+      max-width: 1240px;
+      margin: 30px auto 0;
+      padding: 0 52px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: .14em;
+    }
+
+    /* ----------- TOAST ----------- */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(24px);
+      background: var(--dark); color: #fff;
+      font-size: 12px; letter-spacing: .1em;
+      padding: 13px 30px; opacity: 0;
+      pointer-events: none; z-index: 999; white-space: nowrap;
+    }
+
+    /* ----------- RESPONSIVE ----------- */
+    @media (max-width: 1024px) {
+      .product-page { grid-template-columns: 1fr; gap: 40px; padding: 20px 28px 60px; }
+      .gallery { position: static; }
+      .product-info { position: static; }
+      .related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .nav { padding: 0 28px; }
+      .breadcrumb { padding: 14px 28px 0; }
+      .related { padding: 40px 28px 60px; }
+      .pp-footer { padding: 50px 28px 32px; }
+      .pp-footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .pp-ft-bottom { padding: 0 28px; justify-content: center; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .related-grid { grid-template-columns: 1fr; gap: 16px; }
+      .trust-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .gallery { grid-template-columns: 56px 1fr; gap: 10px; }
+      .thumb { width: 50px; height: 62px; }
+      .pp-footer { padding: 40px 20px 26px; }
+      .pp-footer-grid { gap: 18px; }
+      .pp-ft-bottom { padding: 0 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+  <!-- -- NAV -- -->
+  <nav class="nav" id="nav" data-nav-solid="true">
+    <a href="index.html" class="nav-logo">Rashmi Rao</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="currency-toggle" role="group" aria-label="Currency selector">
+        <span class="curr-lbl active" id="currLabelINR" aria-hidden="true">INR ₹</span>
+        <button class="toggle-track" id="currencyTrack"
+          onclick="toggleCurrency()"
+          role="switch" aria-checked="false"
+          aria-label="Toggle currency between INR and USD">
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="curr-lbl" id="currLabelUSD" aria-hidden="true">$ USD</span>
+      </div>
+      <a class="nav-cart-btn" id="navCartBtn" href="collections.html" aria-label="View cart in the collection">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </a>
+      <button class="nav-burger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- -- BREADCRUMB -- -->
+  <nav class="breadcrumb" id="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="collections.html">Collections</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="collections.html">Alcohol Ink</a>
+    <span class="breadcrumb-sep">/</span>
+    <span id="breadcrumbTitle">Monsoon Dream</span>
+  </nav>
+
+  <!-- -- PRODUCT PAGE -- -->
+  <div class="product-page">
+
+    <!-- --------------------------------
+         GALLERY - HIGHLIGHTED CONTAINER
+         -------------------------------- -->
+    <div class="gallery" id="gallery">
+      <div class="gallery-border"></div>
+
+      <!-- Thumbnail strip -->
+      <div class="thumbs" id="thumbStrip"></div>
+
+      <!-- Main image -->
+      <div class="main-image-wrap" id="mainWrap">
+        <!-- Shimmer (while loading) -->
+        <div class="shimmer" id="shimmer"></div>
+
+        <!-- Error fallback label -->
+        <div class="img-error-label" id="mainErrLabel">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".4"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9l4-4 4 4 4-4 4 4M3 15l4 4h10l4-4"/></svg>
+          Image unavailable<br /><small style="opacity:.5;font-size:9px;">Gradient placeholder shown</small>
+        </div>
+
+        <!-- Badge -->
+        <span class="img-badge" id="imgBadge">New Work · 2024</span>
+
+        <!-- Main image (fades in on load) -->
+        <img class="main-img" id="mainImg" alt="Monsoon Dream by Rashmi Rao" />
+
+        <!-- Zoom icon -->
+        <div class="zoom-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
+
+        <!-- Arrows -->
+        <button class="g-arrow prev" onclick="galleryPrev()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M8 1L3 6l5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="g-arrow next" onclick="galleryNext()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M4 1l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <!-- Dot indicators -->
+        <div class="g-dots" id="gDots"></div>
+      </div>
+    </div>
+
+    <!-- -- PRODUCT INFO -- -->
+    <div class="product-info" id="productInfo">
+
+      <p class="pi-category" id="pi-cat">Alcohol Ink · Original Work</p>
+      <h1 class="pi-title" id="pi-title">Monsoon Dream</h1>
+      <p class="pi-medium" id="pi-med">Alcohol Ink on Yupo Paper · 36 × 48 inches · 2024</p>
+
+      <div class="edition-badge" id="pi-edition">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span id="pi-edition-text">Original · 1 of 1 · Certificate Included</span>
+      </div>
+
+      <div class="pi-price-row">
+        <span class="pi-price" id="productPrice">₹85,000</span>
+        <span class="pi-price-label" id="priceLabel">MRP (INR)</span>
+      </div>
+      <p class="pi-tax-note">Tax included · Insured worldwide shipping</p>
+
+      <div class="pi-availability" id="pi-avail">
+        <span class="avail-dot"></span>
+        <span id="pi-avail-text">Available · Ships in 4-6 weeks with archival packaging</span>
+      </div>
+
+      <div class="pi-divider"></div>
+
+      <!-- Frame option -->
+      <div class="option-group">
+        <div class="option-label">
+          Frame
+          <a href="contact.html">Custom framing enquiry →</a>
+        </div>
+        <div class="option-pills">
+          <button class="option-pill active" onclick="selectPill(this,'frame')">Unframed</button>
+          <button class="option-pill" onclick="selectPill(this,'frame')">Framed · Teak</button>
+          <button class="option-pill" onclick="selectPill(this,'frame')">Framed · Walnut</button>
+        </div>
+      </div>
+
+      <!-- COA option -->
+      <div class="option-group">
+        <div class="option-label">Certificate of Authenticity</div>
+        <div class="option-pills">
+          <button class="option-pill active">Included · Digital + Physical</button>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="cta-stack">
+        <button class="btn-primary" id="addToCartBtn" onclick="addToCart()">Purchase This Work</button>
+        <a class="btn-secondary" href="contact.html#connect-with-artist">Connect with Artist</a>
+      </div>
+
+      <!-- Ships in -->
+      <div class="ships-in">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        Ships in 4-6 weeks. Archival foam packaging, fully insured
+      </div>
+
+      <!-- Trust badges -->
+      <div class="trust-badges" id="trustBadges">
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <span>Original<br/>Work</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+          </svg>
+          <span>Certified<br/>Authentic</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+          </svg>
+          <span>Ships<br/>Worldwide</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <span>Secure<br/>Payment</span>
+        </div>
+      </div>
+
+      <!-- Accordion -->
+      <div class="accordion">
+        <div class="accordion-item open">
+          <button class="acc-trigger" onclick="toggleAcc(this)">
+            About the Work
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body">
+            <div class="acc-content" id="aboutWorkContent">
+              Painted during the first rains of the 2024 season. The ink moved the way the sky felt: unrushed and inevitable. Rashmi worked on this piece across three consecutive mornings, letting the composition evolve without interference. The soft bloom of indigo at the lower third was entirely unplanned.<br /><br />
+              <em>"I put the paper down and the rain did the rest."</em>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="acc-trigger" onclick="toggleAcc(this)">
+            Dimensions &amp; Specifications
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body"><div class="acc-content">
+            <table id="dimsTable">
+              <tr><td>Dimensions</td><td>36 × 48 inches (91 × 122 cm)</td></tr>
+              <tr><td>Year</td><td>2024</td></tr>
+              <tr><td>Edition</td><td>Original · 1 of 1</td></tr>
+              <tr><td>Signature</td><td>Signed verso by the artist</td></tr>
+              <tr><td>Framed size</td><td>40 × 52 inches (adds 2″ border)</td></tr>
+              <tr><td>Weight (unframed)</td><td>Approx. 0.8 kg</td></tr>
+            </table>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="acc-trigger" onclick="toggleAcc(this)">
+            Medium &amp; Care
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body"><div class="acc-content">
+            <table id="medTable">
+              <tr><td>Medium</td><td>Alcohol Ink on Yupo Paper</td></tr>
+              <tr><td>Support</td><td>Yupo Synthetic Paper (acid-free)</td></tr>
+              <tr><td>Finish</td><td>UV-protective varnish applied</td></tr>
+              <tr><td>Light exposure</td><td>Avoid direct sunlight</td></tr>
+              <tr><td>Cleaning</td><td>Dry dusting only. Do not wet clean.</td></tr>
+              <tr><td>Longevity</td><td>100+ years with proper care</td></tr>
+            </table>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="acc-trigger" onclick="toggleAcc(this)">
+            Shipping &amp; Returns
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body"><div class="acc-content">
+            Each painting is rolled into an archival tube or flat-packed in foam-lined crating depending on size. All shipments are fully insured and tracked.<br/><br/>
+            <table>
+              <tr><td>Preparation</td><td>4-6 weeks</td></tr>
+              <tr><td>India delivery</td><td>3-5 days after dispatch</td></tr>
+              <tr><td>International</td><td>7-14 days after dispatch</td></tr>
+              <tr><td>Returns</td><td>All sales final. Commissions non-refundable.</td></tr>
+            </table>
+          </div></div>
+        </div>
+        <div class="accordion-item">
+          <button class="acc-trigger" onclick="toggleAcc(this)">
+            Certificate of Authenticity
+            <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body"><div class="acc-content">
+            Every original work ships with a hand-signed physical certificate, embossed with the studio seal, catalogued with a unique registration number. A digital PDF version is emailed for insurance and resale purposes.<br/><br/>
+            The certificate documents: title, year, medium, dimensions, edition status, and provenance history.
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- -- RELATED WORKS -- -->
+  <section class="related">
+    <div class="related-header">
+      <h2 class="related-title">From the Same Series</h2>
+      <a href="collections.html" class="related-link">View All Works →</a>
+    </div>
+    <div class="related-grid" id="relGrid">
+      <!-- Populated dynamically by buildRelated() -->
+    </div>
+  </section>
+
+  <!-- -- FOOTER -- -->
+  <footer class="pp-footer">
+    <div class="pp-footer-grid">
+      <div>
+        <div class="pp-ft-brand">Rashmi Rao Designs</div>
+        <p class="pp-ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+      </div>
+      <div>
+        <p class="pp-ft-hd">Collections</p>
+        <ul class="pp-ft-links">
+          <li><a href="collections.html">All Works</a></li>
+          <li><a href="collections.html">Alcohol Ink</a></li>
+          <li><a href="collections.html">Wearable Art</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pp-ft-hd">Studio</p>
+        <ul class="pp-ft-links">
+          <li><a href="about.html">About Rashmi</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="pp-ft-hd">Enquiries</p>
+        <ul class="pp-ft-links">
+          <li><a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a></li>
+          <li><a href="contact.html">Commission</a></li>
+          <li><a href="contact.html">Licensing</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pp-ft-bottom">
+      <span>&copy; 2025 Rashmi Rao Designs. All rights reserved.</span>
+      <span>Privacy Policy &middot; Terms of Service</span>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Added to cart</div>
+
+  <!-- Currency module -->
+  <script src="site.js" defer></script>
+  <script src="currency.js" onerror="console.warn('currency.js not found - using INR defaults')"></script>
+
+  <!-- ------------------------------------
+       FRAMER MOTION v11 - Vanilla JS / ESM
+       ------------------------------------ -->
+  <script type="module">
+    import { animate, inView, stagger } from
+      'https://cdn.jsdelivr.net/npm/framer-motion@11.3.31/+esm'
+
+    /* -------------------------------------------
+       ALL PRODUCTS - add more products here to scale
+       ------------------------------------------- */
+    const PRODUCTS = {
+      'monsoon-dream': {
+        title: 'Monsoon Dream',
+        category: 'Alcohol Ink · Original Work',
+        medium: 'Alcohol Ink on Yupo Paper · 36 × 48 inches · 2024',
+        priceInr: 85000,
+        sold: false,
+        badge: 'New Work · 2024',
+        edition: 'Original · 1 of 1 · Certificate Included',
+        description: 'Painted during the first rains of the 2024 season. The ink moved the way the sky felt: unrushed and inevitable. Rashmi worked on this piece across three consecutive mornings, letting the composition evolve without interference. The soft bloom of indigo at the lower third was entirely unplanned.',
+        quote: '"I put the paper down and the rain did the rest."',
+        specs: { 'Dimensions':'36 × 48 inches (91 × 122 cm)', 'Year':'2024', 'Edition':'Original · 1 of 1', 'Signature':'Signed verso by the artist', 'Framed size':'40 × 52 inches (adds 2″ border)', 'Weight (unframed)':'Approx. 0.8 kg' },
+        mediumSpecs: { 'Medium':'Alcohol Ink on Yupo Paper', 'Support':'Yupo Synthetic Paper (acid-free)', 'Finish':'UV-protective varnish applied', 'Light exposure':'Avoid direct sunlight', 'Cleaning':'Dry dusting only. Do not wet clean.', 'Longevity':'100+ years with proper care' },
+        related: ['crimson-solitude','the-blue-hour','whispers-of-ochre','monsoon-saree'],
+        images: [
+          { src:'images/hero-beach.jpg', thumb:'images/hero-beach.jpg', fallback:'images/hero-beach.jpg', thumbFallback:'images/hero-beach.jpg', alt:'Monsoon Dream, full view' },
+          { src:'images/collection-ink.jpg', thumb:'images/collection-ink.jpg', fallback:'images/collection-ink.jpg', thumbFallback:'images/collection-ink.jpg', alt:'Detail, upper bloom' },
+          { src:'images/collection-wearable.jpg', thumb:'images/collection-wearable.jpg', fallback:'images/collection-wearable.jpg', thumbFallback:'images/collection-wearable.jpg', alt:'Mid section detail' },
+          { src:'images/collection-original.jpg', thumb:'images/collection-original.jpg', fallback:'images/collection-original.jpg', thumbFallback:'images/collection-original.jpg', alt:'Studio context' },
+          { src:'images/wearable-2.jpg', thumb:'images/wearable-2.jpg', fallback:'images/wearable-2.jpg', thumbFallback:'images/wearable-2.jpg', alt:'Signature detail' },
+        ],
+      },
+      'crimson-solitude': {
+        title: 'Crimson Solitude',
+        category: 'Abstract Acrylic · Original Work',
+        medium: 'Abstract Acrylic on Canvas · 24 × 36 inches · 2023',
+        priceInr: 65000,
+        sold: false,
+        badge: 'Available · 2023',
+        edition: 'Original · 1 of 1 · Certificate Included',
+        description: 'A meditation on stillness. Deep crimson layered with raw umber and zinc white, scraped and rebuilt over three weeks. There is a particular red that appears only in solitude, when the noise falls away and all that remains is the raw truth of the moment.',
+        quote: '"There is a particular red that appears only in solitude."',
+        specs: { 'Dimensions':'24 × 36 inches (61 × 91 cm)', 'Year':'2023', 'Edition':'Original · 1 of 1', 'Signature':'Signed verso by the artist', 'Framed size':'28 × 40 inches (adds 2″ border)', 'Weight (unframed)':'Approx. 1.2 kg' },
+        mediumSpecs: { 'Medium':'Abstract Acrylic on Canvas', 'Support':'Gallery-wrapped linen canvas', 'Finish':'Satin UV varnish', 'Light exposure':'Moderate indirect light acceptable', 'Cleaning':'Dry dusting only', 'Longevity':'100+ years with proper care' },
+        related: ['monsoon-dream','the-blue-hour','whispers-of-ochre','monsoon-saree'],
+        images: [
+          { src:'images/collection-ink.jpg', thumb:'images/collection-ink.jpg', fallback:'images/collection-ink.jpg', thumbFallback:'images/collection-ink.jpg', alt:'Crimson Solitude, full view' },
+          { src:'images/collection-original.jpg', thumb:'images/collection-original.jpg', fallback:'images/collection-original.jpg', thumbFallback:'images/collection-original.jpg', alt:'Texture detail' },
+          { src:'images/wearable-2.jpg', thumb:'images/wearable-2.jpg', fallback:'images/wearable-2.jpg', thumbFallback:'images/wearable-2.jpg', alt:'Side profile' },
+          { src:'images/story-1.jpg', thumb:'images/story-1.jpg', fallback:'images/story-1.jpg', thumbFallback:'images/story-1.jpg', alt:'In situ' },
+        ],
+      },
+      'whispers-of-ochre': {
+        title: 'Whispers of Ochre',
+        category: 'Mixed Media · Sold',
+        medium: 'Mixed Media on Canvas · 30 × 40 inches · 2024',
+        priceInr: 72000,
+        sold: true,
+        badge: 'Sold · 2024',
+        edition: 'Original · 1 of 1 · Commission Similar Available',
+        description: 'Earth tones layered with gold leaf and graphite. The ochres of Rajasthan, layered over decades of memory, compressed into paint. Commission a similar work or inquire about prints.',
+        quote: '"Some works paint themselves."',
+        specs: { 'Dimensions':'30 × 40 inches (76 × 102 cm)', 'Year':'2024', 'Edition':'Original · 1 of 1 · Sold', 'Signature':'Signed verso by the artist', 'Provenance':'Private collection, Mumbai' },
+        mediumSpecs: { 'Medium':'Mixed Media: Acrylic, Gold Leaf, Graphite', 'Support':'Gallery-wrapped linen canvas', 'Finish':'Matte protective varnish', 'Light exposure':'Moderate indirect light acceptable', 'Cleaning':'Dry dusting only', 'Longevity':'100+ years with proper care' },
+        related: ['monsoon-dream','crimson-solitude','the-blue-hour','monsoon-saree'],
+        images: [
+          { src:'images/collection-original.jpg', thumb:'images/collection-original.jpg', fallback:'images/collection-original.jpg', thumbFallback:'images/collection-original.jpg', alt:'Whispers of Ochre, full view' },
+          { src:'images/collection-ink.jpg', thumb:'images/collection-ink.jpg', fallback:'images/collection-ink.jpg', thumbFallback:'images/collection-ink.jpg', alt:'Gold leaf detail' },
+          { src:'images/story-2.jpg', thumb:'images/story-2.jpg', fallback:'images/story-2.jpg', thumbFallback:'images/story-2.jpg', alt:'Surface texture' },
+        ],
+      },
+      'the-blue-hour': {
+        title: 'The Blue Hour',
+        category: 'Alcohol Ink · Original Work',
+        medium: 'Alcohol Ink on Yupo Paper · 40 × 52 inches · 2024',
+        priceInr: 92000,
+        sold: false,
+        badge: 'Available · 2024',
+        edition: 'Original · 1 of 1 · Certificate Included',
+        description: 'The largest work from the Monsoon Series. Blues and indigos flowing outward from a single point of white light. Painted at dusk across two consecutive evenings. The light changed and the painting changed with it.',
+        quote: '"The light changed. The painting changed with it."',
+        specs: { 'Dimensions':'40 × 52 inches (102 × 132 cm)', 'Year':'2024', 'Edition':'Original · 1 of 1', 'Signature':'Signed verso by the artist', 'Framed size':'44 × 56 inches (adds 2″ border)', 'Weight (unframed)':'Approx. 0.9 kg' },
+        mediumSpecs: { 'Medium':'Alcohol Ink on Yupo Paper', 'Support':'Yupo Synthetic Paper (acid-free)', 'Finish':'UV-protective varnish applied', 'Light exposure':'Avoid direct sunlight', 'Cleaning':'Dry dusting only', 'Longevity':'100+ years with proper care' },
+        related: ['monsoon-dream','crimson-solitude','whispers-of-ochre','monsoon-saree'],
+        images: [
+          { src:'images/collection-wearable.jpg', thumb:'images/collection-wearable.jpg', fallback:'images/collection-wearable.jpg', thumbFallback:'images/collection-wearable.jpg', alt:'The Blue Hour, full view' },
+          { src:'images/hero-beach.jpg', thumb:'images/hero-beach.jpg', fallback:'images/hero-beach.jpg', thumbFallback:'images/hero-beach.jpg', alt:'Indigo bloom detail' },
+          { src:'images/collection-original.jpg', thumb:'images/collection-original.jpg', fallback:'images/collection-original.jpg', thumbFallback:'images/collection-original.jpg', alt:'Light point origin' },
+          { src:'images/story-1.jpg', thumb:'images/story-1.jpg', fallback:'images/story-1.jpg', thumbFallback:'images/story-1.jpg', alt:'In studio' },
+        ],
+      },
+      'monsoon-saree': {
+        title: 'Monsoon Saree No. 3',
+        category: 'Wearable Art · Limited Edition',
+        medium: 'Archival Print on Pure Georgette · 5.5 m · 2024',
+        priceInr: 18500,
+        sold: false,
+        badge: 'Limited · 3 of 8',
+        edition: 'Edition 3 of 8 · Certificate Included',
+        description: 'The Monsoon Dream painting adapted for pure georgette. Archival ink pigments are set using a cold-press process, preserving the translucency of the original. Each saree is hand-numbered and shipped with a certificate of authenticity.',
+        quote: '"A painting you can wear."',
+        specs: { 'Length':'5.5 metres', 'Fabric':'Pure Georgette', 'Edition':'3 of 8, 5 remaining', 'Process':'Archival cold-press pigment print', 'Blouse piece':'Not included', 'Care label':'Attached' },
+        mediumSpecs: { 'Ink':'Archival UV-resistant pigments', 'Wash':'Dry clean only', 'Light exposure':'Avoid prolonged direct sunlight', 'Storage':'Roll loosely in acid-free tissue', 'Ironing':'Reverse-side, cool iron only' },
+        related: ['monsoon-dream','crimson-solitude','the-blue-hour','whispers-of-ochre'],
+        images: [
+          { src:'images/wearable-2.jpg', thumb:'images/wearable-2.jpg', fallback:'images/wearable-2.jpg', thumbFallback:'images/wearable-2.jpg', alt:'Monsoon Saree No. 3, full drape' },
+          { src:'images/collection-wearable.jpg', thumb:'images/collection-wearable.jpg', fallback:'images/collection-wearable.jpg', thumbFallback:'images/collection-wearable.jpg', alt:'Border detail' },
+          { src:'images/hero-beach.jpg', thumb:'images/hero-beach.jpg', fallback:'images/hero-beach.jpg', thumbFallback:'images/hero-beach.jpg', alt:'Print detail close-up' },
+          { src:'images/story-3.jpg', thumb:'images/story-3.jpg', fallback:'images/story-3.jpg', thumbFallback:'images/story-3.jpg', alt:'Colour detail' },
+        ],
+      },
+    }
+
+    /* ----------- LOAD PRODUCT FROM URL PARAM ----------- */
+    const params  = new URLSearchParams(window.location.search)
+    const pid     = params.get('id') || 'monsoon-dream'
+    const P       = PRODUCTS[pid] || PRODUCTS['monsoon-dream']
+    const IMAGES  = P.images
+
+    /* ----------- POPULATE ALL PAGE ELEMENTS FROM PRODUCT DATA ----------- */
+    function populatePage() {
+      // <title>
+      document.title = P.title + ' | Rashmi Rao Designs'
+
+      // Breadcrumb
+      const bc = document.getElementById('breadcrumbTitle')
+      if (bc) bc.textContent = P.title
+
+      // Image badge
+      const imgBadge = document.getElementById('imgBadge')
+      if (imgBadge) imgBadge.textContent = P.badge
+
+      // Main image alt
+      const mainImg = document.getElementById('mainImg')
+      if (mainImg) mainImg.alt = P.title + ' by Rashmi Rao'
+
+      // Category, title, medium
+      const piCat = document.getElementById('pi-cat')
+      if (piCat) piCat.textContent = P.category
+      const piTitle = document.getElementById('pi-title')
+      if (piTitle) piTitle.textContent = P.title
+      const piMed = document.getElementById('pi-med')
+      if (piMed) piMed.textContent = P.medium
+
+      // Edition badge
+      const piEdText = document.getElementById('pi-edition-text')
+      if (piEdText) piEdText.textContent = P.edition
+
+      // Price (currency.js may override - we set the raw INR value)
+      const priceEl = document.getElementById('productPrice')
+      if (priceEl) {
+        priceEl.dataset.inr = P.priceInr
+        priceEl.textContent = '₹' + P.priceInr.toLocaleString('en-IN')
+      }
+
+      // Availability
+      const availText = document.getElementById('pi-avail-text')
+      const availDot  = document.querySelector('#pi-avail .avail-dot')
+      if (P.sold) {
+        if (availText) availText.textContent = 'Sold · Commission a similar work'
+        if (availDot) availDot.style.background = 'var(--rust, #7a5248)'
+        // Disable add-to-cart
+        const cartBtn = document.getElementById('addToCartBtn')
+        if (cartBtn) { cartBtn.disabled = true; cartBtn.textContent = 'Sold' }
+      } else {
+        if (availText) availText.textContent = 'Available · Ships in 4-6 weeks with archival packaging'
+      }
+
+      // About the Work accordion content
+      const aboutContent = document.getElementById('aboutWorkContent')
+      if (aboutContent) {
+        aboutContent.innerHTML = P.description + '<br /><br /><em>' + P.quote + '</em>'
+      }
+
+      // Dimensions & Specifications table
+      const dimsTable = document.getElementById('dimsTable')
+      if (dimsTable && P.specs) {
+        dimsTable.innerHTML = Object.entries(P.specs)
+          .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')
+      }
+
+      // Medium & Care table
+      const medTable = document.getElementById('medTable')
+      if (medTable && P.mediumSpecs) {
+        medTable.innerHTML = Object.entries(P.mediumSpecs)
+          .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')
+      }
+
+      // Related works grid - dynamic from P.related
+      buildRelated()
+    }
+
+    /* ----------- BUILD RELATED GRID ----------- */
+    // Thumbnail images for related cards - using product first image
+    function buildRelated() {
+      const grid = document.getElementById('relGrid')
+      if (!grid) return
+      grid.innerHTML = ''
+      const relIds = P.related || []
+      relIds.forEach(relId => {
+        const rel = PRODUCTS[relId]
+        if (!rel) return
+        const firstImg = rel.images[0]
+        const priceStr = rel.sold
+          ? '₹' + rel.priceInr.toLocaleString('en-IN') + ' (Sold)'
+          : '₹' + rel.priceInr.toLocaleString('en-IN')
+        const card = document.createElement('div')
+        card.className = 'rel-card'
+        card.setAttribute('onclick', `location.href='product.html?id=${relId}'`)
+        card.innerHTML = `
+          <div class="rel-img-wrap">
+            <img data-src="${firstImg.src}" data-fallback="${firstImg.fallback}" alt="${rel.title}" />
+          </div>
+          <p class="rel-medium">${rel.category}</p>
+          <h3 class="rel-title">${rel.title}</h3>
+          <p class="rel-price${rel.sold ? ' sold' : ''}" data-inr="${rel.priceInr}">${priceStr}</p>
+        `
+        grid.appendChild(card)
+      })
+    }
+
+    // Run population immediately
+    populatePage()
+
+    let currentIdx = 0
+    let isTransitioning = false
+
+    /* ----------- BUILD GALLERY ----------- */
+    function buildGallery() {
+      const strip = document.getElementById('thumbStrip')
+      const dots  = document.getElementById('gDots')
+
+      IMAGES.forEach((img, i) => {
+        // Thumbnail
+        const t = document.createElement('div')
+        t.className = 'thumb' + (i === 0 ? ' active' : '')
+        t.innerHTML = `
+          <div class="thumb-fallback">${i + 1}</div>
+          <img alt="${img.alt}" loading="${i === 0 ? 'eager' : 'lazy'}" />
+        `
+        const tImg = t.querySelector('img')
+        loadImage(tImg, img.thumb, img.thumbFallback)
+        t.addEventListener('click', () => goTo(i))
+        strip.appendChild(t)
+
+        // Dot
+        const d = document.createElement('span')
+        d.className = 'g-dot' + (i === 0 ? ' active' : '')
+        d.addEventListener('click', () => goTo(i))
+        dots.appendChild(d)
+      })
+
+      // Load first main image
+      loadMainImage(0)
+    }
+
+    /* ----------- BULLETPROOF IMAGE LOADER ----------- */
+    function loadImage(imgEl, src, fallbackSrc) {
+      const img = new Image()
+      img.onload = () => {
+        imgEl.src = src
+        requestAnimationFrame(() => imgEl.classList.add('loaded'))
+      }
+      img.onerror = () => {
+        if (fallbackSrc) {
+          const img2 = new Image()
+          img2.onload = () => {
+            imgEl.src = fallbackSrc
+            requestAnimationFrame(() => imgEl.classList.add('loaded'))
+          }
+          img2.onerror = () => { /* stays as gradient placeholder */ }
+          img2.src = fallbackSrc
+        }
+      }
+      img.src = src
+    }
+
+    function loadMainImage(idx) {
+      const mainImg   = document.getElementById('mainImg')
+      const shimmer   = document.getElementById('shimmer')
+      const errLabel  = document.getElementById('mainErrLabel')
+      const imgData   = IMAGES[idx]
+
+      // Reset state
+      mainImg.classList.remove('loaded')
+      errLabel.classList.remove('show')
+      shimmer.classList.remove('hidden')
+
+      const tryLoad = (src, isFallback) => {
+        const probe = new Image()
+        probe.onload = () => {
+          mainImg.src = src
+          mainImg.alt = imgData.alt
+          // Fade in with Framer Motion
+          mainImg.onload = () => {
+            shimmer.classList.add('hidden')
+            animate(mainImg, { opacity: [0, 1] }, { duration: 0.45, ease: 'easeOut' })
+              .then(() => mainImg.classList.add('loaded'))
+          }
+        }
+        probe.onerror = () => {
+          if (!isFallback && imgData.fallback) {
+            tryLoad(imgData.fallback, true)
+          } else {
+            // Both failed - show placeholder, hide shimmer
+            shimmer.classList.add('hidden')
+            errLabel.classList.add('show')
+          }
+        }
+        probe.src = src
+      }
+
+      tryLoad(imgData.src, false)
+    }
+
+    /* ----------- GALLERY NAVIGATION ----------- */
+    window.goTo = function(idx) {
+      if (isTransitioning || idx === currentIdx) return
+      isTransitioning = true
+      const mainImg = document.getElementById('mainImg')
+
+      // Framer Motion: slide out current
+      animate(mainImg, { opacity: 0, x: idx > currentIdx ? -18 : 18 }, {
+        duration: 0.22, ease: 'easeIn',
+      }).then(() => {
+        // Reset position
+        animate(mainImg, { x: idx > currentIdx ? 18 : -18 }, { duration: 0 })
+        currentIdx = idx
+        loadMainImage(idx)
+        // Slide in
+        animate(mainImg, { x: 0 }, { duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] })
+        updateActiveStates()
+        isTransitioning = false
+      })
+    }
+
+    window.galleryPrev = () => goTo((currentIdx - 1 + IMAGES.length) % IMAGES.length)
+    window.galleryNext = () => goTo((currentIdx + 1) % IMAGES.length)
+
+    function updateActiveStates() {
+      document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === currentIdx))
+      document.querySelectorAll('.g-dot').forEach((d, i) => d.classList.toggle('active', i === currentIdx))
+    }
+
+    /* ----------- ZOOM ----------- */
+    const mainWrap = document.getElementById('mainWrap')
+    mainWrap.addEventListener('click', e => {
+      // The arrows and dot indicators sit inside the zoom target. Without this
+      // guard, paging through the gallery also toggled zoom on every click.
+      if (e.target.closest('.g-arrow, .g-dots')) return
+      const zoomed = mainWrap.classList.toggle('zoomed')
+      if (zoomed) {
+        const r = mainWrap.getBoundingClientRect()
+        mainWrap.style.setProperty('--ox', ((e.clientX - r.left) / r.width * 100) + '%')
+        mainWrap.style.setProperty('--oy', ((e.clientY - r.top)  / r.height * 100) + '%')
+      }
+    })
+    mainWrap.addEventListener('mousemove', e => {
+      if (!mainWrap.classList.contains('zoomed')) return
+      const r = mainWrap.getBoundingClientRect()
+      mainWrap.style.setProperty('--ox', ((e.clientX - r.left) / r.width * 100) + '%')
+      mainWrap.style.setProperty('--oy', ((e.clientY - r.top)  / r.height * 100) + '%')
+    })
+
+    /* ----------- KEYBOARD NAV ----------- */
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft')  galleryPrev()
+      if (e.key === 'ArrowRight') galleryNext()
+      if (e.key === 'Escape' && mainWrap.classList.contains('zoomed'))
+        mainWrap.classList.remove('zoomed')
+    })
+
+    /* ----------- LAZY LOAD RELATED IMAGES ----------- */
+    function lazyLoadRelated() {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target
+            const src = img.dataset.src
+            if (src) {
+              const probe = new Image()
+              probe.onload = () => {
+                img.src = src
+                requestAnimationFrame(() => img.classList.add('loaded'))
+              }
+              probe.onerror = () => { /* gradient fallback shows */ }
+              probe.src = src
+              obs.unobserve(img)
+            }
+          }
+        })
+      }, { rootMargin: '200px' })
+
+      document.querySelectorAll('.rel-img-wrap img[data-src]').forEach(img => obs.observe(img))
+    }
+
+    /* ------------------------------------
+       ENTRANCE ANIMATIONS
+       Every element below is visible by default in CSS. It is hidden
+       here, in JS, only once the animation library has actually loaded.
+       If the CDN is blocked the page still renders in full.
+       ------------------------------------ */
+    const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!REDUCE) {
+      // Hide entrance targets now that `animate` is confirmed available
+      document.querySelectorAll(
+        '#breadcrumb, #gallery, #productInfo, .trust-badge, .rel-card'
+      ).forEach(el => { el.style.opacity = '0' })
+
+      // Orient the viewer: breadcrumb, then the work, then the details
+      animate('#breadcrumb', { opacity: [0, 1], y: [-8, 0] },
+        { duration: 0.5, delay: 0.1, ease: 'easeOut' })
+
+      animate('#gallery', { opacity: [0, 1], x: [-32, 0] },
+        { duration: 0.7, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] })
+
+      animate('#productInfo', { opacity: [0, 1], x: [28, 0] },
+        { duration: 0.65, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] })
+
+      // Trust marks earn attention as the buyer reaches the decision point
+      inView('#trustBadges', () => {
+        animate('.trust-badge', { opacity: [0, 1], y: [14, 0] },
+          { delay: stagger(0.09), duration: 0.5, ease: 'easeOut' })
+      }, { margin: '-10% 0px' })
+
+      inView('#relGrid', () => {
+        animate('.rel-card', { opacity: [0, 1], y: [24, 0] },
+          { delay: stagger(0.1), duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] })
+      }, { margin: '-5% 0px' })
+    }
+
+    // Safety net: nothing stays invisible for longer than 4s
+    setTimeout(() => {
+      document.querySelectorAll(
+        '#breadcrumb, #gallery, #productInfo, .trust-badge, .rel-card'
+      ).forEach(el => { el.style.opacity = '1' })
+    }, 4000)
+
+    /* ----------- BUTTON PRESS ANIMATIONS ----------- */
+    const addCartBtn = document.getElementById('addToCartBtn')
+    addCartBtn.addEventListener('mousedown', () =>
+      animate(addCartBtn, { scale: 0.97 }, { duration: 0.1 }))
+    addCartBtn.addEventListener('mouseup', () =>
+      animate(addCartBtn, { scale: 1 }, { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }))
+    addCartBtn.addEventListener('mouseleave', () =>
+      animate(addCartBtn, { scale: 1 }, { duration: 0.15 }))
+
+    /* ----------- TOAST ----------- */
+    window.showToast = function(msg) {
+      const t = document.getElementById('toast')
+      t.textContent = msg
+      animate(t, { opacity: [0, 1], y: [20, 0] }, { duration: 0.3, ease: [0.34, 1.56, 0.64, 1] })
+      setTimeout(() =>
+        animate(t, { opacity: [1, 0], y: [0, 10] }, { duration: 0.25, ease: 'easeIn' })
+      , 2600)
+    }
+
+    /* ----------- CART ----------- */
+    let cartCount = 0
+    window.addToCart = function() {
+      cartCount++
+      const countEl = document.getElementById('cartCount')
+      countEl.textContent = cartCount
+      animate(countEl, { scale: [1, 1.5, 1] },
+        { duration: 0.35, ease: [0.34, 1.56, 0.64, 1] })
+      showToast(P.title + ' added to cart')
+    }
+
+    /* ----------- OPTIONS ----------- */
+    window.selectPill = function(btn, group) {
+      btn.closest('.option-pills').querySelectorAll('.option-pill')
+        .forEach(p => p.classList.remove('active'))
+      btn.classList.add('active')
+      animate(btn, { scale: [0.95, 1] }, { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] })
+    }
+
+    /* ----------- ACCORDION ----------- */
+    window.toggleAcc = function(trigger) {
+      const item = trigger.parentElement
+      item.classList.toggle('open')
+    }
+
+    /* ----------- CURRENCY ----------- */
+    const PRICE_INR = P.priceInr
+
+    function updatePrices() {
+      if (window.formatPrice) {
+        document.getElementById('productPrice').textContent = window.formatPrice(PRICE_INR)
+        const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD'
+        document.getElementById('priceLabel').textContent = isUsd ? 'MRP (USD)' : 'MRP (INR)'
+        document.querySelectorAll('.rel-price[data-inr]').forEach(el => {
+          const inr = parseInt(el.dataset.inr)
+          const isSold = el.classList.contains('sold')
+          el.textContent = window.formatPrice(inr) + (isSold ? ' (Sold)' : '')
+        })
+      }
+    }
+
+    if (window.initCurrency) window.initCurrency()
+    const poll = setInterval(() => {
+      if (window.formatPrice) { updatePrices(); clearInterval(poll) }
+    }, 80)
+    document.addEventListener('click', e => {
+      if (e.target.closest('.toggle-track')) {
+        // Micro-animation: flash price out → update → fade back in
+        const priceEl = document.getElementById('productPrice')
+        if (priceEl) {
+          priceEl.classList.add('price-switching')
+          setTimeout(() => {
+            updatePrices()
+            priceEl.classList.remove('price-switching')
+          }, 180)
+        } else {
+          setTimeout(updatePrices, 50)
+        }
+      }
+    })
+
+    /* ----------- INIT ----------- */
+    buildGallery()
+    lazyLoadRelated()
+
+  </script>
+</body>
+</html>

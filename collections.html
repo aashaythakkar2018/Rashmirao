@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collections | Rashmi Rao Designs</title>
+<meta name="description" content="Original paintings, alcohol ink works, wearable art, and limited-edition prints by Rashmi Rao. Browse the full collection.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root {
+  --bg:       #FAF8F5;
+  --white:    #FFFFFF;
+  --text:     #111111;
+  --muted:    #6B6B6B;
+  --beige:    #E9E3DB;
+  --olive:    #6D7550;
+  --olive-dk: #5a6142;
+  --gold:     #C9A84C;
+  --dark:     #111111;
+  --rust:     #7a5248;
+
+  --ff-serif: 'Cormorant Garamond', Georgia, serif;
+  --ff-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ff-mono:  'DM Mono', 'Courier New', monospace;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-sans);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+.rv { /* intentionally empty - GSAP sets opacity/y only after loading */ }
+
+/* ============================================================
+   ANNOUNCEMENT BAR
+============================================================ */
+.ann {
+  background: var(--rust); color: #FAF8F5;
+  text-align: center; padding: 11px 48px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 400; position: relative;
+  z-index: 500; height: 42px; overflow: hidden;
+}
+.ann-close {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(250,248,245,0.55); font-size: 20px;
+  line-height: 1; transition: color .2s; padding: 4px 8px;
+}
+.ann-close:hover { color: #FAF8F5; }
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+.nav {
+  position: fixed; left: 0; right: 0; top: 42px;
+  z-index: 400;
+  background: rgba(250,248,245,0.96);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(17,17,17,0.08);
+  transition: top .35s;
+}
+.nav.no-ann { top: 0; }
+.nav-inner {
+  max-width: 1440px; margin: 0 auto; padding: 0 52px;
+  height: 72px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--ff-serif); font-size: 18px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); white-space: nowrap;
+}
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-family: var(--ff-sans); font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted); font-weight: 400;
+  transition: color .25s; position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform .3s ease;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); transform-origin: left; }
+/* -- CURRENCY TOGGLE (shared with index.html) -- */
+.currency-toggle {
+  display: flex; align-items: center; gap: 7px;
+}
+.curr-lbl {
+  font-family: var(--ff-mono); font-size: 11px;
+  letter-spacing: .08em; color: var(--muted);
+  transition: color .25s; user-select: none; line-height: 1;
+}
+.curr-lbl.active { color: var(--text); }
+.toggle-track {
+  position: relative; width: 36px; height: 20px;
+  background: var(--beige); border-radius: 10px; cursor: pointer;
+  border: 1px solid rgba(17,17,17,0.14);
+  transition: background .28s, border-color .28s;
+  flex-shrink: 0;
+}
+.toggle-track.usd { background: var(--olive); border-color: var(--olive); }
+.toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: var(--white); border-radius: 50%;
+  transition: transform .28s cubic-bezier(.25,.46,.45,.94);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2); pointer-events: none;
+}
+.toggle-track.usd .toggle-thumb { transform: translateX(16px); }
+
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+.nav-icon-btn {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--muted); font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; transition: color .25s;
+}
+.nav-icon-btn:hover { color: var(--text); }
+.cart-badge {
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-mono); font-size: 9px;
+  width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-burger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+.nav-burger span { display: block; width: 22px; height: 1.5px; background: var(--text); border-radius: 2px; }
+
+/* ============================================================
+   SHARED UTILITIES
+============================================================ */
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 60px; }
+.section { padding: 100px 0; }
+.eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px; display: block;
+}
+
+.btn-olive {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--olive); color: #fff;
+  padding: 14px 30px; font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  border: 2px solid var(--olive); cursor: pointer;
+  transition: background .25s, transform .2s;
+}
+.btn-olive:hover { background: var(--olive-dk); border-color: var(--olive-dk); transform: translateY(-2px); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 30px; font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  color: var(--text); border: 1px solid rgba(17,17,17,0.22);
+  background: none; cursor: pointer; transition: border-color .25s;
+}
+.btn-outline:hover { border-color: var(--text); }
+
+/* ============================================================
+   1. PAGE HERO  - editorial split
+============================================================ */
+.page-hero {
+  padding-top: 156px; padding-bottom: 56px;
+  background: var(--white);
+  border-bottom: 1px solid var(--beige);
+}
+.hero-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: flex-end;
+}
+.hero-left {}
+.hero-sup {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 20px; display: block;
+}
+.hero-h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(56px, 6vw, 96px);
+  font-weight: 400; line-height: 0.96;
+  color: var(--text); letter-spacing: -.02em;
+}
+.hero-h1 em { font-style: italic; font-weight: 300; color: var(--olive); }
+.hero-right { padding-bottom: 8px; }
+.hero-desc {
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 300; color: var(--muted); line-height: 1.85;
+  margin-bottom: 32px; max-width: 360px;
+}
+.hero-stats {
+  display: flex; gap: 44px;
+  padding-top: 28px; border-top: 1px solid var(--beige);
+}
+.hero-stat-n {
+  font-family: var(--ff-serif); font-size: 38px;
+  font-weight: 400; color: var(--text); display: block; line-height: 1;
+}
+.hero-stat-l {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-top: 6px;
+}
+
+/* ============================================================
+   2. FILTER BAR - animated indicator (ln-dev7 pattern)
+============================================================ */
+.filter-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--beige);
+  position: sticky; top: 114px; z-index: 300;
+  transition: top .35s;
+}
+.filter-bar.no-ann { top: 72px; }
+.filter-inner {
+  max-width: 1440px; margin: 0 auto; padding: 0 60px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+  height: 58px;
+}
+
+/* Tab track with animated indicator - ln-dev7 pattern */
+.tab-track {
+  position: relative; display: flex; align-items: center;
+}
+/* Animated sliding underline indicator */
+.tab-indicator {
+  position: absolute; bottom: -1px; left: 0;
+  height: 2px; background: var(--olive);
+  transition: width .32s cubic-bezier(.4,0,.2,1),
+              transform .32s cubic-bezier(.4,0,.2,1);
+  pointer-events: none; z-index: 2;
+}
+/* Hover background pill - ln-dev7 pattern */
+.tab-hover-bg {
+  position: absolute; bottom: 0; top: 0;
+  background: rgba(109,117,80,0.07); border-radius: 4px;
+  transition: width .25s cubic-bezier(.4,0,.2,1),
+              transform .25s cubic-bezier(.4,0,.2,1),
+              opacity .2s;
+  opacity: 0; pointer-events: none; z-index: 1;
+}
+
+.filter-tab {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase; font-weight: 400;
+  color: var(--muted); padding: 0 18px; height: 58px;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; position: relative; z-index: 3;
+  transition: color .22s; white-space: nowrap; background: none; border: none;
+}
+.filter-tab:hover { color: var(--text); }
+.filter-tab.active { color: var(--text); font-weight: 400; }
+.filter-tab-count {
+  font-family: var(--ff-mono); font-size: 9px;
+  background: var(--beige); color: var(--muted);
+  padding: 2px 6px; border-radius: 20px;
+  transition: background .22s, color .22s;
+}
+.filter-tab.active .filter-tab-count { background: var(--olive); color: #fff; }
+
+.filter-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.sort-select {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .1em; color: var(--muted);
+  border: 1px solid var(--beige); background: var(--bg);
+  padding: 7px 32px 7px 12px; cursor: pointer;
+  outline: none; -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237D7D7D' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  transition: border-color .25s;
+}
+.sort-select:focus { border-color: var(--olive); }
+.view-toggle { display: flex; gap: 4px; }
+.view-btn {
+  width: 32px; height: 32px; border: 1px solid var(--beige);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--muted); transition: all .2s;
+}
+.view-btn.active, .view-btn:hover { border-color: var(--text); color: var(--text); }
+
+/* ============================================================
+   3. ARTWORK GRID - 21st.dev multi-pattern
+============================================================ */
+.grid-section { background: var(--bg); padding: 56px 0 100px; }
+
+/*
+   GROUP HOVER BLUR EFFECT - lavikatiyar pattern
+   When hovering any card in the grid, non-hovered cards blur & scale down.
+   Pure CSS using :has() - no JS needed for the blur effect.
+*/
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  --tilt-transition: transform 0.2s ease-out;
+}
+
+/* Lavikatiyar blur pattern - CSS :has() */
+.artwork-grid:has(.art-card:hover) .art-card:not(:hover) {
+  opacity: 0.48;
+  filter: blur(2px);
+  transform: scale(0.97) !important;
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease !important;
+}
+.artwork-grid .art-card:hover {
+  /* Tilt is set by JS inline; ensure CSS doesn't fight it */
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* ============================================================
+   ART CARD
+============================================================ */
+.art-card {
+  position: relative; cursor: pointer;
+  will-change: transform;
+  /* Tilt transition applied by JS */
+  transform-style: preserve-3d;
+}
+.art-card.hidden { display: none; }
+
+/* varying aspect ratios for masonry feel */
+.art-card:nth-child(5n+1) .art-card-img-wrap { aspect-ratio: 3/4; }
+.art-card:nth-child(5n+2) .art-card-img-wrap { aspect-ratio: 4/5; }
+.art-card:nth-child(5n+3) .art-card-img-wrap { aspect-ratio: 3/5; }
+.art-card:nth-child(5n+4) .art-card-img-wrap { aspect-ratio: 4/4; }
+.art-card:nth-child(5n+5) .art-card-img-wrap { aspect-ratio: 3/4.5; }
+
+/* Image wrapper */
+.art-card-img-wrap {
+  position: relative; overflow: hidden;
+  background: var(--beige);
+}
+.art-card-img-wrap::before {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+}
+.art-card-img-wrap img {
+  position: relative; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.7s cubic-bezier(.25,.46,.45,.94), opacity .4s;
+}
+.art-card-img-wrap img.img-loading { opacity: 0; }
+/* gentle zoom on hover */
+.art-card:hover .art-card-img-wrap img {
+  transform: scale(1.06);
+}
+
+/*
+   ANIMATED GRADIENT BACKGROUNDS - inspired by 21st.dev Mesh Gradient (framecn #18273)
+   and Aurora Blur components. Each card gets a unique palette drawn from the artwork's
+   actual pigment tones. background-size: 300% 300% + animated position creates the
+   slow-breathing mesh-gradient effect without WebGL.
+*/
+@keyframes gradientBreath {
+  0%, 100% { background-position: 0% 30%; }
+  33%       { background-position: 100% 60%; }
+  66%       { background-position: 50% 100%; }
+}
+
+/* Card 1 - Monsoon Dream · Alcohol Ink · monsoon greens + deep olive */
+.art-card:nth-child(1) .art-card-img-wrap::before {
+  background: linear-gradient(-45deg, #c8d4c0, #8da880, #6d7550, #b0c4a0, #7a9068);
+  background-size: 300% 300%;
+  animation: gradientBreath 7s ease infinite;
+}
+/* Card 2 - Crimson Solitude · Acrylic · rust + deep umber + zinc */
+.art-card:nth-child(2) .art-card-img-wrap::before {
+  background: linear-gradient(-45deg, #d0a8a0, #9a6060, #7a5248, #c0888a, #8a4040);
+  background-size: 300% 300%;
+  animation: gradientBreath 8s ease infinite 1.2s;
+}
+/* Card 3 - Whispers of Ochre · Mixed Media · gold leaf + earth + graphite */
+.art-card:nth-child(3) .art-card-img-wrap::before {
+  background: linear-gradient(-45deg, #d8c890, #c9a84c, #9a7840, #e0d0a0, #b09050);
+  background-size: 300% 300%;
+  animation: gradientBreath 9s ease infinite 0.6s;
+}
+/* Card 4 - The Blue Hour · Alcohol Ink · blues + indigo + white light */
+.art-card:nth-child(4) .art-card-img-wrap::before {
+  background: linear-gradient(-45deg, #b8c8d8, #7890a8, #607090, #c0d0e0, #8098b0);
+  background-size: 300% 300%;
+  animation: gradientBreath 10s ease infinite 2s;
+}
+/* Card 5 - Monsoon Saree No. 3 · Wearable · warm violet + blush + deep rose */
+.art-card:nth-child(5) .art-card-img-wrap::before {
+  background: linear-gradient(-45deg, #d8b8c8, #b090a8, #907080, #e0c0d0, #c098b0);
+  background-size: 300% 300%;
+  animation: gradientBreath 7.5s ease infinite 1.8s;
+}
+
+/*
+   SHIMMER SKELETON - 21st.dev Shimmer Skeleton (corr #19368) pattern
+   Sweeping light stripe across the card placeholder while the image loads.
+   Vanilla CSS equivalent of the framer-motion translateX animation.
+   Fades out when image finishes loading (.loaded class added by JS).
+*/
+@keyframes shimmerSweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(450%); }
+}
+.img-shimmer {
+  position: absolute; inset: 0; z-index: 2;
+  overflow: hidden;
+  transition: opacity 0.7s ease 0.1s;
+  pointer-events: none;
+}
+.img-shimmer::after {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 28%; height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.20) 45%,
+    rgba(255,255,255,0.28) 50%,
+    rgba(255,255,255,0.20) 55%,
+    transparent 100%
+  );
+  animation: shimmerSweep 1.9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.img-shimmer.loaded {
+  opacity: 0;
+}
+/* Respect prefers-reduced-motion for shimmer */
+@media (prefers-reduced-motion: reduce) {
+  .img-shimmer::after { animation: none; }
+  .art-card:nth-child(n) .art-card-img-wrap::before { animation: none; }
+}
+
+/*
+   CURSOR-FOLLOWING SPOTLIGHT - tom_ui TiltCard pattern
+   Radial gradient that tracks the mouse inside the card.
+*/
+.card-spotlight {
+  pointer-events: none; position: absolute;
+  width: 240%; height: 240%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 40%);
+  transform: translate(-50%, -50%);
+  opacity: 0; transition: opacity 0.35s ease;
+  z-index: 2; top: 50%; left: 50%;
+}
+
+/* Availability badge */
+.art-badge {
+  position: absolute; top: 14px; left: 14px; z-index: 5;
+  font-family: var(--ff-sans); font-size: 9px;
+  letter-spacing: .15em; text-transform: uppercase;
+  padding: 4px 10px; font-weight: 500;
+}
+.badge-avail { background: rgba(250,248,245,0.95); color: var(--olive); }
+.badge-sold  { background: rgba(250,248,245,0.95); color: var(--muted); }
+.badge-new   { background: var(--olive); color: #fff; }
+.badge-ltd   { background: var(--gold); color: #fff; }
+
+/* Heart / wishlist button */
+.art-heart {
+  position: absolute; top: 12px; right: 12px; z-index: 5;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(250,248,245,0.92); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); cursor: pointer;
+  transition: color .25s, transform .3s cubic-bezier(.34,1.56,.64,1), background .25s;
+  border: none;
+}
+.art-heart:hover { color: var(--rust); transform: scale(1.15); }
+.art-heart.liked { color: var(--rust); background: rgba(122,82,72,0.12); }
+.art-heart.liked svg { fill: var(--rust); }
+/* heart pop animation */
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35) rotate(8deg); }
+  70%  { transform: scale(0.9) rotate(-5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.art-heart.pop { animation: heartPop 0.5s ease; }
+
+/*
+   SLIDE-UP REVEAL OVERLAY - isaiahbjork ProductRevealCard pattern
+   Full card overlay that slides up from bottom on hover,
+   showing price, medium, edition info, and CTA buttons.
+*/
+.art-card-reveal {
+  position: absolute; inset: 0; z-index: 4;
+  background: rgba(10,10,10,0.91);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 26px 22px 22px;
+  transform: translateY(100%);
+  transition: transform 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.art-card:hover .art-card-reveal { transform: translateY(0); }
+
+/* Reveal content stagger - isaiahbjork contentVariants pattern */
+.reveal-eyebrow {
+  font-family: var(--ff-sans); font-size: 9px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.35); margin-bottom: 8px;
+  transform: translateY(14px); opacity: 0;
+  transition: transform .38s .06s ease, opacity .38s .06s ease;
+}
+.reveal-title {
+  font-family: var(--ff-serif); font-size: 22px;
+  font-weight: 400; color: rgba(250,248,245,0.95);
+  line-height: 1.15; margin-bottom: 6px;
+  transform: translateY(14px); opacity: 0;
+  transition: transform .38s .1s ease, opacity .38s .1s ease;
+}
+.reveal-meta {
+  font-family: var(--ff-sans); font-size: 11px;
+  color: rgba(250,248,245,0.38); font-weight: 300;
+  margin-bottom: 16px; line-height: 1.55;
+  transform: translateY(14px); opacity: 0;
+  transition: transform .38s .14s ease, opacity .38s .14s ease;
+}
+.reveal-desc {
+  font-family: var(--ff-sans); font-size: 12px;
+  color: rgba(250,248,245,0.5); font-weight: 300;
+  line-height: 1.7; margin-bottom: 20px;
+  transform: translateY(12px); opacity: 0;
+  transition: transform .38s .18s ease, opacity .38s .18s ease;
+}
+.reveal-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 16px; border-top: 1px solid rgba(250,248,245,0.1);
+  transform: translateY(12px); opacity: 0;
+  transition: transform .38s .22s ease, opacity .38s .22s ease;
+}
+.reveal-price {
+  font-family: var(--ff-mono); font-size: 18px;
+  color: var(--gold); font-weight: 300;
+}
+.reveal-price.sold-price { color: rgba(250,248,245,0.3); font-size: 14px; }
+.reveal-btns { display: flex; gap: 8px; }
+.reveal-btn {
+  padding: 9px 16px; font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .13em; text-transform: uppercase; font-weight: 400;
+  cursor: pointer; transition: background .2s, transform .2s;
+}
+.reveal-btn-add {
+  background: var(--olive); color: #fff; border: 1px solid var(--olive);
+}
+.reveal-btn-add:hover { background: var(--olive-dk); transform: translateY(-2px); }
+.reveal-btn-inq {
+  background: rgba(250,248,245,0.08); color: rgba(250,248,245,0.7);
+  border: 1px solid rgba(250,248,245,0.15);
+}
+.reveal-btn-inq:hover { background: rgba(250,248,245,0.15); }
+
+/* Animate reveal children on card hover */
+.art-card:hover .reveal-eyebrow,
+.art-card:hover .reveal-title,
+.art-card:hover .reveal-meta,
+.art-card:hover .reveal-desc,
+.art-card:hover .reveal-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card bottom info (visible when not hovered) */
+.art-card-info {
+  padding: 16px 0 0;
+}
+.art-card-cat {
+  font-family: var(--ff-sans); font-size: 9px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+.art-card-title {
+  font-family: var(--ff-serif); font-size: 19px;
+  font-weight: 400; color: var(--text); line-height: 1.2;
+  margin-bottom: 8px;
+}
+.art-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 12px; border-top: 1px solid var(--beige);
+}
+.art-card-price {
+  font-family: var(--ff-mono); font-size: 14px;
+  color: var(--olive); font-weight: 300;
+}
+.art-card-price.sold { color: var(--muted); font-size: 12px; }
+.art-card-arrow {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--beige);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); transition: all .25s;
+}
+.art-card:hover .art-card-arrow { border-color: var(--olive); color: var(--olive); }
+
+/* List view override */
+.artwork-grid.list-view { grid-template-columns: 1fr; gap: 0; }
+.artwork-grid.list-view .art-card {
+  display: flex; flex-direction: row; gap: 32px;
+  padding: 24px 0; border-bottom: 1px solid var(--beige);
+  transform: none !important; /* disable tilt in list view */
+}
+.artwork-grid.list-view .art-card-img-wrap {
+  width: 130px; height: 165px; flex-shrink: 0; aspect-ratio: unset !important;
+}
+.artwork-grid.list-view .art-card-info { padding: 0; display: flex; flex-direction: column; justify-content: center; }
+.artwork-grid.list-view .art-card-reveal { display: none; }
+.artwork-grid.list-view .card-spotlight { display: none; }
+.artwork-grid.list-view:has(.art-card:hover) .art-card:not(:hover) {
+  opacity: 1; filter: none; transform: none !important;
+}
+
+/* No results */
+.no-results { grid-column: 1/-1; text-align: center; padding: 80px 0; display: none; }
+.no-results.show { display: block; }
+.no-results p:first-child { font-family: var(--ff-serif); font-size: 28px; margin-bottom: 8px; }
+.no-results p { font-size: 14px; color: var(--muted); font-weight: 300; }
+
+/* Load more */
+.load-more-area { text-align: center; margin-top: 64px; }
+.lm-divider { display: flex; align-items: center; gap: 24px; margin-bottom: 28px; }
+.lm-rule { flex: 1; height: 1px; background: var(--beige); }
+.lm-text {
+  font-family: var(--ff-mono); font-size: 11px;
+  color: var(--muted); letter-spacing: .06em; white-space: nowrap;
+}
+
+/* ============================================================
+   4. FEATURED SERIES - dark editorial spotlight
+============================================================ */
+.series-dark { background: var(--dark); }
+.series-grid {
+  display: grid; grid-template-columns: 5fr 4fr;
+  align-items: center; gap: 96px;
+}
+.series-imgs { position: relative; }
+.series-mosaic {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: auto auto;
+  gap: 10px;
+}
+.s-img { overflow: hidden; position: relative; background: var(--beige); }
+.s-img::before { content: ''; position: absolute; inset: 0; z-index: 0; }
+.s-img img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s ease; }
+.s-img:hover img { transform: scale(1.04); }
+
+.s-img-a { grid-column: 1; grid-row: 1/3; aspect-ratio: 2/3; }
+.s-img-a::before { background: linear-gradient(160deg,#1e2d14,#0c1808); }
+.s-img-b { grid-column: 2; grid-row: 1; aspect-ratio: 3/2; }
+.s-img-b::before { background: linear-gradient(135deg,#1a2010,#0a1808); }
+.s-img-c { grid-column: 2; grid-row: 2; aspect-ratio: 3/2; }
+.s-img-c::before { background: linear-gradient(135deg,#20180c,#100c08); }
+
+.series-tag {
+  position: absolute; bottom: -16px; left: -16px; z-index: 6;
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-mono); font-size: 10px;
+  letter-spacing: .1em; padding: 8px 18px;
+}
+
+.series-copy { padding: 24px 0; }
+.series-dark .eyebrow { color: var(--olive); }
+.series-h {
+  font-family: var(--ff-serif);
+  font-size: clamp(38px, 3.8vw, 58px);
+  font-weight: 400; color: #FAF8F5; line-height: 1.06;
+  margin-bottom: 22px; letter-spacing: -.01em;
+}
+.series-h em { font-style: italic; font-weight: 300; }
+.series-body {
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 300; color: rgba(250,248,245,0.42);
+  line-height: 1.9; max-width: 400px; margin-bottom: 44px;
+}
+.series-stats {
+  display: flex; gap: 48px;
+  padding-top: 36px; border-top: 1px solid rgba(250,248,245,0.07);
+  margin-bottom: 44px;
+}
+.s-stat-n {
+  font-family: var(--ff-serif); font-size: 40px;
+  font-weight: 400; color: var(--olive);
+  display: block; line-height: 1;
+}
+.s-stat-l {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(250,248,245,0.22); display: block; margin-top: 7px;
+}
+.series-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-ghost-light {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 30px; font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  color: rgba(250,248,245,0.65); border: 1px solid rgba(250,248,245,0.2);
+  background: none; cursor: pointer; transition: all .25s;
+}
+.btn-ghost-light:hover { color: #FAF8F5; border-color: rgba(250,248,245,0.5); }
+
+/* ============================================================
+   5. WEARABLE STRIP
+============================================================ */
+.wear-bg { background: var(--beige); }
+.wear-layout {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 72px; align-items: center;
+}
+.wear-h {
+  font-family: var(--ff-serif);
+  font-size: clamp(34px, 3.2vw, 50px);
+  font-weight: 400; line-height: 1.08;
+  margin-bottom: 18px;
+}
+.wear-h em { font-style: italic; font-weight: 300; }
+.wear-body {
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 300; color: #3a3a3a; line-height: 1.85;
+  max-width: 320px; margin-bottom: 32px;
+}
+.wear-scroll {
+  display: flex; gap: 14px; overflow-x: auto;
+  padding-bottom: 12px; scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.wear-scroll::-webkit-scrollbar { display: none; }
+.wear-card {
+  flex: 0 0 190px; scroll-snap-align: start;
+  background: var(--white); overflow: hidden;
+  transition: transform .3s ease; cursor: pointer;
+}
+.wear-card:hover { transform: translateY(-6px); }
+.wear-card-img { aspect-ratio: 2/3; overflow: hidden; position: relative; }
+.wear-card-img::before { content: ''; position: absolute; inset: 0; z-index: 0; }
+.wear-card:nth-child(1) .wear-card-img::before { background: linear-gradient(135deg,#c8b8d0,#8068a0); }
+.wear-card:nth-child(2) .wear-card-img::before { background: linear-gradient(135deg,#d0c0a0,#a09060); }
+.wear-card:nth-child(3) .wear-card-img::before { background: linear-gradient(135deg,#b0c8d0,#608090); }
+.wear-card:nth-child(4) .wear-card-img::before { background: linear-gradient(135deg,#d0b0b8,#a07080); }
+.wear-card-img img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.wear-card:hover .wear-card-img img { transform: scale(1.06); }
+.wear-card-body { padding: 14px 14px 16px; }
+.wear-card-name { font-family: var(--ff-serif); font-size: 16px; font-weight: 400; margin-bottom: 4px; }
+.wear-card-ed { font-family: var(--ff-sans); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.wear-card-price { font-family: var(--ff-mono); font-size: 13px; color: var(--olive); }
+
+/* ============================================================
+   6. COMMISSION CTA
+============================================================ */
+.comm-bg { background: var(--white); border-top: 1px solid var(--beige); }
+.comm-layout {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 60px; flex-wrap: wrap;
+}
+.comm-h {
+  font-family: var(--ff-serif);
+  font-size: clamp(36px, 3.5vw, 54px);
+  font-weight: 400; line-height: 1.08; max-width: 560px;
+}
+.comm-h em { font-style: italic; font-weight: 300; }
+.comm-right { display: flex; flex-direction: column; gap: 14px; }
+.comm-body { font-family: var(--ff-sans); font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.85; max-width: 320px; }
+.comm-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40px; }
+.ft-grid {
+  max-width: 1440px; margin: 0 auto; padding: 0 60px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+}
+.ft-brand { font-family: var(--ff-serif); font-size: 19px; color: #FAF8F5; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 220px; }
+.ft-hd { font-family: var(--ff-sans); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400; }
+.ft-links { list-style: none; }
+.ft-links li + li { margin-top: 10px; }
+.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
+.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-bottom {
+  max-width: 1440px; margin: 40px auto 0; padding: 24px 60px 0;
+  border-top: 1px solid rgba(250,248,245,0.06);
+  display: flex; justify-content: space-between; align-items: center; font-size: 11px;
+}
+
+/* ============================================================
+   CART DRAWER
+============================================================ */
+.cart-scrim {
+  position: fixed; inset: 0; background: rgba(17,17,17,0.45);
+  z-index: 600; opacity: 0; pointer-events: none; transition: opacity .35s;
+}
+.cart-scrim.show { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 400px; max-width: 96vw;
+  background: var(--white); z-index: 700;
+  display: flex; flex-direction: column;
+  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-top { display: flex; justify-content: space-between; align-items: center; padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0; }
+.cart-ttl { font-family: var(--ff-serif); font-size: 22px; font-weight: 400; }
+.cart-x { font-size: 22px; color: var(--muted); transition: color .2s; padding: 4px; }
+.cart-x:hover { color: var(--text); }
+.cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.cart-foot { padding: 22px 30px; border-top: 1px solid var(--beige); flex-shrink: 0; }
+.cart-item { display: flex; gap: 16px; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--beige); }
+.cart-item-img { width: 76px; height: 96px; object-fit: cover; flex-shrink: 0; background: var(--beige); }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-family: var(--ff-serif); font-size: 16px; font-weight: 400; margin-bottom: 4px; }
+.cart-item-sub { font-size: 11px; color: var(--muted); }
+.cart-item-price { font-family: var(--ff-mono); font-size: 14px; color: var(--olive); margin-top: 8px; }
+.cart-rm { font-size: 18px; color: rgba(17,17,17,0.2); align-self: flex-start; transition: color .2s; padding: 2px; }
+.cart-rm:hover { color: #c00; }
+.cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.cart-total-lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.cart-total-val { font-family: var(--ff-mono); font-size: 18px; color: var(--text); }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 40px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-sans); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 14px 32px; opacity: 0; pointer-events: none;
+  transition: opacity .35s, transform .35s; z-index: 900; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1100px) {
+  .artwork-grid { grid-template-columns: repeat(2, 1fr); }
+  .series-grid { grid-template-columns: 1fr; gap: 56px; }
+  .wear-layout { grid-template-columns: 1fr; gap: 36px; }
+  .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
+  .hero-row { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section { padding: 72px 0; }
+  .page-hero { padding-top: 130px; }
+  .filter-inner { padding: 0 16px; overflow-x: auto; gap: 12px; }
+  .filter-right { display: none; }
+  .artwork-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grid-section { padding: 36px 0 72px; }
+  .comm-layout { flex-direction: column; align-items: flex-start; gap: 32px; }
+  .ft-grid { grid-template-columns: 1fr; gap: 36px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  /* disable tilt on touch */
+  .art-card { transform: none !important; }
+  .card-spotlight { display: none; }
+}
+@media (max-width: 480px) {
+  .artwork-grid { grid-template-columns: 1fr; }
+  .art-card:nth-child(n) .art-card-img-wrap { aspect-ratio: 3/4; }
+}
+</style>
+<link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+<!-- ========== ANNOUNCEMENT ========== -->
+<div class="ann" id="ann">
+  New In: Original Alcohol Ink Works from The Monsoon Series
+  <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">×</button>
+</div>
+
+<!-- ========== NAV ========== -->
+<nav class="nav" id="nav" data-nav-solid="true" role="navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Rashmi Rao</a>
+    <ul class="nav-links">
+      <li><a href="collections.html" class="active">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+
+      <!-- -- Currency Toggle -- -->
+      <div class="currency-toggle" role="group" aria-label="Currency selector">
+        <span class="curr-lbl active" id="currLabelINR" aria-hidden="true">INR ₹</span>
+        <button class="toggle-track" id="currencyTrack"
+          onclick="toggleCurrency()"
+          role="switch" aria-checked="false"
+          aria-label="Toggle currency between INR and USD">
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="curr-lbl" id="currLabelUSD" aria-hidden="true">$ USD</span>
+      </div>
+
+      <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="nav-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== 1. HERO ========== -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="hero-row">
+      <div class="hero-left">
+        <span class="hero-sup rv">The Studio · Mumbai</span>
+        <h1 class="hero-h1 rv">
+          All<br>
+          <em>Collections.</em>
+        </h1>
+      </div>
+      <div class="hero-right rv">
+        <p class="hero-desc">Every work is an original: made once, signed, certified, and offered to a single collector. Browse by medium or let the work find you.</p>
+        <div class="hero-stats">
+          <div>
+            <span class="hero-stat-n" id="heroStatVisible">5</span>
+            <span class="hero-stat-l">Works Available</span>
+          </div>
+          <div>
+            <span class="hero-stat-n">2024</span>
+            <span class="hero-stat-l">Latest Series</span>
+          </div>
+          <div>
+            <span class="hero-stat-n">10+</span>
+            <span class="hero-stat-l">Years Practising</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2. FILTER BAR - Animated indicator (ln-dev7 pattern) ========== -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-inner">
+
+    <!-- Tab track with animated sliding indicator -->
+    <div class="tab-track" id="tabTrack">
+      <!-- Animated underline indicator - ln-dev7 layoutId="active" equivalent -->
+      <div class="tab-indicator" id="tabIndicator"></div>
+      <!-- Hover background pill - ln-dev7 layoutId="hover-bg" equivalent -->
+      <div class="tab-hover-bg" id="tabHoverBg"></div>
+
+      <button class="filter-tab active" data-filter="all" onclick="filterWorks(this)">
+        All <span class="filter-tab-count" id="cnt-all">5</span>
+      </button>
+      <button class="filter-tab" data-filter="ink" onclick="filterWorks(this)">
+        Alcohol Ink <span class="filter-tab-count" id="cnt-ink">2</span>
+      </button>
+      <button class="filter-tab" data-filter="acrylic" onclick="filterWorks(this)">
+        Acrylic <span class="filter-tab-count" id="cnt-acrylic">1</span>
+      </button>
+      <button class="filter-tab" data-filter="mixed" onclick="filterWorks(this)">
+        Mixed Media <span class="filter-tab-count" id="cnt-mixed">1</span>
+      </button>
+      <button class="filter-tab" data-filter="wearable" onclick="filterWorks(this)">
+        Wearable <span class="filter-tab-count" id="cnt-wearable">1</span>
+      </button>
+    </div>
+
+    <div class="filter-right">
+      <select class="sort-select" onchange="sortWorks(this.value)" aria-label="Sort artworks">
+        <option value="default">Featured</option>
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+        <option value="newest">Newest</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Grid view" aria-label="Grid view">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+        <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="List view" aria-label="List view">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="1" y1="3" x2="13" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="7" x2="13" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="11" x2="13" y2="11" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 3. ARTWORK GRID ========== -->
+<section class="grid-section">
+  <div class="wrap">
+    <div class="artwork-grid" id="artworkGrid">
+
+      <!-- CARD 1 - Monsoon Dream -->
+      <div class="art-card rv" data-cat="ink" data-price="85000" data-year="2024" data-id="monsoon-dream" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-new">New</span>
+          <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <!-- Shimmer skeleton - 21st.dev Shimmer Skeleton (corr #19368) pattern -->
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="images/hero-beach.jpg" alt="Monsoon Dream" decoding="async" class="img-loading">
+          <!-- Spotlight follows cursor - tom_ui TiltCard pattern -->
+          <div class="card-spotlight"></div>
+          <!-- Slide-up reveal overlay - isaiahbjork ProductRevealCard pattern -->
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Alcohol Ink on Yupo Paper · 2024</span>
+            <h3 class="reveal-title">Monsoon Dream</h3>
+            <p class="reveal-meta">36 × 48 inches · Original · 1 of 1</p>
+            <p class="reveal-desc">Painted during the first rains of the season. The ink moved the way the sky felt: unrushed and inevitable.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price" data-price-inr="85000">₹ 85,000</span>
+              <div class="reveal-btns">
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Monsoon Dream',85000,'images/hero-beach.jpg'); event.stopPropagation()">Purchase</button>
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Alcohol Ink</span>
+          <h3 class="art-card-title">Monsoon Dream</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price" data-price-inr="85000">₹ 85,000</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 - Crimson Solitude -->
+      <div class="art-card rv" data-cat="acrylic" data-price="65000" data-year="2023" data-id="crimson-solitude" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-avail">✓ Available</span>
+          <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="images/collection-ink.jpg" alt="Crimson Solitude" decoding="async" class="img-loading">
+          <div class="card-spotlight"></div>
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Abstract Acrylic on Canvas · 2023</span>
+            <h3 class="reveal-title">Crimson Solitude</h3>
+            <p class="reveal-meta">24 × 36 inches · Original · 1 of 1</p>
+            <p class="reveal-desc">A meditation on stillness. Deep crimson layered with raw umber and zinc white, scraped and rebuilt over three weeks.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price" data-price-inr="65000">₹ 65,000</span>
+              <div class="reveal-btns">
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Crimson Solitude',65000,'images/collection-ink.jpg'); event.stopPropagation()">Purchase</button>
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Abstract Acrylic</span>
+          <h3 class="art-card-title">Crimson Solitude</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price" data-price-inr="65000">₹ 65,000</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 - Whispers of Ochre -->
+      <div class="art-card rv" data-cat="mixed" data-price="72000" data-year="2024" data-id="whispers-of-ochre" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-sold">✕ Sold</span>
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="images/collection-original.jpg" alt="Whispers of Ochre" decoding="async" class="img-loading">
+          <div class="card-spotlight"></div>
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Mixed Media on Canvas · 2024</span>
+            <h3 class="reveal-title">Whispers of Ochre</h3>
+            <p class="reveal-meta">30 × 40 inches · Original · Sold</p>
+            <p class="reveal-desc">Earth tones layered with gold leaf and graphite. Commission a similar work or inquire about prints.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price sold-price" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</span>
+              <div class="reveal-btns">
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" style="flex:1;text-align:center;" onclick="event.stopPropagation()">Commission a Piece</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Mixed Media</span>
+          <h3 class="art-card-title">Whispers of Ochre</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price sold" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4 - The Blue Hour -->
+      <div class="art-card rv" data-cat="ink" data-price="92000" data-year="2024" data-id="the-blue-hour" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-avail">✓ Available</span>
+          <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="images/collection-wearable.jpg" alt="The Blue Hour" decoding="async" class="img-loading">
+          <div class="card-spotlight"></div>
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Alcohol Ink on Yupo Paper · 2024</span>
+            <h3 class="reveal-title">The Blue Hour</h3>
+            <p class="reveal-meta">40 × 52 inches · Original · 1 of 1</p>
+            <p class="reveal-desc">The largest work from the Monsoon Series. Blues and indigos flowing outward from a single point of white light.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price" data-price-inr="92000">₹ 92,000</span>
+              <div class="reveal-btns">
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('The Blue Hour',92000,'images/collection-wearable.jpg'); event.stopPropagation()">Purchase</button>
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Alcohol Ink</span>
+          <h3 class="art-card-title">The Blue Hour</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price" data-price-inr="92000">₹ 92,000</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5 - Monsoon Saree No. 3 -->
+      <div class="art-card rv" data-cat="wearable" data-price="18500" data-year="2024" data-id="monsoon-saree" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-ltd">Limited · 3/8</span>
+          <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="images/wearable-2.jpg" alt="Monsoon Saree No. 3" decoding="async" class="img-loading">
+          <div class="card-spotlight"></div>
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Wearable Art · Archival Print · 2024</span>
+            <h3 class="reveal-title">Monsoon Saree No. 3</h3>
+            <p class="reveal-meta">Edition 3 of 8 · Pure Georgette · 5.5 m</p>
+            <p class="reveal-desc">The Monsoon Dream painting, adapted for georgette. Archival ink, hand-numbered, with a certificate of authenticity.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price" data-price-inr="18500">₹ 18,500</span>
+              <div class="reveal-btns">
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Monsoon Saree No. 3',18500,'images/wearable-2.jpg'); event.stopPropagation()">Purchase</button>
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Wearable Art</span>
+          <h3 class="art-card-title">Monsoon Saree No. 3</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price" data-price-inr="18500">₹ 18,500</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-results" id="noResults">
+        <p>Nothing found.</p>
+        <p>Try a different medium, or <a href="contact.html" style="color:var(--olive);border-bottom:1px solid var(--olive)">commission a new work</a>.</p>
+      </div>
+
+    </div><!-- /artwork-grid -->
+
+    <div class="load-more-area rv">
+      <div class="lm-divider">
+        <span class="lm-rule"></span>
+        <span class="lm-text">Showing <span id="shownCount">5</span> of 5 works</span>
+        <span class="lm-rule"></span>
+      </div>
+      <p style="font-family:var(--ff-sans);font-size:11px;color:var(--muted);text-align:center;letter-spacing:.12em;text-transform:uppercase;">New works added each season</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. FEATURED SERIES ========== -->
+<section class="series-dark section">
+  <div class="wrap">
+    <div class="series-grid">
+      <div class="series-imgs rv">
+        <div class="series-mosaic">
+          <div class="s-img s-img-a">
+            <img src="images/hero-beach.jpg" alt="Monsoon Series" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="s-img s-img-b">
+            <img src="images/story-3.jpg" alt="Detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="s-img s-img-c">
+            <img src="images/story-1.jpg" alt="Detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <span class="series-tag">The Monsoon Series · 2024</span>
+      </div>
+      <div class="series-copy rv">
+        <span class="eyebrow">Featured Series</span>
+        <h2 class="series-h">The Monsoon<br><em>Series.</em></h2>
+        <p class="series-body">Four large-scale alcohol ink works on Yupo Paper, each painted during the first weeks of the 2024 monsoon season. The ink moved the way the sky felt: unrushed, inevitable, and completely beyond control. The most ambitious works from the studio to date.</p>
+        <div class="series-stats">
+          <div><span class="s-stat-n">4</span><span class="s-stat-l">Works in Series</span></div>
+          <div><span class="s-stat-n">2</span><span class="s-stat-l">Still Available</span></div>
+          <div><span class="s-stat-n">36-54″</span><span class="s-stat-l">Scale</span></div>
+        </div>
+        <div class="series-cta">
+          <button class="btn-olive" onclick="filterWorks(document.querySelector('[data-filter=ink]'))">View Ink Works</button>
+          <a href="contact.html" class="btn-ghost-light">Inquire</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. WEARABLE STRIP ========== -->
+<section class="wear-bg section">
+  <div class="wrap">
+    <div class="wear-layout">
+      <div class="rv">
+        <h2 class="wear-h">Paintings You<br>Can <em>Wear.</em></h2>
+        <p class="wear-body">Each saree begins as an original painting. Adapted for silk and georgette, printed with archival pigments, limited to 8 pieces per design. Numbered, signed, dispatched with a certificate.</p>
+        <a href="contact.html" class="btn-olive">Inquire</a>
+      </div>
+      <div class="wear-scroll rv">
+        <div class="wear-card">
+          <div class="wear-card-img"><img src="images/wearable-2.jpg" alt="Monsoon Saree" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="wear-card-body">
+            <div class="wear-card-name">Monsoon No. 3</div>
+            <div class="wear-card-ed">Edition 3/8 · Georgette</div>
+            <div class="wear-card-price" data-price-inr="18500">₹ 18,500</div>
+          </div>
+        </div>
+        <div class="wear-card">
+          <div class="wear-card-img"><img src="images/collection-ink.jpg" alt="Crimson Saree" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="wear-card-body">
+            <div class="wear-card-name">Crimson No. 5</div>
+            <div class="wear-card-ed">Edition 5/8 · Silk</div>
+            <div class="wear-card-price" data-price-inr="22000">₹ 22,000</div>
+          </div>
+        </div>
+        <div class="wear-card">
+          <div class="wear-card-img"><img src="images/collection-original.jpg" alt="Ochre Saree" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="wear-card-body">
+            <div class="wear-card-name">Ochre No. 2</div>
+            <div class="wear-card-ed">Edition 2/8 · Crepe</div>
+            <div class="wear-card-price" data-price-inr="19800">₹ 19,800</div>
+          </div>
+        </div>
+        <div class="wear-card">
+          <div class="wear-card-img"><img src="images/collection-wearable.jpg" alt="Blue Saree" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="wear-card-body">
+            <div class="wear-card-name">Blue Hour No. 1</div>
+            <div class="wear-card-ed">Edition 1/8 · Georgette</div>
+            <div class="wear-card-price" data-price-inr="24000">₹ 24,000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. COMMISSION CTA ========== -->
+<section class="comm-bg section">
+  <div class="wrap">
+    <div class="comm-layout rv">
+      <div>
+        <h2 class="comm-h">Every Feeling Deserves Its<br><em>Own Painting.</em></h2>
+      </div>
+      <div class="comm-right">
+        <p class="comm-body">Rashmi takes a limited number of commissions each year. Describe the emotion, the space, the memory. She will translate it into paint. Timelines from 6 to 12 weeks.</p>
+        <div class="comm-btns">
+          <a href="contact.html" class="btn-olive">Commission a Piece</a>
+          <a href="about.html" class="btn-outline">Learn the Process</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">Rashmi Rao Designs</div>
+      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">All Works</a></li>
+        <li><a href="collections.html">Alcohol Ink</a></li>
+        <li><a href="collections.html">Wearable Art</a></li>
+        <li><a href="collections.html">Limited Editions</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">Press</a></li>
+        <li><a href="contact.html">Licensing</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Policies</p>
+      <ul class="ft-links">
+        <li><a href="#">Shipping &amp; Returns</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="contact.html">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cart-top">
+    <span class="cart-ttl">Your Cart</span>
+    <button class="cart-x" onclick="closeCart()" aria-label="Close cart">×</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot" id="cartFoot" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-lbl">Subtotal</span>
+      <span class="cart-total-val" id="cartTotal">₹ 0</span>
+    </div>
+    <a href="contact.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;" onclick="closeCart()">Proceed to Checkout</a>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Shared currency module (live rate + INR↔USD toggle) -->
+<script src="currency.js"></script>
+<script src="site.js" defer></script>
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+/* --------------------------------
+   ANNOUNCEMENT
+-------------------------------- */
+function closeAnn() {
+  const el = document.getElementById('ann');
+  el.style.transition = 'height .3s ease, opacity .3s ease, padding .3s ease';
+  el.style.height = '0'; el.style.opacity = '0'; el.style.padding = '0';
+  setTimeout(() => {
+    el.remove();
+    document.getElementById('nav').classList.add('no-ann');
+    document.getElementById('filterBar').classList.add('no-ann');
+  }, 320);
+}
+
+/* --------------------------------
+   CART
+-------------------------------- */
+let cart = [];
+function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartScrim').classList.add('show'); document.body.style.overflow = 'hidden'; renderCart(); }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+/* -- Navigate to product page on card click -- */
+function cardClick(e, card) {
+  /* Do nothing if user clicked a button, link, or the heart inside the card */
+  if (e.target.closest('button') || e.target.closest('a')) return;
+  const id = card.dataset.id;
+  if (id) window.location.href = 'product.html?id=' + id;
+}
+
+function addToCart(name, priceInr, img) {
+  if (!cart.find(i => i.name === name)) cart.push({ name, priceInr, img });
+  document.getElementById('cartBadge').textContent = cart.length;
+  showToast(name + ' added.');
+  openCart();
+}
+function removeFromCart(i) { cart.splice(i, 1); document.getElementById('cartBadge').textContent = cart.length; renderCart(); }
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  const foot = document.getElementById('cartFoot');
+  if (!cart.length) {
+    body.innerHTML = '<div style="text-align:center;padding:52px 0;font-family:var(--ff-serif);font-size:20px;color:var(--text);">Your cart is empty.<span style="display:block;font-family:var(--ff-sans);font-size:13px;color:var(--muted);font-weight:300;margin-top:8px;">Browse the collection above.</span></div>';
+    foot.style.display = 'none'; return;
+  }
+  foot.style.display = 'block';
+  body.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.background='var(--beige)'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-sub">Original · 1 of 1</div>
+        <div class="cart-item-price">${formatPrice(item.priceInr)}</div>
+      </div>
+      <button class="cart-rm" onclick="removeFromCart(${i})" aria-label="Remove ${item.name}">×</button>
+    </div>`).join('');
+  const totalInr = cart.reduce((s, item) => s + item.priceInr, 0);
+  document.getElementById('cartTotal').textContent = formatPrice(totalInr);
+}
+renderCart();
+initCurrency();
+
+/* --------------------------------
+   TOAST
+-------------------------------- */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* --------------------------------
+   HEART / WISHLIST - isaiahbjork pattern
+   Spring-like pop animation on toggle.
+-------------------------------- */
+function toggleHeart(btn, e) {
+  e && e.stopPropagation();
+  const isLiked = btn.classList.toggle('liked');
+  btn.classList.remove('pop');
+  void btn.offsetWidth; // reflow to restart animation
+  btn.classList.add('pop');
+  showToast(isLiked ? 'Added to wishlist.' : 'Removed from wishlist.');
+}
+
+/* --------------------------------
+   ANIMATED TAB INDICATOR - ln-dev7 pattern
+   layoutId="active" + layoutId="hover-bg" equivalent in vanilla JS.
+   Reads getBoundingClientRect of each tab and translates
+   the indicator element to match position + width.
+-------------------------------- */
+const tabIndicator = document.getElementById('tabIndicator');
+const tabHoverBg   = document.getElementById('tabHoverBg');
+const tabTrack     = document.getElementById('tabTrack');
+
+function moveIndicator(btn) {
+  const trackRect = tabTrack.getBoundingClientRect();
+  const btnRect   = btn.getBoundingClientRect();
+  tabIndicator.style.width     = btnRect.width + 'px';
+  tabIndicator.style.transform = `translateX(${btnRect.left - trackRect.left}px)`;
+}
+
+function showHoverBg(btn) {
+  const trackRect = tabTrack.getBoundingClientRect();
+  const btnRect   = btn.getBoundingClientRect();
+  tabHoverBg.style.width     = btnRect.width + 'px';
+  tabHoverBg.style.transform = `translateX(${btnRect.left - trackRect.left}px)`;
+  tabHoverBg.style.opacity   = '1';
+}
+
+function hideHoverBg() { tabHoverBg.style.opacity = '0'; }
+
+// Attach hover-bg listeners
+document.querySelectorAll('.filter-tab').forEach(tab => {
+  tab.addEventListener('mouseenter', () => showHoverBg(tab));
+  tab.addEventListener('mouseleave', hideHoverBg);
+});
+
+// Initialize indicator on active tab
+window.addEventListener('load', () => {
+  const active = document.querySelector('.filter-tab.active');
+  if (active) moveIndicator(active);
+});
+window.addEventListener('resize', () => {
+  const active = document.querySelector('.filter-tab.active');
+  if (active) moveIndicator(active);
+});
+
+/* --------------------------------
+   FILTER
+-------------------------------- */
+function filterWorks(btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  moveIndicator(btn);
+
+  const filter = btn.dataset.filter;
+  const cards  = document.querySelectorAll('.art-card');
+  let visible  = 0;
+
+  cards.forEach(card => {
+    const match = filter === 'all' || card.dataset.cat === filter;
+    card.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+
+  document.getElementById('noResults').classList.toggle('show', visible === 0);
+  document.getElementById('heroStatVisible').textContent = visible;
+  document.getElementById('shownCount').textContent = visible;
+}
+
+/* --------------------------------
+   SORT
+-------------------------------- */
+function sortWorks(val) {
+  const grid  = document.getElementById('artworkGrid');
+  const cards = [...grid.querySelectorAll('.art-card')];
+  cards.sort((a, b) => {
+    if (val === 'price-asc')  return +a.dataset.price - +b.dataset.price;
+    if (val === 'price-desc') return +b.dataset.price - +a.dataset.price;
+    if (val === 'newest')     return +b.dataset.year  - +a.dataset.year;
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+
+/* --------------------------------
+   VIEW TOGGLE
+-------------------------------- */
+function setView(v) {
+  const grid = document.getElementById('artworkGrid');
+  const gb   = document.getElementById('gridViewBtn');
+  const lb   = document.getElementById('listViewBtn');
+  if (v === 'list') {
+    grid.classList.add('list-view');
+    lb.classList.add('active'); gb.classList.remove('active');
+  } else {
+    grid.classList.remove('list-view');
+    gb.classList.add('active'); lb.classList.remove('active');
+  }
+}
+
+/* --------------------------------
+   3D TILT + CURSOR SPOTLIGHT - tom_ui TiltCard pattern
+   perspective(1100px) rotateX/Y + radial spotlight.
+   Only on devices that support hover (not touch).
+   Returns to identity on mouseleave with eased transition.
+-------------------------------- */
+function initTilt() {
+  // Skip on touch devices
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  // A 13-degree tilt visibly skews the artwork it is meant to showcase.
+  // Reduced to a slight parallax lean that suggests depth without distorting
+  // the work. The card still lifts; the painting stays readable.
+  const TILT  = 4;    // max degrees
+  const SCALE = 1.02; // hover scale
+  const PERSP = 1400; // perspective px
+
+  document.querySelectorAll('.art-card').forEach(card => {
+    const imgWrap   = card.querySelector('.art-card-img-wrap');
+    const spotlight = card.querySelector('.card-spotlight');
+    let isHovered   = false;
+
+    card.addEventListener('mouseenter', () => {
+      isHovered = true;
+      card.style.transition = 'none'; // remove easing while moving
+      if (spotlight) spotlight.style.opacity = '1';
+    });
+
+    card.addEventListener('mousemove', e => {
+      if (!isHovered) return;
+      const rect = card.getBoundingClientRect();
+      const px   = (e.clientX - rect.left)  / rect.width;  // 0→1 left→right
+      const py   = (e.clientY - rect.top)   / rect.height; // 0→1 top→bottom
+
+      // rotateX: positive tilts top toward viewer (move mouse down)
+      // rotateY: positive tilts right toward viewer (move mouse right)
+      const xRot = (py - 0.5) *  TILT * 2;
+      const yRot = (px - 0.5) * -TILT * 2;
+
+      card.style.transform = `perspective(${PERSP}px) rotateX(${xRot}deg) rotateY(${yRot}deg) scale3d(${SCALE},${SCALE},${SCALE})`;
+
+      // Move spotlight to follow cursor inside the image wrap
+      if (spotlight && imgWrap) {
+        const wr   = imgWrap.getBoundingClientRect();
+        const spx  = ((e.clientX - wr.left) / wr.width)  * 100;
+        const spy  = ((e.clientY - wr.top)  / wr.height) * 100;
+        spotlight.style.left = `${spx}%`;
+        spotlight.style.top  = `${spy}%`;
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      isHovered = false;
+      // Ease back to identity - tom_ui "transition: 0.2s ease-out on leave"
+      card.style.transition = 'transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)';
+      card.style.transform  = `perspective(${PERSP}px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`;
+      if (spotlight) spotlight.style.opacity = '0';
+      setTimeout(() => { card.style.transition = ''; card.style.transform = ''; }, 450);
+    });
+  });
+}
+
+initTilt();
+
+/* --------------------------------
+   LAZY IMAGES - 21st.dev Lazy Image (sshahaider #7042) + Shimmer Skeleton (corr #19368)
+   IntersectionObserver swaps data-src → src when card enters the viewport
+   (rootMargin: 220px means images start loading before they scroll into view).
+   On load: img fades in, shimmer sweeper fades out.
+   On error: shimmer hides (animated gradient ::before remains as fallback).
+   Respects already-cached images via img.complete check.
+-------------------------------- */
+function initLazyImages() {
+  const imgs = document.querySelectorAll('.art-card-img-wrap img[data-src]');
+  if (!imgs.length) return;
+
+  function revealImg(img) {
+    const shimmer = img.closest('.art-card-img-wrap')?.querySelector('.img-shimmer');
+    img.src = img.dataset.src;
+
+    function onLoad() {
+      img.classList.remove('img-loading');
+      if (shimmer) shimmer.classList.add('loaded');
+    }
+    function onError() {
+      img.style.display = 'none';
+      if (shimmer) shimmer.classList.add('loaded');
+    }
+
+    // Already cached (browser served from disk instantly)
+    if (img.complete && img.naturalWidth) { onLoad(); return; }
+
+    img.addEventListener('load',  onLoad,  { once: true });
+    img.addEventListener('error', onError, { once: true });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        revealImg(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '220px 0px', threshold: 0 });
+
+    imgs.forEach(img => observer.observe(img));
+  } else {
+    // Fallback for very old browsers - load all immediately
+    imgs.forEach(revealImg);
+  }
+}
+
+initLazyImages();
+</script>
+
+<!-- -- Text Reveal - animate-skill text-reveal.tsx pattern -- -->
+<script>
+(function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function splitWords(el, counter) {
+    Array.from(el.childNodes).forEach(function(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        var parts = node.textContent.split(/(\s+)/);
+        var frag  = document.createDocumentFragment();
+        parts.forEach(function(part) {
+          if (!part || /^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(part || ''));
+          } else {
+            var wrap  = document.createElement('span');
+            wrap.className = 'rr-word-wrap';
+            var inner = document.createElement('span');
+            inner.className = 'rr-word';
+            inner.style.setProperty('--index', counter.i++);
+            inner.textContent = part;
+            wrap.appendChild(inner);
+            frag.appendChild(wrap);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        splitWords(node, counter);
+      }
+    });
+  }
+  function revealHero(selector) {
+    var h1 = document.querySelector(selector);
+    if (!h1) return;
+    h1.classList.remove('rv'); // exclude from GSAP's opacity:0 set
+    splitWords(h1, { i: 0 });
+    setTimeout(function() {
+      h1.querySelectorAll('.rr-word').forEach(function(w) {
+        w.style.animation = 'none'; w.style.opacity = '1'; w.style.transform = 'none';
+      });
+    }, 2500);
+  }
+  revealHero('.hero-h1');
+})();
+</script>
+
+<!-- GSAP + ScrollTrigger - progressive enhancement, safety-net pattern -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" onerror="console.warn('GSAP CDN unavailable')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" onerror="console.warn('ScrollTrigger CDN unavailable')"></script>
+<script>
+if (typeof gsap !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduced) {
+    /* Hide .rv elements only after GSAP confirms it loaded */
+    gsap.set('.rv', { opacity: 0, y: 26 });
+
+    /* Hero - .hero-h1 handled by CSS text-reveal; animate support elements
+       Skill: power4.out → ease-out-quint, decisive & premium */
+    gsap.to('.page-hero .rv', {
+      opacity: 1, y: 0, duration: 1.0, stagger: 0.14, ease: 'power4.out', delay: 0.15
+    });
+
+    /* Art cards - staggered scroll reveal, skill: 0.65s power4.out, tight stagger */
+    gsap.to('.art-card.rv', {
+      opacity: 1, y: 0, duration: 0.65, stagger: 0.07, ease: 'power4.out',
+      scrollTrigger: { trigger: '#artworkGrid', start: 'top 90%' }
+    });
+
+    /* All other .rv sections - skill: 0.7s ease-out-quint */
+    gsap.utils.toArray('.rv:not(.page-hero .rv):not(.art-card)').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power4.out',
+        scrollTrigger: { trigger: el, start: 'top 92%' }
+      });
+    });
+
+    /* Safety-net - ensure everything visible after 5s */
+    setTimeout(() => gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' }), 5000);
+
+  } else {
+    /* Reduced motion: show everything immediately */
+    gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' });
+  }
+} else {
+  /* GSAP failed to load - show everything without animation */
+  document.querySelectorAll('.rv').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Rashmi Rao Designs</title>
+<meta name="description" content="Reach Rashmi directly to collect, commission, license, or simply ask. Every message is answered personally.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&display=swap">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+:root {
+  --bg:       #FAF8F5;
+  --white:    #FFFFFF;
+  --text:     #111111;
+  --muted:    #6B6B6B;
+  --beige:    #E9E3DB;
+  --olive:    #6D7550;
+  --olive-dk: #5a6142;
+  --gold:     #C9A84C;
+  --dark:     #111111;
+  --rust:     #7a5248;
+
+  --ff-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --ff-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ff-mono:  'DM Mono', 'Courier New', monospace;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-sans);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  font-weight: 300;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+.rv { /* intentionally empty - GSAP sets opacity/y only after loading */ }
+
+/* ============================================================
+   ANNOUNCEMENT BAR
+============================================================ */
+.ann {
+  background: var(--rust);
+  color: #FAF8F5;
+  text-align: center;
+  padding: 11px 48px;
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 400;
+  position: relative;
+  z-index: 500;
+  height: 42px;
+  overflow: hidden;
+}
+.ann-close {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(250,248,245,0.55);
+  font-size: 20px; line-height: 1;
+  transition: color .2s; padding: 4px 8px;
+}
+.ann-close:hover { color: #FAF8F5; }
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+.nav {
+  position: fixed; left: 0; right: 0; top: 42px;
+  z-index: 400;
+  background: rgba(250,248,245,0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 rgba(17,17,17,0.08);
+  transition: top .35s;
+}
+.nav.no-ann { top: 0; }
+.nav-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 48px;
+  height: 72px; display: flex;
+  align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: var(--ff-serif);
+  font-size: 18px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text); white-space: nowrap;
+}
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400;
+  transition: color .25s; position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right;
+  transition: transform .3s ease;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); transform-origin: left; }
+.nav-actions { display: flex; align-items: center; gap: 20px; }
+.nav-icon-btn {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--muted); font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; transition: color .25s;
+}
+.nav-icon-btn:hover { color: var(--text); }
+.cart-badge {
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-mono); font-size: 9px;
+  width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-burger { display: none; flex-direction: column; gap: 5px; padding: 4px; color: var(--text); }
+.nav-burger span { display: block; width: 22px; height: 1.5px; background: currentColor; border-radius: 2px; }
+
+/* ============================================================
+   SHARED
+============================================================ */
+.wrap { max-width: 1400px; margin: 0 auto; padding: 0 60px; }
+.section { padding: 100px 0; }
+.eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px; display: block;
+}
+.h2 {
+  font-family: var(--ff-serif);
+  font-size: clamp(38px, 4.2vw, 60px);
+  font-weight: 400; line-height: 1.06; letter-spacing: -.01em;
+}
+.body-text { font-family: var(--ff-sans); font-size: 15px; font-weight: 300; line-height: 1.85; color: #3a3a3a; }
+
+/* buttons */
+.btn-olive {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--olive); color: #fff;
+  padding: 15px 34px; font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  border: 2px solid var(--olive); cursor: pointer;
+  transition: background .25s, transform .2s;
+}
+.btn-olive:hover { background: var(--olive-dk); border-color: var(--olive-dk); transform: translateY(-2px); }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 34px; font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+  color: var(--text); border: 1px solid rgba(17,17,17,0.25);
+  background: none; cursor: pointer; transition: border-color .25s;
+}
+.btn-outline:hover { border-color: var(--text); }
+
+/* ============================================================
+   1. PAGE HERO
+============================================================ */
+.page-hero {
+  padding-top: 156px; padding-bottom: 0;
+  background: var(--bg);
+}
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-end;
+  gap: 80px;
+  padding-bottom: 72px;
+  border-bottom: 1px solid var(--beige);
+}
+.hero-left .page-eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 20px; display: block; font-weight: 400;
+}
+.hero-h1 {
+  font-family: var(--ff-serif);
+  font-size: clamp(56px, 7vw, 96px);
+  font-weight: 400; line-height: 1.0;
+  color: var(--text); letter-spacing: -.02em;
+}
+.hero-h1 em { font-style: italic; font-weight: 300; }
+.hero-right {
+  padding-bottom: 12px;
+}
+.hero-promise {
+  font-family: var(--ff-serif);
+  font-size: 20px; font-style: italic; font-weight: 400;
+  line-height: 1.6; color: var(--text);
+  border-left: 2px solid var(--olive);
+  padding-left: 24px; margin-bottom: 36px;
+}
+.hero-meta {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.hero-meta-row {
+  display: flex; align-items: center; gap: 14px;
+}
+.meta-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); min-width: 80px; font-weight: 400;
+}
+.meta-val {
+  font-family: var(--ff-sans); font-size: 14px;
+  color: var(--text); font-weight: 300;
+}
+.meta-val a { transition: color .25s; border-bottom: 1px solid transparent; }
+.meta-val a:hover { color: var(--olive); border-color: var(--olive); }
+
+/* ============================================================
+   2. INQUIRY SELECTOR + FORM
+============================================================ */
+.inquiry-bg { background: var(--white); }
+.inquiry-split {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 0;
+  min-height: 620px;
+}
+
+/* left: inquiry type list */
+.inq-types {
+  border-right: 1px solid var(--beige);
+  padding: 60px 48px 60px 0;
+}
+.inq-types-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 24px; display: block; font-weight: 400;
+}
+.inq-type {
+  display: flex; align-items: flex-start;
+  padding: 20px 18px; cursor: pointer;
+  border: 1px solid transparent;
+  margin-bottom: 6px;
+  transition: border-color .25s, background .25s;
+  position: relative;
+}
+.inq-type:hover { background: var(--bg); }
+.inq-type.active {
+  border-color: var(--beige);
+  background: var(--bg);
+}
+.inq-type.active::after {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; background: var(--olive);
+}
+.inq-type-icon {
+  width: 36px; height: 36px;
+  border: 1px solid var(--beige); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-right: 16px; margin-top: 1px;
+  font-size: 14px; transition: border-color .25s, background .25s;
+}
+.inq-type.active .inq-type-icon {
+  background: var(--olive); border-color: var(--olive); color: #fff;
+}
+.inq-type-copy {}
+.inq-type-name {
+  font-family: var(--ff-sans); font-size: 13px;
+  letter-spacing: .06em; font-weight: 500;
+  color: var(--text); text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+.inq-type-desc {
+  font-family: var(--ff-sans); font-size: 12px;
+  color: var(--muted); font-weight: 300; line-height: 1.5;
+}
+.inq-type.active .inq-type-name { color: var(--olive); }
+
+/* right: form panel */
+.inq-form-panel {
+  padding: 60px 0 60px 64px;
+}
+.form-heading {
+  font-family: var(--ff-serif);
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 400; line-height: 1.12;
+  color: var(--text); margin-bottom: 10px;
+}
+.form-heading em { font-style: italic; font-weight: 300; }
+.form-sub {
+  font-family: var(--ff-sans); font-size: 13px;
+  color: var(--muted); font-weight: 300; margin-bottom: 44px;
+  line-height: 1.65;
+}
+
+/* form fields */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); font-weight: 400;
+}
+.form-input, .form-select, .form-textarea {
+  border: 1px solid var(--beige);
+  background: var(--bg); padding: 13px 16px;
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 300; color: var(--text);
+  outline: none; transition: border-color .25s, background .25s;
+  -webkit-appearance: none; appearance: none;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: rgba(17,17,17,0.25); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--olive); background: var(--white);
+}
+.form-textarea { resize: vertical; min-height: 130px; line-height: 1.7; }
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237D7D7D' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px; cursor: pointer;
+}
+.form-select option { color: var(--text); background: var(--white); }
+.form-radio-group { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+.form-radio {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.form-radio input[type="radio"] { display: none; }
+.form-radio-dot {
+  width: 16px; height: 16px; border: 1px solid var(--beige); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
+}
+.form-radio input[type="radio"]:checked + .form-radio-dot {
+  border-color: var(--olive);
+}
+.form-radio input[type="radio"]:checked + .form-radio-dot::after {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--olive);
+}
+.form-radio-label {
+  font-family: var(--ff-sans); font-size: 12px;
+  color: var(--text); font-weight: 300;
+}
+.form-note {
+  font-family: var(--ff-sans); font-size: 11px;
+  color: var(--muted); font-weight: 300; line-height: 1.6;
+  grid-column: 1 / -1; margin-top: 4px;
+}
+.form-submit-row {
+  display: flex; align-items: center; gap: 24px;
+  margin-top: 36px; flex-wrap: wrap;
+}
+.form-privacy {
+  font-family: var(--ff-sans); font-size: 11px;
+  color: var(--muted); font-weight: 300;
+  max-width: 260px; line-height: 1.6;
+}
+
+.press-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.press-gallery-card {
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(17,17,17,0.08);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 35px rgba(8, 12, 14, 0.06);
+  display: grid;
+  grid-template-rows: auto minmax(112px, auto);
+}
+
+.press-gallery-thumb {
+  overflow: hidden;
+}
+
+.press-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.press-gallery-card:hover .press-gallery-thumb img {
+  transform: scale(1.05);
+}
+
+.press-gallery-copy {
+  padding: 22px 22px 24px;
+}
+
+.press-gallery-copy h3 {
+  font-family: var(--ff-serif);
+  font-size: 18px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.press-gallery-copy p {
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .press-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* dynamic form panels */
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+/* ============================================================
+   3. STUDIO DETAILS - dark
+============================================================ */
+.studio-bg { background: var(--dark); }
+.studio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(250,248,245,0.07);
+}
+.studio-col {
+  padding: 60px 40px;
+  border-right: 1px solid rgba(250,248,245,0.07);
+}
+.studio-col:last-child { border-right: none; }
+.studio-col-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.25); margin-bottom: 24px;
+  display: block; font-weight: 400;
+}
+.studio-col-title {
+  font-family: var(--ff-serif); font-size: 22px;
+  font-weight: 400; color: #FAF8F5;
+  line-height: 1.3; margin-bottom: 8px;
+}
+.studio-col-body {
+  font-family: var(--ff-sans); font-size: 13px;
+  font-weight: 300; color: rgba(250,248,245,0.4);
+  line-height: 1.75;
+}
+.studio-col-body a {
+  color: rgba(250,248,245,0.4);
+  border-bottom: 1px solid rgba(250,248,245,0.12);
+  padding-bottom: 1px; transition: color .25s, border-color .25s;
+}
+.studio-col-body a:hover {
+  color: rgba(250,248,245,0.85);
+  border-color: rgba(250,248,245,0.4);
+}
+.studio-divider {
+  width: 100%; height: 1px;
+  background: rgba(250,248,245,0.07);
+  margin: 20px 0;
+}
+.studio-social {
+  display: flex; gap: 14px; margin-top: 24px; flex-wrap: wrap;
+}
+.studio-social-link {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: rgba(250,248,245,0.3); font-weight: 400;
+  border-bottom: 1px solid rgba(250,248,245,0.1);
+  padding-bottom: 2px; transition: color .25s, border-color .25s;
+}
+.studio-social-link:hover {
+  color: var(--olive); border-color: var(--olive);
+}
+
+/* ============================================================
+   4. FAQ - beige bg, editorial accordion
+============================================================ */
+.faq-bg { background: var(--beige); }
+.faq-split {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 100px; align-items: start;
+}
+.faq-intro .h2 { margin-bottom: 20px; }
+.faq-intro .body-text { max-width: 280px; }
+.faq-intro-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--text); border-bottom: 1px solid rgba(17,17,17,0.25);
+  padding-bottom: 2px; margin-top: 32px;
+  transition: color .25s, border-color .25s;
+}
+.faq-intro-link:hover { color: var(--olive); border-color: var(--olive); }
+.faq-intro-link svg { transition: transform .25s; }
+.faq-intro-link:hover svg { transform: translateX(5px); }
+
+.faq-list { padding-top: 4px; }
+.faq-item {
+  border-bottom: 1px solid rgba(17,17,17,0.12);
+  overflow: hidden;
+}
+.faq-item:first-child { border-top: 1px solid rgba(17,17,17,0.12); }
+.faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 0; cursor: pointer; gap: 20px;
+  transition: color .25s;
+}
+.faq-q:hover { color: var(--olive); }
+.faq-q-text {
+  font-family: var(--ff-serif); font-size: 20px;
+  font-weight: 400; line-height: 1.3; color: inherit;
+}
+.faq-toggle {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border: 1px solid rgba(17,17,17,0.2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .25s, transform .35s, background .25s;
+  font-size: 16px; color: var(--muted); line-height: 1;
+}
+.faq-item.open .faq-toggle {
+  background: var(--olive); border-color: var(--olive);
+  color: #fff; transform: rotate(45deg);
+}
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s cubic-bezier(.25,.46,.45,.94), padding .3s;
+}
+.faq-item.open .faq-a { max-height: 400px; padding-bottom: 24px; }
+.faq-a-text {
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 300; color: #3a3a3a; line-height: 1.85;
+}
+.faq-a-text + .faq-a-text { margin-top: 12px; }
+
+/* ============================================================
+   5. FIND THE STUDIO - editorial dark split
+============================================================ */
+.find-bg { background: var(--dark); }
+.find-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 100px;
+}
+.find-copy .eyebrow { color: var(--olive); }
+.find-copy .h2 { color: #FAF8F5; margin-bottom: 24px; }
+.find-copy .body-text { color: rgba(250,248,245,0.45); max-width: 380px; }
+.find-address {
+  margin-top: 44px; padding-top: 44px;
+  border-top: 1px solid rgba(250,248,245,0.07);
+}
+.find-addr-label {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(250,248,245,0.22); margin-bottom: 12px; font-weight: 400;
+}
+.find-addr-text {
+  font-family: var(--ff-serif); font-size: 18px;
+  font-weight: 400; color: rgba(250,248,245,0.6);
+  line-height: 1.6;
+}
+.find-cta { margin-top: 36px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* map placeholder */
+.find-map {
+  aspect-ratio: 4/3;
+  background: #1a1810;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.find-map::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(135deg, rgba(109,117,80,0.08) 0%, transparent 60%),
+    repeating-linear-gradient(0deg, rgba(250,248,245,0.02) 0px, rgba(250,248,245,0.02) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, rgba(250,248,245,0.02) 0px, rgba(250,248,245,0.02) 1px, transparent 1px, transparent 60px);
+}
+.map-pin {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 12px;
+}
+.map-pin-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--olive);
+  box-shadow: 0 0 0 6px rgba(109,117,80,0.2), 0 0 0 12px rgba(109,117,80,0.08);
+}
+.map-pin-label {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(250,248,245,0.4); font-weight: 400;
+  background: rgba(17,17,17,0.6); padding: 6px 14px;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  background: #0e0e0e;
+  color: rgba(250,248,245,0.38);
+  padding: 68px 0 40px;
+}
+.ft-grid {
+  max-width: 1400px; margin: 0 auto; padding: 0 60px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px;
+}
+.ft-brand {
+  font-family: var(--ff-serif); font-size: 19px;
+  color: #FAF8F5; font-weight: 400;
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px;
+}
+.ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 230px; }
+.ft-hd {
+  font-family: var(--ff-sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400;
+}
+.ft-links { list-style: none; }
+.ft-links li + li { margin-top: 10px; }
+.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
+.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-bottom {
+  max-width: 1400px; margin: 40px auto 0;
+  padding: 24px 60px 0; border-top: 1px solid rgba(250,248,245,0.06);
+  display: flex; justify-content: space-between; align-items: center; font-size: 11px;
+}
+
+/* ============================================================
+   CART DRAWER
+============================================================ */
+.cart-scrim {
+  position: fixed; inset: 0; background: rgba(17,17,17,0.45);
+  z-index: 600; opacity: 0; pointer-events: none; transition: opacity .35s;
+}
+.cart-scrim.show { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 400px; max-width: 96vw;
+  background: var(--white); z-index: 700;
+  display: flex; flex-direction: column;
+  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0;
+}
+.cart-ttl { font-family: var(--ff-serif); font-size: 22px; font-weight: 400; }
+.cart-x { font-size: 22px; color: var(--muted); transition: color .2s; padding: 4px; }
+.cart-x:hover { color: var(--text); }
+.cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.cart-empty {
+  text-align: center; padding: 52px 0;
+  font-family: var(--ff-serif); font-size: 22px;
+  color: var(--text); font-weight: 400;
+}
+.cart-empty span {
+  display: block; font-family: var(--ff-sans); font-size: 13px;
+  color: var(--muted); font-weight: 300; margin-top: 8px; font-style: normal;
+}
+.cart-foot { padding: 22px 30px; border-top: 1px solid var(--beige); flex-shrink: 0; }
+
+/* ============================================================
+   TOAST / CONFIRMATION
+============================================================ */
+.toast {
+  position: fixed; bottom: 40px; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--olive); color: #fff;
+  font-family: var(--ff-sans); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 14px 32px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s, transform .35s;
+  z-index: 900; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1100px) {
+  .hero-split { grid-template-columns: 1fr; gap: 40px; }
+  .inquiry-split { grid-template-columns: 1fr; }
+  .inq-types { border-right: none; border-bottom: 1px solid var(--beige); padding: 40px 0; }
+  .inq-form-panel { padding: 48px 0 0; }
+  .studio-grid { grid-template-columns: 1fr 1fr; }
+  .faq-split { grid-template-columns: 1fr; gap: 52px; }
+  .find-split { grid-template-columns: 1fr; gap: 52px; }
+  .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
+}
+@media (max-width: 768px) {
+  .wrap { padding: 0 24px; }
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .section { padding: 72px 0; }
+  .page-hero { padding-top: 130px; }
+  .studio-grid { grid-template-columns: 1fr; }
+  .studio-col { border-right: none; border-bottom: 1px solid rgba(250,248,245,0.07); padding: 40px 24px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  .ft-grid { grid-template-columns: 1fr; gap: 36px; }
+  .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+}
+</style>
+<link rel="stylesheet" href="animations.css">
+</head>
+<body>
+
+<!-- ========== ANNOUNCEMENT ========== -->
+<div class="ann" id="ann">
+  New In: Original Alcohol Ink Works from The Monsoon Series
+  <button class="ann-close" onclick="closeAnn()">×</button>
+</div>
+
+<!-- ========== NAVIGATION ========== -->
+<nav class="nav" id="nav" data-nav-solid="true">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Rashmi Rao</a>
+    <ul class="nav-links">
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="nav-icon-btn" onclick="openCart()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge">0</span>
+      </button>
+      <button class="nav-burger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== 1. PAGE HERO ========== -->
+<section class="page-hero">
+  <div class="wrap">
+    <div class="hero-split">
+      <div class="hero-left">
+        <span class="page-eyebrow rv">Studio Contact</span>
+        <h1 class="hero-h1 rv">Let's Start<br>a <em>Real</em><br>Conversation.</h1>
+      </div>
+      <div class="hero-right rv">
+        <p class="hero-promise">Every inquiry is answered personally by Rashmi. No assistants, no automated replies, no waiting weeks.</p>
+        <div class="hero-meta">
+          <div class="hero-meta-row">
+            <span class="meta-label">Email</span>
+            <span class="meta-val"><a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a></span>
+          </div>
+          <div class="hero-meta-row">
+            <span class="meta-label">Response</span>
+            <span class="meta-val">Within 48 hours</span>
+          </div>
+          <div class="hero-meta-row">
+            <span class="meta-label">Instagram</span>
+            <span class="meta-val"><a href="https://instagram.com" target="_blank" rel="noopener">@rashmiRaoDesigns</a></span>
+          </div>
+          <div class="hero-meta-row">
+            <span class="meta-label">Studio</span>
+            <span class="meta-val">By appointment only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2. INQUIRY SELECTOR + FORM ========== -->
+<section class="inquiry-bg section">
+  <div class="wrap">
+    <div class="inquiry-split">
+
+      <!-- Inquiry type selector -->
+      <div class="inq-types">
+        <span class="inq-types-label rv">What brings you here?</span>
+
+        <div class="inq-type active rv" data-target="connect-with-artist" onclick="selectInquiry(this)">
+          <span class="inq-type-icon">◈</span>
+          <div class="inq-type-copy">
+            <span class="inq-type-name">Connect with the Artist</span>
+            <span class="inq-type-desc">Share your details to start a personal conversation</span>
+          </div>
+        </div>
+
+        <div class="inq-type rv" data-target="panel-license" onclick="selectInquiry(this)">
+          <span class="inq-type-icon">⬡</span>
+          <div class="inq-type-copy">
+            <span class="inq-type-name">License the Work</span>
+            <span class="inq-type-desc">Interior design, hospitality, brand collaboration</span>
+          </div>
+        </div>
+
+        <div class="inq-type rv" data-target="panel-other" onclick="selectInquiry(this)">
+          <span class="inq-type-icon">✧</span>
+          <div class="inq-type-copy">
+            <span class="inq-type-name">Press &amp; Gallery</span>
+            <span class="inq-type-desc">Exhibition proposals, editorial, media inquiries</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form panels - one per inquiry type -->
+      <div class="inq-form-panel">
+
+        <!-- COLLECT -->
+        <!-- COMMISSION -->
+        <div class="form-panel active" id="connect-with-artist">
+          <h2 class="form-heading rv">Connecting with the <em>Artist.</em></h2>
+          <p class="form-sub rv">Share your name, email and phone so Rashmi can connect directly with you.</p>
+          <form class="form-grid rv" onsubmit="submitForm(event)">
+            <div class="form-group full">
+              <label class="form-label" for="f-artist-name">Name</label>
+              <input id="f-artist-name" class="form-input" type="text" placeholder="Your full name" required>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="f-artist-email">Email Address</label>
+              <input id="f-artist-email" class="form-input" type="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="f-artist-phone">Phone Number</label>
+              <input id="f-artist-phone" class="form-input" type="tel" placeholder="+91 or international" required>
+            </div>
+            <div class="form-submit-row">
+              <button type="submit" class="btn-olive">Connect with Artist →</button>
+              <p class="form-privacy">Rashmi will reply personally and your details remain private.</p>
+            </div>
+          </form>
+        </div>
+
+        <!-- LICENSE -->
+        <div class="form-panel" id="panel-license">
+          <h2 class="form-heading rv">License the <em>Work.</em></h2>
+          <p class="form-sub rv">Rashmi's work has been licensed for hotel installations, interior design projects, and brand collaborations across India and internationally. Tell us about your project.</p>
+          <form class="form-grid rv" onsubmit="submitForm(event)">
+            <div class="form-group">
+              <label class="form-label" for="f-your-name-2">Your Name</label>
+              <input id="f-your-name-2" class="form-input" type="text" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-company-studio">Company / Studio</label>
+              <input id="f-company-studio" class="form-input" type="text" placeholder="Organisation name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-email-address-3">Email Address</label>
+              <input id="f-email-address-3" class="form-input" type="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-phone">Phone</label>
+              <input id="f-phone" class="form-input" type="tel" placeholder="+91 or international">
+            </div>
+            <div class="form-group full">
+              <label class="form-label" id="f-project-type">Project Type</label>
+              <div class="form-radio-group" role="radiogroup" aria-labelledby="f-project-type">
+                <label class="form-radio"><input type="radio" name="projtype" value="interior" checked><span class="form-radio-dot"></span><span class="form-radio-label">Interior Design</span></label>
+                <label class="form-radio"><input type="radio" name="projtype" value="hotel"><span class="form-radio-dot"></span><span class="form-radio-label">Hotel / Hospitality</span></label>
+                <label class="form-radio"><input type="radio" name="projtype" value="brand"><span class="form-radio-dot"></span><span class="form-radio-label">Brand Collaboration</span></label>
+                <label class="form-radio"><input type="radio" name="projtype" value="surface"><span class="form-radio-dot"></span><span class="form-radio-label">Surface / Print Licensing</span></label>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="f-project-description">Project Description</label>
+              <textarea id="f-project-description" class="form-textarea" placeholder="Describe the project, the space, how you intend to use the work, and the scale of usage."></textarea>
+            </div>
+            <div class="form-submit-row">
+              <button type="submit" class="btn-olive">Send Licensing Brief →</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- PRESS / GALLERY -->
+        <div class="form-panel" id="panel-other">
+          <h2 class="form-heading rv">Press &amp; <em>Gallery.</em></h2>
+          <p class="form-sub rv">Browse curated imagery that captures the textures, light, and material presence of Rashmi's work.</p>
+          <div class="press-gallery-grid">
+            <article class="press-gallery-card">
+              <figure class="press-gallery-thumb">
+                <img src="images/story-1.jpg" alt="Studio installation image" />
+              </figure>
+              <div class="press-gallery-copy">
+                <h3>Studio installation</h3>
+                <p>Textural work staged for editorial and exhibition spaces.</p>
+              </div>
+            </article>
+            <article class="press-gallery-card">
+              <figure class="press-gallery-thumb">
+                <img src="images/story-2.jpg" alt="Material detail image" />
+              </figure>
+              <div class="press-gallery-copy">
+                <h3>Material detail</h3>
+                <p>Close-up imagery that highlights colour, surface, and depth.</p>
+              </div>
+            </article>
+            <article class="press-gallery-card">
+              <figure class="press-gallery-thumb">
+                <img src="images/story-3.jpg" alt="Textured colour study" />
+              </figure>
+              <div class="press-gallery-copy">
+                <h3>Colour study</h3>
+                <p>Editorial visuals that feel intimate, layered, and expressive.</p>
+              </div>
+            </article>
+            <article class="press-gallery-card">
+              <figure class="press-gallery-thumb">
+                <img src="images/collection-original.jpg" alt="Original work presentation" />
+              </figure>
+              <div class="press-gallery-copy">
+                <h3>Original presentation</h3>
+                <p>Signature pieces shown in gallery-ready compositions.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div><!-- /inq-form-panel -->
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. STUDIO DETAILS ========== -->
+<section class="studio-bg">
+  <div class="wrap">
+    <div class="studio-grid">
+      <div class="studio-col rv">
+        <span class="studio-col-label">Write to the Studio</span>
+        <div class="studio-col-title">Direct Contact</div>
+        <div class="studio-divider"></div>
+        <div class="studio-col-body">
+          <a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a><br>
+          <span style="margin-top:6px;display:block;">All inquiries welcome.<br>Replied to personally within 48 hours.</span>
+        </div>
+        <div class="studio-social">
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="studio-social-link">Instagram</a>
+          <a href="https://pinterest.com" target="_blank" rel="noopener" class="studio-social-link">Pinterest</a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="studio-social-link">LinkedIn</a>
+        </div>
+      </div>
+      <div class="studio-col rv">
+        <span class="studio-col-label">Studio Visits</span>
+        <div class="studio-col-title">By Appointment</div>
+        <div class="studio-divider"></div>
+        <div class="studio-col-body">
+          Studio visits are available for serious collectors and gallery partners. Write to arrange a time. Visits typically run 45-60 minutes and include the chance to see works in progress.<br><br>
+          <a href="mailto:studio@rashmirao.com?subject=Studio Visit Request">Request a visit →</a>
+        </div>
+      </div>
+      <div class="studio-col rv">
+        <span class="studio-col-label">Response Times</span>
+        <div class="studio-col-title">What to Expect</div>
+        <div class="studio-divider"></div>
+        <div class="studio-col-body">
+          <span style="color:rgba(250,248,245,0.6);">General inquiry</span> 24-48 hrs<br><br>
+          <span style="color:rgba(250,248,245,0.6);">Commission brief</span> 48-72 hrs<br><br>
+          <span style="color:rgba(250,248,245,0.6);">Licensing</span> 3-5 working days<br><br>
+          <span style="color:rgba(250,248,245,0.6);">Press / urgent</span> note deadline in message
+        </div>
+      </div>
+      <div class="studio-col rv">
+        <span class="studio-col-label">Shipping &amp; Delivery</span>
+        <div class="studio-col-title">Worldwide</div>
+        <div class="studio-divider"></div>
+        <div class="studio-col-body">
+          All works ship fully insured, professionally packed, and tracked door-to-door. Domestic delivery within India: 7-10 days. International: 2-4 weeks depending on customs.<br><br>
+          Certificate of authenticity included with every original.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. FAQ ========== -->
+<section class="faq-bg section">
+  <div class="wrap">
+    <div class="faq-split">
+      <div class="faq-intro rv">
+        <h2 class="h2">Things People<br><em>Ask.</em></h2>
+        <p class="body-text" style="margin-top:18px;">If your question isn't here, write directly. There are no wrong questions about acquiring or commissioning original art.</p>
+        <a href="mailto:studio@rashmirao.com" class="faq-intro-link">
+          Ask Rashmi directly
+          <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+
+      <div class="faq-list rv">
+        <div class="faq-item open">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Are all works originals? Are there prints available?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">All paintings listed on this site are originals: 1 of 1, signed and accompanied by a certificate of authenticity. A small number of limited-edition prints are available for select works. These are clearly marked and also numbered and signed.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">How long does a commission take?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">Timelines vary by medium and scale. Alcohol ink works on Yupo Paper typically take 3-6 weeks once the brief is agreed. Large-scale acrylic commissions may take 8-12 weeks. Rashmi will give you a clear timeline before you commit, and progress updates are shared at agreed milestones.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Do you ship internationally?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">Yes. Works have been shipped to collectors in the UK, Singapore, the UAE, the USA, and across Europe. All international shipments are fully insured and professionally packed. Customs duties, if applicable, are the responsibility of the buyer. We guide you through the process and handle all documentation.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">Can I see work in person before purchasing?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">Yes. Studio visits are available by appointment for collectors. Write to studio@rashmirao.com to arrange a visit. For collectors unable to visit in person, a detailed video walkthrough of the specific work can be arranged, showing the work in different lighting conditions and close-up texture detail.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What is the payment process?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">For available works: full payment is required before shipping. We accept bank transfer (India and international), Stripe (cards, international), and Razorpay (India). For commissions: a 50% deposit secures your slot and work begins once received. The remaining 50% is due before the work ships.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span class="faq-q-text">What does the certificate of authenticity include?</span>
+            <span class="faq-toggle">+</span>
+          </div>
+          <div class="faq-a">
+            <p class="faq-a-text">Every original ships with a hand-signed certificate on studio letterhead that includes: the work's title, medium, dimensions, year, edition details (if applicable), a unique certificate number, and Rashmi's signature. The certificate is an important part of the work's provenance and should be kept with the piece.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. FIND THE STUDIO ========== -->
+<section class="find-bg section">
+  <div class="wrap">
+    <div class="find-split">
+      <div class="find-copy">
+        <span class="eyebrow rv">The Studio</span>
+        <h2 class="h2 rv">Where the<br>Work <em>Happens.</em></h2>
+        <p class="body-text rv">The studio is in Mumbai, a quiet space that holds both the paintings and the process. Visits are by appointment and genuinely welcome.</p>
+        <div class="find-address rv">
+          <p class="find-addr-label">Location</p>
+          <p class="find-addr-text">Mumbai, Maharashtra<br>India, by appointment</p>
+        </div>
+        <div class="find-cta rv">
+          <a href="mailto:studio@rashmirao.com?subject=Studio Visit Request" class="btn-olive">Request a Visit</a>
+          <a href="collections.html" class="btn-outline" style="color:#FAF8F5;border-color:rgba(250,248,245,0.2);">View Available Works</a>
+        </div>
+      </div>
+
+      <div class="find-map rv">
+        <div class="map-pin">
+          <div class="map-pin-dot"></div>
+          <span class="map-pin-label">Rashmi Rao Studio · Mumbai</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">Rashmi Rao Designs</div>
+      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">Original Paintings</a></li>
+        <li><a href="collections.html">Alcohol Ink</a></li>
+        <li><a href="collections.html">Wearable Art</a></li>
+        <li><a href="collections.html">Limited Editions</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#press">Press</a></li>
+        <li><a href="contact.html">Licensing</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Policies</p>
+      <ul class="ft-links">
+        <li><a href="#">Shipping &amp; Returns</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>© 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true">
+  <div class="cart-top">
+    <span class="cart-ttl">Your Cart</span>
+    <button class="cart-x" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-body">
+    <div class="cart-empty">Empty for now.<span>Discover original artworks ready to collect.</span></div>
+  </div>
+  <div class="cart-foot">
+    <a href="collections.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;" onclick="closeCart()">Explore Works</a>
+  </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div class="toast" id="toast">Message sent. Rashmi will be in touch within 48 hours.</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="site.js" defer></script>
+<script>
+/* Announcement */
+function closeAnn() {
+  const el = document.getElementById('ann');
+  el.style.transition = 'height .3s ease, opacity .3s ease, padding .3s ease';
+  el.style.height = '0'; el.style.opacity = '0'; el.style.padding = '0';
+  setTimeout(() => { el.remove(); document.getElementById('nav').classList.add('no-ann'); }, 320);
+}
+
+/* Cart */
+function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartScrim').classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+
+/* Inquiry type switcher */
+function selectInquiry(el) {
+  document.querySelectorAll('.inq-type').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const target = document.getElementById(el.dataset.target);
+  if (target) target.classList.add('active');
+}
+
+/* FAQ accordion */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* Form submit (demo) */
+function submitForm(e) {
+  e.preventDefault();
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3800);
+  e.target.reset();
+}
+</script>
+
+<!-- GSAP - progressive enhancement -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" onerror="console.warn('GSAP unavailable')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" onerror="console.warn('ScrollTrigger unavailable')"></script>
+<script>
+if (typeof gsap !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) {
+    gsap.set('.rv', { opacity: 0, y: 22 });
+
+    /* Hero entrance */
+    gsap.to('.page-hero .rv', { opacity: 1, y: 0, duration: 0.85, stagger: 0.13, ease: 'power3.out', delay: 0.25 });
+
+    /* Scroll reveals */
+    gsap.utils.toArray('.rv:not(.page-hero .rv)').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 91%' }
+      });
+    });
+
+    /* Safety net */
+    setTimeout(() => gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' }), 5000);
+  } else {
+    gsap.set('.rv', { opacity: 1, y: 0, clearProps: 'all' });
+  }
+} else {
+  document.querySelectorAll('.rv').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+}
+</script>
+</body>
+</html>
