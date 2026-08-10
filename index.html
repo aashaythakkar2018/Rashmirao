@@ -249,26 +249,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
   background: #2a2018; /* fallback if image fails */
 }
-.hero-img {
+.hero-video {
   position: absolute;
-  inset: 0;
+  top: -10%;
+  left: 0;
   width: 100%;
-  /* slightly taller image and shifted down so lower subjects remain visible */
   height: 120%;
-  top: -15%;
   object-fit: cover;
-  object-position: center 82%;
+  object-position: center;
+  pointer-events: none;
+  z-index: 0;
   will-change: transform;
-}
-
-@media (max-width: 768px) {
-  /* tablet and small laptops: nudge focal point lower */
-  .hero-img { object-position: center 88%; top: -10%; }
-}
-
-@media (max-width: 480px) {
-  /* phones: focus on the very bottom so feet + water are visible */
-  .hero-img { object-position: center 100%; top: 0%; height: 110%; }
 }
 /* Beautiful CSS fallback gradient - always visible if image fails */
 .hero-img-fallback {
@@ -1017,14 +1008,18 @@ footer {
 <!-- ========== HERO ========== -->
 <section class="hero" id="hero" aria-label="Hero">
   <div class="hero-img-fallback" aria-hidden="true"></div>
-  <img
-    class="hero-img"
+  <video
+    class="hero-video"
     id="heroBg"
-    src="images/hero-beach-2.jpg"
-    alt="Rashmi Rao wearable art on location"
-    onerror="this.style.display='none'"
-    fetchpriority="high"
+    autoplay
+    loop
+    muted
+    playsinline
+    preload="auto"
   >
+    <source src="images/rashmirao-bts-1.mp4" type="video/mp4">
+    <source src="images/Rashmi_rao_BTS_1.mp4" type="video/mp4">
+  </video>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">Rashmi Rao Designs</p>
