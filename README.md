@@ -107,8 +107,8 @@ browser downloads only the first one it can play:
 
 | File | Codec | Resolution | Size |
 | --- | --- | --- | --- |
-| `rashmi-rao-bts.mp4` | HEVC | 1920 × 1080 | 21 MB |
-| `rashmi-rao-bts-h264.mp4` | H.264 | 960 × 540 | 17 MB |
+| `rashmi-rao-bts.mp4` | HEVC, CRF 32 | 1920 × 1080 | 4.4 MB |
+| `rashmi-rao-bts-h264.mp4` | H.264, CRF 28 | 1280 × 720 | 4.4 MB |
 
 The HEVC file is the original and is listed first, so Safari — and Chrome,
 Edge, and Firefox where hardware HEVC decode is available — get the sharper
@@ -116,21 +116,27 @@ Edge, and Firefox where hardware HEVC decode is available — get the sharper
 `<source>` tags pointed at the same HEVC file, so browsers without HEVC support
 showed no video at all.
 
-The video is now by far the heaviest part of the site. Both files were produced
-with macOS `avconvert`, whose presets encode at a fixed high bitrate. Re-encoding
-with `ffmpeg` using quality-targeted settings would bring the clip to roughly
-3–5 MB with no perceptible loss for a muted, overlaid background video:
+The master is a 10-bit 4:2:2 HEVC intermediate at 5.3 Mb/s — a grading format,
+not a delivery one. Both files above were re-encoded from it to 8-bit 4:2:0 with
+quality-targeted CRF, taking the pair from 38 MB to 8.8 MB:
 
 ```bash
-# H.264 fallback, ~3-4 MB
-ffmpeg -i rashmi-rao-bts.mp4 -vf scale=1280:-2 -c:v libx264 -crf 28 \
-       -preset slow -profile:v high -pix_fmt yuv420p -an \
-       -movflags +faststart rashmi-rao-bts-h264.mp4
+# HEVC primary
+ffmpeg -i master.mp4 -map 0:v:0 -map 0:a:0 \
+       -c:v libx265 -crf 32 -preset slow -tag:v hvc1 -pix_fmt yuv420p \
+       -c:a aac -b:a 96k -movflags +faststart rashmi-rao-bts.mp4
 
-# HEVC primary, ~2-3 MB
-ffmpeg -i rashmi-rao-bts.mp4 -c:v libx265 -crf 30 -preset slow -tag:v hvc1 \
-       -an -movflags +faststart rashmi-rao-bts.mp4
+# H.264 720p fallback
+ffmpeg -i master.mp4 -map 0:v:0 -map 0:a:0 -vf scale=1280:-2 \
+       -c:v libx264 -crf 28 -preset slow -profile:v high -pix_fmt yuv420p \
+       -c:a aac -b:a 96k -movflags +faststart rashmi-rao-bts-h264.mp4
 ```
 
-Both encodes drop the audio track (`-an`), which the hero video does not use —
-it is `muted` and looping.
+**Both encodes must keep the audio track.** The hero video starts `muted`, but
+the sound toggle in the bottom-right corner (`toggleHeroSound()`) unmutes it, so
+an `-an` encode would silently break that control. The source audio was 319 kb/s
+stereo AAC, which is far more than a background clip needs — 96 kb/s is
+transparent here and saves about 0.8 MB.
+
+The 10-bit master is not kept in this repository. Re-encodes should start from
+the original file held outside it.
