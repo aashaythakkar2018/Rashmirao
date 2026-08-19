@@ -244,10 +244,48 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* 4-row × 2-col image grid - mirrors Cord's 8-image mosaic */
 .story-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 180px;
+  gap: 12px;
+  align-items: stretch;
 }
-.story-grid .img-wrap { aspect-ratio: 3/4; }
+.story-grid .img-wrap {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 180px;
+}
+.story-grid .img-wrap:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.story-grid .img-wrap:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+.story-grid .img-wrap:nth-child(3) {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+}
+.story-grid .img-wrap:nth-child(4) {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+}
+.story-grid .img-wrap:nth-child(5) {
+  grid-column: 1;
+  grid-row: 3;
+}
+.story-grid .img-wrap:nth-child(6) {
+  grid-column: 3;
+  grid-row: 3;
+}
+.story-grid .img-wrap:nth-child(7) {
+  grid-column: 1 / span 2;
+  grid-row: 4;
+}
+.story-grid .img-wrap:nth-child(8) {
+  grid-column: 2 / span 2;
+  grid-row: 4;
+}
 /* warm palette per slot */
 .story-grid .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c8d0be,#8a9a7a); }
 .story-grid .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#c8b090,#9a7050); }
@@ -260,14 +298,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 /* brand medallion - sits between the two rows like Cord's logo mark */
 .story-medallion {
-  grid-column: 1 / -1;
-  display: flex; justify-content: center; padding: 14px 0;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex; justify-content: center; align-items: center;
+  z-index: 2;
 }
 .medallion {
   width: 100px; height: 100px; border-radius: 50%;
   background: var(--beige); border: 1px solid rgba(17,17,17,0.1);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 2px;
+  box-shadow: 0 14px 30px rgba(17,17,17,0.08);
 }
 .medallion-name {
   font-family: var(--ff-serif); font-size: 10px;
@@ -919,7 +960,7 @@ footer {
   .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
 }
 </style>
-<link rel="stylesheet" href="animations.css">
+<link rel="stylesheet" href="assets/css/animations.css">
 </head>
 <body>
 
@@ -987,16 +1028,16 @@ footer {
       <div>
         <div class="story-grid">
           <div class="img-wrap rv">
-            <img src="images/story-1.jpg" alt="Studio" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story-1.jpg" alt="Studio" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/story-2.jpg" alt="Artwork detail" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story-2.jpg" alt="Artwork detail" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/hero-beach.jpg" alt="Paintings" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/hero-beach.jpg" alt="Paintings" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/about-portrait.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/about-portrait.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
           </div>
 
           <!-- brand medallion - sits at midpoint, mirrors Cord's logo mark -->
@@ -1008,16 +1049,16 @@ footer {
           </div>
 
           <div class="img-wrap rv">
-            <img src="images/collection-original.jpg" alt="Ochre" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/collection-original.jpg" alt="Ochre" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/about-portrait.jpg" alt="Artist" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/about-portrait.jpg" alt="Artist" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/story-3.jpg" alt="Detail" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story-3.jpg" alt="Detail" loading="lazy" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap rv">
-            <img src="images/wearable-2.jpg" alt="Wearable" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/wearable-2.jpg" alt="Wearable" loading="lazy" onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -1091,7 +1132,7 @@ footer {
       <div class="journey-img-col rv">
         <div class="img-wrap">
           <img
-            src="images/story-2.jpg"
+            src="assets/images/story-2.jpg"
             alt="Rashmi Rao in the studio"
             loading="lazy"
             onerror="this.style.display='none'"
@@ -1140,13 +1181,13 @@ footer {
 
       <div class="phil-imgs rv">
         <div class="img-wrap">
-          <img src="images/story-3.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story-3.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="img-wrap">
-          <img src="images/story-1.jpg" alt="Painting" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story-1.jpg" alt="Painting" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="img-wrap">
-          <img src="images/hero-beach.jpg" alt="Collections" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/hero-beach.jpg" alt="Collections" loading="lazy" onerror="this.style.display='none'">
         </div>
       </div>
     </div>
@@ -1159,13 +1200,13 @@ footer {
     <div class="purpose-split">
       <div class="purpose-imgs rv">
         <div class="img-wrap">
-          <img src="images/collection-ink.jpg" alt="Ink detail" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection-ink.jpg" alt="Ink detail" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="img-wrap">
-          <img src="images/collection-original.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection-original.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="img-wrap">
-          <img src="images/collection-wearable.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection-wearable.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
         </div>
       </div>
 
@@ -1376,7 +1417,7 @@ footer {
     <div class="social-grid">
       <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/story-1.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story-1.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="social-overlay">
           <div class="social-ig">
@@ -1386,7 +1427,7 @@ footer {
       </a>
       <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/story-2.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story-2.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="social-overlay">
           <div class="social-ig">
@@ -1396,7 +1437,7 @@ footer {
       </a>
       <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/story-3.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story-3.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="social-overlay">
           <div class="social-ig">
@@ -1406,7 +1447,7 @@ footer {
       </a>
       <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card rv">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/hero-beach.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/hero-beach.jpg" alt="Community" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="social-overlay">
           <div class="social-ig">
@@ -1508,7 +1549,7 @@ footer {
 </div>
 
 <!-- ========== SCRIPTS ========== -->
-<script src="site.js" defer></script>
+<script src="assets/js/site.js" defer></script>
 <script>
 /* Cart */
 function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartScrim').classList.add('show'); document.body.style.overflow = 'hidden'; }

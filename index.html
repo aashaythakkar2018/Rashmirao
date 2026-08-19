@@ -496,13 +496,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-bg { background: var(--bg); }
 .about-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 46% 54%;
   min-height: 680px;
+  align-items: center;
 }
-.about-img-col { overflow: hidden; min-height: 580px; }
-.about-img-col .img-wrap { height: 100%; min-height: 580px; }
+.about-img-col { overflow: hidden; min-height: 520px; }
+.about-img-col .img-wrap {
+  height: 100%;
+  min-height: 520px;
+  max-width: 78%;
+  margin: 0 auto;
+}
 .about-copy-col {
-  padding: 64px 56px;
+  padding: 48px 40px 48px 0;
   display: flex; flex-direction: column; justify-content: center;
 }
 .about-copy-col .eyebrow { margin-bottom: 14px; }
@@ -543,13 +549,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .coll-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
 }
 .coll-card {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/5;
   display: block;
   background: var(--beige);
   cursor: pointer;
@@ -609,21 +615,32 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .art-row {
   display: grid;
-  grid-template-columns: 55% 45%;
+  grid-template-columns: 48% 52%;
   align-items: center;
   margin-bottom: 80px;
 }
 .art-row:last-of-type {
   margin-bottom: 48px;
 }
-.art-row.flip { grid-template-columns: 45% 55%; }
+.art-row.flip { grid-template-columns: 48% 52%; }
 .art-row.flip .art-img-col { order: 2; }
 .art-row.flip .art-copy-col { order: 1; }
 
 /* artwork image column */
 .art-img-col { position: relative; }
-.art-img-col .img-wrap { aspect-ratio: 3/4; }
+.art-img-col .img-wrap {
+  aspect-ratio: 4/5;
+  max-width: 70%;
+  margin: 0 auto;
+}
 .art-img-col .img-wrap img { width: 100%; height: 100%; }
+
+.art-row.art-row--wide {
+  grid-template-columns: 42% 58%;
+}
+.art-row.art-row--wide .art-img-col .img-wrap {
+  max-width: 62%;
+}
 /* unique warm tones per artwork */
 .art-1 .img-wrap::before { background: linear-gradient(160deg,#c8d0be,#8a9a7a,#6d8560); }
 .art-2 .img-wrap::before { background: linear-gradient(160deg,#c8a8a0,#a07068,#8a4840); }
@@ -643,8 +660,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .badge-cert  { background: var(--gold); color: #fff; }
 
 /* artwork copy column */
-.art-copy-col { padding: 48px 56px; }
-.art-row.flip .art-copy-col { padding: 48px 56px 48px 0; }
+.art-copy-col { padding: 32px 32px 32px 20px; }
+.art-row.flip .art-copy-col { padding: 32px 20px 32px 32px; }
 
 .art-coll {
   font-family: var(--ff-sans);
@@ -699,14 +716,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .wear-bg { background: var(--beige); }
 .wear-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 46% 54%;
   min-height: 620px;
+  align-items: center;
 }
-.wear-img-col { overflow: hidden; min-height: 560px; }
-.wear-img-col .img-wrap { height: 100%; min-height: 560px; }
+.wear-img-col { overflow: hidden; min-height: 460px; }
+.wear-img-col .img-wrap {
+  height: 100%;
+  min-height: 460px;
+  max-width: 78%;
+  margin: 0 auto;
+}
 .wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
 .wear-img-col .img-wrap img { height: 100%; }
-.wear-copy-col { padding: 64px 56px; display: flex; flex-direction: column; justify-content: center; }
+.wear-copy-col { padding: 40px 32px 40px 0; display: flex; flex-direction: column; justify-content: center; }
 .wear-lead { margin-top: 24px; max-width: 430px; }
 .process { margin-top: 44px; }
 .p-step {
@@ -953,7 +976,7 @@ footer {
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .coll-grid { grid-template-columns: repeat(2,1fr); }
+  .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .art-row, .art-row.flip { grid-template-columns: 1fr; }
   .art-row.flip .art-img-col { order: unset; }
   .art-row.flip .art-copy-col { order: unset; }
@@ -992,7 +1015,7 @@ footer {
   .hero-ctas { flex-direction: column; align-items: flex-start; gap: 16px; }
 }
 </style>
-<link rel="stylesheet" href="animations.css">
+<link rel="stylesheet" href="assets/css/animations.css">
 </head>
 <body>
 
@@ -1055,8 +1078,10 @@ footer {
     playsinline
     preload="auto"
   >
-    <source src="images/rashmirao-bts-1.mp4" type="video/mp4">
-    <source src="images/Rashmi_rao_BTS_1.mp4" type="video/mp4">
+    <!-- HEVC 1080p first: smaller and sharper where supported (Safari, and Chrome/Edge/Firefox with hardware decode) -->
+    <source src="assets/video/rashmi-rao-bts.mp4" type="video/mp4; codecs=hvc1">
+    <!-- H.264 540p fallback: plays everywhere else -->
+    <source src="assets/video/rashmi-rao-bts-h264.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-content">
@@ -1093,7 +1118,7 @@ footer {
     <div class="about-img-col rv">
       <div class="img-wrap">
         <img
-          src="images/about-portrait.jpg"
+          src="assets/images/about-portrait.jpg"
           alt="Portrait of Rashmi Rao Designs"
           loading="lazy"
           onerror="this.style.display='none'"
@@ -1134,57 +1159,69 @@ footer {
   <div class="wrap">
     <div class="coll-hd">
       <div>
-        <h2 class="h2 rv">Collections</h2>
+        <h2 class="h2 rv">Nature's Rhythm</h2>
       </div>
       <a href="collections.html" class="text-link rv">View all →</a>
     </div>
     <div class="coll-grid" id="collGrid">
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/collection-original.jpg" alt="Original Paintings" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/purple-petals-reverie.jpg" alt="Purple Petals Reverie" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">01</span>
         <div class="coll-overlay"></div>
         <div class="coll-info">
-          <span class="coll-name">Original Paintings</span>
-          <span class="coll-count">48 Works</span>
-          <span class="coll-go">View Collection →</span>
+          <span class="coll-name">Purple Petals Reverie</span>
+          <span class="coll-count">Statement Saree</span>
+          <span class="coll-go">View Design →</span>
         </div>
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/collection-ink.jpg" alt="Alcohol Ink" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/grounding-nature.jpg" alt="Grounding Nature" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">02</span>
         <div class="coll-overlay"></div>
         <div class="coll-info">
-          <span class="coll-name">Alcohol Ink</span>
-          <span class="coll-count">32 Works</span>
-          <span class="coll-go">View Collection →</span>
+          <span class="coll-name">Grounding Nature</span>
+          <span class="coll-count">Botanical Palette</span>
+          <span class="coll-go">View Design →</span>
         </div>
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/collection-wearable.jpg" alt="Wearable Art" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/echoes-of-earth.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">03</span>
         <div class="coll-overlay"></div>
         <div class="coll-info">
-          <span class="coll-name">Wearable Art</span>
-          <span class="coll-count">12 Pieces</span>
-          <span class="coll-go">View Collection →</span>
+          <span class="coll-name">Echoes Of Earth</span>
+          <span class="coll-count">Earth Tones</span>
+          <span class="coll-go">View Design →</span>
         </div>
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="images/collection-limited.jpg" alt="Limited Editions" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/shifting-glacier.jpg" alt="Shifting Glacier" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">04</span>
         <div class="coll-overlay"></div>
         <div class="coll-info">
-          <span class="coll-name">Limited Editions</span>
-          <span class="coll-count">18 Prints</span>
-          <span class="coll-go">View Collection →</span>
+          <span class="coll-name">Shifting Glacier</span>
+          <span class="coll-count">Cool Mineral Flow</span>
+          <span class="coll-go">View Design →</span>
+        </div>
+      </a>
+      <a href="collections.html" class="coll-card">
+        <div class="img-wrap" style="height:100%;">
+          <img src="assets/images/magical-pansies.jpg" alt="Magical Pansies" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <span class="coll-num">05</span>
+        <div class="coll-overlay"></div>
+        <div class="coll-info">
+          <span class="coll-name">Magical Pansies</span>
+          <span class="coll-count">Color Story</span>
+          <span class="coll-go">View Design →</span>
         </div>
       </a>
     </div>
@@ -1203,7 +1240,7 @@ footer {
       <div class="art-img-col art-1 rv" id="artA">
         <a href="product.html?id=monsoon-dream" class="img-wrap">
           <img
-            src="images/hero-beach.jpg"
+            src="assets/images/hero-beach.jpg"
             alt="Monsoon Dream by Rashmi Rao"
             loading="lazy"
             onerror="this.style.display='none'"
@@ -1224,7 +1261,7 @@ footer {
         <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
         <div class="art-actions rv">
           <a href="product.html?id=monsoon-dream" class="btn-dark">View Work</a>
-          <button class="btn-dark" onclick="addToCart('Monsoon Dream',85000,'images/hero-beach.jpg')">Purchase</button>
+          <button class="btn-dark" onclick="addToCart('Monsoon Dream',85000,'assets/images/hero-beach.jpg')">Purchase</button>
           <a href="contact.html" class="btn-outline">Inquire</a>
         </div>
         <div class="cert-line rv">
@@ -1239,7 +1276,7 @@ footer {
       <div class="art-img-col art-2 rv" id="artB">
         <a href="product.html?id=crimson-solitude" class="img-wrap">
           <img
-            src="images/collection-ink.jpg"
+            src="assets/images/collection-ink.jpg"
             alt="Crimson Solitude by Rashmi Rao"
             loading="lazy"
             onerror="this.style.display='none'"
@@ -1260,7 +1297,7 @@ footer {
         <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
         <div class="art-actions rv">
           <a href="product.html?id=crimson-solitude" class="btn-dark">View Work</a>
-          <button class="btn-dark" onclick="addToCart('Crimson Solitude',65000,'images/collection-ink.jpg')">Purchase</button>
+          <button class="btn-dark" onclick="addToCart('Crimson Solitude',65000,'assets/images/collection-ink.jpg')">Purchase</button>
           <a href="contact.html" class="btn-outline">Inquire</a>
         </div>
         <div class="cert-line rv">
@@ -1275,7 +1312,7 @@ footer {
       <div class="art-img-col art-3 rv" id="artC">
         <a href="product.html?id=whispers-of-ochre" class="img-wrap">
           <img
-            src="images/collection-original.jpg"
+            src="assets/images/collection-original.jpg"
             alt="Whispers of Ochre by Rashmi Rao"
             loading="lazy"
             onerror="this.style.display='none'"
@@ -1317,7 +1354,7 @@ footer {
     <div class="wear-img-col rv">
       <div class="img-wrap">
         <img
-          src="images/wearable-2.jpg"
+          src="assets/images/wearable-2.jpg"
           alt="Wearable art sarees by Rashmi Rao"
           loading="lazy"
           onerror="this.style.display='none'"
@@ -1460,8 +1497,8 @@ footer {
 </div>
 
 <!-- Shared currency module (live rate + INR↔USD toggle) -->
-<script src="currency.js"></script>
-<script src="site.js" defer></script>
+<script src="assets/js/currency.js"></script>
+<script src="assets/js/site.js" defer></script>
 
 <!-- ========== GSAP (loaded ASYNC - page is fully visible without it) ========== -->
 <script>
@@ -1543,6 +1580,28 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img => {
 });
 
 /* -- Hero Sound Mute/Unmute Toggle -- */
+function initHeroVideo() {
+  const video = document.getElementById('heroBg');
+  if (!video) return;
+
+  const startPlayback = () => {
+    video.muted = true;
+    const playPromise = video.play();
+    if (playPromise && typeof playPromise.then === 'function') {
+      playPromise.catch(() => {
+        video.muted = true;
+        setTimeout(() => {
+          video.play().catch(() => {});
+        }, 200);
+      });
+    }
+  };
+
+  video.addEventListener('loadeddata', startPlayback, { once: true });
+  video.addEventListener('canplay', startPlayback, { once: true });
+  startPlayback();
+}
+
 function toggleHeroSound() {
   const video = document.getElementById('heroBg');
   const iconOff = document.querySelector('.sound-icon-off');
@@ -1565,6 +1624,8 @@ function toggleHeroSound() {
     if (text) text.textContent = 'Sound Off';
   }
 }
+
+document.addEventListener('DOMContentLoaded', initHeroVideo);
 </script>
 
 <!-- -- Text Reveal - animate-skill text-reveal.tsx pattern --

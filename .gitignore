@@ -1,0 +1,63 @@
+# ---------------------------------------------------------------
+# Secrets - never commit
+# ---------------------------------------------------------------
+/mcp.config.json
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------
+# Source material / masters - kept locally, not in the repo.
+# The web-optimised derivatives live in assets/images/.
+# Leading slashes anchor these to the repo root, so assets/images/
+# is NOT swept up by the /images/ rule.
+# ---------------------------------------------------------------
+/images/
+/FINAL IMAGES FOR RR/
+/5 designs for RR/
+*.pdf
+/Rashmi rao BTS_1.mp4
+
+# Distribution archives
+*.zip
+
+# Local tooling
+.agents/
+
+# ---------------------------------------------------------------
+# OS
+# ---------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---------------------------------------------------------------
+# Editors / IDEs
+# ---------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# ---------------------------------------------------------------
+# Node (only if tooling is added later)
+# ---------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.npm/
+
+# ---------------------------------------------------------------
+# Logs, temp, build output
+# ---------------------------------------------------------------
+*.log
+*.tmp
+tmp/
+dist/
+build/
