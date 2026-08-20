@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rashmi Rao Designs | Where Art Becomes Story.</title>
-<meta name="description" content="Original contemporary paintings, wearable art, and limited-edition collections by Rashmi Rao.">
+<title>Rhytara | Woven in stillness, inspired by nature's rhythm.</title>
+<meta name="description" content="Rhytara - wearable art born from original paintings by Rashmi Rao. Nature's Rhythm, the first collection, is available now.">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1009,6 +1009,59 @@ footer {
   .inq-label { font-size: 19px; }
   .contact-links { gap: 18px; }
 }
+/* ============================================================
+   RHYTARA HOMEPAGE SECTIONS
+   Layout only - all type, colour and spacing come from the
+   existing tokens and shared classes.
+============================================================ */
+.nr-intro { text-align: center; }
+.nr-lead {
+  font-family: var(--ff-sans); font-size: 16px; font-weight: 300;
+  line-height: 1.8; color: var(--muted);
+  max-width: 560px; margin: 24px auto 0;
+}
+.nr-meta {
+  font-family: var(--ff-mono); font-size: 11px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--olive); margin-top: 30px;
+}
+
+.stories-inner { text-align: center; max-width: 760px; margin: 0 auto; }
+.stories-copy {
+  font-family: var(--ff-sans); font-size: 16px; font-weight: 300;
+  line-height: 1.8; color: rgba(250,248,245,0.55);
+  max-width: 520px; margin: 26px auto 0;
+}
+.stories-inner .btn-outline-light { margin-top: 42px; }
+
+.collect-hd { max-width: 640px; margin-bottom: 64px; }
+.collect-lead {
+  font-family: var(--ff-sans); font-size: 16px; font-weight: 300;
+  line-height: 1.8; color: var(--muted); margin-top: 24px;
+}
+.collect-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.collect-item { border-top: 1px solid var(--beige); padding-top: 26px; }
+.collect-num {
+  font-family: var(--ff-mono); font-size: 11px; color: var(--olive);
+  display: block; margin-bottom: 18px;
+}
+.collect-title {
+  font-family: var(--ff-sans); font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--text); margin-bottom: 12px;
+}
+.collect-copy {
+  font-family: var(--ff-sans); font-size: 15px; font-weight: 300;
+  line-height: 1.75; color: var(--muted);
+}
+
+.shop-inner { text-align: center; }
+.shop-inner .btn-olive { margin-top: 8px; }
+
+@media (max-width: 900px) {
+  .collect-grid { grid-template-columns: 1fr; gap: 34px; }
+  .collect-hd { margin-bottom: 44px; }
+}
+
 @media (max-width: 480px) {
   .hero-h1 { font-size: 36px; }
   .coll-grid { grid-template-columns: 1fr; }
@@ -1021,14 +1074,14 @@ footer {
 
 <!-- ========== ANNOUNCEMENT ========== -->
 <div class="ann" id="ann">
-  New In: Original Alcohol Ink Works from The Monsoon Series
+  Nature's Rhythm — the first collection from Rhytara. Five designs now available.
   <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">×</button>
 </div>
 
 <!-- ========== NAV ========== -->
 <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="Rashmi Rao Designs home">Rashmi Rao</a>
+    <a href="index.html" class="nav-logo" aria-label="Rhytara home">Rhytara</a>
 
     <ul class="nav-links" role="list">
       <li><a href="collections.html">Collections</a></li>
@@ -1085,15 +1138,15 @@ footer {
   </video>
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Rashmi Rao Designs</p>
-    <h1 class="hero-h1">Where Art<br><em>Becomes</em> Story.</h1>
-    <p class="hero-sub">Original contemporary paintings, wearable art, and limited-edition collections.</p>
+    <p class="hero-eyebrow">Welcome to Rhytara</p>
+    <h1 class="hero-h1">Woven in stillness,<br><em>inspired by</em> nature's rhythm.</h1>
+    <p class="hero-sub">Wearable art born from original paintings, where color, movement, and nature find new expression in the timeless form of the saree.</p>
     <div class="hero-ctas">
       <a href="collections.html" class="btn-olive">
-        Explore Collection
+        Discover Nature's Rhythm
         <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M0 3.5h12M9 1l3 2.5L9 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       </a>
-      <a href="about.html" class="btn-ghost-light">Meet the Artist</a>
+      <a href="about.html" class="btn-ghost-light">Meet Rashmi</a>
     </div>
   </div>
 
@@ -1112,56 +1165,25 @@ footer {
   </button>
 </section>
 
-<!-- ========== ABOUT ========== -->
-<section class="about-bg section" id="about">
-  <div class="about-split">
-    <div class="about-img-col rv">
-      <div class="img-wrap">
-        <img
-          src="assets/images/about-portrait.jpg"
-          alt="Portrait of Rashmi Rao Designs"
-          loading="lazy"
-          onerror="this.style.display='none'"
-        >
-      </div>
-    </div>
-    <div class="about-copy-col">
-      <h2 class="h2 rv">Rashmi Rao</h2>
-      <div class="about-bio body-text">
-        <p class="rv">An internationally exhibited multidisciplinary artist who transforms emotion into visual language, working across alcohol ink, abstract acrylic, and graphic art to create works that breathe.</p>
-        <p class="rv">Her practice spans solo exhibitions, gallery showcases, and commercial collaborations across three continents. Her alcohol ink works are celebrated for their organic movement: controlled, yet entirely free.</p>
-        <p class="rv">Every piece begins with feeling, not planning. The canvas becomes a record of that moment.</p>
-      </div>
-      <div class="about-stats">
-        <div>
-          <span class="stat-n rv">12+</span>
-          <span class="stat-l rv">Exhibitions</span>
-        </div>
-        <div>
-          <span class="stat-n rv">3</span>
-          <span class="stat-l rv">Countries</span>
-        </div>
-        <div>
-          <span class="stat-n rv">200+</span>
-          <span class="stat-l rv">Artworks</span>
-        </div>
-      </div>
-      <a href="contact.html" class="about-link text-link rv">
-        Read the full story
-        <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      </a>
-    </div>
+<!-- ========== 2. NATURE'S RHYTHM ========== -->
+<section class="about-bg section" id="natures-rhythm">
+  <div class="wrap nr-intro">
+    <span class="eyebrow rv">Nature's Rhythm</span>
+    <h2 class="h2 rv">The first collection<br>from Rhytara.</h2>
+    <p class="nr-lead rv">An evolving collection of wearable artworks inspired by the movement, color and quiet beauty of nature.</p>
+    <p class="nr-meta rv">Currently available: 5 designs</p>
   </div>
 </section>
 
-<!-- ========== COLLECTIONS ========== -->
+<!-- ========== 3. DISCOVER NATURE'S RHYTHM (THE FIVE DESIGNS) ========== -->
 <section class="coll-bg section" id="collections">
   <div class="wrap">
     <div class="coll-hd">
       <div>
-        <h2 class="h2 rv">Nature's Rhythm</h2>
+        <span class="eyebrow rv">Discover Nature's Rhythm</span>
+        <h2 class="h2 rv">Five designs to<br>begin the journey.</h2>
       </div>
-      <a href="collections.html" class="text-link rv">View all →</a>
+      <a href="collections.html" class="text-link rv">View all &rarr;</a>
     </div>
     <div class="coll-grid" id="collGrid">
       <a href="collections.html" class="coll-card">
@@ -1228,210 +1250,107 @@ footer {
   </div>
 </section>
 
-<!-- ========== FEATURED ARTWORKS ========== -->
-<section class="art-bg section" id="artworks">
-  <div class="wrap">
-    <div class="art-hd">
-      <h2 class="h2 rv">Featured Artworks</h2>
-    </div>
-
-    <!-- ARTWORK 1 -->
-    <div class="art-row">
-      <div class="art-img-col art-1 rv" id="artA">
-        <a href="product.html?id=monsoon-dream" class="img-wrap">
-          <img
-            src="assets/images/hero-beach.jpg"
-            alt="Monsoon Dream by Rashmi Rao"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        </a>
-        <div class="art-badges">
-          <span class="badge badge-avail">✓ Available</span>
-          <span class="badge badge-cert">Certificate</span>
-        </div>
-      </div>
-      <div class="art-copy-col">
-        <span class="art-coll rv">Alcohol Ink Collection</span>
-        <h3 class="art-title rv">Monsoon Dream</h3>
-        <p class="art-meta rv">Alcohol Ink on Yupo Paper &nbsp;·&nbsp; 36 × 48 in &nbsp;·&nbsp; 2024</p>
-        <p class="art-story rv">"Painted during the first rains of June. The ink moved the way the sky felt: unrushed, inevitable, and completely beyond control."</p>
-        <div class="art-rule"></div>
-        <p class="art-price rv" data-price-inr="85000">₹ 85,000</p>
-        <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
-        <div class="art-actions rv">
-          <a href="product.html?id=monsoon-dream" class="btn-dark">View Work</a>
-          <button class="btn-dark" onclick="addToCart('Monsoon Dream',85000,'assets/images/hero-beach.jpg')">Purchase</button>
-          <a href="contact.html" class="btn-outline">Inquire</a>
-        </div>
-        <div class="cert-line rv">
-          <span class="cert-seal">◈</span>
-          Certificate of Authenticity Included
-        </div>
-      </div>
-    </div>
-
-    <!-- ARTWORK 2 -->
-    <div class="art-row flip">
-      <div class="art-img-col art-2 rv" id="artB">
-        <a href="product.html?id=crimson-solitude" class="img-wrap">
-          <img
-            src="assets/images/collection-ink.jpg"
-            alt="Crimson Solitude by Rashmi Rao"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        </a>
-        <div class="art-badges">
-          <span class="badge badge-avail">✓ Available</span>
-          <span class="badge badge-cert">Certificate</span>
-        </div>
-      </div>
-      <div class="art-copy-col">
-        <span class="art-coll rv">Abstract Collection</span>
-        <h3 class="art-title rv">Crimson Solitude</h3>
-        <p class="art-meta rv">Abstract Acrylic on Canvas &nbsp;·&nbsp; 24 × 36 in &nbsp;·&nbsp; 2023</p>
-        <p class="art-story rv">"There is a particular red that appears only in solitude, when the noise falls away and all that remains is the raw truth of the moment."</p>
-        <div class="art-rule"></div>
-        <p class="art-price rv" data-price-inr="65000">₹ 65,000</p>
-        <p class="art-edition rv">Original &nbsp;·&nbsp; 1 of 1</p>
-        <div class="art-actions rv">
-          <a href="product.html?id=crimson-solitude" class="btn-dark">View Work</a>
-          <button class="btn-dark" onclick="addToCart('Crimson Solitude',65000,'assets/images/collection-ink.jpg')">Purchase</button>
-          <a href="contact.html" class="btn-outline">Inquire</a>
-        </div>
-        <div class="cert-line rv">
-          <span class="cert-seal">◈</span>
-          Certificate of Authenticity Included
-        </div>
-      </div>
-    </div>
-
-    <!-- ARTWORK 3 -->
-    <div class="art-row art-row--wide">
-      <div class="art-img-col art-3 rv" id="artC">
-        <a href="product.html?id=whispers-of-ochre" class="img-wrap">
-          <img
-            src="assets/images/collection-original.jpg"
-            alt="Whispers of Ochre by Rashmi Rao"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        </a>
-        <div class="art-badges">
-          <span class="badge badge-sold">✕ Sold</span>
-          <span class="badge badge-cert">Certificate</span>
-        </div>
-      </div>
-      <div class="art-copy-col">
-        <span class="art-coll rv">Original Paintings</span>
-        <h3 class="art-title rv">Whispers of Ochre</h3>
-        <p class="art-meta rv">Mixed Media on Canvas &nbsp;·&nbsp; 30 × 40 in &nbsp;·&nbsp; 2024</p>
-        <p class="art-story rv">"The ochres of Rajasthan, layered over decades of memory, compressed into 40 minutes of paint. Some works paint themselves."</p>
-        <div class="art-rule"></div>
-        <p class="art-price rv" style="color:var(--muted);font-size:18px;" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</p>
-        <p class="art-edition rv">Original &nbsp;·&nbsp; Similar available on request</p>
-        <div class="art-actions rv">
-          <a href="product.html?id=whispers-of-ochre" class="btn-dark">View Work</a>
-          <a href="contact.html" class="btn-outline">Inquire</a>
-        </div>
-        <div class="cert-line rv">
-          <span class="cert-seal">◈</span>
-          Certificate of Authenticity Included
-        </div>
-      </div>
-    </div>
-
-    <div class="art-footer rv">
-      <a href="collections.html" class="text-link">View all artworks →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ========== WEARABLE ART ========== -->
-<section class="wear-bg section" id="wearable">
+<!-- ========== 3b. PAINTINGS YOU CAN WEAR ========== -->
+<section class="wear-bg section" id="paintings-you-can-wear">
   <div class="wear-split">
     <div class="wear-img-col rv">
       <div class="img-wrap">
         <img
           src="assets/images/wearable-2.jpg"
-          alt="Wearable art sarees by Rashmi Rao"
+          alt="A Rhytara saree, printed from an original painting"
           loading="lazy"
           onerror="this.style.display='none'"
         >
       </div>
     </div>
     <div class="wear-copy-col">
-      <span class="eyebrow rv">Wearable Art</span>
-      <h2 class="h2 rv">When Paintings<br>Become Fabric.</h2>
-      <p class="wear-lead body-text rv">Each saree begins as an original painting. Adapted for textile, printed on premium fabric with archival pigments, hand-finished, and limited to 8 pieces per design.</p>
-      <div class="process rv">
-        <div class="p-step"><span class="p-num">01</span><span class="p-text">Original painting created on canvas</span></div>
-        <div class="p-step"><span class="p-num">02</span><span class="p-text">Artwork digitally adapted for textile proportions</span></div>
-        <div class="p-step"><span class="p-num">03</span><span class="p-text">Premium silk or georgette selected per design</span></div>
-        <div class="p-step"><span class="p-num">04</span><span class="p-text">Printed with archival-grade pigments, hand-finished</span></div>
-        <div class="p-step"><span class="p-num">05</span><span class="p-text">Numbered, signed, and dispatched with certificate</span></div>
-      </div>
+      <span class="eyebrow rv">Paintings You Can Wear</span>
+      <h2 class="h2 rv">Paintings<br>You Can Wear.</h2>
+      <p class="wear-lead body-text rv">Every Rhytara design begins with an original work of art. Through color, composition and textile printing, the painting is transformed into a saree&mdash;bringing the artwork beyond the canvas and into motion.</p>
       <a href="collections.html" class="wear-link text-link rv">
-        Explore Saree Collection
+        Discover the Art
         <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ========== LICENSING ========== -->
-<section class="lic-bg section" id="licensing">
-  <div class="wrap">
-    <div class="lic-inner">
-      <div>
-        <h2 class="h2 rv">Art for Interiors,<br>Hospitality &amp;<br>Brand Identity.</h2>
-        <p class="lic-statement rv">Rashmi's work has been licensed for hotel installations, interior design projects, and brand collaborations across India and internationally. Every arrangement is handled directly.</p>
-        <a href="contact.html" class="btn-outline-light rv" style="margin-top:40px;">Request Licensing Information</a>
+<!-- ========== 4. MEET THE ARTIST BEHIND RHYTARA ========== -->
+<section class="about-bg section" id="about">
+  <div class="about-split">
+    <div class="about-img-col rv">
+      <div class="img-wrap">
+        <img
+          src="assets/images/about-portrait.jpg"
+          alt="Rashmi Rao, the artist behind Rhytara"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        >
       </div>
-      <div>
-        <p class="lic-col-hd rv">Who We Work With</p>
-        <div class="lic-row rv"><span class="lic-label">Interior Designers</span><span class="lic-arrow">→</span></div>
-        <div class="lic-row rv"><span class="lic-label">Hotels &amp; Resorts</span><span class="lic-arrow">→</span></div>
-        <div class="lic-row rv"><span class="lic-label">Architects</span><span class="lic-arrow">→</span></div>
-        <div class="lic-row rv"><span class="lic-label">Corporate Offices</span><span class="lic-arrow">→</span></div>
-        <div class="lic-row rv"><span class="lic-label">Fashion &amp; Print Brands</span><span class="lic-arrow">→</span></div>
-        <div class="lic-row rv"><span class="lic-label">Surface Pattern Licensing</span><span class="lic-arrow">→</span></div>
+    </div>
+    <div class="about-copy-col">
+      <span class="eyebrow rv">Meet the Artist Behind Rhytara</span>
+      <h2 class="h2 rv">The Artist<br>Behind Rhytara</h2>
+      <div class="about-bio body-text">
+        <p class="rv">I'm Rashmi Rao, an artist whose journey across color, painting and design has shaped the world of Rhytara. What began as original artwork has found a new expression in fabric&mdash;bringing my love for nature, movement and color into something that can be worn.</p>
+        <p class="rv">Rhytara is my way of inviting art into everyday life, one piece at a time.</p>
+      </div>
+      <a href="about.html" class="about-link text-link rv">
+        Meet Rashmi
+        <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. SOME STORIES ARE MEANT TO BE WORN ========== -->
+<section class="lic-bg section" id="stories">
+  <div class="wrap stories-inner">
+    <span class="eyebrow rv">Some Stories Are Meant to Be Worn</span>
+    <h2 class="h2 rv">Some stories are meant<br>to be worn.</h2>
+    <p class="stories-copy rv">Each piece carries a story of color, movement and nature. Find the one that speaks to you, and make it part of your own story.</p>
+    <a href="collections.html" class="btn-outline-light rv">Find Your Rhytara &rarr;</a>
+  </div>
+</section>
+
+<!-- ========== 6. MADE TO BE COLLECTED ========== -->
+<section class="coll-bg section" id="collected">
+  <div class="wrap">
+    <div class="collect-hd">
+      <span class="eyebrow rv">Made to Be Collected</span>
+      <h2 class="h2 rv">Made to be collected.</h2>
+      <p class="collect-lead rv">Rhytara designs are produced in thoughtfully considered editions, created for those who see beauty not simply as something to wear, but something to keep.</p>
+    </div>
+    <div class="collect-grid">
+      <div class="collect-item rv">
+        <span class="collect-num">01</span>
+        <p class="collect-title">Original Artwork</p>
+        <p class="collect-copy">Every design begins with Rashmi Rao's original art.</p>
+      </div>
+      <div class="collect-item rv">
+        <span class="collect-num">02</span>
+        <p class="collect-title">Limited Editions</p>
+        <p class="collect-copy">Produced in carefully considered quantities.</p>
+      </div>
+      <div class="collect-item rv">
+        <span class="collect-num">03</span>
+        <p class="collect-title">Signed &amp; Numbered</p>
+        <p class="collect-copy">Each collector receives a piece with its own place within the edition.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== CONTACT ========== -->
-<section class="contact-bg section" id="contact">
-  <div class="wrap">
-    <h2 class="h2 rv">Start a Conversation.</h2>
-    <p class="contact-sub rv">Whether you are collecting, commissioning, or collaborating, every inquiry is answered personally by Rashmi.</p>
-    <div class="inq-list">
-      <a href="mailto:studio@rashmirao.com" class="inq-row rv">
-        <span class="inq-label">Purchase an artwork</span><span class="inq-arr">→</span>
-      </a>
-      <a href="mailto:studio@rashmirao.com?subject=Commission" class="inq-row rv">
-        <span class="inq-label">Commission a new piece</span><span class="inq-arr">→</span>
-      </a>
-      <a href="mailto:studio@rashmirao.com?subject=Licensing" class="inq-row rv">
-        <span class="inq-label">Licensing inquiry</span><span class="inq-arr">→</span>
-      </a>
-      <a href="mailto:studio@rashmirao.com?subject=Gallery" class="inq-row rv">
-        <span class="inq-label">Gallery collaboration</span><span class="inq-arr">→</span>
-      </a>
-    </div>
-    <div class="contact-extra rv">
-      <div class="newsletter">
-        <input type="email" class="nl-input" placeholder="Your email address" aria-label="Subscribe to newsletter">
-        <button class="nl-btn" onclick="this.textContent='✓'">Join</button>
-      </div>
-      <div class="contact-links">
-        <a href="mailto:studio@rashmirao.com">studio@rashmirao.com</a>
-        <a href="https://instagram.com" target="_blank" rel="noopener">@rashmiRAOdesigns</a>
-        <a href="mailto:studio@rashmirao.com?subject=Press">Press Inquiries</a>
-      </div>
-    </div>
+<!-- ========== 7. SHOP / FIND YOUR RHYTARA ========== -->
+<section class="contact-bg section" id="shop">
+  <div class="wrap shop-inner">
+    <span class="eyebrow rv">Shop</span>
+    <h2 class="h2 rv">Find your rhythm.</h2>
+    <p class="contact-sub rv">Explore the current Nature's Rhythm collection.</p>
+    <a href="collections.html" class="btn-olive rv">
+      Shop Rhytara
+      <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M0 3.5h12M9 1l3 2.5L9 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </a>
   </div>
 </section>
 
@@ -1439,7 +1358,7 @@ footer {
 <footer>
   <div class="ft-grid">
     <div>
-      <div class="ft-brand">Rashmi Rao Designs</div>
+      <div class="ft-brand">Rhytara</div>
       <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
     </div>
     <div>
@@ -1471,7 +1390,7 @@ footer {
     </div>
   </div>
   <div class="ft-bottom">
-    <span>© 2025 Rashmi Rao Designs. All rights reserved.</span>
+    <span>© 2026 Rhytara. All rights reserved.</span>
     <span>Privacy Policy &nbsp;·&nbsp; Terms of Service</span>
   </div>
 </footer>
