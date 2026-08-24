@@ -362,15 +362,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   will-change: transform;
   /* Tilt transition applied by JS */
   transform-style: preserve-3d;
+  /* Grid stretches every card to the row height; laying the card out as a
+     column lets the info block absorb that slack instead of the image. */
+  display: flex;
+  flex-direction: column;
 }
 .art-card.hidden { display: none; }
 
-/* varying aspect ratios for masonry feel */
-.art-card:nth-child(5n+1) .art-card-img-wrap { aspect-ratio: 3/4; }
-.art-card:nth-child(5n+2) .art-card-img-wrap { aspect-ratio: 4/5; }
-.art-card:nth-child(5n+3) .art-card-img-wrap { aspect-ratio: 3/5; }
-.art-card:nth-child(5n+4) .art-card-img-wrap { aspect-ratio: 4/4; }
-.art-card:nth-child(5n+5) .art-card-img-wrap { aspect-ratio: 3/4.5; }
+/* One ratio for every listing so the grid reads as a set.
+   4/5 matches the collection cards on the home page. */
+.art-card-img-wrap { aspect-ratio: 4/5; }
 
 /* Image wrapper */
 .art-card-img-wrap {
@@ -606,6 +607,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* Card bottom info (visible when not hovered) */
 .art-card-info {
   padding: 16px 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .art-card-cat {
   font-family: var(--ff-sans); font-size: 9px;
@@ -620,6 +624,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .art-card-footer {
   display: flex; justify-content: space-between; align-items: center;
   padding-top: 12px; border-top: 1px solid var(--beige);
+  /* aligns the price rule across every card in a row */
+  margin-top: auto;
 }
 .art-card-price {
   font-family: var(--ff-mono); font-size: 14px;
@@ -645,6 +651,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 130px; height: 165px; flex-shrink: 0; aspect-ratio: unset !important;
 }
 .artwork-grid.list-view .art-card-info { padding: 0; display: flex; flex-direction: column; justify-content: center; }
+/* the grid view pins this to the card bottom; list view centres instead */
+.artwork-grid.list-view .art-card-footer { margin-top: 12px; }
 .artwork-grid.list-view .art-card-reveal { display: none; }
 .artwork-grid.list-view .card-spotlight { display: none; }
 .artwork-grid.list-view:has(.art-card:hover) .art-card:not(:hover) {
@@ -923,7 +931,6 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
 }
 @media (max-width: 480px) {
   .artwork-grid { grid-template-columns: 1fr; }
-  .art-card:nth-child(n) .art-card-img-wrap { aspect-ratio: 3/4; }
 }
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
