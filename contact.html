@@ -380,9 +380,27 @@ footer {
   display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
 }
 .ft-brand {
-  font-family: var(--ff-serif); font-size: 19px; color: #FAF8F5;
-  font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   margin-bottom: 14px;
+}
+.ft-brand-mark {
+  display: block;
+  height: 56px;
+  width: auto;
+  flex-shrink: 0;
+}
+.ft-brand-type {
+  font-family: var(--ff-serif);
+  font-size: 19px;
+  color: #FAF8F5;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+@media (max-width: 768px) {
+  .ft-brand-mark { height: 48px; }
 }
 .ft-tagline { font-size: 13px; font-weight: 300; line-height: 1.65; max-width: 260px; }
 .ft-hd {
@@ -653,7 +671,10 @@ footer {
 <footer>
   <div class="ft-grid">
     <div>
-      <div class="ft-brand">Rhytara</div>
+      <div class="ft-brand">
+        <img class="ft-brand-mark" src="assets/images/rhytara-mark-on-dark.png" alt="" aria-hidden="true" width="151" height="168" loading="lazy" decoding="async">
+        <span class="ft-brand-type">Rhytara</span>
+      </div>
       <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
     </div>
     <div>
