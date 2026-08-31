@@ -524,7 +524,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   min-height: 680px;
   align-items: center;
 }
-.about-img-col { overflow: hidden; min-height: 520px; }
+.about-img-col { overflow: hidden; min-height: 520px; order: 2; }
 .about-img-col .img-wrap {
   height: 100%;
   min-height: 520px;
@@ -532,7 +532,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   margin: 0 auto;
 }
 .about-copy-col {
-  padding: 48px 40px 48px 0;
+  order: 1;
+  padding: 48px 0 48px 40px;
   display: flex; flex-direction: column; justify-content: center;
 }
 .about-copy-col .eyebrow { margin-bottom: 14px; }
@@ -623,15 +624,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .coll-card:hover .coll-info { transform: translateY(0); }
 .coll-name {
   font-family: var(--ff-serif);
-  font-size: 20px; font-weight: 500;
-  color: #FAF8F5; display: block;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  font-size: 18px; font-weight: 400;
+  color: #FAF8F5; display: inline-block;
+  border: 2px solid rgba(250,248,245,0.8);
+  padding: 8px 12px;
+  background: rgba(17,17,17,0.5);
 }
 .coll-count {
   font-family: var(--ff-sans);
   font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
   color: rgba(250,248,245,0.82); display: block; margin-top: 4px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
 .coll-go {
   font-family: var(--ff-sans);
@@ -1202,7 +1204,7 @@ footer {
         Discover Nature's Rhythm
         <svg width="14" height="7" viewBox="0 0 14 7" fill="none"><path d="M0 3.5h12M9 1l3 2.5L9 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       </a>
-      <a href="about.html" class="btn-ghost-light">Meet Rashmi</a>
+      <a href="contact.html" class="btn-ghost-light">Meet Rashmi</a>
     </div>
   </div>
 
@@ -1244,7 +1246,7 @@ footer {
     <div class="coll-grid" id="collGrid">
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/purple-petals-reverie-01.jpg" alt="Purple Petals Reverie" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-purple-petals-reverie.jpg" alt="Purple Petals Reverie" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">01</span>
         <div class="coll-overlay"></div>
@@ -1256,7 +1258,7 @@ footer {
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/grounding-nature-01.jpg" alt="Grounding Nature" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-grounding-nature.jpg" alt="Grounding Nature" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">02</span>
         <div class="coll-overlay"></div>
@@ -1268,7 +1270,7 @@ footer {
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/echoes-of-earth-01.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">03</span>
         <div class="coll-overlay"></div>
@@ -1280,7 +1282,7 @@ footer {
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/shifting-glacier-01.jpg" alt="Shifting Glacier" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-shifting-glacier.jpg" alt="Shifting Glacier" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">04</span>
         <div class="coll-overlay"></div>
@@ -1292,7 +1294,7 @@ footer {
       </a>
       <a href="collections.html" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/magical-pansies-01.jpg" alt="Magical Pansies" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-magical-pansies.jpg" alt="Magical Pansies" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">05</span>
         <div class="coll-overlay"></div>
@@ -1351,7 +1353,7 @@ footer {
         <p class="rv">I'm Rashmi Rao, an artist whose journey across color, painting and design has shaped the world of Rhytara. What began as original artwork has found a new expression in fabric&mdash;bringing my love for nature, movement and color into something that can be worn.</p>
         <p class="rv">Rhytara is my way of inviting art into everyday life, one piece at a time.</p>
       </div>
-      <a href="about.html" class="about-link text-link rv">
+      <a href="contact.html" class="about-link text-link rv">
         Meet Rashmi
         <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
       </a>

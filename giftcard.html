@@ -197,12 +197,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 
 /* CLOSING HERO / DARK SECTION */
 .dark-cta{background:var(--dark);padding:100px 0;}
-.dark-cta-inner{display:flex;justify-content:space-between;align-items:center;gap:60px;flex-wrap:wrap;}
+.dark-cta-inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:36px;}
 .dark-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:block;}
-.dark-h2{font-family:var(--ff-serif);font-size:clamp(36px,4.5vw,56px);font-weight:400;color:#FAF8F5;line-height:1.1;max-width:620px;}
+.dark-h2{font-family:var(--ff-serif);font-size:clamp(36px,4.5vw,56px);font-weight:400;color:#FAF8F5;line-height:1.1;max-width:620px;margin:0 auto;}
 .dark-h2 em{font-style:italic;font-weight:300;color:var(--gold);}
-.dark-body{font-family:var(--ff-sans);font-size:15px;font-weight:300;color:rgba(250,248,245,0.72);line-height:1.85;max-width:520px;margin-top:20px;}
-.dark-cta-actions{display:flex;flex-direction:column;gap:14px;}
+.dark-body{font-family:var(--ff-sans);font-size:15px;font-weight:300;color:rgba(250,248,245,0.72);line-height:1.85;max-width:520px;margin:20px auto 0;}
+.dark-cta-actions{display:flex;flex-direction:column;gap:14px;align-items:center;}
+.br-mobile{display:none;}
 .btn-light{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;color:var(--dark);background:#FAF8F5;border:2px solid #FAF8F5;cursor:pointer;transition:background .25s,transform .2s;border-radius:4px;}
 .btn-light:hover{background:var(--beige);border-color:var(--beige);transform:translateY(-2px);}
 .btn-ghost-light{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;font-family:var(--ff-sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:400;color:rgba(250,248,245,0.75);border:1px solid rgba(250,248,245,0.3);background:none;cursor:pointer;transition:all .25s;border-radius:4px;}
@@ -248,7 +249,8 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.38);padding:68px 0 40px;}
 
 /* RESPONSIVE */
 @media(max-width:1100px){.hero-split{grid-template-columns:1fr;gap:48px;}.configurator-layout{grid-template-columns:1fr;gap:52px;}.steps-grid{grid-template-columns:1fr 1fr;gap:24px;}.dark-cta-inner{flex-direction:column;gap:40px;}.ft-grid{grid-template-columns:1fr 1fr;gap:44px;}}
-@media(max-width:768px){.wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.nav-links{display:none;}.nav-burger{display:flex;}.section{padding:72px 0;}.page-hero{padding-top:130px;padding-bottom:56px;}.denom-grid{grid-template-columns:1fr;}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
+@media(max-width:768px){
+  .br-mobile{display:inline;}.wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.nav-links{display:none;}.nav-burger{display:flex;}.section{padding:72px 0;}.page-hero{padding-top:130px;padding-bottom:56px;}.denom-grid{grid-template-columns:1fr;}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
 </head>
@@ -511,7 +513,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.38);padding:68px 0 40px;}
     <div class="dark-cta-inner">
       <div class="dark-cta-copy">
         <span class="dark-eyebrow">GIFT OF ART</span>
-        <h2 class="dark-h2">A Gift That Becomes<br>Their Own.<br><em>Let Them Choose Their Rhytara.</em></h2>
+        <h2 class="dark-h2">A Gift That Becomes <br class="br-mobile">Their Own.<br><em>Let Them Choose Their Rhytara.</em></h2>
         <p class="dark-body">Every piece carries its own rhythm, color, and story. Give someone special the freedom to discover the one that feels uniquely theirs. A Rhytara gift card is an invitation to choose, wear, and cherish a piece of wearable art.</p>
       </div>
       <div class="dark-cta-actions">
@@ -519,7 +521,6 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.38);padding:68px 0 40px;}
           SEND A GIFT CARD
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="collections.html" class="btn-ghost-light">BROWSE ALL COLLECTIONS →</a>
       </div>
     </div>
   </div>
