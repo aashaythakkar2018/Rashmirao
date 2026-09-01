@@ -1,0 +1,81 @@
+{%- comment -%}
+  A real Shopify contact form. The static version called handleFormSubmit(),
+  which never sent anything anywhere; this posts to Shopify and emails the
+  address set under Settings - Store details - Sender email.
+{%- endcomment -%}
+<section class="form-section section" id="contactFormSection">
+  <div class="wrap">
+    <div class="form-container">
+      <div class="form-heading-row">
+        <h2 class="form-h2">{{ section.settings.heading }}</h2>
+        <p class="form-intro-text">{{ section.settings.intro }}</p>
+      </div>
+
+      {%- form 'contact', class: 'contact-form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-success" role="status">{{ section.settings.success_message }}</p>
+        {%- endif -%}
+        {{ form.errors | default_errors }}
+
+        <div class="form-group">
+          <label class="form-label" for="f-category">INQUIRY CATEGORY</label>
+          <select id="f-category" name="contact[Inquiry category]" class="form-select">
+            {%- for block in section.blocks -%}
+              <option value="{{ block.settings.value | escape }}">{{ block.settings.label }}</option>
+            {%- endfor -%}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-name">NAME</label>
+          <input id="f-name" name="contact[name]" class="form-input" type="text"
+                 placeholder="Your name" autocomplete="name" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-email">EMAIL ADDRESS</label>
+          <input id="f-email" name="contact[email]" class="form-input" type="email"
+                 placeholder="your@email.com" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="f-message">MESSAGE</label>
+          <textarea id="f-message" name="contact[body]" class="form-textarea"
+                    placeholder="Share a few details with us..." required></textarea>
+        </div>
+
+        <div class="form-submit-row">
+          <button type="submit" class="btn-olive">{{ section.settings.button_label }}</button>
+          <p class="form-trust-note">{{ section.settings.trust_note }}</p>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Let's Make It <em>Meaningful.</em>" },
+    { "type": "textarea", "id": "intro", "label": "Intro",
+      "default": "Whether you're looking for a saree for a special moment, choosing a gift, or envisioning something together, I'd love to hear from you." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "CONNECT WITH RHYTARA →" },
+    { "type": "text", "id": "trust_note", "label": "Trust note",
+      "default": "Every message is personally read by Rashmi. Your details remain private." },
+    { "type": "text", "id": "success_message", "label": "Success message",
+      "default": "Thank you — your message has reached the studio. Rashmi will reply personally." }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Inquiry category",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label shown in the dropdown" },
+        { "type": "text", "id": "value", "label": "Value sent in the email" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Contact form" }]
+}
+{% endschema %}

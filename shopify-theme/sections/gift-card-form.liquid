@@ -1,0 +1,166 @@
+{%- comment -%}
+  Gift card configurator. Denominations are the gift card product's variants,
+  so changing a tier is a variant edit in admin, not a theme edit.
+
+  Recipient delivery uses Shopify's native gift card recipient properties:
+  when __shopify_send_gift_card_to_recipient is present, Shopify emails the
+  card to the recipient on the chosen date instead of to the buyer.
+{%- endcomment -%}
+
+{%- assign gc = section.settings.product -%}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="hero-row">
+      <div class="hero-left">
+        <span class="hero-sup rv">{{ section.settings.eyebrow }}</span>
+        <h1 class="hero-h1 rv">{{ section.settings.heading }}</h1>
+      </div>
+
+      <div class="gift-card-preview">
+        <div class="gift-card-canvas" id="gcCanvas">
+          <div class="gc-blob gc-blob-1"></div>
+          <div class="gc-blob gc-blob-2"></div>
+          <div class="gc-blob gc-blob-3"></div>
+          <div class="gc-shimmer"></div>
+          <div class="gc-content">
+            <div class="gc-top">
+              <div class="gc-logo-wrap">
+                <div class="gc-logo">{{ section.settings.card_logo | default: shop.name }}</div>
+                <div class="gc-subline">{{ section.settings.card_subline }}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="gc-amount-label">Gift Value</span>
+                <div class="gc-amount-display" id="gcAmountDisplay">
+                  {{ gc.selected_or_first_available_variant.price | money }}
+                </div>
+              </div>
+            </div>
+            <div class="gc-mid">
+              <p class="gc-heading-note">{{ section.settings.card_note }}</p>
+            </div>
+            <div class="gc-bottom">
+              <div>
+                <div class="gc-recipient-label">For Someone Special</div>
+                <div class="gc-recipient-name" id="gcRecipientName">Recipient's Name</div>
+              </div>
+              <div class="gc-card-type">GIFT CARD</div>
+            </div>
+          </div>
+        </div>
+        <div class="gift-card-shadow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="configurator-section section" id="chooseGift">
+  <div class="wrap">
+    {%- if gc == blank -%}
+      <p class="sec-sub">
+        Choose the gift card product in the theme editor to activate this page.
+      </p>
+    {%- else -%}
+      {%- form 'product', gc, id: 'GiftCardForm', novalidate: 'novalidate' -%}
+        <span class="denom-label">Choose an amount</span>
+        <div class="denom-grid">
+          {%- for variant in gc.variants -%}
+            <div class="denom-card{% if forloop.first %} active{% endif %}"
+                 data-variant="{{ variant.id }}"
+                 data-price="{{ variant.price | money }}"
+                 onclick="selectDenomCard(this)">
+              <span class="denom-price">{{ variant.price | money }}</span>
+              <span class="denom-title">{{ variant.title }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <select name="id" id="gcVariant" class="visually-hidden" aria-hidden="true" tabindex="-1">
+          {%- for variant in gc.variants -%}
+            <option value="{{ variant.id }}" {% if forloop.first %}selected{% endif %}>{{ variant.title }}</option>
+          {%- endfor -%}
+        </select>
+
+        {%- comment -%} Presence of this property tells Shopify to email the recipient. {%- endcomment -%}
+        <input type="hidden" name="properties[__shopify_send_gift_card_to_recipient]" value="on">
+
+        <div class="form-group">
+          <label class="form-label" for="gc-recipient">RECIPIENT'S NAME</label>
+          <input id="gc-recipient" name="properties[Recipient name]" class="form-input" type="text"
+                 placeholder="Recipient's name" oninput="updateCardName(this.value)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="gc-email">RECIPIENT'S EMAIL</label>
+          <input id="gc-email" name="properties[Recipient email]" class="form-input" type="email"
+                 placeholder="Recipient's email address" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="gc-message">PERSONAL NOTE</label>
+          <textarea id="gc-message" name="properties[Message]" class="form-textarea"
+                    placeholder="Write your personal note here..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="gc-send-on">SEND ON</label>
+          <input id="gc-send-on" name="properties[Send on]" class="form-input" type="date">
+        </div>
+
+        <button type="submit" name="add" class="btn-olive">{{ section.settings.button_label }}</button>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  function selectDenomCard(card) {
+    document.querySelectorAll('.denom-card').forEach(function (c) { c.classList.remove('active'); });
+    card.classList.add('active');
+    document.getElementById('gcVariant').value = card.dataset.variant;
+    var amt = document.getElementById('gcAmountDisplay');
+    if (amt) amt.textContent = card.dataset.price;
+  }
+
+  function updateCardName(v) {
+    var el = document.getElementById('gcRecipientName');
+    if (el) el.textContent = v && v.trim() ? v : "Recipient's Name";
+  }
+
+  var gcForm = document.getElementById('GiftCardForm');
+  if (gcForm) {
+    gcForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('gc-email');
+      if (email && !email.checkValidity()) { email.reportValidity(); return; }
+      /* Sent through fetch so the line item properties travel with the item. */
+      var data = new FormData(gcForm);
+      fetch(window.routes.cart_add_url, {
+        method: 'POST', body: data, credentials: 'same-origin',
+        headers: { Accept: 'application/json' }
+      })
+        .then(function (r) { return r.json(); })
+        .then(function () { window.location.href = window.routes.cart_url; })
+        .catch(function () { gcForm.submit(); });
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Gift card",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Gift card product",
+      "info": "The product created with Gift Card = TRUE. Its variants become the denominations." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Gift Cards" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Give the gift<br><em>of original art.</em>" },
+    { "type": "text", "id": "card_logo", "label": "Card logo text", "default": "Rhytara" },
+    { "type": "text", "id": "card_subline", "label": "Card subline", "default": "Carry the rhythm of nature" },
+    { "type": "text", "id": "card_note", "label": "Card note", "default": "A Little Rhytara, Just for You" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "ADD GIFT CARD TO CART" }
+  ],
+  "presets": [{ "name": "Gift card" }]
+}
+{% endschema %}

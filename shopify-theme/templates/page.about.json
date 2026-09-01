@@ -1,0 +1,324 @@
+{
+  "sections": {
+    "story": {
+      "type": "story-split",
+      "settings": {
+        "heading": "From Art to<br>Something You<br><em>Can Wear.</em>",
+        "body": "<p>Rhytara began with a simple question: What if art could move beyond the wall?</p><p>Rhytara grew from artist Rashmi Rao's exploration of nature, color, movement and stillness. The first collection, Nature's Rhythm, emerged from a body of original abstract paintings created for Rashmi's solo exhibition.</p><p>The paintings came first. The sarees came later.</p><p>Rhytara isn't art-inspired fashion. It is an artist's practice finding another surface.</p>",
+        "pull_quote": "\"Born from art. Inspired by nature. Made to move with you.\""
+      },
+      "blocks": {
+        "im1": {
+          "type": "image",
+          "settings": {}
+        },
+        "im2": {
+          "type": "image",
+          "settings": {}
+        },
+        "im3": {
+          "type": "image",
+          "settings": {}
+        },
+        "im4": {
+          "type": "image",
+          "settings": {}
+        },
+        "im5": {
+          "type": "image",
+          "settings": {}
+        },
+        "im6": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "im1",
+        "im2",
+        "im3",
+        "im4",
+        "im5",
+        "im6"
+      ]
+    },
+    "journey": {
+      "type": "timeline",
+      "settings": {
+        "eyebrow": "The Journey",
+        "heading": "An Evolving<br>Relationship With<br><em>Art.</em>",
+        "intro": "<p>Rather than following one fixed artistic style, Rashmi's journey has been shaped by curiosity—moving through different forms, subjects, mediums and creative challenges.</p>"
+      },
+      "blocks": {
+        "st1": {
+          "type": "step",
+          "settings": {
+            "year": "2010",
+            "title": "Art in Many Forms",
+            "copy": "The journey began with fine art, illustration and design, including wedding design illustrations, commissioned work and fine art. Group exhibitions became an early part of the journey, providing opportunities to explore different subjects, techniques and visual languages."
+          }
+        },
+        "st2": {
+          "type": "step",
+          "settings": {
+            "year": "2018–2022",
+            "title": "Small Collections. Many Directions.",
+            "copy": "A period of creating small, focused collections—often through 30-day, 50-day and 100-day creative explorations. Each mini collection explored a different subject, idea, medium or visual language. Some became finished bodies of work. Others simply opened the door to the next experiment. This was a time of learning to embrace curiosity over consistency."
+          }
+        },
+        "st3": {
+          "type": "step",
+          "settings": {
+            "year": "2023",
+            "title": "A Challenge That Changed Everything",
+            "copy": "While looking through leftover art supplies from earlier graphic design days, Rashmi came across alcohol inks—materials she had owned but had never truly explored. She decided to take on a challenge. Inktober became an invitation to experiment. What began with supplies that had been sitting untouched became an immersive exploration of fluidity, transparency, movement and color. A challenge became an artistic language."
+          }
+        },
+        "st4": {
+          "type": "step",
+          "settings": {
+            "year": "2023–2024",
+            "title": "Finding Flow",
+            "copy": "The exploration continued beyond the challenge. Alcohol ink became a deeper part of the practice, leading to increasingly abstract explorations of nature, movement, energy and emotion."
+          }
+        },
+        "st5": {
+          "type": "step",
+          "settings": {
+            "year": "2024",
+            "title": "Expanding the Language",
+            "copy": "The work continued to evolve through different visual directions—from Pantone-inspired color studies to the Folk & Tribal Art Series for the City of Lafayette, alongside continuing abstract and mixed-media explorations. Different projects continued to reveal recurring threads of color, rhythm, nature and movement."
+          }
+        },
+        "st6": {
+          "type": "step",
+          "settings": {
+            "year": "2024–2025",
+            "title": "Nature's Rhythm",
+            "copy": "Years of experimentation gradually converged. Nature became less something to depict and more something to observe, feel and translate. This evolving body of work became Nature's Rhythm."
+          }
+        },
+        "st7": {
+          "type": "step",
+          "settings": {
+            "year": "2025",
+            "title": "Nature's Rhythm — Exhibition",
+            "copy": "A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?"
+          }
+        },
+        "st8": {
+          "type": "step",
+          "settings": {
+            "year": "Today",
+            "title": "From Canvas to Cloth",
+            "copy": "That question became the beginning of Rhytara Collections. Selected artworks from Nature's Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced."
+          }
+        }
+      },
+      "block_order": [
+        "st1",
+        "st2",
+        "st3",
+        "st4",
+        "st5",
+        "st6",
+        "st7",
+        "st8"
+      ]
+    },
+    "philosophy": {
+      "type": "values-split",
+      "settings": {
+        "eyebrow": "Philosophy",
+        "heading": "Art Should Be<br>Felt, Not Simply<br><em>Seen.</em>",
+        "body": "<p>At Rhytara, we believe what we wear can carry meaning. Nature is our inspiration. Art is our language. Stillness gives us space to see. Movement gives us space to evolve.</p><p>We don't create simply to make something beautiful. We create to make you feel.</p>",
+        "closing": "These ideas live within the artwork—and now, within what you wear."
+      },
+      "blocks": {
+        "va1": {
+          "type": "value",
+          "settings": {
+            "name": "Flow",
+            "copy": "Allowing an idea to unfold without forcing its destination"
+          }
+        },
+        "va2": {
+          "type": "value",
+          "settings": {
+            "name": "Awareness",
+            "copy": "Looking closely enough to notice what is emerging"
+          }
+        },
+        "va3": {
+          "type": "value",
+          "settings": {
+            "name": "Movement",
+            "copy": "Embracing change and transformation"
+          }
+        },
+        "va4": {
+          "type": "value",
+          "settings": {
+            "name": "Stillness",
+            "copy": "Creating space for intuition and possibility"
+          }
+        }
+      },
+      "block_order": [
+        "va1",
+        "va2",
+        "va3",
+        "va4"
+      ]
+    },
+    "purpose": {
+      "type": "pillars-split",
+      "settings": {
+        "heading": "Not Just a Print.<br>Not Just a<br><em>Saree.</em>",
+        "body": "<p>Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>"
+      },
+      "blocks": {
+        "pi1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "◈",
+            "title": "The Artwork Comes First",
+            "copy": "Every design originates from Rashmi Rao's original artwork, created as an independent work of art before it becomes a textile"
+          }
+        },
+        "pi2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "✦",
+            "title": "Limited by Design",
+            "copy": "Each Nature's Rhythm design is produced as a limited edition of 250 pieces. No endless production, no mass repetition. Once an edition is gone, it is gone"
+          }
+        },
+        "pi3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "✧",
+            "title": "Signed & Numbered",
+            "copy": "Every limited-edition piece is individually signed and numbered, creating a direct connection between the artwork, the edition and its wearer"
+          }
+        },
+        "pi4": {
+          "type": "pillar",
+          "settings": {
+            "icon": "⬡",
+            "title": "Certificate of Authenticity",
+            "copy": "Each piece is accompanied by a Certificate of Authenticity, documenting its connection to the original artwork and its edition"
+          }
+        },
+        "pi5": {
+          "type": "pillar",
+          "settings": {
+            "icon": "❖",
+            "title": "The Fabric Matters",
+            "copy": "The artwork is translated onto carefully selected Georgette satin, chosen for its fluid drape, soft movement and ability to carry the depth and detail of the artwork"
+          }
+        },
+        "pi6": {
+          "type": "pillar",
+          "settings": {
+            "icon": "◇",
+            "title": "Art with Provenance",
+            "copy": "The story doesn't stop with the artwork. It continues through the textile, the edition, the artist's signature and the person who eventually wears it"
+          }
+        }
+      },
+      "block_order": [
+        "pi1",
+        "pi2",
+        "pi3",
+        "pi4",
+        "pi5",
+        "pi6"
+      ]
+    },
+    "press": {
+      "type": "press-marquee",
+      "settings": {
+        "heading": "In the Press",
+        "meta": "8 Publications · 12+ Features"
+      },
+      "blocks": {
+        "pu1": {
+          "type": "publication",
+          "settings": {
+            "name": "Vogue India"
+          }
+        },
+        "pu2": {
+          "type": "publication",
+          "settings": {
+            "name": "Elle Décor"
+          }
+        },
+        "pu3": {
+          "type": "publication",
+          "settings": {
+            "name": "Architectural Digest"
+          }
+        },
+        "pu4": {
+          "type": "publication",
+          "settings": {
+            "name": "Harper's Bazaar"
+          }
+        },
+        "pu5": {
+          "type": "publication",
+          "settings": {
+            "name": "India Art Fair"
+          }
+        },
+        "pu6": {
+          "type": "publication",
+          "settings": {
+            "name": "Condé Nast Traveller"
+          }
+        },
+        "pu7": {
+          "type": "publication",
+          "settings": {
+            "name": "Better Homes & Gardens"
+          }
+        },
+        "pu8": {
+          "type": "publication",
+          "settings": {
+            "name": "T Magazine"
+          }
+        }
+      },
+      "block_order": [
+        "pu1",
+        "pu2",
+        "pu3",
+        "pu4",
+        "pu5",
+        "pu6",
+        "pu7",
+        "pu8"
+      ]
+    },
+    "social": {
+      "type": "social-grid",
+      "settings": {
+        "heading": "Living With <em>the Work.</em>",
+        "hashtag": "#rashmiRaoDesigns"
+      },
+      "blocks": {},
+      "block_order": []
+    }
+  },
+  "order": [
+    "story",
+    "journey",
+    "philosophy",
+    "purpose",
+    "press",
+    "social"
+  ]
+}

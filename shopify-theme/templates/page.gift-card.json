@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "gift": {
+      "type": "gift-card-form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "gift"
+  ]
+}

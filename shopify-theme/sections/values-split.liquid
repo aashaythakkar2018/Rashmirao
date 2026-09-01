@@ -1,0 +1,65 @@
+<section class="phil-bg section">
+  <div class="wrap">
+    <div class="phil-split">
+      <div class="phil-copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+        <div class="phil-body body-text rv" style="margin-top:24px;">{{ section.settings.body }}</div>
+
+        <div class="phil-values rv">
+          {%- for block in section.blocks -%}
+            <div class="phil-value" {{ block.shopify_attributes }}>
+              <span class="phil-v-num">{{ block.settings.name }}</span>
+              <span class="phil-v-text">{{ block.settings.copy }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.closing != blank -%}
+          <p class="phil-body body-text rv" style="margin-top:24px;">{{ section.settings.closing }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="phil-imgs rv">
+        {%- for i in (1..2) -%}
+          {%- assign key = 'image_' | append: i -%}
+          {%- assign img = section.settings[key] -%}
+          {%- if img != blank -%}
+            <div class="img-wrap">
+              <img src="{{ img | image_url: width: 900 }}" alt="{{ img.alt | escape }}" loading="lazy" decoding="async">
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Values split",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Philosophy" },
+    { "type": "html", "id": "heading", "label": "Heading",
+      "default": "Art Should Be<br>Felt, Not Simply<br><em>Seen.</em>" },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "text", "id": "closing", "label": "Closing line" },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2" }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "copy", "label": "Copy" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [{ "name": "Values split" }]
+}
+{% endschema %}

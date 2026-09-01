@@ -85,12 +85,45 @@ locales/              UI strings
 - **Prices, badges and "sold" states come from inventory**, so a sold original
   cannot be bought twice.
 
+## The three content pages
+
+About, Contact and Gift Cards keep their bespoke layouts. Each has its own
+template, so Shopify picks it automatically once the page exists:
+
+| Create this page in Admin → Pages | Give it this handle | Then set its template to |
+|---|---|---|
+| About | `about` | `page.about` |
+| Contact | `contact` | `page.contact` |
+| Gift Cards | `gift-card` | `page.gift-card` |
+
+The template is chosen in the page editor's **Theme template** dropdown on the
+right. The page's own body content is ignored by these templates — all copy
+lives in theme-editor sections, so you edit it visually.
+
+**About** ships with the real copy already in place: the 8-milestone timeline,
+4 philosophy values, 6 purpose pillars and 8 press publications are section
+blocks you can reorder or edit. Add the mosaic and portrait images in the
+theme editor — image blocks are there, waiting for pictures.
+
+**Contact** is a real Shopify contact form now. The static one called
+`handleFormSubmit()`, which sent nothing anywhere. Submissions email the
+address under Settings → Store details. The three intent cards still filter
+the category dropdown.
+
+**Gift Cards** is wired to the gift card product: its variants become the
+denomination cards, and the preview updates live as the buyer picks an amount
+and types a recipient name. Recipient delivery uses Shopify's native gift card
+properties, so Shopify emails the card to the recipient on the chosen date.
+Pick the product in the theme editor once.
+
+One thing that could not carry over: the **custom-amount box**. Shopify gift
+cards can only be sold at prices that exist as variants, so an arbitrary
+amount is not possible. Add more variants to the gift card product for more
+tiers.
+
 ## Not carried over
 
 - The hero's `toggleHeroSound()` mute button. Shopify's `video_tag` renders its
   own element; re-add it as a section setting if you want it back.
 - GSAP scroll animations. The `.rv` classes and CSS are still in place, so
   re-adding the GSAP script in `theme.liquid` will light them up again.
-- `about.html`, `contact.html` and `giftcard.html` page bodies. They are
-  content pages now: create them under Admin → Pages and paste the copy in, or
-  ask for dedicated section templates if you want their bespoke layouts back.

@@ -1,0 +1,59 @@
+<section class="purpose-bg section">
+  <div class="wrap">
+    <div class="purpose-split">
+      <div class="purpose-imgs rv">
+        {%- for i in (1..3) -%}
+          {%- assign key = 'image_' | append: i -%}
+          {%- assign img = section.settings[key] -%}
+          {%- if img != blank -%}
+            <div class="img-wrap">
+              <img src="{{ img | image_url: width: 800 }}" alt="{{ img.alt | escape }}" loading="lazy" decoding="async">
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="purpose-copy">
+        <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+        <div class="body-text rv" style="margin-top:24px;">{{ section.settings.body }}</div>
+        <div class="purpose-pillars rv">
+          {%- for block in section.blocks -%}
+            <div class="pillar" {{ block.shopify_attributes }}>
+              <span class="pillar-icon">{{ block.settings.icon | default: '◈' }}</span>
+              <div class="pillar-text">
+                <strong>{{ block.settings.title }}</strong>
+                <span>{{ block.settings.copy }}</span>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pillars split",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading",
+      "default": "Not Just a Print.<br>Not Just a<br><em>Saree.</em>" },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+    { "type": "image_picker", "id": "image_3", "label": "Image 3" }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon", "default": "◈" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "copy", "label": "Copy" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Pillars split" }]
+}
+{% endschema %}

@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "intents": {
+      "type": "contact-intents",
+      "settings": {
+        "eyebrow": "WHAT BRINGS YOU HERE?",
+        "heading": "How Can We <em>Assist You?</em>"
+      },
+      "blocks": {
+        "in1": {
+          "type": "intent",
+          "settings": {
+            "title": "FIND YOUR RHYTARA",
+            "description": "Questions about our pieces, sizing, availability, gifting, or finding the right saree for your moment."
+          }
+        },
+        "in2": {
+          "type": "intent",
+          "settings": {
+            "title": "CREATE WITH US",
+            "description": "Collaborations, styling, events, trunk shows, and creative partnerships."
+          }
+        },
+        "in3": {
+          "type": "intent",
+          "settings": {
+            "title": "SHARE THE STORY",
+            "description": "Press, editorial features, interviews, and opportunities to tell the story behind Rhytara."
+          }
+        }
+      },
+      "block_order": [
+        "in1",
+        "in2",
+        "in3"
+      ]
+    },
+    "form": {
+      "type": "contact-form",
+      "settings": {},
+      "blocks": {
+        "ca1": {
+          "type": "category",
+          "settings": {
+            "label": "FIND YOUR RHYTARA (Pieces, Sizing, Gifting)",
+            "value": "FIND YOUR RHYTARA"
+          }
+        },
+        "ca2": {
+          "type": "category",
+          "settings": {
+            "label": "CREATE WITH US (Collaborations, Events, Styling)",
+            "value": "CREATE WITH US"
+          }
+        },
+        "ca3": {
+          "type": "category",
+          "settings": {
+            "label": "SHARE THE STORY (Press, Editorial, Interviews)",
+            "value": "SHARE THE STORY"
+          }
+        },
+        "ca4": {
+          "type": "category",
+          "settings": {
+            "label": "GENERAL INQUIRY",
+            "value": "GENERAL INQUIRY"
+          }
+        }
+      },
+      "block_order": [
+        "ca1",
+        "ca2",
+        "ca3",
+        "ca4"
+      ]
+    }
+  },
+  "order": [
+    "intents",
+    "form"
+  ]
+}

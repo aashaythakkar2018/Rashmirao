@@ -1,0 +1,55 @@
+<section class="journey-bg section-lg">
+  <div class="wrap">
+    <div class="journey-split">
+      <div class="journey-copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+        {%- if section.settings.intro != blank -%}
+          <div class="journey-intro-copy rv">{{ section.settings.intro }}</div>
+        {%- endif -%}
+
+        <div class="journey-panel-col">
+          <div class="journey-panel rv">
+            <div class="journey-steps">
+              {%- for block in section.blocks -%}
+                <div class="journey-step" {{ block.shopify_attributes }}>
+                  <span class="journey-step-year">{{ block.settings.year }}</span>
+                  <div class="journey-step-copy">
+                    <h3>{{ block.settings.title }}</h3>
+                    <p>{{ block.settings.copy }}</p>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Timeline",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Journey" },
+    { "type": "html", "id": "heading", "label": "Heading",
+      "default": "An Evolving<br>Relationship With<br><em>Art.</em>" },
+    { "type": "richtext", "id": "intro", "label": "Intro" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Milestone",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "copy", "label": "Copy" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Timeline" }]
+}
+{% endschema %}

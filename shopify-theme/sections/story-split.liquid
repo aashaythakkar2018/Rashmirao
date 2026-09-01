@@ -1,0 +1,56 @@
+{%- comment -%}
+  About: copy on the left, a Pinterest-style masonry mosaic on the right.
+  Images are blocks, so the mosaic is reordered/extended in the theme editor.
+{%- endcomment -%}
+<section class="story-bg section">
+  <div class="wrap">
+    <div class="story-split">
+      <div class="story-copy">
+        <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+        <div class="body-text rv" style="margin-top:24px;">{{ section.settings.body }}</div>
+        {%- if section.settings.pull_quote != blank -%}
+          <blockquote class="story-pull rv">{{ section.settings.pull_quote }}</blockquote>
+        {%- endif -%}
+      </div>
+
+      <div>
+        <div class="story-grid">
+          {%- for block in section.blocks -%}
+            <div class="img-wrap rv" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 800 }}"
+                     alt="{{ block.settings.image.alt | default: block.settings.alt | escape }}"
+                     loading="lazy" decoding="async">
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Story split",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading",
+      "default": "From Art to<br>Something You<br><em>Can Wear.</em>" },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "text", "id": "pull_quote", "label": "Pull quote",
+      "default": "\"Born from art. Inspired by nature. Made to move with you.\"" }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Mosaic image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt", "label": "Alt text" }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [{ "name": "Story split" }]
+}
+{% endschema %}

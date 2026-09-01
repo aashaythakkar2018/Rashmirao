@@ -1,0 +1,45 @@
+{%- comment -%}
+  The marquee needs the publication list twice for a seamless CSS loop, so the
+  blocks are rendered in two identical passes.
+{%- endcomment -%}
+<section class="press-bg section-lg">
+  <div class="wrap">
+    <div class="press-header">
+      <div><h2 class="h2 rv">{{ section.settings.heading }}</h2></div>
+      {%- if section.settings.meta != blank -%}
+        <span class="press-hd-right rv">{{ section.settings.meta }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="marquee-track">
+    <div class="marquee-inner" id="marqueeInner">
+      {%- for pass in (1..2) -%}
+        <div class="marquee-item" {% if pass == 2 %}aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <span class="marquee-pub">{{ block.settings.name }}</span>
+            <span class="marquee-sep"></span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Press marquee",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "In the Press" },
+    { "type": "text", "id": "meta", "label": "Meta line" }
+  ],
+  "blocks": [
+    {
+      "type": "publication",
+      "name": "Publication",
+      "settings": [{ "type": "text", "id": "name", "label": "Name" }]
+    }
+  ],
+  "presets": [{ "name": "Press marquee" }]
+}
+{% endschema %}

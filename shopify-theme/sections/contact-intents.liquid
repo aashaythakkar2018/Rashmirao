@@ -1,0 +1,60 @@
+<section class="intents-section section">
+  <div class="wrap">
+    <div class="intents-heading">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="h2">{{ section.settings.heading }}</h2>
+    </div>
+    <div class="intents-grid">
+      {%- for block in section.blocks -%}
+        <div class="intent-card{% if forloop.first %} active{% endif %}"
+             onclick="selectCategory(this, {{ block.settings.title | json }})"
+             {{ block.shopify_attributes }}>
+          <div>
+            <span class="intent-card-title">{{ block.settings.title }}</span>
+            <p class="intent-card-desc">{{ block.settings.description }}</p>
+          </div>
+          <span class="intent-card-action">Select Category &rarr;</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Clicking a card selects the matching option on the contact form below. */
+  function selectCategory(card, value) {
+    document.querySelectorAll('.intent-card').forEach(function (c) { c.classList.remove('active'); });
+    card.classList.add('active');
+    var sel = document.getElementById('f-category');
+    if (sel) {
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === value) { sel.selectedIndex = i; break; }
+      }
+    }
+    var form = document.getElementById('contactFormSection');
+    if (form) form.scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Contact intents",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "WHAT BRINGS YOU HERE?" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "How Can We <em>Assist You?</em>" }
+  ],
+  "blocks": [
+    {
+      "type": "intent",
+      "name": "Intent card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "description", "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Contact intents" }]
+}
+{% endschema %}

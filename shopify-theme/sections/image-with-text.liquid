@@ -1,6 +1,11 @@
+{%- comment -%}
+  Mirrors the homepage "Meet the Artist" block. The container is .about-split
+  and sits directly in the section - it is not inside .wrap, which is what the
+  grid CSS expects.
+{%- endcomment -%}
 <section class="about-bg section" id="{{ section.settings.anchor | default: section.id }}">
-  <div class="wrap about-grid">
-    <div class="about-img-col">
+  <div class="about-split">
+    <div class="about-img-col rv">
       <div class="img-wrap">
         {%- if section.settings.image != blank -%}
           <img src="{{ section.settings.image | image_url: width: 1200 }}"
@@ -8,14 +13,18 @@
         {%- endif -%}
       </div>
     </div>
+
     <div class="about-copy-col">
       {%- if section.settings.eyebrow != blank -%}
         <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
       {%- endif -%}
       <h2 class="h2 rv">{{ section.settings.heading }}</h2>
-      <div class="rv rte">{{ section.settings.body }}</div>
+      <div class="about-bio body-text">{{ section.settings.body }}</div>
       {%- if section.settings.cta_label != blank -%}
-        <a href="{{ section.settings.cta_url }}" class="btn-olive rv">{{ section.settings.cta_label }}</a>
+        <a href="{{ section.settings.cta_url }}" class="about-link text-link rv">
+          {{ section.settings.cta_label }}
+          <svg width="16" height="8" viewBox="0 0 16 8" fill="none" aria-hidden="true"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
       {%- endif -%}
     </div>
   </div>
@@ -26,12 +35,12 @@
   "name": "Image with text",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
-    { "type": "html", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Meet the Artist Behind Rhytara" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "The Artist<br>Behind Rhytara" },
     { "type": "richtext", "id": "body", "label": "Body" },
-    { "type": "text", "id": "cta_label", "label": "Button label" },
-    { "type": "url", "id": "cta_url", "label": "Button link" },
-    { "type": "text", "id": "anchor", "label": "Anchor id" }
+    { "type": "text", "id": "cta_label", "label": "Link label", "default": "Meet Rashmi" },
+    { "type": "url", "id": "cta_url", "label": "Link" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "about" }
   ],
   "presets": [{ "name": "Image with text" }]
 }

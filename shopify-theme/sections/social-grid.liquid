@@ -1,0 +1,52 @@
+<section class="social-bg section">
+  <div class="wrap">
+    <div class="social-hd">
+      <h2 class="h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.hashtag != blank -%}
+        <span class="social-tag">{{ section.settings.hashtag }}</span>
+      {%- endif -%}
+    </div>
+
+    <div class="social-grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.url | default: section.settings.profile_url }}"
+           target="_blank" rel="noopener" class="social-card rv" {{ block.shopify_attributes }}>
+          <div class="img-wrap" style="height:100%;">
+            {%- if block.settings.image != blank -%}
+              <img src="{{ block.settings.image | image_url: width: 700 }}"
+                   alt="{{ block.settings.image.alt | escape }}" loading="lazy" decoding="async">
+            {%- endif -%}
+          </div>
+          <div class="social-overlay">
+            <div class="social-ig">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(250,248,245,0.9)" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Social grid",
+  "settings": [
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Living With <em>the Work.</em>" },
+    { "type": "text", "id": "hashtag", "label": "Hashtag" },
+    { "type": "url", "id": "profile_url", "label": "Default profile link" }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "Post",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "url", "label": "Link" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [{ "name": "Social grid" }]
+}
+{% endschema %}
