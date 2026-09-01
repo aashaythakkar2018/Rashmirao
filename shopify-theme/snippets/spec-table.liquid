@@ -1,0 +1,28 @@
+{%- comment -%}
+  Renders a metafield of plain "Label: value" lines as a spec table, so the
+  merchant types readable lines in admin instead of hand-writing HTML.
+
+    Dimensions: 36 × 48 inches (91 × 122 cm)
+    Year: 2024
+
+  A line without a colon renders as a full-width note.
+  Accepts: value (a multi-line text metafield).
+{%- endcomment -%}
+
+{%- assign lines = value | split: '
+' -%}
+<table>
+  {%- for line in lines -%}
+    {%- assign trimmed = line | strip -%}
+    {%- if trimmed != blank -%}
+      {%- if trimmed contains ':' -%}
+        {%- comment -%} remove_first keeps colons that appear inside the value. {%- endcomment -%}
+        {%- assign label = trimmed | split: ':' | first -%}
+        {%- assign rest = trimmed | remove_first: label | remove_first: ':' -%}
+        <tr><td>{{ label | strip }}</td><td>{{ rest | strip }}</td></tr>
+      {%- else -%}
+        <tr><td colspan="2">{{ trimmed }}</td></tr>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+</table>

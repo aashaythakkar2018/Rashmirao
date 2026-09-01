@@ -1,0 +1,68 @@
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">
+        {%- if section.settings.logo != blank -%}
+          <img class="ft-brand-mark" src="{{ section.settings.logo | image_url: width: 302 }}"
+               alt="" aria-hidden="true" width="151" height="168" loading="lazy" decoding="async">
+        {%- endif -%}
+        <span class="ft-brand-type">{{ section.settings.wordmark | default: shop.name }}</span>
+      </div>
+      <p class="ft-tagline">{{ section.settings.tagline }}</p>
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'menu' -%}
+        <div {{ block.shopify_attributes }}>
+          <p class="ft-hd">{{ block.settings.heading }}</p>
+          <ul class="ft-links">
+            {%- for link in block.settings.menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="ft-bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.footer.rights' | t }}</span>
+    <span>
+      {%- for policy in shop.policies -%}
+        {%- if policy != blank -%}
+          <a href="{{ policy.url }}">{{ policy.title }}</a>{%- unless forloop.last %} &nbsp;&middot;&nbsp; {% endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo mark (light, for the dark footer)" },
+    { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "Rhytara" },
+    { "type": "textarea", "id": "tagline", "label": "Tagline",
+      "default": "Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last." }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Collections" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "heading": "Collections" } },
+      { "type": "menu", "settings": { "heading": "Studio" } },
+      { "type": "menu", "settings": { "heading": "Services" } }
+    ]
+  }
+}
+{% endschema %}

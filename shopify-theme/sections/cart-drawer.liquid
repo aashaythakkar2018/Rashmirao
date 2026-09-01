@@ -1,0 +1,8 @@
+{%- comment -%}
+  Renders the drawer on its own so theme.js can re-fetch it with
+  ?section_id=cart-drawer after every cart mutation.
+{%- endcomment -%}
+{% render 'cart-drawer' %}
+{% schema %}
+{ "name": "Cart drawer" }
+{% endschema %}

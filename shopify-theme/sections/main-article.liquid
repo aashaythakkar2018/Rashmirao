@@ -1,0 +1,15 @@
+<article class="section">
+  <div class="wrap">
+    <span class="eyebrow">{{ article.published_at | date: '%B %d, %Y' }}</span>
+    <h1 class="sec-h2">{{ article.title }}</h1>
+    {%- if article.image -%}
+      <div class="img-wrap">
+        <img src="{{ article.image | image_url: width: 1600 }}" alt="{{ article.image.alt | escape }}">
+      </div>
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+  </div>
+</article>
+{% schema %}
+{ "name": "Article" }
+{% endschema %}

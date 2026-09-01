@@ -1,0 +1,24 @@
+<section class="section"><div class="wrap">
+  <h1 class="sec-h2">Addresses</h1>
+  {%- paginate customer.addresses by 10 -%}
+    {%- for address in customer.addresses -%}
+      <div class="address-card">{{ address | format_address }}</div>
+    {%- endfor -%}
+  {%- endpaginate -%}
+  {%- form 'customer_address', customer.new_address -%}
+    {{ form.errors | default_errors }}
+    <label for="a-first">First name</label>
+    <input type="text" name="address[first_name]" id="a-first">
+    <label for="a-last">Last name</label>
+    <input type="text" name="address[last_name]" id="a-last">
+    <label for="a-1">Address</label>
+    <input type="text" name="address[address1]" id="a-1">
+    <label for="a-city">City</label>
+    <input type="text" name="address[city]" id="a-city">
+    <label for="a-zip">Postal code</label>
+    <input type="text" name="address[zip]" id="a-zip">
+    <label for="a-country">Country</label>
+    <input type="text" name="address[country]" id="a-country">
+    <button type="submit" class="btn-olive">Add address</button>
+  {%- endform -%}
+</div></section>

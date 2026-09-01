@@ -1,0 +1,137 @@
+{%- comment -%}
+  Collection grid. The filter tabs are generated from the product types
+  actually present in the collection, and the counts are real - so a new
+  medium appears as a tab on its own once a product using it is published.
+{%- endcomment -%}
+
+<section class="page-hero">
+  <div class="wrap">
+    <div class="hero-row">
+      <div class="hero-left">
+        <span class="hero-sup rv">{{ section.settings.eyebrow }}</span>
+        <h1 class="hero-h1 rv">{{ collection.title }}</h1>
+      </div>
+      <div class="hero-right rv">
+        {%- if collection.description != blank -%}
+          <p class="hero-desc">{{ collection.description }}</p>
+        {%- endif -%}
+        <div class="hero-stats">
+          <div>
+            <span class="hero-stat-n">{{ collection.products_count }}</span>
+            <span class="hero-stat-l">Works Available</span>
+          </div>
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'stat' -%}
+              <div {{ block.shopify_attributes }}>
+                <span class="hero-stat-n">{{ block.settings.value }}</span>
+                <span class="hero-stat-l">{{ block.settings.label }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Collect the product types present, for the filter tabs. {%- endcomment -%}
+{%- assign types = '' -%}
+{%- for p in collection.products -%}
+  {%- unless types contains p.type or p.type == blank -%}
+    {%- assign types = types | append: p.type | append: '|' -%}
+  {%- endunless -%}
+{%- endfor -%}
+{%- assign type_list = types | split: '|' -%}
+
+<div class="filter-bar" id="filterBar">
+  <div class="filter-inner">
+    <div class="tab-track" id="tabTrack">
+      <div class="tab-indicator" id="tabIndicator"></div>
+      <div class="tab-hover-bg" id="tabHoverBg"></div>
+      <button class="filter-tab active" data-filter="all" onclick="filterWorks(this)">
+        All <span class="filter-tab-count">{{ collection.products_count }}</span>
+      </button>
+      {%- for t in type_list -%}
+        {%- assign n = 0 -%}
+        {%- for p in collection.products -%}
+          {%- if p.type == t %}{% assign n = n | plus: 1 %}{% endif -%}
+        {%- endfor -%}
+        <button class="filter-tab" data-filter="{{ t | handle }}" onclick="filterWorks(this)">
+          {{ t }} <span class="filter-tab-count">{{ n }}</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <div class="filter-right">
+      <select class="sort-select" aria-label="Sort artworks"
+              onchange="window.location.search = '?sort_by=' + this.value">
+        {%- for option in collection.sort_options -%}
+          <option value="{{ option.value }}"
+                  {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+        {%- endfor -%}
+      </select>
+    </div>
+  </div>
+</div>
+
+<section class="grid-section">
+  <div class="wrap">
+    {%- paginate collection.products by section.settings.per_page -%}
+      <div class="artwork-grid" id="artworkGrid">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="empty-collection">{{ 'collections.general.no_matches' | t }}</p>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" role="navigation" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn-ghost">&larr; Previous</a>
+          {%- endif -%}
+          <span class="pagination-count">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn-ghost">Next &rarr;</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* Client-side type filter over the rendered grid. */
+  function filterWorks(btn) {
+    var f = btn.dataset.filter;
+    document.querySelectorAll('.filter-tab').forEach(function (t) { t.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.art-card').forEach(function (c) {
+      c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Studio · Mumbai" },
+    { "type": "range", "id": "per_page", "label": "Products per page",
+      "min": 6, "max": 48, "step": 6, "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value" },
+        { "type": "text", "id": "label", "label": "Label" }
+      ]
+    }
+  ],
+  "max_blocks": 3
+}
+{% endschema %}

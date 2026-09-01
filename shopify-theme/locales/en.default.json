@@ -1,0 +1,38 @@
+{
+  "general": {
+    "meta": { "tags": "Tagged \"{{ tags }}\"", "page": "Page {{ page }}" },
+    "404": { "title": "Page not found", "subtext": "The page you were looking for does not exist." },
+    "search": { "title": "Search", "search": "Search", "placeholder": "Search works" },
+    "currency": { "label": "Currency" },
+    "footer": { "rights": "All rights reserved." }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "open_menu": "Open menu",
+    "main_nav": "Main navigation"
+  },
+  "products": {
+    "product": {
+      "sold_out": "Sold",
+      "tax_note": "Tax included · Insured worldwide shipping"
+    }
+  },
+  "collections": {
+    "general": { "no_matches": "No works match this filter yet." }
+  },
+  "sections": {
+    "cart": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty.",
+      "empty_subtext": "Discover original artworks ready to collect.",
+      "subtotal": "Subtotal",
+      "checkout": "Proceed to Checkout",
+      "continue": "Continue Shopping",
+      "remove": "Remove",
+      "tax_note": "Taxes and shipping calculated at checkout.",
+      "cart_error": "There was an error updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart."
+    }
+  }
+}

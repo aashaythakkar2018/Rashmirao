@@ -1,0 +1,34 @@
+<section class="{{ section.settings.bg_class }} section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap nr-intro">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+    {%- if section.settings.lead != blank -%}
+      <p class="nr-lead rv">{{ section.settings.lead }}</p>
+    {%- endif -%}
+    {%- if section.settings.meta != blank -%}
+      <p class="nr-meta rv">{{ section.settings.meta }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "html", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "lead", "label": "Lead paragraph" },
+    { "type": "text", "id": "meta", "label": "Meta line" },
+    { "type": "text", "id": "anchor", "label": "Anchor id" },
+    { "type": "select", "id": "bg_class", "label": "Background",
+      "options": [
+        { "value": "about-bg", "label": "Warm" },
+        { "value": "coll-bg", "label": "Neutral" },
+        { "value": "dark-bg", "label": "Dark" }
+      ], "default": "about-bg" }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

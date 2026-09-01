@@ -1,0 +1,26 @@
+<section class="section"><div class="wrap">
+  <h1 class="sec-h2">Account</h1>
+  <p class="sec-sub">{{ customer.email }} &middot; <a href="{{ routes.account_logout_url }}">Log out</a></p>
+  <h2 class="h2">Orders</h2>
+  {%- paginate customer.orders by 20 -%}
+    {%- if customer.orders.size > 0 -%}
+      <table class="cart-table">
+        <thead><tr><th>Order</th><th>Date</th><th>Payment</th><th>Fulfillment</th><th>Total</th></tr></thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+              <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
+              <td>{{ order.financial_status_label }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    {%- else -%}
+      <p class="sec-sub">No orders yet.</p>
+    {%- endif -%}
+  {%- endpaginate -%}
+  <a href="{{ routes.account_addresses_url }}" class="text-link">Addresses</a>
+</div></section>

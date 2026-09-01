@@ -1,0 +1,15 @@
+<section class="section"><div class="wrap" style="max-width:440px;">
+  <h1 class="sec-h2">Create account</h1>
+  {%- form 'create_customer' -%}
+    {{ form.errors | default_errors }}
+    <label for="cr-fn">First name</label>
+    <input type="text" name="customer[first_name]" id="cr-fn" autocomplete="given-name">
+    <label for="cr-ln">Last name</label>
+    <input type="text" name="customer[last_name]" id="cr-ln" autocomplete="family-name">
+    <label for="cr-email">Email</label>
+    <input type="email" name="customer[email]" id="cr-email" autocomplete="email" required>
+    <label for="cr-pass">Password</label>
+    <input type="password" name="customer[password]" id="cr-pass" autocomplete="new-password">
+    <button type="submit" class="btn-olive">Create</button>
+  {%- endform -%}
+</div></section>

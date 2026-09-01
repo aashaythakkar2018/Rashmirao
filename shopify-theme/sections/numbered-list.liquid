@@ -1,0 +1,45 @@
+<section class="coll-bg section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap">
+    <div class="collect-hd">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+      {%- if section.settings.lead != blank -%}
+        <p class="collect-lead rv">{{ section.settings.lead }}</p>
+      {%- endif -%}
+    </div>
+    <div class="collect-grid">
+      {%- for block in section.blocks -%}
+        <div class="collect-item rv" {{ block.shopify_attributes }}>
+          <span class="collect-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <p class="collect-title">{{ block.settings.title }}</p>
+          <p class="collect-copy">{{ block.settings.copy }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Numbered list",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "html", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "lead", "label": "Lead" },
+    { "type": "text", "id": "anchor", "label": "Anchor id" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "copy", "label": "Copy" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Numbered list", "blocks": [{ "type": "item" }, { "type": "item" }, { "type": "item" }] }]
+}
+{% endschema %}

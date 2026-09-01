@@ -1,0 +1,67 @@
+{%- comment -%}
+  Artwork card. Used by the collection grid and by related products.
+  Accepts: product (required).
+{%- endcomment -%}
+
+{%- assign card_variant = product.selected_or_first_available_variant -%}
+
+<div class="art-card rv"
+     data-cat="{{ product.type | handle }}"
+     data-price="{{ card_variant.price | divided_by: 100 }}"
+     data-id="{{ product.handle }}"
+     onclick="window.location='{{ product.url }}'">
+  <div class="art-card-img-wrap">
+    {%- if product.available == false -%}
+      <span class="art-badge badge-sold">&times; {{ 'products.product.sold_out' | t }}</span>
+    {%- elsif product.metafields.custom.badge != blank -%}
+      <span class="art-badge badge-new">{{ product.metafields.custom.badge }}</span>
+    {%- else -%}
+      <span class="art-badge badge-avail">&check; Available</span>
+    {%- endif -%}
+
+    <div class="img-shimmer" aria-hidden="true"></div>
+
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 900 }}"
+           alt="{{ product.featured_image.alt | default: product.title | escape }}"
+           width="900" height="1200" loading="lazy" decoding="async">
+    {%- endif -%}
+
+    <div class="card-spotlight"></div>
+
+    <div class="art-card-reveal">
+      {%- if product.metafields.custom.medium != blank -%}
+        <span class="reveal-eyebrow">{{ product.metafields.custom.medium }}</span>
+      {%- endif -%}
+      <h3 class="reveal-title">{{ product.title }}</h3>
+      {%- if product.metafields.custom.edition != blank -%}
+        <p class="reveal-meta">{{ product.metafields.custom.edition }}</p>
+      {%- endif -%}
+      <p class="reveal-desc">{{ product.description | strip_html | truncate: 140 }}</p>
+      <div class="reveal-footer">
+        <span class="reveal-price">{{ card_variant.price | money }}</span>
+        <div class="reveal-btns">
+          {%- if product.available -%}
+            <button type="button" class="reveal-btn reveal-btn-add"
+                    onclick="addToCart({{ card_variant.id }}, 1); event.stopPropagation()">
+              Purchase
+            </button>
+          {%- endif -%}
+          <a href="{{ product.url }}" class="reveal-btn reveal-btn-inq"
+             onclick="event.stopPropagation()">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="art-card-info">
+    <span class="art-card-cat">{{ product.type }}</span>
+    <h3 class="art-card-title">{{ product.title }}</h3>
+    <div class="art-card-footer">
+      <span class="art-card-price">{{ card_variant.price | money }}</span>
+      <span class="art-card-arrow">
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </span>
+    </div>
+  </div>
+</div>

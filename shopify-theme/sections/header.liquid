@@ -1,0 +1,78 @@
+{%- comment -%}
+  Nav is unchanged visually from the static site. What differs: the links come
+  from a menu the merchant edits in Navigation, the cart count is the real cart,
+  and the INR/USD toggle is Shopify's localization form rather than a live FX
+  lookup - checkout always happens in the market's currency, so a display-only
+  toggle would have lied at the last step.
+{%- endcomment -%}
+
+<nav class="nav" id="nav" role="navigation" aria-label="{{ 'accessibility.main_nav' | t }}"
+     {% if section.settings.solid_nav %}data-nav-solid="true"{% endif %}>
+  <div class="nav-inner">
+    <a href="{{ routes.root_url }}" class="nav-logo" aria-label="{{ shop.name }} - home">
+      {%- if section.settings.logo_dark != blank -%}
+        <img class="nav-logo-mark on-dark" src="{{ section.settings.logo_dark | image_url: width: 302 }}"
+             alt="" aria-hidden="true" width="151" height="168" decoding="async">
+      {%- endif -%}
+      {%- if section.settings.logo_light != blank -%}
+        <img class="nav-logo-mark on-light" src="{{ section.settings.logo_light | image_url: width: 302 }}"
+             alt="" aria-hidden="true" width="151" height="168" decoding="async">
+      {%- endif -%}
+      <span class="nav-logo-type">{{ section.settings.wordmark | default: shop.name }}</span>
+    </a>
+
+    <ul class="nav-links" role="list">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          <a href="{{ link.url }}" {% if link.active %}class="active"{% endif %}>{{ link.title }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <div class="nav-actions">
+      <a class="nav-icon-btn" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">
+        {% render 'icon-search' %}
+      </a>
+
+      {%- comment -%} Only render the switch when the shop actually sells in more than one currency. {%- endcomment -%}
+      {%- if section.settings.show_currency and localization.available_countries.size > 1 -%}
+        {%- form 'localization', id: 'HeaderCurrency', class: 'currency-toggle-form' -%}
+          <div class="currency-toggle" role="group" aria-label="{{ 'general.currency.label' | t }}">
+            <select name="country_code" class="currency-select" onchange="this.form.submit()"
+                    aria-label="{{ 'general.currency.label' | t }}">
+              {%- for country in localization.available_countries -%}
+                <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                  {{ country.currency.iso_code }} {{ country.currency.symbol }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endform -%}
+      {%- endif -%}
+
+      <a class="nav-icon-btn" href="{{ routes.cart_url }}" onclick="openCart(event)" aria-label="{{ 'sections.cart.title' | t }}">
+        {% render 'icon-cart' %}
+        <span class="cart-badge" id="cartBadge">{{ cart.item_count }}</span>
+      </a>
+
+      <button class="nav-burger" id="burger" aria-label="{{ 'accessibility.open_menu' | t }}">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo_light", "label": "Logo mark (for light backgrounds)" },
+    { "type": "image_picker", "id": "logo_dark",  "label": "Logo mark (for dark backgrounds)" },
+    { "type": "text", "id": "wordmark", "label": "Wordmark", "default": "Rhytara" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "checkbox", "id": "solid_nav", "label": "Solid nav background", "default": false,
+      "info": "Leave off on pages with a full-bleed hero so the nav starts transparent." },
+    { "type": "checkbox", "id": "show_currency", "label": "Show currency selector", "default": true }
+  ]
+}
+{% endschema %}

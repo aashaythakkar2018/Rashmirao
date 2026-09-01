@@ -1,0 +1,65 @@
+{%- comment -%} Full cart page - the no-JS fallback for the drawer. {%- endcomment -%}
+<section class="section">
+  <div class="wrap">
+    <span class="eyebrow">{{ shop.name }}</span>
+    <h1 class="sec-h2">{{ 'sections.cart.title' | t }}</h1>
+
+    {%- if cart.item_count == 0 -%}
+      <div class="cart-empty-msg">
+        <p>{{ 'sections.cart.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn-olive">
+          {{ 'sections.cart.continue' | t }}
+        </a>
+      </div>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th scope="col">Work</th>
+              <th scope="col">Price</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr>
+                <td>
+                  <div class="cart-item">
+                    <img class="cart-item-img" src="{{ item.image | image_url: width: 160 }}"
+                         alt="{{ item.image.alt | escape }}" width="80" height="80" loading="lazy">
+                    <div class="cart-item-info">
+                      <a class="cart-item-name" href="{{ item.url }}">{{ item.product.title }}</a>
+                      {%- unless item.variant.title contains 'Default' -%}
+                        <div class="cart-item-sub">{{ item.variant.title }}</div>
+                      {%- endunless -%}
+                    </div>
+                  </div>
+                </td>
+                <td>{{ item.final_price | money }}</td>
+                <td>
+                  <input type="number" name="updates[]" value="{{ item.quantity }}"
+                         min="0" aria-label="Quantity for {{ item.product.title | escape }}">
+                </td>
+                <td>{{ item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="cart-total-row">
+          <span class="cart-total-lbl">{{ 'sections.cart.subtotal' | t }}</span>
+          <span class="cart-total-val">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="cart-tax-note">{{ 'sections.cart.tax_note' | t }}</p>
+
+        <button type="submit" name="update" class="btn-ghost">Update</button>
+        <button type="submit" name="checkout" class="btn-olive">{{ 'sections.cart.checkout' | t }}</button>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}

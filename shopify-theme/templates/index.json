@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": {} },
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "eyebrow": "Nature's Rhythm",
+        "heading": "The first collection<br>from Rhytara.",
+        "lead": "An evolving collection of wearable artworks inspired by the movement, color and quiet beauty of nature.",
+        "anchor": "natures-rhythm",
+        "bg_class": "about-bg"
+      }
+    },
+    "featured": { "type": "featured-products", "settings": { "anchor": "collections" } },
+    "about": {
+      "type": "image-with-text",
+      "settings": {
+        "eyebrow": "Meet the Artist",
+        "heading": "Meet the artist<br>behind Rhytara.",
+        "anchor": "about"
+      }
+    },
+    "collected": {
+      "type": "numbered-list",
+      "settings": {
+        "eyebrow": "Made to Be Collected",
+        "heading": "Made to be collected.",
+        "lead": "Rhytara designs are produced in thoughtfully considered editions, created for those who see beauty not simply as something to wear, but something to keep.",
+        "anchor": "collected"
+      },
+      "blocks": {
+        "b1": { "type": "item", "settings": { "title": "Original Artwork", "copy": "Every design begins with Rashmi Rao's original art." } },
+        "b2": { "type": "item", "settings": { "title": "Limited Editions", "copy": "Produced in carefully considered quantities." } },
+        "b3": { "type": "item", "settings": { "title": "Signed & Numbered", "copy": "Each collector receives a piece with its own place within the edition." } }
+      },
+      "block_order": ["b1", "b2", "b3"]
+    }
+  },
+  "order": ["hero", "intro", "featured", "about", "collected"]
+}

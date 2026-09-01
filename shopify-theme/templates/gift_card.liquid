@@ -1,0 +1,16 @@
+{%- comment -%} Rendered when a customer opens an issued gift card. {%- endcomment -%}
+<section class="section" style="text-align:center;">
+  <div class="wrap">
+    <span class="eyebrow">{{ shop.name }}</span>
+    <h1 class="sec-h2">Your gift card</h1>
+    <p class="sec-sub">{{ gift_card.balance | money }} to spend on original work.</p>
+    <img src="{{ gift_card.qr_identifier | img_url: 'medium' }}" alt="Gift card QR code" width="180" height="180">
+    <p class="gc-code" style="font-family:var(--ff-mono);letter-spacing:.12em;margin-top:18px;">
+      {{ gift_card.code | format_code }}
+    </p>
+    {%- if gift_card.expires_on -%}
+      <p class="sec-sub">Expires {{ gift_card.expires_on | date: '%B %d, %Y' }}</p>
+    {%- endif -%}
+    <a class="btn-olive" href="{{ shop.url }}">Start shopping</a>
+  </div>
+</section>

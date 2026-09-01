@@ -1,0 +1,66 @@
+{%- comment -%}
+  The real cart. Unlike the static site's in-memory array, this reads
+  cart.items, so it survives navigation and reloads, and "Proceed to Checkout"
+  submits to Shopify's checkout instead of linking to the contact page.
+{%- endcomment -%}
+
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true"
+     aria-label="{{ 'sections.cart.title' | t }}">
+  <div class="cart-top">
+    <span class="cart-ttl">{{ 'sections.cart.title' | t }}</span>
+    <button class="cart-x" onclick="closeCart()" aria-label="{{ 'accessibility.close' | t }}">&times;</button>
+  </div>
+
+  <form action="{{ routes.cart_url }}" method="post" id="cartForm" novalidate>
+    <div class="cart-body" id="cartBody">
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-empty-msg">
+          <p>{{ 'sections.cart.empty' | t }}</p>
+          <p>{{ 'sections.cart.empty_subtext' | t }}</p>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <div class="cart-item" data-line="{{ forloop.index }}">
+            <a href="{{ item.url }}">
+              <img class="cart-item-img"
+                   src="{{ item.image | image_url: width: 160 }}"
+                   alt="{{ item.image.alt | escape }}" width="80" height="80" loading="lazy">
+            </a>
+            <div class="cart-item-info">
+              <a class="cart-item-name" href="{{ item.url }}">{{ item.product.title }}</a>
+              <div class="cart-item-sub">
+                {%- unless item.variant.title contains 'Default' -%}
+                  {{ item.variant.title }}
+                {%- else -%}
+                  {{ item.product.type | default: 'Original' }}
+                {%- endunless -%}
+              </div>
+              <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+            </div>
+            <button type="button" class="cart-rm"
+                    onclick="changeCartLine({{ forloop.index }}, 0)"
+                    aria-label="{{ 'sections.cart.remove' | t }} {{ item.product.title | escape }}">&times;</button>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    <div class="cart-foot" id="cartFoot" {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+      <div class="cart-total-row">
+        <span class="cart-total-lbl">{{ 'sections.cart.subtotal' | t }}</span>
+        <span class="cart-total-val" id="cartTotal">{{ cart.total_price | money }}</span>
+      </div>
+      <p class="cart-tax-note">{{ 'sections.cart.tax_note' | t }}</p>
+      <button type="submit" name="checkout" class="btn-olive"
+              style="width:100%;justify-content:center;"
+              {% if cart.item_count == 0 %}disabled{% endif %}>
+        {{ 'sections.cart.checkout' | t }}
+      </button>
+      <div class="cart-continue">
+        <button type="button" onclick="closeCart()">{{ 'sections.cart.continue' | t }}</button>
+      </div>
+    </div>
+  </form>
+</div>

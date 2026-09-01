@@ -1,0 +1,12 @@
+<section class="section"><div class="wrap" style="max-width:440px;">
+  <h1 class="sec-h2">Activate account</h1>
+  {%- form 'activate_customer_password' -%}
+    {{ form.errors | default_errors }}
+    <label for="ac-pass">Password</label>
+    <input type="password" name="customer[password]" id="ac-pass" autocomplete="new-password">
+    <label for="ac-conf">Confirm</label>
+    <input type="password" name="customer[password_confirmation]" id="ac-conf" autocomplete="new-password">
+    <button type="submit" class="btn-olive">Activate</button>
+    <button type="submit" name="decline" class="btn-ghost">Decline</button>
+  {%- endform -%}
+</div></section>

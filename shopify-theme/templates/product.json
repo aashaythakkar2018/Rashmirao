@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "shipping": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "content": "<p>Each painting is rolled into an archival tube or flat-packed in foam-lined crating depending on size. All shipments are fully insured and tracked.</p><p>Preparation 4-6 weeks. India delivery 3-5 days after dispatch. International 7-14 days after dispatch. All sales final; commissions non-refundable.</p>"
+          }
+        },
+        "coa": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Certificate of Authenticity",
+            "content": "<p>Every original work ships with a hand-signed physical certificate, embossed with the studio seal, catalogued with a unique registration number. A digital PDF version is emailed for insurance and resale purposes.</p><p>The certificate documents title, year, medium, dimensions, edition status, and provenance history.</p>"
+          }
+        }
+      },
+      "block_order": ["shipping", "coa"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

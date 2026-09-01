@@ -1,0 +1,12 @@
+<section class="section"><div class="wrap" style="max-width:440px;">
+  <h1 class="sec-h2">Login</h1>
+  {%- form 'customer_login' -%}
+    {{ form.errors | default_errors }}
+    <label for="cl-email">Email</label>
+    <input type="email" name="customer[email]" id="cl-email" autocomplete="email" required>
+    <label for="cl-pass">Password</label>
+    <input type="password" name="customer[password]" id="cl-pass" autocomplete="current-password">
+    <button type="submit" class="btn-olive">Sign in</button>
+    <a href="{{ routes.account_register_url }}" class="text-link">Create account</a>
+  {%- endform -%}
+</div></section>

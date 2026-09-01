@@ -1,0 +1,29 @@
+<section class="page-hero"><div class="wrap"><h1 class="hero-h1 rv">{{ blog.title }}</h1></div></section>
+<section class="grid-section"><div class="wrap">
+  {%- paginate blog.articles by 12 -%}
+    <div class="artwork-grid">
+      {%- for article in blog.articles -%}
+        <a class="art-card" href="{{ article.url }}">
+          {%- if article.image -%}
+            <div class="art-card-img-wrap">
+              <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | escape }}" loading="lazy">
+            </div>
+          {%- endif -%}
+          <div class="art-card-info">
+            <span class="art-card-cat">{{ article.published_at | date: '%b %d, %Y' }}</span>
+            <h3 class="art-card-title">{{ article.title }}</h3>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination">
+        {%- if paginate.previous -%}<a class="btn-ghost" href="{{ paginate.previous.url }}">&larr; Previous</a>{%- endif -%}
+        {%- if paginate.next -%}<a class="btn-ghost" href="{{ paginate.next.url }}">Next &rarr;</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div></section>
+{% schema %}
+{ "name": "Blog" }
+{% endschema %}

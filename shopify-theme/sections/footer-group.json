@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "c1": { "type": "menu", "settings": { "heading": "Collections" } },
+        "c2": { "type": "menu", "settings": { "heading": "Studio" } },
+        "c3": { "type": "menu", "settings": { "heading": "Services" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": { "wordmark": "Rhytara" }
+    }
+  },
+  "order": ["footer"]
+}

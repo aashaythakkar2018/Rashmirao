@@ -1,0 +1,57 @@
+{%- comment -%}
+  The homepage tile grid. It renders whatever is in the chosen collection,
+  so publishing a sixth work adds a sixth tile with no theme edit.
+{%- endcomment -%}
+
+<section class="coll-bg section" id="{{ section.settings.anchor | default: 'collections' }}">
+  <div class="wrap">
+    <div class="coll-hd">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+      </div>
+      {%- if section.settings.collection != blank -%}
+        <a href="{{ section.settings.collection.url }}" class="text-link rv">View all &rarr;</a>
+      {%- endif -%}
+    </div>
+
+    <div class="coll-grid" id="collGrid">
+      {%- for product in section.settings.collection.products limit: section.settings.limit -%}
+        <a href="{{ product.url }}" class="coll-card">
+          <div class="img-wrap" style="height:100%;">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 900 }}"
+                   alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                   loading="lazy" decoding="async">
+            {%- endif -%}
+          </div>
+          <span class="coll-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <div class="coll-overlay"></div>
+          <div class="coll-info">
+            <span class="coll-name">{{ product.title }}</span>
+            <span class="coll-count">{{ product.type }}</span>
+            <span class="coll-go">View Design &rarr;</span>
+          </div>
+        </a>
+      {%- else -%}
+        <p class="sec-sub">Choose a collection in the theme editor to populate this grid.</p>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Discover Nature's Rhythm" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Five designs to<br>begin the journey." },
+    { "type": "range", "id": "limit", "label": "Products shown", "min": 3, "max": 12, "step": 1, "default": 5 },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "collections" }
+  ],
+  "presets": [{ "name": "Featured products" }]
+}
+{% endschema %}

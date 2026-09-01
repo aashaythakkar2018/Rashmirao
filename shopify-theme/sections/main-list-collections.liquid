@@ -1,0 +1,33 @@
+<section class="page-hero">
+  <div class="wrap">
+    <h1 class="hero-h1 rv">{{ section.settings.heading }}</h1>
+  </div>
+</section>
+<section class="grid-section">
+  <div class="wrap">
+    <div class="coll-grid">
+      {%- for collection in collections -%}
+        <a href="{{ collection.url }}" class="coll-card">
+          <div class="img-wrap" style="height:100%;">
+            {%- if collection.featured_image -%}
+              <img src="{{ collection.featured_image | image_url: width: 900 }}"
+                   alt="{{ collection.title | escape }}" loading="lazy" decoding="async">
+            {%- endif -%}
+          </div>
+          <div class="coll-info">
+            <span class="coll-name">{{ collection.title }}</span>
+            <span class="coll-count">{{ collection.products_count }} works</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "All Collections" }
+  ]
+}
+{% endschema %}

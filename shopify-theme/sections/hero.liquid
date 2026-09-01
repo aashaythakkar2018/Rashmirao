@@ -1,0 +1,52 @@
+<section class="hero" id="hero" aria-label="Hero">
+  <div class="hero-img-fallback" aria-hidden="true"
+       {% if section.settings.poster %}style="background-image:url({{ section.settings.poster | image_url: width: 1920 }});background-size:cover;background-position:center;"{% endif %}></div>
+
+  {%- if section.settings.video != blank -%}
+    {{ section.settings.video | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true, controls: false, class: 'hero-video' }}
+  {%- endif -%}
+
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="hero-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="hero-h1">{{ section.settings.heading }}</h1>
+    {%- if section.settings.subtext != blank -%}
+      <p class="hero-sub">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+    <div class="hero-ctas">
+      {%- if section.settings.cta_label != blank -%}
+        <a href="{{ section.settings.cta_url }}" class="btn-olive">
+          {{ section.settings.cta_label }}
+          <svg width="14" height="7" viewBox="0 0 14 7" fill="none" aria-hidden="true"><path d="M0 3.5h12M9 1l3 2.5L9 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta2_label != blank -%}
+        <a href="{{ section.settings.cta2_url }}" class="btn-ghost-light">{{ section.settings.cta2_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "video", "id": "video", "label": "Background video" },
+    { "type": "image_picker", "id": "poster", "label": "Fallback image",
+      "info": "Shown while the video loads, and on connections that block it." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Welcome to Rhytara" },
+    { "type": "html", "id": "heading", "label": "Heading",
+      "default": "Woven in stillness,<br><em>inspired by</em> nature's rhythm." },
+    { "type": "textarea", "id": "subtext", "label": "Subtext",
+      "default": "Wearable art born from original paintings, where color, movement, and nature find new expression in the timeless form of the saree." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Discover Nature's Rhythm" },
+    { "type": "url", "id": "cta_url", "label": "Primary button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Meet Rashmi" },
+    { "type": "url", "id": "cta2_url", "label": "Secondary button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}
