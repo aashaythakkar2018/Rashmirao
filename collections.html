@@ -1029,17 +1029,8 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
       <button class="filter-tab active" data-filter="all" onclick="filterWorks(this)">
         All <span class="filter-tab-count" id="cnt-all">5</span>
       </button>
-      <button class="filter-tab" data-filter="ink" onclick="filterWorks(this)">
-        Alcohol Ink <span class="filter-tab-count" id="cnt-ink">2</span>
-      </button>
-      <button class="filter-tab" data-filter="acrylic" onclick="filterWorks(this)">
-        Acrylic <span class="filter-tab-count" id="cnt-acrylic">1</span>
-      </button>
-      <button class="filter-tab" data-filter="mixed" onclick="filterWorks(this)">
-        Mixed Media <span class="filter-tab-count" id="cnt-mixed">1</span>
-      </button>
       <button class="filter-tab" data-filter="wearable" onclick="filterWorks(this)">
-        Wearable <span class="filter-tab-count" id="cnt-wearable">1</span>
+        Wearable Art <span class="filter-tab-count" id="cnt-wearable">5</span>
       </button>
     </div>
 
@@ -1067,10 +1058,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
   <div class="wrap">
     <div class="artwork-grid" id="artworkGrid">
 
-      <!-- CARD 1 - Monsoon Dream -->
-      <div class="art-card rv" data-cat="ink" data-price="85000" data-year="2024" data-id="monsoon-dream" onclick="cardClick(event,this)">
+      <!-- CARD 1 - Echoes Of Earth -->
+      <div class="art-card rv" data-cat="wearable" data-price="85000" data-year="2024" data-id="monsoon-dream" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-new">New</span>
+          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1081,10 +1072,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           <div class="card-spotlight"></div>
           <!-- Slide-up reveal overlay - isaiahbjork ProductRevealCard pattern -->
           <div class="art-card-reveal">
-            <span class="reveal-eyebrow">Alcohol Ink on Yupo Paper · 2024</span>
+            <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
             <h3 class="reveal-title">Echoes Of Earth</h3>
-            <p class="reveal-meta">36 × 48 inches · Original · 1 of 1</p>
-            <p class="reveal-desc">Painted during the first rains of the season. The ink moved the way the sky felt: unrushed and inevitable.</p>
+            <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
+            <p class="reveal-desc">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition, Echoes of Earth reflects the quiet depth and organic beauty of nature through layered tones of green and gold.</p>
             <div class="reveal-footer">
               <span class="reveal-price" data-price-inr="85000">₹ 85,000</span>
               <div class="reveal-btns">
@@ -1095,7 +1086,7 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           </div>
         </div>
         <div class="art-card-info">
-          <span class="art-card-cat">Alcohol Ink</span>
+          <span class="art-card-cat">Wearable Art · Limited Edition</span>
           <h3 class="art-card-title">Echoes Of Earth</h3>
           <div class="art-card-footer">
             <span class="art-card-price" data-price-inr="85000">₹ 85,000</span>
@@ -1104,10 +1095,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
         </div>
       </div>
 
-      <!-- CARD 2 - Crimson Solitude -->
-      <div class="art-card rv" data-cat="acrylic" data-price="65000" data-year="2023" data-id="crimson-solitude" onclick="cardClick(event,this)">
+      <!-- CARD 2 - Grounding Nature -->
+      <div class="art-card rv" data-cat="wearable" data-price="65000" data-year="2023" data-id="crimson-solitude" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-avail">✓ Available</span>
+          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1115,10 +1106,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           <img data-src="assets/images/collection/grounding-nature-01.jpg" alt="Grounding Nature" decoding="async" class="img-loading">
           <div class="card-spotlight"></div>
           <div class="art-card-reveal">
-            <span class="reveal-eyebrow">Abstract Acrylic on Canvas · 2023</span>
+            <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
             <h3 class="reveal-title">Grounding Nature</h3>
-            <p class="reveal-meta">24 × 36 inches · Original · 1 of 1</p>
-            <p class="reveal-desc">A meditation on stillness. Deep crimson layered with raw umber and zinc white, scraped and rebuilt over three weeks.</p>
+            <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
+            <p class="reveal-desc">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition, Grounding Nature reflects a quiet return to the earth—its organic forms, flowing rhythms, and the sense of stillness found in reconnecting with nature.</p>
             <div class="reveal-footer">
               <span class="reveal-price" data-price-inr="65000">₹ 65,000</span>
               <div class="reveal-btns">
@@ -1129,7 +1120,7 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           </div>
         </div>
         <div class="art-card-info">
-          <span class="art-card-cat">Abstract Acrylic</span>
+          <span class="art-card-cat">Wearable Art · Limited Edition</span>
           <h3 class="art-card-title">Grounding Nature</h3>
           <div class="art-card-footer">
             <span class="art-card-price" data-price-inr="65000">₹ 65,000</span>
@@ -1138,63 +1129,67 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
         </div>
       </div>
 
-      <!-- CARD 3 - Whispers of Ochre -->
-      <div class="art-card rv" data-cat="mixed" data-price="72000" data-year="2024" data-id="whispers-of-ochre" onclick="cardClick(event,this)">
+      <!-- CARD 3 - Magical Pansies -->
+      <div class="art-card rv" data-cat="wearable" data-price="72000" data-year="2024" data-id="whispers-of-ochre" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-sold">✕ Sold</span>
-          <div class="img-shimmer" aria-hidden="true"></div>
-          <img data-src="assets/images/collection/magical-pansies-01.jpg" alt="Magical Pansies" decoding="async" class="img-loading">
-          <div class="card-spotlight"></div>
-          <div class="art-card-reveal">
-            <span class="reveal-eyebrow">Mixed Media on Canvas · 2024</span>
-            <h3 class="reveal-title">Magical Pansies</h3>
-            <p class="reveal-meta">30 × 40 inches · Original · Sold</p>
-            <p class="reveal-desc">Earth tones layered with gold leaf and graphite. Commission a similar work or inquire about prints.</p>
-            <div class="reveal-footer">
-              <span class="reveal-price sold-price" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</span>
-              <div class="reveal-btns">
-                <a href="contact.html" class="reveal-btn reveal-btn-inq" style="flex:1;text-align:center;" onclick="event.stopPropagation()">Commission a Piece</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="art-card-info">
-          <span class="art-card-cat">Mixed Media</span>
-          <h3 class="art-card-title">Magical Pansies</h3>
-          <div class="art-card-footer">
-            <span class="art-card-price sold" data-price-inr="72000" data-sold="true">₹ 72,000 (Sold)</span>
-            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 4 - The Blue Hour -->
-      <div class="art-card rv" data-cat="ink" data-price="92000" data-year="2024" data-id="the-blue-hour" onclick="cardClick(event,this)">
-        <div class="art-card-img-wrap">
-          <span class="art-badge badge-avail">✓ Available</span>
+          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
           <div class="img-shimmer" aria-hidden="true"></div>
-          <img data-src="assets/images/collection/purple-petals-reverie-01.jpg" alt="Purple Petal" decoding="async" class="img-loading">
+          <img data-src="assets/images/collection/magical-pansies-01.jpg" alt="Magical Pansies" decoding="async" class="img-loading">
           <div class="card-spotlight"></div>
           <div class="art-card-reveal">
-            <span class="reveal-eyebrow">Alcohol Ink on Yupo Paper · 2024</span>
-            <h3 class="reveal-title">Purple Petal</h3>
-            <p class="reveal-meta">40 × 52 inches · Original · 1 of 1</p>
-            <p class="reveal-desc">The largest work from the Monsoon Series. Blues and indigos flowing outward from a single point of white light.</p>
+            <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
+            <h3 class="reveal-title">Magical Pansies</h3>
+            <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
+            <p class="reveal-desc">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition, Magical Pansies draws inspiration from the glowing rhythms of Mother Earth—where delicate pansies bloom within a luminous, dreamlike world.</p>
             <div class="reveal-footer">
-              <span class="reveal-price" data-price-inr="92000">₹ 92,000</span>
+              <span class="reveal-price" data-price-inr="72000">₹ 72,000</span>
               <div class="reveal-btns">
-                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Purple Petal',92000,'assets/images/collection/purple-petals-reverie-01.jpg'); event.stopPropagation()">Purchase</button>
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Magical Pansies',72000,'assets/images/collection/magical-pansies-01.jpg'); event.stopPropagation()">Purchase</button>
                 <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
               </div>
             </div>
           </div>
         </div>
         <div class="art-card-info">
-          <span class="art-card-cat">Alcohol Ink</span>
-          <h3 class="art-card-title">Purple Petal</h3>
+          <span class="art-card-cat">Wearable Art · Limited Edition</span>
+          <h3 class="art-card-title">Magical Pansies</h3>
+          <div class="art-card-footer">
+            <span class="art-card-price" data-price-inr="72000">₹ 72,000</span>
+            <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4 - Purple Petals Reverie -->
+      <div class="art-card rv" data-cat="wearable" data-price="92000" data-year="2024" data-id="the-blue-hour" onclick="cardClick(event,this)">
+        <div class="art-card-img-wrap">
+          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
+          <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="img-shimmer" aria-hidden="true"></div>
+          <img data-src="assets/images/collection/purple-petals-reverie-01.jpg" alt="Purple Petals Reverie" decoding="async" class="img-loading">
+          <div class="card-spotlight"></div>
+          <div class="art-card-reveal">
+            <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
+            <h3 class="reveal-title">Purple Petals Reverie</h3>
+            <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
+            <p class="reveal-desc">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition, Purple Petals Reverie captures a dreamy moment within the heart of a bloom, where delicate petals drift softly in the wind.</p>
+            <div class="reveal-footer">
+              <span class="reveal-price" data-price-inr="92000">₹ 92,000</span>
+              <div class="reveal-btns">
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Purple Petals Reverie',92000,'assets/images/collection/purple-petals-reverie-01.jpg'); event.stopPropagation()">Purchase</button>
+                <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="art-card-info">
+          <span class="art-card-cat">Wearable Art · Limited Edition</span>
+          <h3 class="art-card-title">Purple Petals Reverie</h3>
           <div class="art-card-footer">
             <span class="art-card-price" data-price-inr="92000">₹ 92,000</span>
             <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
@@ -1202,10 +1197,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
         </div>
       </div>
 
-      <!-- CARD 5 - Monsoon Saree No. 3 -->
+      <!-- CARD 5 - Shifting Glacier -->
       <div class="art-card rv" data-cat="wearable" data-price="18500" data-year="2024" data-id="monsoon-saree" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited · 3/8</span>
+          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1213,10 +1208,10 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           <img data-src="assets/images/collection/shifting-glacier-01.jpg" alt="Shifting Glacier" decoding="async" class="img-loading">
           <div class="card-spotlight"></div>
           <div class="art-card-reveal">
-            <span class="reveal-eyebrow">Wearable Art · Archival Print · 2024</span>
+            <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
             <h3 class="reveal-title">Shifting Glacier</h3>
-            <p class="reveal-meta">Edition 3 of 8 · Pure Georgette · 5.5 m</p>
-            <p class="reveal-desc">The Echoes Of Earth painting, adapted for georgette. Archival ink, hand-numbered, with a certificate of authenticity.</p>
+            <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
+            <p class="reveal-desc">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition, Shifting Glacier captures the fluid essence of water through textured waves of blue, gold, and white.</p>
             <div class="reveal-footer">
               <span class="reveal-price" data-price-inr="18500">₹ 18,500</span>
               <div class="reveal-btns">
@@ -1227,7 +1222,7 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           </div>
         </div>
         <div class="art-card-info">
-          <span class="art-card-cat">Wearable Art</span>
+          <span class="art-card-cat">Wearable Art · Limited Edition</span>
           <h3 class="art-card-title">Shifting Glacier</h3>
           <div class="art-card-footer">
             <span class="art-card-price" data-price-inr="18500">₹ 18,500</span>
@@ -1282,7 +1277,7 @@ footer { background: #0e0e0e; color: rgba(250,248,245,0.38); padding: 68px 0 40p
           <div><span class="s-stat-n">36-54″</span><span class="s-stat-l">Scale</span></div>
         </div>
         <div class="series-cta">
-          <button class="btn-olive" onclick="filterWorks(document.querySelector('[data-filter=ink]'))">View Ink Works</button>
+          <button class="btn-olive" onclick="filterWorks(document.querySelector('[data-filter=wearable]'))">View Wearable Art</button>
           <a href="contact.html" class="btn-ghost-light">Inquire</a>
         </div>
       </div>

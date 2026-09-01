@@ -105,12 +105,15 @@ def sku_for(title, year):
 
 
 def grams_from(specs):
-    """'Approx. 0.8 kg' -> 800. Returns '' when the site doesn't state a weight."""
+    """'Approx. 0.8 kg' or '450 g' -> grams; returns '' when unspecified."""
     for key, val in specs.items():
         if "weight" in key.lower():
             m = re.search(r"([\d.]+)\s*kg", val, re.I)
             if m:
                 return str(int(round(float(m.group(1)) * 1000)))
+            m = re.search(r"(\d+)\s*g", val, re.I)
+            if m:
+                return m.group(1)
     return ""
 
 

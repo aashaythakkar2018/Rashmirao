@@ -244,38 +244,41 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .img-wrap:hover img { transform: scale(1.04); }
 
 /* ============================================================
-   1. OUR STORY  - text left + 2-col image grid right
-   Mirrors: Cord Studio "Our Story" - intro para + 4×2 img grid
+   1. OUR STORY  - centered copy on top + horizontal image grid below
 ============================================================ */
 .story-bg { background: var(--white); }
 .story-split {
-  display: grid;
-  grid-template-columns: 420px 1fr;
-  gap: 80px;
-  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.story-copy { padding-top: 8px; }
-.story-copy .h2 { margin-bottom: 28px; }
-.story-copy .body-text p + p { margin-top: 16px; }
+.story-copy { padding-top: 8px; max-width: 1040px; text-align: center; margin: 0 auto 48px; }
+.story-copy .h2 { margin-bottom: 24px; }
+.story-copy .body-text { text-align: center; }
+.story-copy .body-text p + p { margin-top: 12px; }
 .story-pull {
   font-family: var(--ff-serif);
   font-size: 22px; font-style: italic; font-weight: 400;
   line-height: 1.6; color: var(--olive);
   border-left: 2px solid var(--olive);
-  padding-left: 22px; margin-top: 36px; max-width: 340px;
+  padding-left: 22px; margin: 28px auto 0; max-width: 100%;
+  width: max-content;
+  text-align: left;
 }
 
-/* Pinterest-style 3-column masonry mosaic */
+/* Four-column gallery with the same natural image sizing as the reference. */
 .story-grid {
-  column-count: 3;
-  column-gap: 12px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  align-items: start;
 }
+.story-grid-col { display: flex; flex-direction: column; gap: 5px; }
 .story-grid .img-wrap {
-  break-inside: avoid;
-  margin-bottom: 12px;
-  border-radius: 4px;
+  border-radius: 0;
+  overflow: hidden;
 }
-.story-grid .img-wrap:nth-child(1) img { aspect-ratio: 3/4; object-fit: cover; }
 .story-grid .img-wrap img { width: 100%; height: auto; display: block; }
 
 /* brand medallion - sits between the two rows like Cord's logo mark */
@@ -425,6 +428,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .journey-img-col .img-wrap:hover img {
   transform: scale(1.03);
 }
+.journey-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.journey-gallery .img-wrap:first-child {
+  grid-column: 1 / -1;
+}
+.journey-gallery .img-wrap {
+  aspect-ratio: 4 / 5;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.journey-gallery .img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.journey-gallery .img-wrap:hover img { transform: scale(1.03); }
 
 @media (max-width: 980px) {
   .journey-split { grid-template-columns: 1fr; }
@@ -468,7 +490,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .phil-value:first-child { border-top: 1px solid rgba(17,17,17,0.1); }
 .phil-v-num {
   font-family: var(--ff-mono); font-size: 11px;
-  color: var(--olive); min-width: 24px; padding-top: 1px;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--olive); min-width: 90px; padding-top: 1px;
 }
 .phil-v-text {
   font-family: var(--ff-sans); font-size: 14px;
@@ -537,6 +560,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-family: var(--ff-sans); font-size: 13px;
   font-weight: 300; color: var(--muted); line-height: 1.5;
 }
+
+/* ============================================================
+   4b. MEET THE ARTIST - portrait + bio
+============================================================ */
+.about-bg { background: var(--bg); }
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.about-img-col .img-wrap { aspect-ratio: 4/5; border-radius: 4px; }
+.about-copy-col .eyebrow { margin-bottom: 14px; }
+.about-copy-col .h2 { margin-bottom: 20px; }
+.about-link { margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; }
+
+/* ============================================================
+   FINAL SECTION - closing brand statement
+============================================================ */
+.final-bg { background: var(--dark); padding: 120px 0; }
+.final-inner { text-align: center; }
+.final-eyebrow {
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px; display: block;
+}
+.final-h {
+  font-family: var(--ff-serif);
+  font-size: clamp(40px, 6vw, 76px);
+  font-weight: 400; line-height: 1.08;
+  color: #FAF8F5;
+}
+.final-h em { font-style: italic; font-weight: 300; color: rgba(250,248,245,0.65); }
+.final-tagline {
+  font-family: var(--ff-sans); font-size: 14px; font-weight: 300;
+  color: rgba(250,248,245,0.55); margin-top: 18px;
+}
+.btn-outline-light {
+  display: inline-block;
+  padding: 15px 34px;
+  font-family: var(--ff-sans); font-size: 11px;
+  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
+  color: #FAF8F5;
+  border: 1px solid rgba(250,248,245,0.35);
+  background: none;
+  transition: border-color .25s, background .25s;
+}
+.btn-outline-light:hover { border-color: rgba(250,248,245,0.8); background: rgba(250,248,245,0.06); }
 
 /* ============================================================
    5. IN THE PRESS  - Marquee ticker + Article cards
@@ -938,9 +1008,8 @@ footer {
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .story-split { grid-template-columns: 1fr; gap: 52px; }
-  .story-grid { column-count: 2; }
-  .journey-split, .phil-split, .purpose-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
+  .story-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .journey-split, .phil-split, .purpose-split, .about-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .press-logo:nth-child(4n) { border-right: 1px solid var(--beige); }
   .press-logo:nth-child(2n) { border-right: none; }
@@ -955,8 +1024,9 @@ footer {
   .page-hero { padding-top: 110px; padding-bottom: 48px; }
   .page-hero .wrap { flex-direction: column; gap: 24px; }
   .page-hero-tagline { text-align: left; }
-  .story-grid { column-count: 2; column-gap: 6px; }
-  .story-grid .img-wrap { margin-bottom: 6px; }
+  .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+  .story-grid-col { gap: 4px; }
+  .story-pull { width: auto; max-width: 100%; font-size: 18px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .ft-grid { grid-template-columns: 1fr; gap: 36px; }
   .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
@@ -1005,10 +1075,10 @@ footer {
 <section class="page-hero">
   <div class="wrap">
     <div>
-      <span class="page-hero-eyebrow rv">Our Story</span>
-      <h1 class="page-hero-h1 rv">Art That<br>Begins With<br><em>Feeling.</em></h1>
+      <span class="page-hero-eyebrow rv">Where Art Finds Another Form.</span>
+      <h1 class="page-hero-h1 rv">Woven in Stillness,<br>Inspired by<br><em>Nature's Rhythm.</em></h1>
     </div>
-    <p class="page-hero-tagline rv">A practice of making things that outlast the moment they were made in.</p>
+    <p class="page-hero-tagline rv">Rhytara Collections is an artist-led wearable art label by Rashmi Rao, born from an evolving practice of fine art, illustration, design and abstract painting. What began on canvas found its way onto fabric&mdash;transforming original artwork into pieces that can be worn, lived in and experienced in motion.</p>
   </div>
   <div class="wrap"><div class="hero-rule rv"></div></div>
 </section>
@@ -1019,51 +1089,62 @@ footer {
     <div class="story-split">
       <!-- Copy -->
       <div class="story-copy">
-        <h2 class="h2 rv">Where Art<br>Becomes Story.</h2>
+        <h2 class="h2 rv">From Art to<br>Something You<br><em>Can Wear.</em></h2>
         <div class="body-text rv" style="margin-top:24px;">
-          <p>Amidst the richness of India's visual heritage and the restless energy of the contemporary art world, Rhytara sits at an unusual intersection: original paintings that breathe, wearable art that travels with you, and licensed collections that carry the same warmth into interior spaces.</p>
-          <p>Every work begins with a feeling, not a plan. The canvas, the Yupo paper, the silk: each becomes a record of a specific moment in the studio. That moment is then preserved and offered to collectors who want something genuinely alive on their walls.</p>
+          <p>Rhytara began with a simple question: What if art could move beyond the wall?</p>
+          <p>Rhytara grew from artist Rashmi Rao's exploration of nature, color, movement and stillness. The first collection, Nature's Rhythm, emerged from a body of original abstract paintings created for Rashmi's solo exhibition.</p>
+          <p>The paintings came first. The sarees came later.</p>
+          <p>Selected works from Nature's Rhythm are thoughtfully translated from original artwork into flowing textile compositions on Georgette satin&mdash;allowing the movement, color and rhythm of the paintings to become something that can be carried into everyday life.</p>
+          <p>Rhytara isn't art-inspired fashion. It is an artist's practice finding another surface.</p>
         </div>
         <blockquote class="story-pull rv">
-          "The ink moved the way the sky felt: unrushed, inevitable, and completely beyond control."
+          "Born from art. Inspired by nature. Made to move with you."
         </blockquote>
       </div>
 
-      <!-- 3-column masonry mosaic -->
+      <!-- Four-column story image gallery -->
       <div>
         <div class="story-grid">
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
+          <div class="story-grid-col">
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-04.jpg" alt="Water lily pond" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-02.jpg" alt="Rashmi sketching outdoors" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-02.jpg" alt="Rashmi sketching outdoors" loading="lazy" onerror="this.style.display='none'">
+          <div class="story-grid-col">
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-08.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
+          <div class="story-grid-col">
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-07.jpg" alt="Watercolor mountain painting" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-10.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-04.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-05.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-06.jpg" alt="Watercolor landscape" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-07.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-08.jpg" alt="Silk saree detail" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-09.jpg" alt="Watercolor mountain painting" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-10.jpg" alt="Sunset sky" loading="lazy" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap rv">
-            <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
+          <div class="story-grid-col">
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-05.jpg" alt="Silk saree detail" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-09.jpg" alt="Watercolor mountain landscape" loading="lazy" onerror="this.style.display='none'">
+            </div>
           </div>
         </div>
       </div>
@@ -1077,71 +1158,93 @@ footer {
     <div class="journey-split">
       <div class="journey-copy">
         <span class="eyebrow rv">The Journey</span>
-        <h2 class="h2 rv">A Practice<br>Built Over<br><em>Years.</em></h2>
+        <h2 class="h2 rv">An Evolving<br>Relationship With<br><em>Art.</em></h2>
         <div class="journey-intro-copy rv">
-          <p>Driven by a lifelong immersion in art, colour, and cultural heritage, Rashmi Rao began her practice in 2014 with a commitment to making works that hold genuine emotional weight. Not decorative. Felt.</p>
-          <p>From early mixed-media experimentations in small formats to large-scale alcohol ink commissions spanning three continents, the practice has grown without losing its core instinct: every piece begins with feeling, not planning.</p>
+          <p>Rather than following one fixed artistic style, Rashmi's journey has been shaped by curiosity&mdash;moving through different forms, subjects, mediums and creative challenges.</p>
         </div>
 
         <div class="journey-panel-col">
           <div class="journey-panel rv">
             <div class="journey-steps">
               <div class="journey-step">
-                <span class="journey-step-year">2014</span>
+                <span class="journey-step-year">2010</span>
                 <div class="journey-step-copy">
-                  <h3>Studio founded</h3>
-                  <p>Rashmi's first solo exhibition opened in Mumbai as the practice took its first quiet shape.</p>
+                  <h3>Art in Many Forms</h3>
+                  <p>The journey began with fine art, illustration and design, including wedding design illustrations, commissioned work and fine art. Group exhibitions became an early part of the journey, providing opportunities to explore different subjects, techniques and visual languages.</p>
                 </div>
               </div>
               <div class="journey-step">
-                <span class="journey-step-year">2016</span>
+                <span class="journey-step-year">2018–2022</span>
                 <div class="journey-step-copy">
-                  <h3>Alcohol ink introduced</h3>
-                  <p>The Yupo Paper series began, giving the work a new immediacy and translucence.</p>
+                  <h3>Small Collections. Many Directions.</h3>
+                  <p>A period of creating small, focused collections&mdash;often through 30-day, 50-day and 100-day creative explorations. Each mini collection explored a different subject, idea, medium or visual language. Some became finished bodies of work. Others simply opened the door to the next experiment. This was a time of learning to embrace curiosity over consistency.</p>
                 </div>
               </div>
               <div class="journey-step">
-                <span class="journey-step-year">2018</span>
+                <span class="journey-step-year">2023</span>
                 <div class="journey-step-copy">
-                  <h3>First international commission</h3>
-                  <p>A hotel installation in Singapore marked the practice's first global presentation.</p>
+                  <h3>A Challenge That Changed Everything</h3>
+                  <p>While looking through leftover art supplies from earlier graphic design days, Rashmi came across alcohol inks&mdash;materials she had owned but had never truly explored. She decided to take on a challenge. Inktober became an invitation to experiment. What began with supplies that had been sitting untouched became an immersive exploration of fluidity, transparency, movement and color. A challenge became an artistic language.</p>
                 </div>
               </div>
               <div class="journey-step">
-                <span class="journey-step-year">2020</span>
+                <span class="journey-step-year">2023–2024</span>
                 <div class="journey-step-copy">
-                  <h3>Wearable Art launched</h3>
-                  <p>Sarees printed from original paintings brought the studio's colour work into motion.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2022</span>
-                <div class="journey-step-copy">
-                  <h3>India Art Fair feature</h3>
-                  <p>New Delhi press and exhibition coverage introduced the work to a wider contemporary audience.</p>
+                  <h3>Finding Flow</h3>
+                  <p>The exploration continued beyond the challenge. Alcohol ink became a deeper part of the practice, leading to increasingly abstract explorations of nature, movement, energy and emotion.</p>
                 </div>
               </div>
               <div class="journey-step">
                 <span class="journey-step-year">2024</span>
                 <div class="journey-step-copy">
-                  <h3>Monsoon Series</h3>
-                  <p>The largest alcohol ink works to date were created, expanding the scale and emotional intensity.</p>
+                  <h3>Expanding the Language</h3>
+                  <p>The work continued to evolve through different visual directions&mdash;from Pantone-inspired color studies to the Folk &amp; Tribal Art Series for the City of Lafayette, alongside continuing abstract and mixed-media explorations. Different projects continued to reveal recurring threads of color, rhythm, nature and movement.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2024–2025</span>
+                <div class="journey-step-copy">
+                  <h3>Nature's Rhythm</h3>
+                  <p>Years of experimentation gradually converged. Nature became less something to depict and more something to observe, feel and translate. This evolving body of work became Nature's Rhythm.</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">2025</span>
+                <div class="journey-step-copy">
+                  <h3>Nature's Rhythm &mdash; Exhibition</h3>
+                  <p>A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?</p>
+                </div>
+              </div>
+              <div class="journey-step">
+                <span class="journey-step-year">Today</span>
+                <div class="journey-step-copy">
+                  <h3>From Canvas to Cloth</h3>
+                  <p>That question became the beginning of Rhytara Collections. Selected artworks from Nature's Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced.</p>
                 </div>
               </div>
             </div>
-            <p class="journey-panel-note">A subtle sequence of years and moments — a quiet connector between the artist's evolving intuition and the material experience of the work.</p>
+            <blockquote class="journey-panel-note" style="font-style:italic;">From a challenge to a collection. From a painting to a piece you can wear. From art on the wall to art in motion. The journey continues.</blockquote>
           </div>
         </div>
       </div>
 
       <div class="journey-img-col rv">
-        <div class="img-wrap">
-          <img
-            src="assets/images/story-2.jpg"
-            alt="Rashmi Rao in the studio"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
+        <div class="journey-gallery">
+          <div class="img-wrap">
+            <img src="assets/images/story-2.jpg" alt="Rashmi Rao in the studio" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap">
+            <img src="assets/images/story-1.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap">
+            <img src="assets/images/story-3.jpg" alt="Painting detail" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap">
+            <img src="assets/images/hero-beach.jpg" alt="Studio process" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="img-wrap">
+            <img src="assets/images/wearable-2.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
+          </div>
         </div>
       </div>
     </div>
@@ -1154,34 +1257,32 @@ footer {
     <div class="phil-split">
       <div class="phil-copy">
         <span class="eyebrow rv">Philosophy</span>
-        <h2 class="h2 rv">Beauty That<br>Earns Its<br><em>Place.</em></h2>
+        <h2 class="h2 rv">Art Should Be<br>Felt, Not Simply<br><em>Seen.</em></h2>
         <div class="phil-body body-text rv" style="margin-top:24px;">
-          <p>We have always believed in creating works that do not perform. They simply exist, confidently. Every decision in a painting, from the amount of ink to the moment of stopping, is made in service of that idea.</p>
-          <p>Craftsmanship, material honesty, and form are not afterthoughts. They are where a painting begins. The art of knowing when a work is finished, not overdone, is the hardest thing to teach.</p>
+          <p>At Rhytara, we believe what we wear can carry meaning. Nature is our inspiration. Art is our language. Stillness gives us space to see. Movement gives us space to evolve.</p>
+          <p>Each design begins with an artistic exploration rather than a fashion trend. We are drawn to organic forms, fluid movement, unexpected color and the quiet beauty of imperfection.</p>
+          <p>We don't create simply to make something beautiful. We create to make you feel.</p>
         </div>
 
         <div class="phil-values rv">
           <div class="phil-value">
-            <span class="phil-v-num">01</span>
-            <span class="phil-v-text">Feeling over formula. No two works follow a predetermined outcome</span>
+            <span class="phil-v-num">Flow</span>
+            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination</span>
           </div>
           <div class="phil-value">
-            <span class="phil-v-num">02</span>
-            <span class="phil-v-text">Material integrity. Only archival-grade inks, pigments, and substrates</span>
+            <span class="phil-v-num">Awareness</span>
+            <span class="phil-v-text">Looking closely enough to notice what is emerging</span>
           </div>
           <div class="phil-value">
-            <span class="phil-v-num">03</span>
-            <span class="phil-v-text">Originals only. No mass reproduction without artist authorisation</span>
+            <span class="phil-v-num">Movement</span>
+            <span class="phil-v-text">Embracing change and transformation</span>
           </div>
           <div class="phil-value">
-            <span class="phil-v-num">04</span>
-            <span class="phil-v-text">Every piece ships with a certificate of authenticity and provenance document</span>
-          </div>
-          <div class="phil-value">
-            <span class="phil-v-num">05</span>
-            <span class="phil-v-text">Direct collector relationship. No middlemen, no gallery markup</span>
+            <span class="phil-v-num">Stillness</span>
+            <span class="phil-v-text">Creating space for intuition and possibility</span>
           </div>
         </div>
+        <p class="phil-body body-text rv" style="margin-top:24px;">These ideas live within the artwork&mdash;and now, within what you wear.</p>
       </div>
 
       <div class="phil-imgs rv">
@@ -1216,42 +1317,82 @@ footer {
       </div>
 
       <div class="purpose-copy">
-        <h2 class="h2 rv">Every Piece<br>Has a<br><em>Reason.</em></h2>
+        <h2 class="h2 rv">Not Just a Print.<br>Not Just a<br><em>Saree.</em></h2>
         <div class="body-text rv" style="margin-top:24px;">
-          <p>The Rashmi Rao studio operates on a principle of intentional making. Each artwork is created without a production quota. A painting is done when it is done, not when the schedule says so.</p>
-          <p>The same care that governs the paintings extends to the wearable art line: sarees printed from original artworks, limited to 8 pieces per design, on fabrics selected for each work specifically.</p>
+          <p>Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>
         </div>
 
         <div class="purpose-pillars rv">
           <div class="pillar">
             <span class="pillar-icon">◈</span>
             <div class="pillar-text">
-              <strong>Certificate of Authenticity</strong>
-              <span>Every original ships with a signed provenance document and studio seal</span>
+              <strong>The Artwork Comes First</strong>
+              <span>Every design originates from Rashmi Rao's original artwork, created as an independent work of art before it becomes a textile</span>
             </div>
           </div>
           <div class="pillar">
             <span class="pillar-icon">✦</span>
             <div class="pillar-text">
-              <strong>Archival Materials</strong>
-              <span>Only museum-grade inks, pigments, and substrates used across all works</span>
+              <strong>Limited by Design</strong>
+              <span>Each Nature's Rhythm design is produced as a limited edition of 250 pieces. No endless production, no mass repetition. Once an edition is gone, it is gone</span>
             </div>
           </div>
           <div class="pillar">
             <span class="pillar-icon">✧</span>
             <div class="pillar-text">
-              <strong>Limited Wearable Editions</strong>
-              <span>Each saree print is capped at 8 pieces. Numbered, signed, and hand-finished</span>
+              <strong>Signed &amp; Numbered</strong>
+              <span>Every limited-edition piece is individually signed and numbered, creating a direct connection between the artwork, the edition and its wearer</span>
             </div>
           </div>
           <div class="pillar">
             <span class="pillar-icon">⬡</span>
             <div class="pillar-text">
-              <strong>Direct from Studio</strong>
-              <span>No gallery markup. Every sale is a direct conversation between artist and collector</span>
+              <strong>Certificate of Authenticity</strong>
+              <span>Each piece is accompanied by a Certificate of Authenticity, documenting its connection to the original artwork and its edition</span>
+            </div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">❖</span>
+            <div class="pillar-text">
+              <strong>The Fabric Matters</strong>
+              <span>The artwork is translated onto carefully selected Georgette satin, chosen for its fluid drape, soft movement and ability to carry the depth and detail of the artwork</span>
+            </div>
+          </div>
+          <div class="pillar">
+            <span class="pillar-icon">◇</span>
+            <div class="pillar-text">
+              <strong>Art with Provenance</strong>
+              <span>The story doesn't stop with the artwork. It continues through the textile, the edition, the artist's signature and the person who eventually wears it</span>
             </div>
           </div>
         </div>
+        <blockquote class="journey-panel-note" style="font-style:italic; margin-top:32px; border-top:1px solid var(--beige); padding-top:24px; color:var(--olive);">Few pieces. One artistic origin. A story worth keeping.</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4b. MEET THE ARTIST ========== -->
+<section class="about-bg section">
+  <div class="wrap">
+    <div class="about-split">
+      <div class="about-img-col rv">
+        <div class="img-wrap">
+          <img src="assets/images/about-portrait.jpg" alt="Rashmi Rao, Artist. Designer. Founder." loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="about-copy-col">
+        <span class="eyebrow rv">Artist &bull; Designer &bull; Founder</span>
+        <h2 class="h2 rv">Rashmi<br><em>Rao.</em></h2>
+        <div class="about-bio body-text rv" style="margin-top:24px;">
+          <p>Rashmi Rao is an artist and designer whose practice explores nature, movement, color, abstraction and intuitive expression.</p>
+          <p>Her artistic journey has moved through fine art, illustration, design, daily creative explorations, exhibitions and alcohol ink&mdash;eventually leading to Nature's Rhythm and the creation of Rhytara Collections.</p>
+          <p>Rhytara is the next chapter of that journey.</p>
+        </div>
+        <a href="contact.html" class="about-link text-link rv">
+          Meet the Artist
+          <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
       </div>
     </div>
   </div>
@@ -1415,7 +1556,7 @@ footer {
 <section class="social-bg section">
   <div class="wrap">
     <div class="social-hd">
-      <h2 class="h2">Living With<br><em>the Work.</em></h2>
+      <h2 class="h2">Living With <em>the Work.</em></h2>
       <span class="social-tag">#rashmiRaoDesigns</span>
     </div>
 
@@ -1491,7 +1632,7 @@ footer {
           <a href="contact.html" class="btn-olive rv">Commission a Piece</a>
           <a href="collections.html" class="btn-outline rv">View Available Works</a>
         </div>
-        <a href="mailto:hello@rhytara.com" class="text-link rv" style="display:inline-block;margin-top:20px;">hello@rhytara.com</a>
+        <a href="mailto:studio@rhytara.com" class="text-link rv" style="display:inline-block;margin-top:20px;">studio@rhytara.com</a>
       </div>
 
       <div class="connect-nl">
@@ -1504,6 +1645,17 @@ footer {
         <p class="nl-sub rv">No noise. No promotions. Only work that matters.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ========== FINAL SECTION ========== -->
+<section class="final-bg">
+  <div class="wrap final-inner">
+    <h2 class="final-h rv">Carry the <em>Rhythm.</em></h2>
+    <p class="final-tagline rv">Born from art. Inspired by nature. Made to move with you.</p>
+    <span class="final-eyebrow rv">Rhytara</span>
+    <p class="final-tagline rv">Woven in stillness, inspired by nature's rhythm.</p>
+    <a href="collections.html" class="btn-outline-light rv" style="margin-top:32px;">Explore the Collection &rarr;</a>
   </div>
 </section>
 
