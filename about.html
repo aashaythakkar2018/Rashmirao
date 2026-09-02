@@ -253,7 +253,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
 }
 .story-copy { padding-top: 8px; max-width: 1040px; text-align: center; margin: 0 auto 48px; }
-.story-copy .h2 { margin-bottom: 24px; }
+.story-copy .h2 { margin-bottom: 24px; white-space: nowrap; }
 .story-copy .body-text { text-align: center; }
 .story-copy .body-text p + p { margin-top: 12px; }
 .story-pull {
@@ -1024,6 +1024,7 @@ footer {
   .page-hero { padding-top: 110px; padding-bottom: 48px; }
   .page-hero .wrap { flex-direction: column; gap: 24px; }
   .page-hero-tagline { text-align: left; }
+  .story-copy .h2 { white-space: normal; }
   .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
   .story-grid-col { gap: 4px; }
   .story-pull { width: auto; max-width: 100%; font-size: 18px; }
@@ -1038,7 +1039,7 @@ footer {
 
 <!-- ========== ANNOUNCEMENT ========== -->
 <div class="ann" id="ann">
-  New In: Original Alcohol Ink Works from The Monsoon Series
+  New In: Nature's Rhythm
   <button class="ann-close" onclick="closeAnn()" aria-label="Close">×</button>
 </div>
 
@@ -1052,6 +1053,7 @@ footer {
     <ul class="nav-links">
       <li><a href="collections.html">Collections</a></li>
       <li><a href="about.html" class="active">About</a></li>
+      <li><a href="featured.html">Featured</a></li>
       <li><a href="collections.html">Shop</a></li>
       <li><a href="giftcard.html">Gift Cards</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -1089,7 +1091,7 @@ footer {
     <div class="story-split">
       <!-- Copy -->
       <div class="story-copy">
-        <h2 class="h2 rv">From Art to<br>Something You<br><em>Can Wear.</em></h2>
+        <h2 class="h2 rv">From Art to Something You <em>Can Wear.</em></h2>
         <div class="body-text rv" style="margin-top:24px;">
           <p>Rhytara began with a simple question: What if art could move beyond the wall?</p>
           <p>Rhytara grew from artist Rashmi Rao's exploration of nature, color, movement and stillness. The first collection, Nature's Rhythm, emerged from a body of original abstract paintings created for Rashmi's solo exhibition.</p>
@@ -1317,7 +1319,7 @@ footer {
       </div>
 
       <div class="purpose-copy">
-        <h2 class="h2 rv">Not Just a Print.<br>Not Just a<br><em>Saree.</em></h2>
+        <h2 class="h2 rv">Not Just a Print.<br>Not Just a <em>Saree.</em></h2>
         <div class="body-text rv" style="margin-top:24px;">
           <p>Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>
         </div>
@@ -1667,33 +1669,26 @@ footer {
         <img class="ft-brand-mark" src="assets/images/rhytara-mark-on-dark.png" alt="" aria-hidden="true" width="151" height="168" loading="lazy" decoding="async">
         <span class="ft-brand-type">Rhytara</span>
       </div>
-      <p class="ft-tagline">Contemporary paintings, wearable art, and limited editions. Every work is an original. Signed, certified, made to last.</p>
+      <p class="ft-tagline">Wearable Art &bull; Limited-Edition Sarees.<br>Created from original alcohol ink artwork. Signed &bull; Certified &bull; Made to Last.</p>
     </div>
     <div>
       <p class="ft-hd">Collections</p>
       <ul class="ft-links">
-        <li><a href="collections.html">Original Paintings</a></li>
-        <li><a href="collections.html">Alcohol Ink</a></li>
-        <li><a href="collections.html">Wearable Art</a></li>
-        <li><a href="collections.html">Limited Editions</a></li>
+        <li><a href="collections.html">Nature's Rhythm</a></li>
       </ul>
     </div>
     <div>
       <p class="ft-hd">Studio</p>
       <ul class="ft-links">
-        <li><a href="about.html">About Rashmi</a></li>
+        <li><a href="about.html">About Rhytara</a></li>
+        <li><a href="about.html">Meet the Artist</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="contact.html">Exhibitions</a></li>
-        <li><a href="about.html">Press</a></li>
       </ul>
     </div>
     <div>
-      <p class="ft-hd">Services</p>
+      <p class="ft-hd">Featured</p>
       <ul class="ft-links">
-        <li><a href="contact.html">Commission</a></li>
-        <li><a href="contact.html">Licensing</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="contact.html">Shipping &amp; Returns</a></li>
+        <li><a href="featured.html">Exhibitions, Publications &amp; Press</a></li>
       </ul>
     </div>
   </div>

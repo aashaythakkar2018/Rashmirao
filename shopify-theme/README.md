@@ -54,6 +54,26 @@ with only a title, price, image and description still looks right.
 | Colours | Theme editor → Theme settings → Colours |
 | Layout, spacing, new section types | Theme files (here) |
 
+## Featured navigation and footer
+
+Create a **Featured** page in **Admin → Pages** with the handle `featured`, then
+add it to the main menu immediately after **About**. The destination is
+`/pages/featured`.
+
+For the footer, configure its link columns in **Admin → Navigation** to match
+the static site:
+
+| Column | Links |
+|---|---|
+| Collections | Nature's Rhythm → `/collections/all` |
+| Studio | About Rhytara → `/pages/about`; Meet the Artist → `/pages/about`; Contact → `/pages/contact` |
+| Featured | Exhibitions, Publications & Press → `/pages/featured` |
+
+The footer’s logo is set in the theme editor under **Footer → Logo mark**. Set
+the wordmark to `Rhytara` and use this tagline: `Wearable Art • Limited-Edition
+Sarees. Created from original alcohol ink artwork. Signed • Certified • Made to
+Last.`
+
 ## Structure
 
 ```

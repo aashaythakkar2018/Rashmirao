@@ -174,7 +174,7 @@
     "purpose": {
       "type": "pillars-split",
       "settings": {
-        "heading": "Not Just a Print.<br>Not Just a<br><em>Saree.</em>",
+        "heading": "Not Just a Print.<br>Not Just a <em>Saree.</em>",
         "body": "<p>Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>"
       },
       "blocks": {

@@ -326,9 +326,10 @@
     ============================================================ */
     .community {
       display: grid;
-      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-      gap: var(--sp-5); align-items: start;
+      grid-template-columns: minmax(290px, .78fr) minmax(0, 1.22fr);
+      border: 1px solid var(--beige);
     }
+    .community-heading { padding: var(--sp-6); background: var(--paper); }
     .community .eyebrow { margin-bottom: var(--sp-3); }
     .community h2 {
       font-family: var(--ff-serif); font-size: var(--fs-h2);
@@ -336,22 +337,24 @@
     }
     .community h2 em { color: var(--olive); font-style: italic; }
     .community-copy {
-      max-width: 64ch;
-      border-top: 1px solid var(--beige); padding-top: var(--sp-3);
-      color: var(--muted); font-size: var(--fs-body); line-height: 1.8;
+      align-self: center; max-width: 60ch; margin: 0;
+      padding: var(--sp-6); color: var(--muted);
+      font-size: var(--fs-body); line-height: 1.8;
     }
 
-    .place-strips { border-top: 1px solid var(--beige); }
-    .place-strip {
-      display: flex; flex-wrap: wrap; align-items: baseline;
-      gap: var(--sp-2);
-      padding: var(--sp-3) 0;
-      border-bottom: 1px solid var(--beige);
-      color: var(--olive); font-size: var(--fs-label);
-      letter-spacing: .15em; text-transform: uppercase;
+    .place-strips {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-left: 1px solid var(--beige); border-top: 0;
     }
-    .place-strip dt { color: var(--muted); margin-right: var(--sp-1); }
-    .place-strip dd:not(:last-child)::after { content: '·'; margin-left: var(--sp-2); color: var(--rust); }
+    .place-strip {
+      display: grid; grid-template-columns: 1fr;
+      gap: var(--sp-3); padding: var(--sp-4);
+      border-right: 1px solid var(--beige); border-bottom: 1px solid var(--beige);
+    }
+    .place-strip dt { color: var(--muted); font-size: var(--fs-label); letter-spacing: .16em; text-transform: uppercase; }
+    .place-list { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
+    .place-list span { color: var(--olive); font-size: var(--fs-label); letter-spacing: .13em; text-transform: uppercase; }
+    .place-list span:not(:last-child)::after { content: '·'; margin-left: var(--sp-2); color: var(--rust); }
 
     /* ============================================================
        FOOTER  (shared with every other page)
@@ -435,6 +438,7 @@
     ============================================================ */
     @media (max-width: 1024px) {
       .featured-hero-grid, .press-layout, .community { grid-template-columns: minmax(0, 1fr); }
+      .community-heading, .community-copy { padding: var(--sp-5); }
       .press-media { min-height: 340px; }
       /* Below this width the three-column row can no longer hold a title
          on one line, so the detail drops under the name instead. */
@@ -468,6 +472,8 @@
       .exhibit-detail { grid-column: auto; }
       .photogrid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 200px); }
       .photogrid > :first-child { grid-row: span 1; }
+      .community-heading, .community-copy { padding: var(--sp-4); }
+      .place-strips { grid-template-columns: 1fr; }
       .ft-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
       .ft-grid, .ft-bottom { padding-left: 20px; padding-right: 20px; }
       .ft-bottom { justify-content: flex-start; }
@@ -648,7 +654,7 @@
   <section class="section">
     <div class="wrap">
       <div class="community">
-        <div>
+        <div class="community-heading">
           <span class="eyebrow">Education &amp; Community</span>
           <h2>Making room<br>for <em>expression.</em></h2>
         </div>
@@ -657,11 +663,11 @@
       <dl class="place-strips">
         <div class="place-strip">
           <dt>Exhibited in</dt>
-          <dd>London</dd><dd>New York</dd><dd>San Ramon</dd><dd>Pleasanton</dd><dd>Tri-Valley</dd><dd>Livermore</dd>
+          <dd class="place-list"><span>London</span><span>New York</span><span>San Ramon</span><span>Pleasanton</span><span>Tri-Valley</span><span>Livermore</span></dd>
         </div>
         <div class="place-strip">
           <dt>Featured in</dt>
-          <dd>New York Lifestyles Magazine</dd><dd>Resident</dd><dd>Pleasanton Weekly</dd><dd>Livermore Vine</dd><dd>The Independent</dd><dd>Artist Talk Magazine</dd>
+          <dd class="place-list"><span>New York Lifestyles Magazine</span><span>Resident</span><span>Pleasanton Weekly</span><span>Livermore Vine</span><span>The Independent</span><span>Artist Talk Magazine</span></dd>
         </div>
       </dl>
     </div>
