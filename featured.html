@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Exhibitions, recognition, and publications featuring Rashmi Rao and Rhytara.">
+  <title>Featured | Rhytara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <style>
+    :root {
+      --bg:       #FAF8F5;
+      --paper:    #F2EEE7;
+      --white:    #FFFFFF;
+      --text:     #111111;
+      --muted:    #6B6B6B;
+      --beige:    #E9E3DB;
+      --olive:    #6D7550;
+      --olive-dk: #5a6142;
+      --dark:     #0E0E0E;
+      --rust:     #7a5248;
+      --sage:     #C8D09D;
+
+      --ff-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --ff-sans:  'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ff-mono:  'DM Mono', 'Courier New', monospace;
+
+      /* Spacing scale - every gap/padding on this page comes from here */
+      --sp-1:  8px;
+      --sp-2: 16px;
+      --sp-3: 24px;
+      --sp-4: 32px;
+      --sp-5: 48px;
+      --sp-6: 64px;
+      --sp-7: 96px;
+
+      /* Type scale */
+      --fs-label: 11px;   /* eyebrows, nav, meta       */
+      --fs-sm:    13px;   /* captions, list detail     */
+      --fs-body:  15px;   /* body copy                 */
+      --fs-lg:    22px;   /* exhibition + press titles */
+      --fs-xl:    26px;   /* recognition titles        */
+      --fs-2xl:   36px;   /* stat numerals             */
+      --fs-h2: clamp(36px, 4.2vw, 56px);
+      --fs-h1: clamp(48px, 6.4vw, 92px);
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-sans);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    ul, ol { list-style: none; }
+
+    /* ============================================================
+       NAVIGATION  (matches the shared shell on every other page)
+    ============================================================ */
+    .nav {
+      position: sticky; top: 0; z-index: 400;
+      background: rgba(250,248,245,0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 rgba(17,17,17,0.08);
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 52px;
+      height: 72px; display: flex;
+      align-items: center; justify-content: space-between; gap: var(--sp-4);
+    }
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 12px;
+      min-height: 44px; white-space: nowrap;
+    }
+    .nav-logo-mark { display: block; height: 46px; width: auto; flex-shrink: 0; }
+    .nav-logo-type {
+      font-family: var(--ff-serif); font-size: 18px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text);
+    }
+    .nav-links { display: flex; gap: var(--sp-4); }
+    .nav-links a {
+      font-family: var(--ff-sans); font-size: var(--fs-label);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); font-weight: 400;
+      transition: color .25s; position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 1px;
+      background: currentColor;
+      transform: scaleX(0); transform-origin: right;
+      transition: transform .3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] { color: var(--text); }
+    .nav-links a:hover::after,
+    .nav-links a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+    .nav-actions { display: flex; align-items: center; gap: 20px; }
+    .nav-icon-btn {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); transition: color .25s;
+      position: relative;
+    }
+    .nav-icon-btn:hover { color: var(--text); }
+    .cart-badge {
+      background: var(--olive); color: #fff;
+      font-family: var(--ff-mono); font-size: 9px;
+      width: 17px; height: 17px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-burger { display: none; flex-direction: column; gap: 5px; padding: 4px; color: var(--text); }
+    .nav-burger span { display: block; width: 22px; height: 1.5px; background: currentColor; border-radius: 2px; }
+
+    /* ============================================================
+       SHARED LAYOUT PRIMITIVES
+    ============================================================ */
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
+    .section { padding: var(--sp-7) 0; }
+    .eyebrow {
+      display: block;
+      color: var(--olive);
+      font-size: var(--fs-label); font-weight: 500;
+      letter-spacing: .21em; text-transform: uppercase;
+    }
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(180px, .26fr) minmax(0, 1fr);
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-6);
+    }
+    /* Optically drops the eyebrow onto the heading's cap line */
+    .section-head .eyebrow { padding-top: 10px; }
+    .section-head h2 {
+      font-family: var(--ff-serif); font-size: var(--fs-h2);
+      font-weight: 300; line-height: 1.02;
+    }
+    .section-intro {
+      max-width: 56ch; margin-top: var(--sp-2);
+      color: var(--muted); font-size: var(--fs-body); line-height: 1.75;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .featured-hero { padding: var(--sp-7) 0 var(--sp-6); border-bottom: 1px solid var(--beige); }
+    .featured-hero .eyebrow { margin-bottom: var(--sp-3); }
+    .featured-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, .92fr);
+      gap: var(--sp-5); align-items: end;
+    }
+    h1 {
+      max-width: 14ch;
+      font-family: var(--ff-serif); font-size: var(--fs-h1);
+      line-height: .96; font-weight: 300;
+    }
+    h1 em { color: var(--olive); font-style: italic; }
+    .hero-copy { max-width: 46ch; color: var(--muted); font-size: var(--fs-body); line-height: 1.8; }
+
+    .feature-index {
+      margin-top: var(--sp-6);
+      display: flex; flex-wrap: wrap; gap: var(--sp-5);
+      color: var(--muted); font-size: var(--fs-label);
+      letter-spacing: .14em; text-transform: uppercase;
+    }
+    .fi-num {
+      display: block; margin-bottom: var(--sp-1);
+      color: var(--text); font-family: var(--ff-serif);
+      font-size: var(--fs-2xl); font-weight: 400;
+      letter-spacing: 0; text-transform: none; line-height: 1;
+      font-variant-numeric: lining-nums;
+    }
+
+    /* ============================================================
+       EXHIBITIONS  (dark)
+    ============================================================ */
+    .exhibitions { background: var(--dark); color: #FAF8F5; }
+    .exhibitions .eyebrow { color: var(--sage); }
+    .exhibitions .section-head h2 { color: #FAF8F5; }
+    .exhibitions .section-intro { color: rgba(250,248,245,.66); }
+
+    /* One grid for the whole list, not one per row. The name track is
+       auto-sized, so it resolves to the widest title in the list: every
+       title stays on one line AND every detail starts on the same x.
+       Rows opt into the parent tracks with subgrid so they keep their
+       own box for the rule underneath. */
+    .exhibit-list {
+      display: grid;
+      grid-template-columns: 128px auto minmax(0, 1fr);
+      border-top: 1px solid rgba(250,248,245,.18);
+    }
+    .exhibit-row {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      column-gap: var(--sp-4);
+      align-items: baseline;
+      padding: var(--sp-3) 0;
+      border-bottom: 1px solid rgba(250,248,245,.18);
+    }
+    /* No subgrid: fall back to a fixed name track, which keeps both the
+       single-line titles and the shared detail edge. */
+    @supports not (grid-template-columns: subgrid) {
+      .exhibit-list { display: block; }
+      .exhibit-row { grid-column: auto; grid-template-columns: 128px 360px minmax(0, 1fr); }
+    }
+    .exhibit-year {
+      color: var(--sage); font-family: var(--ff-mono);
+      font-size: var(--fs-label); white-space: nowrap;
+    }
+    .exhibit-name {
+      font-family: var(--ff-serif); font-size: var(--fs-lg);
+      font-weight: 400; line-height: 1.2; white-space: nowrap;
+    }
+    .exhibit-detail {
+      color: rgba(250,248,245,.66); font-size: var(--fs-sm);
+      line-height: 1.6; text-wrap: pretty;
+    }
+
+    .photogrid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr .8fr;
+      grid-template-rows: 240px 240px;
+      gap: var(--sp-1);
+      margin-top: var(--sp-6);
+    }
+    .media-placeholder {
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end; padding: var(--sp-2);
+      background: #282824; border: 1px solid rgba(250,248,245,.14);
+      color: rgba(250,248,245,.8);
+    }
+    .media-placeholder::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(109,117,80,.55), transparent 52%, rgba(122,82,72,.5));
+    }
+    .media-placeholder span {
+      position: relative; z-index: 1;
+      font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase;
+    }
+    .photogrid > :first-child { grid-row: span 2; }
+
+    /* ============================================================
+       RECOGNITION
+    ============================================================ */
+    .recognition-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      border-top: 1px solid var(--beige);
+      border-left: 1px solid var(--beige);
+    }
+    .recognition-item {
+      min-height: 240px; padding: var(--sp-3);
+      border-right: 1px solid var(--beige);
+      border-bottom: 1px solid var(--beige);
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .recognition-place {
+      color: var(--olive); font-family: var(--ff-mono);
+      font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase;
+    }
+    .recognition-work {
+      margin: var(--sp-3) 0;
+      font-family: var(--ff-serif); font-size: var(--fs-xl);
+      font-weight: 400; line-height: 1.1;
+    }
+    .recognition-source { color: var(--muted); font-size: var(--fs-sm); line-height: 1.6; }
+
+    /* ============================================================
+       PRESS
+    ============================================================ */
+    .press { background: var(--paper); }
+    .press-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr);
+      gap: var(--sp-5);
+      align-items: stretch;
+    }
+    .press-layout .eyebrow { margin-bottom: var(--sp-3); }
+    .press-layout h2 {
+      font-family: var(--ff-serif); font-size: var(--fs-h2);
+      font-weight: 300; line-height: 1.02;
+    }
+    .press-layout h2 em { color: var(--olive); font-style: italic; }
+    .press-intro {
+      max-width: 56ch; margin-top: var(--sp-2);
+      color: var(--muted); font-size: var(--fs-body); line-height: 1.75;
+    }
+    .press-links { margin-top: var(--sp-5); border-top: 1px solid rgba(17,17,17,.14); }
+    .press-links li { border-bottom: 1px solid rgba(17,17,17,.14); }
+    .press-links a {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--sp-3); align-items: baseline;
+      padding: var(--sp-2) 0;
+      font-family: var(--ff-serif); font-size: var(--fs-lg);
+      line-height: 1.2; transition: color .25s;
+    }
+    .press-links a:hover { color: var(--olive); }
+    .press-links a span {
+      color: var(--olive); font-family: var(--ff-sans);
+      font-size: var(--fs-label); letter-spacing: .13em;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .press-media {
+      min-height: 480px; height: 100%;
+      background: var(--beige); color: var(--muted);
+      border: 1px solid rgba(17,17,17,.08);
+    }
+    .press-media::before { background: linear-gradient(135deg, rgba(109,117,80,.16), transparent 52%, rgba(122,82,72,.14)); }
+
+    /* ============================================================
+       COMMUNITY + PLACES
+    ============================================================ */
+    .community {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: var(--sp-5); align-items: start;
+    }
+    .community .eyebrow { margin-bottom: var(--sp-3); }
+    .community h2 {
+      font-family: var(--ff-serif); font-size: var(--fs-h2);
+      font-weight: 300; line-height: 1.02;
+    }
+    .community h2 em { color: var(--olive); font-style: italic; }
+    .community-copy {
+      max-width: 64ch;
+      border-top: 1px solid var(--beige); padding-top: var(--sp-3);
+      color: var(--muted); font-size: var(--fs-body); line-height: 1.8;
+    }
+
+    .place-strips { border-top: 1px solid var(--beige); }
+    .place-strip {
+      display: flex; flex-wrap: wrap; align-items: baseline;
+      gap: var(--sp-2);
+      padding: var(--sp-3) 0;
+      border-bottom: 1px solid var(--beige);
+      color: var(--olive); font-size: var(--fs-label);
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .place-strip dt { color: var(--muted); margin-right: var(--sp-1); }
+    .place-strip dd:not(:last-child)::after { content: '·'; margin-left: var(--sp-2); color: var(--rust); }
+
+    /* ============================================================
+       FOOTER  (shared with every other page)
+    ============================================================ */
+    footer { background: var(--dark); color: rgba(250,248,245,0.62); padding: 68px 0 40px; }
+    .ft-grid {
+      max-width: 1400px; margin: 0 auto; padding: 0 52px;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--sp-5);
+    }
+    .ft-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .ft-brand-mark { display: block; height: 56px; width: auto; flex-shrink: 0; }
+    .ft-brand-type {
+      font-family: var(--ff-serif); font-size: 19px; color: #FAF8F5;
+      font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .ft-tagline { font-size: var(--fs-sm); font-weight: 300; line-height: 1.65; max-width: 260px; }
+    .ft-hd {
+      font-family: var(--ff-sans); font-size: var(--fs-label);
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(250,248,245,0.55); margin-bottom: 20px; font-weight: 400;
+    }
+    .ft-links li + li { margin-top: 10px; }
+    .ft-links a { font-size: var(--fs-sm); font-weight: 300; color: rgba(250,248,245,0.78); transition: color .25s; }
+    .ft-links a:hover { color: #FAF8F5; }
+    .ft-bottom {
+      max-width: 1400px; margin: 40px auto 0;
+      padding: var(--sp-3) 52px 0; border-top: 1px solid rgba(250,248,245,0.06);
+      display: flex; flex-wrap: wrap; gap: var(--sp-2);
+      justify-content: space-between; align-items: center; font-size: var(--fs-label);
+    }
+
+    /* ============================================================
+       CART DRAWER
+    ============================================================ */
+    .cart-scrim {
+      position: fixed; inset: 0;
+      background: rgba(17,17,17,0.45); z-index: 600;
+      opacity: 0; pointer-events: none; transition: opacity .35s;
+    }
+    .cart-scrim.show { opacity: 1; pointer-events: all; }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 400px; max-width: 96vw;
+      background: var(--white); color: var(--text); z-index: 700;
+      display: flex; flex-direction: column;
+      box-shadow: -6px 0 40px rgba(0,0,0,0.14);
+      transform: translateX(100%);
+      transition: transform .4s cubic-bezier(.25,.46,.45,.94);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0;
+    }
+    .cart-ttl { font-family: var(--ff-serif); font-size: var(--fs-lg); font-weight: 400; }
+    .cart-x { font-size: var(--fs-lg); color: var(--muted); transition: color .2s; padding: 4px; }
+    .cart-x:hover { color: var(--text); }
+    .cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+    .cart-empty {
+      text-align: center; padding: 52px 0;
+      font-family: var(--ff-serif); font-size: var(--fs-lg); color: var(--text);
+    }
+    .cart-empty span {
+      display: block; margin-top: var(--sp-1);
+      font-family: var(--ff-sans); font-size: var(--fs-sm);
+      color: var(--muted); font-weight: 300;
+    }
+    .cart-foot { padding: 22px 30px; border-top: 1px solid var(--beige); flex-shrink: 0; }
+    .btn-olive {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; background: var(--olive); color: #fff;
+      padding: 15px 34px;
+      font-family: var(--ff-sans); font-size: var(--fs-label);
+      letter-spacing: .16em; text-transform: uppercase; font-weight: 400;
+      border: 2px solid var(--olive); transition: background .25s;
+    }
+    .btn-olive:hover { background: var(--olive-dk); border-color: var(--olive-dk); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .featured-hero-grid, .press-layout, .community { grid-template-columns: minmax(0, 1fr); }
+      .press-media { min-height: 340px; }
+      /* Below this width the three-column row can no longer hold a title
+         on one line, so the detail drops under the name instead. */
+      .exhibit-list { display: block; }
+      .exhibit-row {
+        grid-column: auto;
+        grid-template-columns: 112px minmax(0, 1fr);
+        row-gap: 6px;
+      }
+      .exhibit-name { white-space: normal; }
+      .exhibit-detail { grid-column: 2; }
+      .photogrid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 220px); }
+      .ft-grid { grid-template-columns: 1fr 1fr; row-gap: var(--sp-6); }
+    }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 28px; }
+      .nav-links { display: none; }
+      .nav-burger { display: flex; }
+      .wrap { padding: 0 28px; }
+      .featured-hero { padding: var(--sp-6) 0 var(--sp-5); }
+      .section { padding: var(--sp-6) 0; }
+      .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-5); }
+      .section-head .eyebrow { padding-top: 0; }
+      .feature-index { gap: var(--sp-4); margin-top: var(--sp-5); }
+      .ft-grid, .ft-bottom { padding-left: 28px; padding-right: 28px; }
+    }
+    @media (max-width: 640px) {
+      .nav-inner { padding: 0 20px; }
+      .wrap { padding: 0 20px; }
+      .exhibit-row { grid-column: auto; grid-template-columns: minmax(0, 1fr); row-gap: 6px; }
+      .exhibit-detail { grid-column: auto; }
+      .photogrid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 200px); }
+      .photogrid > :first-child { grid-row: span 1; }
+      .ft-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
+      .ft-grid, .ft-bottom { padding-left: 20px; padding-right: 20px; }
+      .ft-bottom { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAVIGATION ========== -->
+<nav class="nav scrolled" id="nav" data-nav-solid="true">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Rhytara - home">
+      <img class="nav-logo-mark" src="assets/images/rhytara-mark-on-light.png" alt="" aria-hidden="true" width="151" height="168" decoding="async">
+      <span class="nav-logo-type">Rhytara</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="collections.html">Collections</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="featured.html" aria-current="page">Featured</a></li>
+      <li><a href="collections.html">Shop</a></li>
+      <li><a href="giftcard.html">Gift Cards</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="nav-burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <!-- ========== HERO ========== -->
+  <header class="featured-hero">
+    <div class="wrap">
+      <span class="eyebrow">Rhytara Presents</span>
+      <div class="featured-hero-grid">
+        <h1>Art in <em>motion,</em><br>seen beyond<br>the studio.</h1>
+        <p class="hero-copy">Exhibitions, recognition, and press features tracing Rashmi Rao&rsquo;s evolving practice across painting, wearable art, and the natural world.</p>
+      </div>
+      <div class="feature-index">
+        <div><span class="fi-num">06</span>cities exhibited</div>
+        <div><span class="fi-num">05</span>recent recognitions</div>
+        <div><span class="fi-num">06</span>press features</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== EXHIBITIONS ========== -->
+  <section class="exhibitions section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Exhibitions</span>
+        <div>
+          <h2>Where the work<br>meets the world.</h2>
+          <p class="section-intro">From intimate local exhibitions to international digital showcases, each presentation opens another conversation around art, nature, and movement.</p>
+        </div>
+      </div>
+
+      <ol class="exhibit-list">
+        <li class="exhibit-row">
+          <span class="exhibit-year">Upcoming &middot; 2026</span>
+          <h3 class="exhibit-name">London Underground Digital Exhibition</h3>
+          <span class="exhibit-detail">London, UK</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">Upcoming &middot; 2026</span>
+          <h3 class="exhibit-name">Espacio Gallery</h3>
+          <span class="exhibit-detail">Shoreditch, London &middot; October 10&ndash;11 and 15&ndash;19</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">May 2026</span>
+          <h3 class="exhibit-name">One Art Space</h3>
+          <span class="exhibit-detail">Tribeca &middot; Artist Talk Magazine NYC Exhibition</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">May 2026</span>
+          <h3 class="exhibit-name">Times Square Digital Showcase</h3>
+          <span class="exhibit-detail">New York &middot; May 7 &middot; Artwork featured among 23 artists</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">2025&ndash;26</span>
+          <h3 class="exhibit-name">FreshWorks XIII</h3>
+          <span class="exhibit-detail">Juried exhibition &middot; Harrington Gallery, Firehouse Arts Center, Pleasanton, CA</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">2025</span>
+          <h3 class="exhibit-name">Nature&rsquo;s Rhythm</h3>
+          <span class="exhibit-detail">Solo exhibition &middot; Dougherty Station Community Arts Center, San Ramon, CA &middot; 39 original paintings</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">2025</span>
+          <h3 class="exhibit-name">Tri-Valley Artist Studio Tour</h3>
+          <span class="exhibit-detail">Tri-Valley, California</span>
+        </li>
+        <li class="exhibit-row">
+          <span class="exhibit-year">2023</span>
+          <h3 class="exhibit-name">ArtWalk Livermore</h3>
+          <span class="exhibit-detail">Livermore, California</span>
+        </li>
+      </ol>
+
+      <div class="photogrid" role="group" aria-label="Event photography">
+        <div class="media-placeholder"><span>Event photography &middot; primary image</span></div>
+        <div class="media-placeholder"><span>Exhibition photograph</span></div>
+        <div class="media-placeholder"><span>Artist talk photograph</span></div>
+        <div class="media-placeholder"><span>Installation detail</span></div>
+        <div class="media-placeholder"><span>Press event photograph</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== RECOGNITION ========== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Recognition</span>
+        <div><h2>Work that<br>resonates.</h2></div>
+      </div>
+      <div class="recognition-grid">
+        <article class="recognition-item">
+          <span class="recognition-place">First Place &middot; 2025</span>
+          <h3 class="recognition-work">Echoes of Earth</h3>
+          <span class="recognition-source">Spring Art Show<br>Livermore</span>
+        </article>
+        <article class="recognition-item">
+          <span class="recognition-place">Second Place &middot; 2025</span>
+          <h3 class="recognition-work">Grounding Nature</h3>
+          <span class="recognition-source">Spring Art Show<br>Livermore</span>
+        </article>
+        <article class="recognition-item">
+          <span class="recognition-place">Honorable Mention &middot; 2025</span>
+          <h3 class="recognition-work">Cosmic Blossom</h3>
+          <span class="recognition-source">FreshWorks XIII<br>Harrington Gallery</span>
+        </article>
+        <article class="recognition-item">
+          <span class="recognition-place">Second Place &middot; 2026</span>
+          <h3 class="recognition-work">Grounding Nature</h3>
+          <span class="recognition-source">Vote for Your Favorite Artwork<br>New York</span>
+        </article>
+        <article class="recognition-item">
+          <span class="recognition-place">Interview &middot; 2026</span>
+          <h3 class="recognition-work">Artist Talk Magazine</h3>
+          <span class="recognition-source">Six-page artist interview<br>Issue 45</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRESS ========== -->
+  <section class="press section">
+    <div class="wrap press-layout">
+      <div>
+        <span class="eyebrow">Press &amp; Media</span>
+        <h2>Stories that<br>carry <em>further.</em></h2>
+        <p class="press-intro">Read coverage of exhibitions, the Nature&rsquo;s Rhythm solo show, and the journey from original alcohol ink artworks to limited-edition wearable pieces.</p>
+        <ul class="press-links">
+          <li><a href="https://newyorklifestylesmagazine.com/articles/2026/06/en04.html" target="_blank" rel="noopener">New York Lifestyles Magazine <span>Read Feature &#8599;</span></a></li>
+          <li><a href="https://resident.com/events/2026/05/13/one-art-space-hosts-artist-talk-magazine-s-new-york-exhibition-with-51-artists-and-a-times-square-moment" target="_blank" rel="noopener">Resident Magazine <span>Read Feature &#8599;</span></a></li>
+          <li><a href="https://www.pleasantonweekly.com/ae/2025/12/01/dublin-artists-ink-flows-to-natures-rhythm-in-solo-exhibit/" target="_blank" rel="noopener">Pleasanton Weekly <span>Read Feature &#8599;</span></a></li>
+          <li><a href="https://www.livermorevine.com/ae/2025/12/01/dublin-artists-ink-flows-to-natures-rhythm-in-solo-exhibit/" target="_blank" rel="noopener">Livermore Vine <span>Read Feature &#8599;</span></a></li>
+          <li><a href="https://www.pleasantonweekly.com/ae/2025/04/27/annual-tri-valley-artist-studio-tour-offers-a-step-into-artists-worlds/" target="_blank" rel="noopener">Pleasanton Weekly &middot; Studio Tour <span>Read Feature &#8599;</span></a></li>
+          <li><a href="https://www.independentnews.com/news/livermore_news/art-walk-took-place-saturda-oct-14/collection_0ae2e45c-6e2d-11ee-be78-5fac31e3a94a.html" target="_blank" rel="noopener">The Independent <span>Read Feature &#8599;</span></a></li>
+        </ul>
+      </div>
+      <div class="media-placeholder press-media"><span>Press coverage image</span></div>
+    </div>
+  </section>
+
+  <!-- ========== COMMUNITY ========== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="community">
+        <div>
+          <span class="eyebrow">Education &amp; Community</span>
+          <h2>Making room<br>for <em>expression.</em></h2>
+        </div>
+        <p class="community-copy">Rashmi Rao also shares her creative practice through adult and family workshops with the City of Dublin Library, California. These sessions explore process, experimentation, and the personal language that emerges when we make space for art.</p>
+      </div>
+      <dl class="place-strips">
+        <div class="place-strip">
+          <dt>Exhibited in</dt>
+          <dd>London</dd><dd>New York</dd><dd>San Ramon</dd><dd>Pleasanton</dd><dd>Tri-Valley</dd><dd>Livermore</dd>
+        </div>
+        <div class="place-strip">
+          <dt>Featured in</dt>
+          <dd>New York Lifestyles Magazine</dd><dd>Resident</dd><dd>Pleasanton Weekly</dd><dd>Livermore Vine</dd><dd>The Independent</dd><dd>Artist Talk Magazine</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-brand">
+        <img class="ft-brand-mark" src="assets/images/rhytara-mark-on-dark.png" alt="" aria-hidden="true" width="151" height="168" loading="lazy" decoding="async">
+        <span class="ft-brand-type">Rhytara</span>
+      </div>
+      <p class="ft-tagline">Wearable Art &bull; Limited-Edition Sarees.<br>Created from original alcohol ink artwork. Signed &bull; Certified &bull; Made to Last.</p>
+    </div>
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="collections.html">Nature's Rhythm</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="about.html">About Rhytara</a></li>
+        <li><a href="about.html">Meet the Artist</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Featured</p>
+      <ul class="ft-links">
+        <li><a href="featured.html">Exhibitions, Publications &amp; Press</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span>&copy; 2026 Rhytara. All rights reserved.</span>
+    <span>Privacy Policy &middot; Terms of Service</span>
+  </div>
+</footer>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cart-top">
+    <span class="cart-ttl">Your Cart</span>
+    <button class="cart-x" onclick="closeCart()" aria-label="Close cart">&times;</button>
+  </div>
+  <div class="cart-body">
+    <div class="cart-empty">Empty for now.<span>Discover the limited-edition wearable art collection.</span></div>
+  </div>
+  <div class="cart-foot">
+    <a href="collections.html" class="btn-olive">Explore Works</a>
+  </div>
+</div>
+
+<script src="assets/js/site.js" defer></script>
+<script>
+function openCart()  { document.getElementById('cartDrawer').classList.add('open');    document.getElementById('cartScrim').classList.add('show');    document.body.style.overflow = 'hidden'; }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+</script>
+</body>
+</html>
