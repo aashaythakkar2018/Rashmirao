@@ -758,14 +758,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: center;
 }
 .wear-img-col { overflow: hidden; min-height: 460px; }
+/* The collage is a 9:16 portrait, not the 2:3 this split was built for.
+   Sizing the wrap to its own ratio shows it whole instead of cropping it,
+   and the width cap keeps the section from stretching past its neighbours. */
 .wear-img-col .img-wrap {
-  height: 100%;
-  min-height: 460px;
-  max-width: 78%;
+  width: min(78%, 400px);
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 1154 / 2048;
   margin: 0 auto;
 }
+.wear-img-col .img-wrap img { object-fit: contain; }
 .wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
 .wear-img-col .img-wrap img { height: 100%; }
+.wear-img-col .img-wrap::before { display: none; }
 .wear-copy-col { padding: 40px 32px 40px 0; display: flex; flex-direction: column; justify-content: center; }
 .wear-lead { margin-top: 24px; max-width: 430px; }
 .process { margin-top: 44px; }
@@ -1315,8 +1321,9 @@ footer {
     <div class="wear-img-col rv">
       <div class="img-wrap">
         <img
-          src="assets/images/wearable-2.jpg"
-          alt="A Rhytara saree, printed from an original painting"
+          src="assets/images/paintings-you-can-wear.jpg"
+          alt="Five original Rhytara alcohol ink paintings arranged around the Rhytara wordmark and the line: Carry the rhythm of nature."
+          width="1154" height="2048"
           loading="lazy"
           onerror="this.style.display='none'"
         >
