@@ -311,7 +311,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .journey-bg { background: var(--dark); }
 .journey-split {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 420px);
+  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 500px);
   gap: 80px;
   align-items: center;
 }
@@ -435,9 +435,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .journey-gallery .img-wrap:first-child {
   grid-column: 1 / -1;
+  aspect-ratio: 4 / 5;
 }
 .journey-gallery .img-wrap {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1.18;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -498,19 +499,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: #3a3a3a; font-weight: 300; line-height: 1.55;
 }
 
-/* philosophy image grid - 2 tall + 3 small */
+/* philosophy image - single artwork container */
 .phil-imgs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto;
-  gap: 10px;
+  display: block;
 }
-.phil-imgs .img-wrap:nth-child(1) { aspect-ratio: 2/3; }
-.phil-imgs .img-wrap:nth-child(2) { aspect-ratio: 2/3; }
-.phil-imgs .img-wrap:nth-child(3) { aspect-ratio: 3/2; grid-column: 1 / -1; }
-.phil-imgs .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c8d0be,#6d8560); }
-.phil-imgs .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#c8a8a0,#8a4840); }
-.phil-imgs .img-wrap:nth-child(3)::before { background: linear-gradient(135deg,#d0c0b0,#9a8060); }
+.phil-imgs .img-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: var(--white);
+}
+.phil-imgs .img-wrap::before { background: var(--white); }
+.phil-imgs .img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 /* ============================================================
    4. MADE WITH PURPOSE - light bg, editorial callout
@@ -1233,19 +1236,19 @@ footer {
       <div class="journey-img-col rv">
         <div class="journey-gallery">
           <div class="img-wrap">
-            <img src="assets/images/story-2.jpg" alt="Rashmi Rao in the studio" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story/journey-9814.jpeg" alt="Rashmi Rao in the studio" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap">
-            <img src="assets/images/story-1.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story/journey-9815.jpeg" alt="Studio detail" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap">
-            <img src="assets/images/story-3.jpg" alt="Painting detail" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story/journey-9816.jpeg" alt="Painting detail" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap">
-            <img src="assets/images/hero-beach.jpg" alt="Studio process" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story/journey-9817.jpeg" alt="Studio process" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap">
-            <img src="assets/images/wearable-2.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
+            <img src="assets/images/story/journey-9818.jpeg" alt="Wearable art" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -1289,13 +1292,7 @@ footer {
 
       <div class="phil-imgs rv">
         <div class="img-wrap">
-          <img src="assets/images/story-3.jpg" alt="Studio detail" loading="lazy" onerror="this.style.display='none'">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/images/story-1.jpg" alt="Painting" loading="lazy" onerror="this.style.display='none'">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/images/hero-beach.jpg" alt="Collections" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/philosophy-collage.jpeg" alt="Rhytara original artwork collage" loading="lazy" onerror="this.style.display='none'">
         </div>
       </div>
     </div>
@@ -1380,7 +1377,7 @@ footer {
     <div class="about-split">
       <div class="about-img-col rv">
         <div class="img-wrap">
-          <img src="assets/images/about-rashmi-portrait.jpeg" alt="Rashmi Rao, Artist. Designer. Founder." loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/about-portrait.jpg" alt="Rashmi Rao, Artist. Designer. Founder." loading="eager" decoding="async" onerror="this.style.display='none'">
         </div>
       </div>
       <div class="about-copy-col">
@@ -1733,8 +1730,12 @@ function closeAnn() {
 /* Lazy images */
 document.querySelectorAll('img[loading="lazy"]').forEach(img => {
   img.classList.add('loading');
-  if (img.complete) { img.classList.remove('loading'); }
-  else { img.addEventListener('load', () => img.classList.remove('loading')); }
+  const reveal = () => img.classList.remove('loading');
+  if (img.complete && img.naturalWidth > 0) { reveal(); }
+  else {
+    img.addEventListener('load', reveal, { once: true });
+    setTimeout(reveal, 1200);
+  }
 });
 </script>
 
