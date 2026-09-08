@@ -8,6 +8,8 @@
 
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- else -%}
+    <link rel="icon" type="image/png" href="{{ 'rhytara-mark-on-light.png' | asset_url }}">
   {%- endif -%}
 
   <title>
@@ -39,16 +41,38 @@
       --text:     {{ settings.color_text }};
       --olive:    {{ settings.color_accent }};
       --gold:     {{ settings.color_gold }};
+      --container-width: {{ settings.container_width | default: 1400 }}px;
+      --radius: {{ settings.card_radius | default: 24 }}px;
     }
   </style>
 
   <script>window.Shopify = window.Shopify || {};</script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
+  {%- comment -%} Sitewide Organization/WebSite JSON-LD - product/breadcrumb data lives beside each product in structured-data-product.liquid. {%- endcomment -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ request.origin | json }},
+    {%- if settings.favicon != blank -%}
+    "logo": {{ settings.favicon | image_url: width: 256 | json }},
+    {%- endif -%}
+    {%- assign sameas_raw = '' -%}
+    {%- if settings.social_instagram_link != blank -%}{%- assign sameas_raw = sameas_raw | append: settings.social_instagram_link | append: '||' -%}{%- endif -%}
+    {%- if settings.social_facebook_link != blank -%}{%- assign sameas_raw = sameas_raw | append: settings.social_facebook_link | append: '||' -%}{%- endif -%}
+    {%- if settings.social_pinterest_link != blank -%}{%- assign sameas_raw = sameas_raw | append: settings.social_pinterest_link | append: '||' -%}{%- endif -%}
+    {%- if settings.social_tiktok_link != blank -%}{%- assign sameas_raw = sameas_raw | append: settings.social_tiktok_link | append: '||' -%}{%- endif -%}
+    {%- if settings.social_youtube_link != blank -%}{%- assign sameas_raw = sameas_raw | append: settings.social_youtube_link | append: '||' -%}{%- endif -%}
+    "sameAs": {{ sameas_raw | split: '||' | json }}
+  }
+  </script>
+
   {{ content_for_header }}
 </head>
 
-<body class="template-{{ template.name | handle }}">
+<body class="template-{{ template.name | handle }}{% if settings.button_style == 'rounded' %} btn-style-rounded{% endif %}">
   <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
 
   {% sections 'header-group' %}

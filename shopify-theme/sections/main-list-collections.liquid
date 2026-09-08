@@ -12,6 +12,8 @@
             {%- if collection.featured_image -%}
               <img src="{{ collection.featured_image | image_url: width: 900 }}"
                    alt="{{ collection.title | escape }}" loading="lazy" decoding="async">
+            {%- else -%}
+              <img src="{{ 'collection-fallback.jpg' | asset_url }}" alt="{{ collection.title | escape }}" loading="lazy" decoding="async">
             {%- endif -%}
           </div>
           <div class="coll-info">

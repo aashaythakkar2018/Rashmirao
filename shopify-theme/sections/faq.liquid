@@ -1,0 +1,73 @@
+{%- comment -%}
+  Native <details>/<summary> accordion - keyboard-operable and screen-reader
+  friendly with zero JavaScript, so it can never end up in a broken state.
+{%- endcomment -%}
+<section class="faq-bg section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap">
+    <div class="testi-hd" style="margin-bottom:40px;">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="faq-wrap">
+      {%- for block in section.blocks -%}
+        <details class="faq-item" {{ block.shopify_attributes }} {% if forloop.first %}open{% endif %}>
+          <summary>
+            <span>{{ block.settings.question }}</span>
+            <span class="icon-chevron-wrap">{% render 'icon-chevron' %}</span>
+          </summary>
+          <div class="faq-body">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Good to Know" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "text", "id": "anchor", "label": "Anchor id" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question", "settings": {
+            "question": "What makes each piece a limited edition?",
+            "answer": "<p>Every Nature's Rhythm design is produced in an edition of 250 pieces, translated directly from Rashmi Rao's original alcohol-ink paintings. Once an edition sells out, it is retired - no reprints, no repeats.</p>" } },
+        { "type": "question", "settings": {
+            "question": "Is every saree signed and certified?",
+            "answer": "<p>Yes. Each piece is individually signed and numbered, and ships with a Certificate of Authenticity connecting it to the original artwork and its place within the edition.</p>" } },
+        { "type": "question", "settings": {
+            "question": "What fabric is used, and how do I care for it?",
+            "answer": "<p>Each design is printed on Georgette satin, chosen for its fluid drape and its ability to carry the depth of the original painting. Dry clean only, and store away from direct sunlight to preserve the colour over time.</p>" } },
+        { "type": "question", "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Orders ship within 4-6 weeks in archival, fully insured packaging. You'll receive tracking information by email as soon as your piece leaves the studio.</p>" } },
+        { "type": "question", "settings": {
+            "question": "Do you ship internationally, and what currency will I be charged?",
+            "answer": "<p>Yes - use the currency selector in the header to preview pricing in your market. Checkout always completes in the currency shown, so there is never a mismatch between what you see and what you're charged.</p>" } },
+        { "type": "question", "settings": {
+            "question": "What if a piece I want has already sold?",
+            "answer": "<p>An original, one-of-one artwork cannot be recreated once sold, but many limited-edition designs are produced in multiple sizes. Use \"Connect with Artist\" on the product page to ask about availability or a future collection.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

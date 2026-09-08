@@ -4,18 +4,24 @@
     "404": { "title": "Page not found", "subtext": "The page you were looking for does not exist." },
     "search": { "title": "Search", "search": "Search", "placeholder": "Search works" },
     "currency": { "label": "Currency" },
-    "footer": { "rights": "All rights reserved." }
+    "footer": { "rights": "All rights reserved." },
+    "newsletter": { "email": "Email address", "placeholder": "Your email address" }
   },
   "accessibility": {
     "skip_to_content": "Skip to content",
     "close": "Close",
     "open_menu": "Open menu",
-    "main_nav": "Main navigation"
+    "main_nav": "Main navigation",
+    "account": "Account",
+    "decrease_quantity": "Decrease quantity",
+    "increase_quantity": "Increase quantity"
   },
   "products": {
     "product": {
       "sold_out": "Sold",
-      "tax_note": "Tax included · Insured worldwide shipping"
+      "tax_note": "Tax included · Insured worldwide shipping",
+      "quantity": "Quantity",
+      "payment_methods": "We accept"
     }
   },
   "collections": {
@@ -32,7 +38,9 @@
       "remove": "Remove",
       "tax_note": "Taxes and shipping calculated at checkout.",
       "cart_error": "There was an error updating your cart. Please try again.",
-      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart."
+      "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
+      "free_shipping_progress_html": "You're {{ amount }} away from free shipping",
+      "free_shipping_unlocked": "You've unlocked free shipping"
     }
   }
 }

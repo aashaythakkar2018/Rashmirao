@@ -2,6 +2,14 @@
   "type": "footer",
   "name": "Footer",
   "sections": {
+    "footer-newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Stay Connected",
+        "heading": "Be First to Know",
+        "subtext": "New collections, studio stories, and early access to limited editions - straight from Rashmi's studio."
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -13,5 +21,5 @@
       "settings": { "wordmark": "Rhytara" }
     }
   },
-  "order": ["footer"]
+  "order": ["footer-newsletter", "footer"]
 }

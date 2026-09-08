@@ -3,6 +3,48 @@
 An Online Store 2.0 theme converted from the static site. The design is the
 same; what changed is where the content comes from.
 
+## Completeness pass — what this adds on top of the original conversion
+
+- **Testimonials, FAQ and Newsletter** sections (`sections/testimonials.liquid`,
+  `sections/faq.liquid`, `sections/newsletter.liquid`), seeded with the real
+  "Words from the Journey" collector quotes and Rhytara-specific FAQ copy. The
+  newsletter posts through Shopify's native customer form (tag: `newsletter`)
+  — no app required. It's wired into `footer-group.json` so it appears above
+  the footer on every page.
+- **Nothing renders blank on a fresh install.** Every image slot that used to
+  wait on a merchant upload (hero poster, About page mosaic/philosophy/pillars
+  images, the social grid, collection cards, product cards with no image yet)
+  now falls back to a bundled image from `assets/` — swap them out whenever
+  real photography is ready, no theme edit required. See the `*-fallback-*`
+  and `story-mosaic-*` files in `assets/`.
+- **Quantity controls** on the product page and every cart-drawer line
+  (stepper + direct input), a **free-shipping progress bar** in the drawer
+  (off by default — turn it on and set a threshold under Theme settings →
+  Cart), a **dynamic checkout button** (Shop Pay / PayPal / etc.) and
+  **accepted-payment icons** on the product page (Theme settings on the
+  Product section).
+- **Product recommendations and recently-viewed**, both using Shopify's own
+  data (the `/recommendations/products` endpoint, and a small per-browser
+  localStorage list) rather than anything hand-curated — see the comments in
+  `assets/theme.js` and `sections/product-recommendations.liquid` /
+  `sections/product-card-render.liquid`.
+- **Structured data**: Product + BreadcrumbList JSON-LD on every product page
+  (`snippets/structured-data-product.liquid`), Organization/WebSite JSON-LD
+  sitewide (`layout/theme.liquid`), pulling from the new Social media settings.
+- **Theme settings** grew a Layout group (container width, card radius),
+  Buttons (square vs. fully rounded), Cart (free-shipping bar + threshold) and
+  Social media (Instagram/Facebook/Pinterest/TikTok/YouTube — feeds the
+  footer's icon row and the structured data above).
+- **Icon set** rounded out: account, close, chevron, plus/minus, star,
+  location, email, phone, and a platform-aware social icon snippet, alongside
+  the header's new account icon and the contact form's optional email/phone/
+  address block.
+
+Validated with `npx shopify theme check`. The only remaining findings are a
+pre-existing, theme-wide pattern (img tags sized by a CSS aspect-ratio wrapper
+rather than width/height attributes) and the Google Fonts stylesheet link
+(RemoteAsset) — both predate this pass and are noted rather than papered over.
+
 ## Upload
 
 Shopify admin → Online Store → Themes → Add theme → Upload zip file, and pick

@@ -50,6 +50,13 @@
         {%- endform -%}
       {%- endif -%}
 
+      {%- if section.settings.show_account -%}
+        <a class="nav-icon-btn" href="{% if shop.customer_accounts_enabled %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+           aria-label="{{ 'accessibility.account' | t }}">
+          {% render 'icon-account' %}
+        </a>
+      {%- endif -%}
+
       <a class="nav-icon-btn" href="{{ routes.cart_url }}" onclick="openCart(event)" aria-label="{{ 'sections.cart.title' | t }}">
         {% render 'icon-cart' %}
         <span class="cart-badge" id="cartBadge">{{ cart.item_count }}</span>
@@ -72,7 +79,8 @@
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
     { "type": "checkbox", "id": "solid_nav", "label": "Solid nav background", "default": false,
       "info": "Leave off on pages with a full-bleed hero so the nav starts transparent." },
-    { "type": "checkbox", "id": "show_currency", "label": "Show currency selector", "default": true }
+    { "type": "checkbox", "id": "show_currency", "label": "Show currency selector", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account icon", "default": true }
   ]
 }
 {% endschema %}

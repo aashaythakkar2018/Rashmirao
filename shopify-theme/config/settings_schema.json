@@ -21,5 +21,40 @@
     "settings": [
       { "type": "image_picker", "id": "favicon", "label": "Favicon" }
     ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      { "type": "range", "id": "container_width", "label": "Page container width", "min": 1080, "max": 1600, "step": 20, "unit": "px", "default": 1400 },
+      { "type": "range", "id": "card_radius", "label": "Card & image corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 24 }
+    ]
+  },
+  {
+    "name": "Buttons",
+    "settings": [
+      { "type": "select", "id": "button_style", "label": "Button shape",
+        "options": [
+          { "value": "square", "label": "Square" },
+          { "value": "rounded", "label": "Fully rounded" }
+        ], "default": "square" }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "checkbox", "id": "enable_free_shipping_bar", "label": "Show free-shipping progress in the cart", "default": false },
+      { "type": "number", "id": "free_shipping_threshold", "label": "Free-shipping threshold",
+        "info": "Whole-number amount in the store's currency, e.g. 150. Only used when the progress bar above is on." }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram", "info": "https://instagram.com/..." },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook", "info": "https://facebook.com/..." },
+      { "type": "text", "id": "social_pinterest_link", "label": "Pinterest", "info": "https://pinterest.com/..." },
+      { "type": "text", "id": "social_tiktok_link", "label": "TikTok", "info": "https://tiktok.com/@..." },
+      { "type": "text", "id": "social_youtube_link", "label": "YouTube", "info": "https://youtube.com/@..." }
+    ]
   }
 ]

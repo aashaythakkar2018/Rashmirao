@@ -1,0 +1,13 @@
+{%- comment -%}
+  Fetch target for Shopify's native /recommendations/products endpoint (see
+  main-product.liquid's loadProductRecommendations call). Not placed in any
+  template - it only ever runs in the context that endpoint provides.
+{%- endcomment -%}
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  {%- for product in recommendations.products -%}
+    {% render 'product-card', product: product %}
+  {%- endfor -%}
+{%- endif -%}
+{% schema %}
+{ "name": "Recommendations (fetch)" }
+{% endschema %}

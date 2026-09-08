@@ -1,0 +1,11 @@
+{%- comment -%}
+  Not used in any template's JSON on purpose. The Section Rendering API lets
+  any section be fetched from any URL via ?section_id=product-card-render,
+  which is how theme.js's recently-viewed feature gets a fresh, real card for
+  a product the shopper looked at earlier, straight from that product's own
+  page - so price, availability and the sold badge are never stale.
+{%- endcomment -%}
+{% render 'product-card', product: product %}
+{% schema %}
+{ "name": "Product card (fetch)" }
+{% endschema %}

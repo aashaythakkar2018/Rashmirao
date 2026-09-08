@@ -15,12 +15,18 @@
 
       <div>
         <div class="story-grid">
+          {%- assign fallback_count = 6 -%}
           {%- for block in section.blocks -%}
             <div class="img-wrap rv" {{ block.shopify_attributes }}>
               {%- if block.settings.image != blank -%}
                 <img src="{{ block.settings.image | image_url: width: 800 }}"
                      alt="{{ block.settings.image.alt | default: block.settings.alt | escape }}"
                      loading="lazy" decoding="async">
+              {%- else -%}
+                {%- comment -%} Cycle through the bundled studio shots so an empty mosaic slot never renders blank. {%- endcomment -%}
+                {%- assign fallback_index = forloop.index0 | modulo: fallback_count | plus: 1 -%}
+                <img src="{{ 'story-mosaic-0' | append: fallback_index | append: '.jpg' | asset_url }}"
+                     alt="" loading="lazy" decoding="async">
               {%- endif -%}
             </div>
           {%- endfor -%}

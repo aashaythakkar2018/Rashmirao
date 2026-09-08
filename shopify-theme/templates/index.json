@@ -34,7 +34,61 @@
         "b3": { "type": "item", "settings": { "title": "Signed & Numbered", "copy": "Each collector receives a piece with its own place within the edition." } }
       },
       "block_order": ["b1", "b2", "b3"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {},
+      "blocks": {
+        "t1": { "type": "quote", "settings": {
+          "quote": "Wishing you a love filled journey and more success as you grow in, painting the nature and showing us the nature so close to our life and embracing every moment when we drape your authentic Saree.",
+          "name": "Chandana G. · Rhytara Collector" } },
+        "t2": { "type": "quote", "settings": {
+          "quote": "Thank you for this amazing chance to take to something magic and unique. I felt beautiful energy just being around you and your art.",
+          "name": "Diana L. · Trunk Show Guest" } },
+        "t3": { "type": "quote", "settings": {
+          "quote": "Hearty congratulations on your exquisite pieces, Rashmi. You are a perfect blend of great craft, creative brain and poignant heart, a true artist.",
+          "name": "Geetha R. · Collection Guest" } },
+        "t4": { "type": "quote", "settings": {
+          "quote": "I'm truly amazed with the treasures you have created. Your expressions of nature at its best are simply incredible.",
+          "name": "Radhika Y. · Rhytara Collector" } },
+        "t5": { "type": "quote", "settings": {
+          "quote": "I'm mesmerized by Nature's Rhythm beautiful collection. I'm lost in the hues. Congratulations and good luck.",
+          "name": "Swati K. · Rhytara Collector" } },
+        "t6": { "type": "quote", "settings": {
+          "quote": "Your exhibit composed through the abstractness, elegance and chaotic harmony really reflects the healing nature provides in its essence.",
+          "name": "Bharadwaj T. · Solo Exhibition Visitor" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5", "t6"]
+    },
+    "social": {
+      "type": "social-grid",
+      "settings": {
+        "heading": "Living With <em>the Work.</em>",
+        "hashtag": "#rashmiRaoDesigns"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {},
+      "blocks": {
+        "f1": { "type": "question", "settings": {
+          "question": "What makes each piece a limited edition?",
+          "answer": "<p>Every Nature's Rhythm design is produced in an edition of 250 pieces, translated directly from Rashmi Rao's original alcohol-ink paintings. Once an edition sells out, it is retired.</p>" } },
+        "f2": { "type": "question", "settings": {
+          "question": "Is every saree signed and certified?",
+          "answer": "<p>Yes. Each piece is individually signed and numbered, and ships with a Certificate of Authenticity connecting it to the original artwork.</p>" } },
+        "f3": { "type": "question", "settings": {
+          "question": "What fabric is used, and how do I care for it?",
+          "answer": "<p>Each design is printed on Georgette satin. Dry clean only, and store away from direct sunlight to preserve the colour over time.</p>" } },
+        "f4": { "type": "question", "settings": {
+          "question": "How long does shipping take?",
+          "answer": "<p>Orders ship within 4-6 weeks in archival, fully insured packaging, with tracking sent by email.</p>" } },
+        "f5": { "type": "question", "settings": {
+          "question": "Do you ship internationally?",
+          "answer": "<p>Yes - use the currency selector in the header to preview pricing in your market before checkout.</p>" } }
+      },
+      "block_order": ["f1", "f2", "f3", "f4", "f5"]
     }
   },
-  "order": ["hero", "intro", "featured", "about", "collected"]
+  "order": ["hero", "intro", "featured", "about", "collected", "testimonials", "social", "faq"]
 }

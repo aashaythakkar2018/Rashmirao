@@ -9,6 +9,20 @@
       <div class="form-heading-row">
         <h2 class="form-h2">{{ section.settings.heading }}</h2>
         <p class="form-intro-text">{{ section.settings.intro }}</p>
+
+        {%- if section.settings.email != blank or section.settings.phone != blank or section.settings.address != blank -%}
+          <div class="contact-details">
+            {%- if section.settings.email != blank -%}
+              <a href="mailto:{{ section.settings.email }}">{% render 'icon-email' %}<span>{{ section.settings.email }}</span></a>
+            {%- endif -%}
+            {%- if section.settings.phone != blank -%}
+              <a href="tel:{{ section.settings.phone | remove: ' ' }}">{% render 'icon-phone' %}<span>{{ section.settings.phone }}</span></a>
+            {%- endif -%}
+            {%- if section.settings.address != blank -%}
+              <span>{% render 'icon-location' %}<span>{{ section.settings.address }}</span></span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
 
       {%- form 'contact', class: 'contact-form' -%}
@@ -64,7 +78,10 @@
     { "type": "text", "id": "trust_note", "label": "Trust note",
       "default": "Every message is personally read by Rashmi. Your details remain private." },
     { "type": "text", "id": "success_message", "label": "Success message",
-      "default": "Thank you — your message has reached the studio. Rashmi will reply personally." }
+      "default": "Thank you — your message has reached the studio. Rashmi will reply personally." },
+    { "type": "text", "id": "email", "label": "Contact email", "info": "Shown with an email icon above the form." },
+    { "type": "text", "id": "phone", "label": "Contact phone" },
+    { "type": "text", "id": "address", "label": "Studio location" }
   ],
   "blocks": [
     {

@@ -1,6 +1,12 @@
 <section class="hero" id="hero" aria-label="Hero">
-  <div class="hero-img-fallback" aria-hidden="true"
-       {% if section.settings.poster %}style="background-image:url({{ section.settings.poster | image_url: width: 1920 }});background-size:cover;background-position:center;"{% endif %}></div>
+  {%- if section.settings.poster != blank -%}
+    <div class="hero-img-fallback" aria-hidden="true"
+         style="background-image:url({{ section.settings.poster | image_url: width: 1920 }});background-size:cover;background-position:center;"></div>
+  {%- else -%}
+    {%- comment -%} No merchant image yet - use the bundled shoot image so the hero is never a blank panel. {%- endcomment -%}
+    <div class="hero-img-fallback" aria-hidden="true"
+         style="background-image:url({{ 'hero-fallback.jpg' | asset_url }});background-size:cover;background-position:center;"></div>
+  {%- endif -%}
 
   {%- if section.settings.video != blank -%}
     {{ section.settings.video | video_tag: image_size: '1920x', autoplay: true, loop: true, muted: true, controls: false, class: 'hero-video' }}

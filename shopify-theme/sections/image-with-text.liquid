@@ -10,6 +10,9 @@
         {%- if section.settings.image != blank -%}
           <img src="{{ section.settings.image | image_url: width: 1200 }}"
                alt="{{ section.settings.image.alt | escape }}" loading="lazy" decoding="async">
+        {%- else -%}
+          <img src="{{ 'about-portrait-fallback.jpg' | asset_url }}"
+               alt="" loading="lazy" decoding="async">
         {%- endif -%}
       </div>
     </div>

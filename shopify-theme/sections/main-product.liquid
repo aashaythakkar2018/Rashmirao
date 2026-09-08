@@ -48,6 +48,8 @@
              src="{{ product.featured_image | image_url: width: 1400 }}"
              alt="{{ product.featured_image.alt | default: product.title | escape }}"
              width="1400" height="1400" fetchpriority="high" decoding="async">
+      {%- else -%}
+        {% render 'product-fallback', title: product.title %}
       {%- endif -%}
     </div>
   </div>
@@ -121,6 +123,17 @@
         {%- endfor -%}
       </select>
 
+      {%- if product.available -%}
+        <div class="qty-row">
+          <span class="qty-row-label">{{ 'products.product.quantity' | t }}</span>
+          <div class="qty-stepper">
+            <button type="button" data-qty-step="-1" aria-label="{{ 'accessibility.decrease_quantity' | t }}">{% render 'icon-minus' %}</button>
+            <input type="number" id="ProductQuantity" min="1" value="1" inputmode="numeric" aria-label="{{ 'products.product.quantity' | t }}">
+            <button type="button" data-qty-step="1" aria-label="{{ 'accessibility.increase_quantity' | t }}">{% render 'icon-plus' %}</button>
+          </div>
+        </div>
+      {%- endif -%}
+
       <div class="cta-stack">
         <button type="submit" name="add" class="btn-primary" id="addToCartBtn"
                 {% unless product.available %}disabled{% endunless %}>
@@ -136,7 +149,22 @@
           </a>
         {%- endif -%}
       </div>
+
+      {%- if product.available and section.settings.show_dynamic_checkout -%}
+        <div class="pi-dynamic-checkout">
+          {{ form | payment_button }}
+        </div>
+      {%- endif -%}
     {%- endform -%}
+
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <div class="pi-payment-icons">
+        <span class="pi-payment-label">{{ 'products.product.payment_methods' | t }}</span>
+        {%- for type in shop.enabled_payment_types -%}
+          {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
 
     <div class="ships-in">{{ section.settings.shipping_note }}</div>
 
@@ -269,9 +297,34 @@
   /* Submit through the AJAX cart so the drawer opens instead of navigating. */
   document.getElementById('ProductForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    addToCart(document.getElementById('variantSelect').value, 1);
+    var qtyInput = document.getElementById('ProductQuantity');
+    var qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
+    addToCart(document.getElementById('variantSelect').value, qty);
   });
+
+  window.recordRecentlyViewed({{ product.handle | json }});
+  window.renderRecentlyViewed({{ product.handle | json }});
+  window.loadProductRecommendations({{ product.id | json }}, 'product-recommendations', 4);
 </script>
+
+{%- comment -%} Complementary picks from Shopify's own recommendation engine - hidden until (and unless) it returns results. {%- endcomment -%}
+<section class="related recs-section" id="ProductRecommendations" hidden
+         data-url="{{ routes.product_recommendations_url }}">
+  <div class="related-header">
+    <h2 class="related-title">{{ section.settings.recommendations_heading }}</h2>
+  </div>
+  <div class="related-grid" id="ProductRecommendationsGrid"></div>
+</section>
+
+{%- comment -%} Recently viewed - read from this browser's own history, not shared data. {%- endcomment -%}
+<section class="related recs-section" id="RecentlyViewed" hidden data-card-section="product-card-render">
+  <div class="related-header">
+    <h2 class="related-title">{{ section.settings.recently_viewed_heading }}</h2>
+  </div>
+  <div class="related-grid" id="RecentlyViewedGrid"></div>
+</section>
+
+{% render 'structured-data-product', product: product %}
 
 {% schema %}
 {
@@ -284,7 +337,11 @@
       "default": "Available · Ships in 4-6 weeks with archival packaging" },
     { "type": "text", "id": "shipping_note", "label": "Shipping note",
       "default": "Ships in 4-6 weeks. Archival foam packaging, fully insured" },
-    { "type": "text", "id": "related_heading", "label": "Related heading", "default": "From the Same Series" }
+    { "type": "text", "id": "related_heading", "label": "Related heading", "default": "From the Same Series" },
+    { "type": "text", "id": "recommendations_heading", "label": "Recommendations heading", "default": "You May Also Like" },
+    { "type": "text", "id": "recently_viewed_heading", "label": "Recently viewed heading", "default": "Recently Viewed" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button (Shop Pay, PayPal, etc.)", "default": true },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show accepted payment icons", "default": true }
   ],
   "blocks": [
     {

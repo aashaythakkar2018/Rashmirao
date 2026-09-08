@@ -13,6 +13,29 @@
     <button class="cart-x" onclick="closeCart()" aria-label="{{ 'accessibility.close' | t }}">&times;</button>
   </div>
 
+  {%- comment -%}
+    Always present (even empty) so refreshCart() - which only swaps
+    #cartBody / #cartFoot / #cartTotal / #cartShipBar - has a stable target
+    to update after every AJAX quantity change, add, or remove.
+  {%- endcomment -%}
+  <div id="cartShipBar">
+    {%- if settings.enable_free_shipping_bar and settings.free_shipping_threshold > 0 and cart.item_count > 0 -%}
+      {%- assign threshold_cents = settings.free_shipping_threshold | times: 100 -%}
+      {%- assign ship_progress = cart.total_price | times: 100 | divided_by: threshold_cents -%}
+      {%- assign ship_percent = ship_progress | at_most: 100 -%}
+      <div class="cart-ship-bar">
+        {%- if cart.total_price >= threshold_cents -%}
+          <p><strong>{{ 'sections.cart.free_shipping_unlocked' | t }}</strong></p>
+        {%- else -%}
+          {%- assign remaining = threshold_cents | minus: cart.total_price -%}
+          {%- assign remaining_money = remaining | money -%}
+          <p>{{ 'sections.cart.free_shipping_progress_html' | t: amount: remaining_money }}</p>
+        {%- endif -%}
+        <div class="cart-ship-track"><div class="cart-ship-fill" style="width:{{ ship_percent }}%;"></div></div>
+      </div>
+    {%- endif -%}
+  </div>
+
   <form action="{{ routes.cart_url }}" method="post" id="cartForm" novalidate>
     <div class="cart-body" id="cartBody">
       {%- if cart.item_count == 0 -%}
@@ -38,10 +61,17 @@
                 {%- endunless -%}
               </div>
               <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+              <div class="cart-item-qty">
+                <div class="qty-stepper">
+                  <button type="button" data-qty-step="-1" aria-label="{{ 'accessibility.decrease_quantity' | t }}">{% render 'icon-minus' %}</button>
+                  <input type="number" min="0" value="{{ item.quantity }}" inputmode="numeric"
+                         data-cart-line="{{ forloop.index }}" aria-label="{{ 'products.product.quantity' | t }} - {{ item.product.title | escape }}">
+                  <button type="button" data-qty-step="1" aria-label="{{ 'accessibility.increase_quantity' | t }}">{% render 'icon-plus' %}</button>
+                </div>
+                <button type="button" class="cart-item-remove"
+                        onclick="changeCartLine({{ forloop.index }}, 0)">{{ 'sections.cart.remove' | t }}</button>
+              </div>
             </div>
-            <button type="button" class="cart-rm"
-                    onclick="changeCartLine({{ forloop.index }}, 0)"
-                    aria-label="{{ 'sections.cart.remove' | t }} {{ item.product.title | escape }}">&times;</button>
           </div>
         {%- endfor -%}
       {%- endif -%}

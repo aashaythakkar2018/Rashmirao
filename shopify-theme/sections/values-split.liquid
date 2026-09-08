@@ -26,11 +26,13 @@
         {%- for i in (1..2) -%}
           {%- assign key = 'image_' | append: i -%}
           {%- assign img = section.settings[key] -%}
-          {%- if img != blank -%}
-            <div class="img-wrap">
+          <div class="img-wrap">
+            {%- if img != blank -%}
               <img src="{{ img | image_url: width: 900 }}" alt="{{ img.alt | escape }}" loading="lazy" decoding="async">
-            </div>
-          {%- endif -%}
+            {%- else -%}
+              <img src="{{ 'philosophy-fallback-0' | append: i | append: '.jpg' | asset_url }}" alt="" loading="lazy" decoding="async">
+            {%- endif -%}
+          </div>
         {%- endfor -%}
       </div>
     </div>

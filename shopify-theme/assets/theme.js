@@ -127,7 +127,7 @@
       .then(function (r) { return r.text(); })
       .then(function (html) {
         var doc = new DOMParser().parseFromString(html, 'text/html');
-        ['cartBody', 'cartFoot', 'cartTotal'].forEach(function (id) {
+        ['cartBody', 'cartFoot', 'cartTotal', 'cartShipBar'].forEach(function (id) {
           var fresh = doc.getElementById(id);
           var live = document.getElementById(id);
           if (fresh && live) live.innerHTML = fresh.innerHTML;
@@ -191,6 +191,97 @@
     if (img.complete) img.classList.remove('loading');
     else img.addEventListener('load', function () { img.classList.remove('loading'); });
   });
+
+  /* ================= quantity steppers =================
+     One delegate handles both the product page and every cart-drawer line,
+     since the drawer's markup is replaced wholesale on every refreshCart(). */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-qty-step]');
+    if (!btn) return;
+    var wrap = btn.closest('.qty-stepper');
+    var input = wrap && wrap.querySelector('input[type="number"]');
+    if (!input) return;
+    var min = parseInt(input.min, 10) || 0;
+    var max = input.max ? parseInt(input.max, 10) : Infinity;
+    var next = (parseInt(input.value, 10) || 0) + parseInt(btn.dataset.qtyStep, 10);
+    next = Math.max(min, Math.min(max, next));
+    if (next === parseInt(input.value, 10)) return;
+    input.value = next;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  document.addEventListener('change', function (e) {
+    var input = e.target.closest('[data-cart-line]');
+    if (!input) return;
+    window.changeCartLine(parseInt(input.dataset.cartLine, 10), parseInt(input.value, 10) || 0);
+  });
+
+  /* ================= product recommendations & recently viewed ================= */
+
+  function renderCardsInto(targetId, sectionEl, html) {
+    var wrap = document.getElementById(targetId);
+    if (!wrap) return 0;
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var cards = doc.querySelectorAll('.art-card');
+    if (!cards.length) { if (sectionEl) sectionEl.hidden = true; return 0; }
+    wrap.innerHTML = '';
+    cards.forEach(function (c) { wrap.appendChild(c); });
+    if (sectionEl) sectionEl.hidden = false;
+    return cards.length;
+  }
+
+  window.loadProductRecommendations = function (productId, sectionId, limit) {
+    var section = document.getElementById('ProductRecommendations');
+    if (!section || !productId) return;
+    var url = section.dataset.url + '?product_id=' + productId + '&limit=' + (limit || 4) +
+      '&intent=complementary&section_id=' + sectionId;
+    fetch(url, { credentials: 'same-origin' })
+      .then(function (r) { return r.text(); })
+      .then(function (html) { renderCardsInto('ProductRecommendationsGrid', section, html); })
+      .catch(function () { section.hidden = true; });
+  };
+
+  /* Recently viewed reads/writes a small handle list in localStorage, then
+     re-renders each product's own card by fetching that product's URL with
+     ?section_id - the Section Rendering API returns just that section's
+     markup, regardless of whether it is wired into the product template. */
+  var RV_KEY = 'rhytara:recently-viewed';
+  var RV_MAX = 8;
+
+  function rvRead() {
+    try { return JSON.parse(localStorage.getItem(RV_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+
+  window.recordRecentlyViewed = function (handle) {
+    if (!handle) return;
+    try {
+      var list = rvRead().filter(function (h) { return h !== handle; });
+      list.unshift(handle);
+      localStorage.setItem(RV_KEY, JSON.stringify(list.slice(0, RV_MAX)));
+    } catch (e) { /* private browsing / storage disabled - skip silently */ }
+  };
+
+  window.renderRecentlyViewed = function (currentHandle) {
+    var section = document.getElementById('RecentlyViewed');
+    if (!section) return;
+    var handles = rvRead().filter(function (h) { return h !== currentHandle; }).slice(0, 4);
+    if (!handles.length) { section.hidden = true; return; }
+    var wrap = document.getElementById('RecentlyViewedGrid');
+    wrap.innerHTML = '';
+    var loaded = 0;
+    handles.forEach(function (handle) {
+      fetch('/products/' + handle + '?section_id=' + section.dataset.cardSection, { credentials: 'same-origin' })
+        .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var card = doc.querySelector('.art-card');
+          if (card) { wrap.appendChild(card); loaded++; }
+          section.hidden = loaded === 0;
+        })
+        .catch(function () { /* product removed or unavailable - just skip it */ });
+    });
+  };
 
   syncNavOffset();
   watchScrollState();

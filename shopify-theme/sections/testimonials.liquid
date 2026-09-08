@@ -1,0 +1,74 @@
+{%- comment -%}
+  Words from the Journey - real collector and guest quotes, carried over from
+  the static site's product-page marquee. Each is a block so the merchant can
+  add, remove or reorder them without touching a theme file.
+{%- endcomment -%}
+<section class="testimonials-bg section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap">
+    <div class="testi-hd">
+      <div class="testi-stars" aria-hidden="true">
+        {%- for i in (1..5) -%}{% render 'icon-star' %}{%- endfor -%}
+      </div>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+    </div>
+
+    <div class="testi-grid">
+      {%- for block in section.blocks -%}
+        <article class="testi-card rv" {{ block.shopify_attributes }}>
+          <p class="testi-quote">{{ block.settings.quote }}</p>
+          <p class="testi-name">{{ block.settings.name }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Words from the Journey" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "What Collectors Are Saying" },
+    { "type": "text", "id": "anchor", "label": "Anchor id" }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Attribution", "info": "e.g. \"Chandana G. · Rhytara Collector\"" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "quote", "settings": {
+            "quote": "Wishing you a love filled journey and more success as you grow in, painting the nature and showing us the nature so close to our life and embracing every moment when we drape your authentic Saree.",
+            "name": "Chandana G. · Rhytara Collector" } },
+        { "type": "quote", "settings": {
+            "quote": "Thank you for this amazing chance to take to something magic and unique. I felt beautiful energy just being around you and your art and I definitely want to have a piece of it in my life and to feel this energy again.",
+            "name": "Diana L. · Trunk Show Guest" } },
+        { "type": "quote", "settings": {
+            "quote": "Hearty congratulations on your exquisite pieces, Rashmi. You are a perfect blend of great craft, creative brain and poignant heart, a true artist.",
+            "name": "Geetha R. · Collection Guest" } },
+        { "type": "quote", "settings": {
+            "quote": "I'm truly amazed with the treasures you have created. Keep up with your passion and let your hard work speak. Your expressions of nature at its best are simply incredible.",
+            "name": "Radhika Y. · Rhytara Collector" } },
+        { "type": "quote", "settings": {
+            "quote": "I'm mesmerized by Nature's Rhythm beautiful collection. I'm lost in the hues. Congratulations and good luck.",
+            "name": "Swati K. · Rhytara Collector" } },
+        { "type": "quote", "settings": {
+            "quote": "Nature's rhythm to me is a circadian heartbeat of the earth. Your exhibit composed through the abstractness, elegance and chaotic harmony really reflects the healing nature provides in its essence.",
+            "name": "Bharadwaj T. · Solo Exhibition Visitor" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,48 @@
+{%- comment -%}
+  Real signup - posts through Shopify's native customer form, so an address
+  becomes an actual marketing contact (tagged "newsletter") with no app.
+{%- endcomment -%}
+<section class="newsletter-bg section" id="{{ section.settings.anchor | default: section.id }}">
+  <div class="wrap newsletter-inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="eyebrow rv">{{ section.settings.eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="h2 rv">{{ section.settings.heading }}</h2>
+    {%- if section.settings.subtext != blank -%}
+      <p class="newsletter-sub">{{ section.settings.subtext }}</p>
+    {%- endif -%}
+
+    {%- form 'customer', id: 'NewsletterForm', class: 'newsletter-form-wrap' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="newsletter-success">{{ section.settings.success_text }}</p>
+      {%- else -%}
+        <div class="newsletter-form">
+          <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">{{ 'general.newsletter.email' | t }}</label>
+          <input type="email" id="NewsletterEmail-{{ section.id }}" name="contact[email]"
+                 value="{{ form.email }}" placeholder="{{ 'general.newsletter.placeholder' | t }}" required>
+          <button type="submit" class="newsletter-submit">{{ section.settings.button_label }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="newsletter-error">{{ form.errors.messages.first }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Stay Connected" },
+    { "type": "html", "id": "heading", "label": "Heading", "default": "Be First to Know" },
+    { "type": "textarea", "id": "subtext", "label": "Subtext",
+      "default": "New collections, studio stories, and early access to limited editions - straight from Rashmi's studio." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "You're on the list - thank you for joining us." },
+    { "type": "text", "id": "anchor", "label": "Anchor id" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}
