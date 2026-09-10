@@ -345,10 +345,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .dark-insta-box:hover { border-color: var(--gold); color: var(--gold); }
 
-/* 5. INFORMATION COLUMNS (SHIPPING, COLLABORATIONS, STAY CONNECTED) */
+/* 3. SHIPPING & DELIVERY */
 .info-columns-section { background: var(--bg); border-top: 1px solid var(--beige); }
-.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
-.info-col { display: flex; flex-direction: column; justify-content: space-between; }
+.info-grid { display: block; width: 100%; }
+.info-col { display: flex; width: 100%; flex-direction: column; justify-content: space-between; text-align: center; }
 .info-col-hd {
   font-family: var(--ff-sans); font-size: 12px;
   letter-spacing: .18em; text-transform: uppercase;
@@ -360,7 +360,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .info-col-body {
   font-family: var(--ff-sans); font-size: 13px; font-weight: 300;
-  color: var(--muted); line-height: 1.8; margin-bottom: 20px;
+  color: var(--muted); line-height: 1.8; max-width: 920px; margin: 0 auto 20px;
 }
 .info-col-link {
   font-family: var(--ff-sans); font-size: 11px;
@@ -505,15 +505,15 @@ footer {
         <div class="hero-meta-grid">
           <div class="meta-box">
             <span class="meta-label">EMAIL</span>
-            <span class="meta-val"><a href="mailto:studio@rhytara.com">studio@rhytara.com</a></span>
+            <span class="meta-val"><a href="mailto:rashmi@rhytara.com">Rashmi@rhytara.com</a></span>
           </div>
           <div class="meta-box">
             <span class="meta-label">RESPONSE</span>
             <span class="meta-val">Within 48 hours</span>
           </div>
           <div class="meta-box">
-            <span class="meta-label">INSTAGRAM</span>
-            <span class="meta-val"><a href="https://instagram.com" target="_blank" rel="noopener">@rhytara</a></span>
+            <span class="meta-label">STAY CONNECTED</span>
+            <span class="meta-val">Follow Rhytara on Instagram <a href="https://instagram.com" target="_blank" rel="noopener">@rhytara</a> for new pieces, stories behind the designs, and glimpses into the world of wearable art.</span>
           </div>
         </div>
       </div>
@@ -558,7 +558,22 @@ footer {
   </div>
 </section>
 
-<!-- 3. CONTACT FORM SECTION -->
+<!-- 3. SHIPPING & DELIVERY -->
+<section class="info-columns-section section">
+  <div class="wrap">
+    <div class="info-grid">
+      <div class="info-col">
+        <div>
+          <span class="info-col-hd">SHIPPING &amp; DELIVERY</span>
+          <span class="info-col-sub">India &amp; USA</span>
+          <p class="info-col-body">Each Rhytara piece is thoughtfully prepared and packaged for its journey to you. Shipping timelines and delivery details may vary by destination and will be shared at the time of purchase.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. CONTACT FORM SECTION -->
 <section class="form-section section" id="contactFormSection">
   <div class="wrap">
     <div class="form-container">
@@ -604,14 +619,14 @@ footer {
   </div>
 </section>
 
-<!-- 4. DIRECT CONTACT / DARK SECTION -->
+<!-- 5. DIRECT CONTACT / DARK SECTION -->
 <section class="dark-direct-section">
   <div class="wrap">
     <div class="dark-split">
       <div class="dark-copy">
         <span class="dark-eyebrow">WRITE TO RHYTARA</span>
         <h2 class="dark-h2">Direct Contact</h2>
-        <a href="mailto:studio@rhytara.com" class="dark-email-link">studio@rhytara.com</a>
+        <a href="mailto:rashmi@rhytara.com" class="dark-email-link">rashmi@rhytara.com</a>
         <p class="dark-body-text">Questions, thoughts, collaborations, or simply want to know more? You're welcome to reach out. Messages are personally read and responded to by Rashmi, typically within 48 hours.</p>
         <a href="https://instagram.com" target="_blank" rel="noopener" class="dark-insta-box">
           INSTAGRAM: @rhytara &rarr;
@@ -626,44 +641,6 @@ footer {
           <span style="font-family: var(--ff-sans); font-size: 12px; color: rgba(250,248,245,0.5); letter-spacing: .1em; text-transform: uppercase;">— Rashmi Rao</span>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- 5. INFORMATION COLUMNS (SHIPPING, COLLABORATIONS, STAY CONNECTED) -->
-<section class="info-columns-section section">
-  <div class="wrap">
-    <div class="info-grid">
-      
-      <!-- Column 1 -->
-      <div class="info-col">
-        <div>
-          <span class="info-col-hd">SHIPPING &amp; DELIVERY</span>
-          <span class="info-col-sub">India &amp; USA</span>
-          <p class="info-col-body">Each Rhytara piece is thoughtfully prepared and packaged for its journey to you. Shipping timelines and delivery details may vary by destination and will be shared at the time of purchase.</p>
-        </div>
-      </div>
-
-      <!-- Column 2 -->
-      <div class="info-col">
-        <div>
-          <span class="info-col-hd">COLLABORATIONS</span>
-          <span class="info-col-sub">Creative Partnerships</span>
-          <p class="info-col-body">Interested in styling, a creative collaboration, an event, or working with Rhytara in a meaningful way?</p>
-        </div>
-        <a href="#contactFormSection" class="info-col-link" onclick="selectCategoryByTitle('CREATE WITH US')">GET IN TOUCH &rarr;</a>
-      </div>
-
-      <!-- Column 3 -->
-      <div class="info-col">
-        <div>
-          <span class="info-col-hd">STAY CONNECTED</span>
-          <span class="info-col-sub">Follow Our Journey</span>
-          <p class="info-col-body">Follow Rhytara on Instagram for new pieces, stories behind the designs, and glimpses into the world of wearable art.</p>
-        </div>
-        <a href="https://instagram.com" target="_blank" rel="noopener" class="info-col-link">@RHYTARA &rarr;</a>
-      </div>
-
     </div>
   </div>
 </section>

@@ -176,11 +176,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .page-hero {
-  padding-top: 120px; /* nav + ann height */
-  padding-bottom: 64px;
+  padding-top: 120px;
+  padding-bottom: 72px;
   background: var(--bg);
 }
-.page-hero .wrap { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+.page-hero .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 72px; }
 .page-hero-eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
   letter-spacing: .22em; text-transform: uppercase;
@@ -194,13 +194,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-width: 560px;
 }
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
-.page-hero-tagline {
-  font-family: var(--ff-sans); font-size: 15px;
-  font-weight: 300; color: var(--muted);
-  max-width: 320px; line-height: 1.8; text-align: right;
-  padding-bottom: 8px;
-}
-.hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 60px; }
+.page-hero-media { min-width: 0; }
+.page-hero-media .img-wrap { aspect-ratio: 16 / 10; overflow: hidden; background: var(--beige); }
+.page-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 72px; }
 
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
 
@@ -247,6 +244,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    1. OUR STORY  - centered copy on top + horizontal image grid below
 ============================================================ */
 .story-bg { background: var(--white); }
+.story-intro {
+  max-width: 720px;
+  margin: 0 auto 72px;
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--muted);
+  text-align: center;
+}
 .story-split {
   display: flex;
   flex-direction: column;
@@ -266,27 +273,64 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: left;
 }
 
-/* Four-column gallery with the same natural image sizing as the reference. */
+/* Editorial mosaic inspired by the supplied About reference. */
 .story-grid {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
-  align-items: stretch;
-}
-.story-grid-col {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+.story-grid-row {
+  display: grid;
+  gap: 5px;
   align-items: stretch;
 }
-.story-grid-col .img-wrap {
-  flex: 1 1 auto;
+.story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.story-grid-row--observation { grid-template-columns: minmax(150px, .9fr) repeat(3, minmax(0, 1fr)); }
+.story-grid-row--textile { grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(180px, .8fr); }
+.story-grid-row--closing { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.story-grid .img-wrap {
+  min-height: 220px;
   border-radius: 0;
   overflow: hidden;
 }
-.story-grid-col .img-wrap:last-child {
-  min-height: 420px;
+.story-grid-row--lead .img-wrap { aspect-ratio: 1.12 / 1; }
+.story-grid-row--observation .img-wrap { aspect-ratio: 1 / 1.08; }
+.story-grid-row--textile .img-wrap { aspect-ratio: 1.45 / 1; }
+.story-grid-row--closing .img-wrap { aspect-ratio: 1.25 / 1; }
+.story-grid-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px 24px;
+  background: var(--bg);
+}
+.story-grid-copy h3 {
+  font-family: var(--ff-sans);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .22em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: var(--text);
+  max-width: 150px;
+}
+.story-grid-copy h3::after {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--text);
+  margin-top: 18px;
+}
+.story-grid-copy p {
+  font-family: var(--ff-sans);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--muted);
+  max-width: 190px;
+  margin-top: 18px;
 }
 .story-grid .img-wrap img {
   width: 100%;
@@ -1040,7 +1084,7 @@ footer {
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .story-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .journey-split, .phil-split, .purpose-split, .about-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .press-logo:nth-child(4n) { border-right: 1px solid var(--beige); }
@@ -1054,11 +1098,17 @@ footer {
   .nav-burger { display: flex; }
   .section, .section-lg { padding: 72px 0; }
   .page-hero { padding-top: 110px; padding-bottom: 48px; }
-  .page-hero .wrap { flex-direction: column; gap: 24px; }
-  .page-hero-tagline { text-align: left; }
+  .page-hero .wrap { grid-template-columns: 1fr; gap: 36px; }
+  .page-hero-media .img-wrap { aspect-ratio: 4 / 3; }
   .story-copy .h2 { white-space: normal; }
-  .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
-  .story-grid-col { gap: 4px; }
+  .story-grid { gap: 4px; }
+  .story-grid-row { gap: 4px; }
+  .story-grid-row--lead,
+  .story-grid-row--observation,
+  .story-grid-row--textile,
+  .story-grid-row--closing { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story-grid-copy { padding: 24px 18px; }
+  .story-grid-copy p { max-width: none; }
   .story-pull { width: auto; max-width: 100%; font-size: 18px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .ft-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -1112,7 +1162,11 @@ footer {
       <span class="page-hero-eyebrow rv">Where Art Finds Another Form.</span>
       <h1 class="page-hero-h1 rv">Woven in Stillness,<br>Inspired by<br><em>Nature's Rhythm.</em></h1>
     </div>
-    <p class="page-hero-tagline rv">Rhytara Collections is an artist-led wearable art label by Rashmi Rao, born from an evolving practice of fine art, illustration, design and abstract painting. What began on canvas found its way onto fabric&mdash;transforming original artwork into pieces that can be worn, lived in and experienced in motion.</p>
+    <div class="page-hero-media rv">
+      <div class="img-wrap">
+        <img src="assets/images/about-page-banner.png" alt="Rhytara landscape artwork inspired by nature's rhythm" decoding="async">
+      </div>
+    </div>
   </div>
   <div class="wrap"><div class="hero-rule rv"></div></div>
 </section>
@@ -1120,6 +1174,7 @@ footer {
 <!-- ========== 1. OUR STORY ========== -->
 <section class="story-bg section">
   <div class="wrap">
+    <p class="story-intro rv">Rhytara Collections is an artist-led wearable art label by Rashmi Rao, born from an evolving practice of fine art, illustration, design and abstract painting. What began on canvas found its way onto fabric&mdash;transforming original artwork into pieces that can be worn, lived in and experienced in motion.</p>
     <div class="story-split">
       <!-- Copy -->
       <div class="story-copy">
@@ -1136,20 +1191,15 @@ footer {
         </blockquote>
       </div>
 
-      <!-- Four-column story image gallery -->
+      <!-- Editorial story image gallery -->
       <div>
         <div class="story-grid">
-          <div class="story-grid-col">
+          <div class="story-grid-row story-grid-row--lead">
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-04.jpg" alt="Water lily pond" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-02.jpg" alt="Rashmi sketching outdoors" loading="lazy" onerror="this.style.display='none'">
-            </div>
-          </div>
-          <div class="story-grid-col">
-            <div class="img-wrap rv">
-              <img src="assets/images/story/grid-08.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
@@ -1158,26 +1208,42 @@ footer {
               <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
             </div>
           </div>
-          <div class="story-grid-col">
+          <div class="story-grid-row story-grid-row--observation">
+            <div class="story-grid-copy">
+              <h3>Observation<br>Fuels Creativity</h3>
+              <p>From landscapes and flowers to skies and water, nature is my constant inspiration.</p>
+            </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-08.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-07.jpg" alt="Watercolor mountain painting" loading="lazy" onerror="this.style.display='none'">
             </div>
+          </div>
+          <div class="story-grid-row story-grid-row--textile">
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-10.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
             </div>
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-09.jpg" alt="Watercolor mountain landscape" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="story-grid-copy">
+              <h3>From Painting<br>to Textile</h3>
+              <p>Each Rhytara design begins as an original artwork and is translated into a repeat pattern on Georgette satin.</p>
+            </div>
           </div>
-          <div class="story-grid-col">
+          <div class="story-grid-row story-grid-row--closing">
+            <div class="img-wrap rv">
+              <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
+            </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/pink-saree.jpeg" alt="Pink saree detail" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
-            </div>
-            <div class="img-wrap rv">
-              <img src="assets/images/story/grid-09.jpg" alt="Watercolor mountain landscape" loading="lazy" onerror="this.style.display='none'">
             </div>
           </div>
         </div>
@@ -1662,7 +1728,7 @@ footer {
           <a href="contact.html" class="btn-olive rv">Commission a Piece</a>
           <a href="collections.html" class="btn-outline rv">View Available Works</a>
         </div>
-        <a href="mailto:studio@rhytara.com" class="text-link rv" style="display:inline-block;margin-top:20px;">studio@rhytara.com</a>
+        <a href="mailto:rashmi@rhytara.com" class="text-link rv" style="display:inline-block;margin-top:20px;">rashmi@rhytara.com</a>
       </div>
 
       <div class="connect-nl">

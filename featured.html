@@ -160,10 +160,18 @@
     .featured-hero-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.08fr) minmax(280px, .92fr);
-      gap: var(--sp-5); align-items: stretch;
+      gap: var(--sp-5);
+      align-items: stretch;
+      min-height: 440px;
     }
     .featured-hero-grid > div:first-child {
       display: flex; align-items: flex-end;
+      min-height: 100%;
+    }
+    .featured-hero-grid > div:last-child {
+      display: flex;
+      align-items: stretch;
+      min-height: 100%;
     }
     h1 {
       max-width: 14ch;
@@ -260,14 +268,47 @@
     }
     .photogrid > :first-child { grid-row: span 2; }
 
+     /* ============================================================
+       NEW YORK EXHIBITION GALLERY
+     ============================================================ */
+    .ny-exhibit { background: var(--paper); border-top: 1px solid var(--beige); overflow: hidden; }
+     .ny-exhibit-head { display: grid; grid-template-columns: .8fr 1.2fr; gap: var(--sp-6); align-items: end; margin-bottom: var(--sp-6); }
+     .ny-exhibit-head h2 { max-width: 520px; }
+     .ny-exhibit-intro { max-width: 48ch; color: var(--muted); font-size: var(--fs-body); line-height: 1.8; }
+    .ny-exhibit-feature { display: grid; grid-template-columns: 1.35fr .65fr; grid-template-rows: 540px; gap: var(--sp-1); margin-bottom: var(--sp-1); }
+    .ny-exhibit-image { position: relative; min-width: 0; min-height: 0; width: 100%; height: 100%; margin: 0; overflow: hidden; background: #1d1c19; isolation: isolate; }
+    .ny-exhibit-image::before { content: ''; position: absolute; inset: -18px; z-index: -1; background-image: var(--tile-image); background-size: cover; background-position: center; filter: blur(18px) brightness(.72); transform: scale(1.08); }
+    .ny-exhibit-image img { position: relative; z-index: 0; display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; transition: transform .6s ease; }
+     .ny-exhibit-image:hover img { transform: scale(1.03); }
+     .ny-exhibit-caption { position: absolute; left: 16px; bottom: 16px; z-index: 1; padding: 7px 10px; background: rgba(17,17,17,.78); color: #FAF8F5; font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase; }
+    .ny-exhibit-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 240px; gap: var(--sp-1); }
+    .ny-exhibit-image { cursor: zoom-in; }
+
+    .ny-lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 32px;
+      background: rgba(17,17,17,.92);
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity .25s ease, visibility .25s ease;
+    }
+    .ny-lightbox.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .ny-lightbox-image { display: block; max-width: min(92vw, 1200px); max-height: 86vh; width: auto; height: auto; object-fit: contain; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+    .ny-lightbox-close { position: absolute; top: 22px; right: 28px; width: 44px; height: 44px; color: #FAF8F5; font-size: 30px; line-height: 1; border: 1px solid rgba(250,248,245,.35); border-radius: 50%; cursor: pointer; }
+    .ny-lightbox-caption { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); color: rgba(250,248,245,.78); font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+    body.ny-lightbox-open { overflow: hidden; }
+
     .featured-hero-media {
       position: relative; overflow: hidden;
-      min-height: 440px; height: 100%; border: 1px solid rgba(17,17,17,.08);
+      min-height: 440px; height: 100%;
+      width: 100%;
+      border: 1px solid rgba(17,17,17,.08);
       background: #171612; box-shadow: 0 24px 50px rgba(17,17,17,.10);
+      align-self: stretch;
     }
     .featured-hero-media video {
-      display: block; width: 100%; height: 100%; object-fit: cover;
-      background: #171612;
+      display: block; width: 100%; height: 100%; min-height: 100%;
+      object-fit: cover; background: #171612;
     }
     .featured-hero-media::after {
       content: ''; position: absolute; inset: 0;
@@ -394,10 +435,10 @@
       gap: var(--sp-3); padding: var(--sp-4);
       border-right: 1px solid var(--beige); border-bottom: 1px solid var(--beige);
     }
-    .place-strip dt { color: var(--muted); font-size: var(--fs-label); letter-spacing: .16em; text-transform: uppercase; }
+    .place-strip dt { color: var(--text); font-size: var(--fs-label); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
     .place-list { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
-    .place-list span { color: var(--olive); font-size: var(--fs-label); letter-spacing: .13em; text-transform: uppercase; }
-    .place-list span:not(:last-child)::after { content: '·'; margin-left: var(--sp-2); color: var(--rust); }
+    .place-list span { color: var(--olive-dk); font-size: var(--fs-label); letter-spacing: .13em; text-transform: uppercase; font-weight: 500; }
+    .place-list span:not(:last-child)::after { content: '·'; margin-left: var(--sp-2); color: var(--text); }
 
     /* ============================================================
        FOOTER  (shared with every other page)
@@ -483,6 +524,9 @@
       .featured-hero-grid, .press-layout, .community { grid-template-columns: minmax(0, 1fr); }
       .community-heading, .community-copy { padding: var(--sp-5); }
       .press-media { min-height: 340px; }
+      .ny-exhibit-head { grid-template-columns: 1fr; gap: var(--sp-3); }
+      .ny-exhibit-feature { grid-template-columns: 1fr 1fr; }
+      .ny-exhibit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 220px; }
       /* Below this width the three-column row can no longer hold a title
          on one line, so the detail drops under the name instead. */
       .exhibit-list { display: block; }
@@ -516,6 +560,10 @@
       .photogrid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 200px); }
       .photogrid > :first-child { grid-row: span 1; }
       .community-heading, .community-copy { padding: var(--sp-4); }
+      .ny-exhibit-feature { grid-template-columns: 1fr; }
+      .ny-exhibit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 190px; }
+      .ny-lightbox { padding: 20px; }
+      .ny-lightbox-close { top: 14px; right: 14px; }
       .place-strips { grid-template-columns: 1fr; }
       .ft-grid { grid-template-columns: 1fr; gap: var(--sp-5); }
       .ft-grid, .ft-bottom { padding-left: 20px; padding-right: 20px; }
@@ -567,7 +615,7 @@
         <div class="featured-hero-media">
           <video autoplay muted loop playsinline preload="metadata" aria-label="Rashmi Rao studio footage">
             <source src="Featured%20section%20RR/IMG_0101.MOV" type="video/quicktime">
-            <source src="assets/video/rashmi-rao-bts-h264.mp4" type="video/mp4">
+            <source src="Featured%20section%20RR/IMG_0101.MOV" type="video/mp4">
           </video>
         </div>
       </div>
@@ -658,6 +706,43 @@
           <img src="Featured%20section%20RR/IMG_0104.JPG" alt="Press event photograph" loading="lazy" decoding="async">
           <span>Press event photograph</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== NEW YORK EXHIBITION ========== -->
+  <section class="ny-exhibit section">
+    <div class="wrap">
+      <div class="ny-exhibit-head">
+        <div>
+          <span class="eyebrow">New York Exhibition</span>
+          <h2>Art in a<br><em>new rhythm.</em></h2>
+        </div>
+        <p class="ny-exhibit-intro">A closer look at Rhytara&rsquo;s New York exhibition: the work, the room, and the moments where painting met a wider audience.</p>
+      </div>
+
+      <div class="ny-exhibit-feature" role="group" aria-label="New York exhibition highlights">
+        <figure class="ny-exhibit-image">
+          <img src="assets/images/ny-exhibit/IMG_7927.JPG" alt="Rhytara artwork displayed at the New York exhibition" loading="lazy" decoding="async">
+          <figcaption class="ny-exhibit-caption">Exhibition view</figcaption>
+        </figure>
+        <figure class="ny-exhibit-image">
+          <img src="assets/images/ny-exhibit/D2578680-93DC-41D7-A1F6-0185D399D74E.JPG" alt="Visitors and artwork at the New York exhibition" loading="lazy" decoding="async">
+          <figcaption class="ny-exhibit-caption">New York</figcaption>
+        </figure>
+      </div>
+
+      <div class="ny-exhibit-grid" role="group" aria-label="New York exhibition photographs">
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7606.JPG" alt="New York exhibition installation" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Installation</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7642.JPG" alt="Rhytara artwork detail in New York" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Artwork detail</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7929.JPG" alt="Exhibition room with Rhytara artwork" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">The room</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7931.JPG" alt="Artwork presented at the New York exhibition" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">On view</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7937.JPG" alt="New York exhibition artwork" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">In focus</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7939.JPG" alt="New York exhibition scene" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Exhibition moment</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7941.JPG" alt="Rhytara artwork in the gallery" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Gallery view</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7965.JPG" alt="Artwork and visitors at the exhibition" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Shared space</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7968.JPG" alt="New York exhibit artwork detail" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Detail</figcaption></figure>
+        <figure class="ny-exhibit-image"><img src="assets/images/ny-exhibit/IMG_7969.JPG" alt="Final view from the New York exhibition" loading="lazy" decoding="async"><figcaption class="ny-exhibit-caption">Final view</figcaption></figure>
       </div>
     </div>
   </section>
@@ -798,10 +883,65 @@
   </div>
 </div>
 
+<div class="ny-lightbox" id="nyLightbox" role="dialog" aria-modal="true" aria-label="Expanded New York exhibition image">
+  <button class="ny-lightbox-close" id="nyLightboxClose" type="button" aria-label="Close image">&times;</button>
+  <img class="ny-lightbox-image" id="nyLightboxImage" src="" alt="">
+  <span class="ny-lightbox-caption" id="nyLightboxCaption"></span>
+</div>
+
 <script src="assets/js/site.js" defer></script>
 <script>
 function openCart()  { document.getElementById('cartDrawer').classList.add('open');    document.getElementById('cartScrim').classList.add('show');    document.body.style.overflow = 'hidden'; }
 function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+
+(function () {
+  var lightbox = document.getElementById('nyLightbox');
+  var lightboxImage = document.getElementById('nyLightboxImage');
+  var lightboxCaption = document.getElementById('nyLightboxCaption');
+  var closeButton = document.getElementById('nyLightboxClose');
+  if (!lightbox || !lightboxImage || !closeButton) return;
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.classList.remove('ny-lightbox-open');
+    lightboxImage.src = '';
+  }
+
+  function openLightbox(tile) {
+    var image = tile.querySelector('img');
+    if (!image) return;
+    lightboxImage.src = image.currentSrc || image.src;
+    lightboxImage.alt = image.alt || 'Expanded New York exhibition image';
+    lightboxCaption.textContent = (tile.querySelector('.ny-exhibit-caption') || {}).textContent || '';
+    lightbox.classList.add('is-open');
+    document.body.classList.add('ny-lightbox-open');
+    closeButton.focus();
+  }
+
+  document.querySelectorAll('.ny-exhibit-image').forEach(function (tile) {
+    var tileImage = tile.querySelector('img');
+    if (tileImage) {
+      tile.style.setProperty('--tile-image', 'url("' + (tileImage.currentSrc || tileImage.src) + '")');
+    }
+    tile.setAttribute('tabindex', '0');
+    tile.setAttribute('role', 'button');
+    tile.addEventListener('click', function () { openLightbox(tile); });
+    tile.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLightbox(tile);
+      }
+    });
+  });
+
+  closeButton.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function (event) {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
+  });
+}());
 </script>
 </body>
 </html>
