@@ -352,7 +352,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-eyebrow {
   font-family: var(--ff-sans);
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: rgba(250,248,245,0.9);
@@ -521,7 +521,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-bg { background: var(--bg); }
 .about-split {
   display: grid;
-  grid-template-columns: 46% 54%;
+  grid-template-columns: 48% 52%;
   min-height: 680px;
   align-items: center;
 }
@@ -529,12 +529,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-img-col .img-wrap {
   height: 100%;
   min-height: 520px;
-  max-width: 78%;
+  width: min(100%, 800px);
+  max-width: 800px;
   margin: 0 auto;
 }
 .about-copy-col {
   order: 1;
-  padding: 48px 0 48px 40px;
+  padding: 48px clamp(32px, 4vw, 64px) 48px clamp(88px, 8vw, 128px);
   display: flex; flex-direction: column; justify-content: center;
 }
 .about-copy-col .eyebrow { margin-bottom: 14px; }
@@ -557,11 +558,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: block; margin-top: 7px;
 }
 .about-link {
-  margin-top: 44px;
+  margin-top: 0;
   display: inline-flex; align-items: center; gap: 10px;
 }
 .about-link svg { transition: transform .25s; }
 .about-link:hover svg { transform: translateX(5px); }
+.about-actions {
+  display: flex; align-items: center; gap: 24px;
+  flex-wrap: wrap; margin-top: 36px;
+}
 
 /* ============================================================
    COLLECTIONS
@@ -755,15 +760,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .wear-split {
   display: grid;
   grid-template-columns: 46% 54%;
-  min-height: 620px;
+  min-height: 920px;
   align-items: center;
 }
-.wear-img-col { overflow: hidden; min-height: 460px; }
+.wear-img-col { overflow: hidden; min-height: 920px; display: flex; align-items: center; }
 /* The collage is a 9:16 portrait, not the 2:3 this split was built for.
    Sizing the wrap to its own ratio shows it whole instead of cropping it,
    and the width cap keeps the section from stretching past its neighbours. */
 .wear-img-col .img-wrap {
-  width: min(78%, 400px);
+  width: min(100%, 600px);
   height: auto;
   min-height: 0;
   aspect-ratio: 1154 / 2048;
@@ -771,7 +776,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .wear-img-col .img-wrap img { object-fit: contain; }
 .wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
-.wear-img-col .img-wrap img { height: 100%; }
+.wear-img-col .img-wrap img { height: auto; }
 .wear-img-col .img-wrap::before { display: none; }
 .wear-copy-col { padding: 40px 32px 40px 0; display: flex; flex-direction: column; justify-content: center; }
 .wear-lead { margin-top: 24px; max-width: 430px; }
@@ -908,7 +913,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 ============================================================ */
 footer {
   background: #0e0e0e;
-  color: rgba(250,248,245,0.38);
+  color: rgba(250,248,245,0.62);
   padding: 68px 0 40px;
 }
 .ft-grid {
@@ -944,12 +949,12 @@ footer {
 .ft-hd {
   font-family: var(--ff-sans); font-size: 10px;
   letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400;
+  color: rgba(250,248,245,0.55); margin-bottom: 20px; font-weight: 400;
 }
 .ft-links { list-style: none; }
 .ft-links li + li { margin-top: 10px; }
-.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
-.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-links a { font-size: 13px; font-weight: 300; color: rgba(250,248,245,0.78); transition: color .25s; }
+.ft-links a:hover { color: #FAF8F5; }
 .ft-bottom {
   max-width: 1400px; margin: 40px auto 0;
   padding: 24px 52px 0;
@@ -1045,6 +1050,8 @@ footer {
   .art-row.flip .art-copy-col { padding-left: 0; }
   .art-story { max-width: 100%; }
   .about-split, .wear-split { grid-template-columns: 1fr; }
+  .wear-split { min-height: 0; }
+  .wear-img-col { min-height: 0; }
   .about-copy-col { padding: 48px 60px; }
   .wear-copy-col { padding: 48px 60px; }
   .lic-inner { grid-template-columns: 1fr; gap: 52px; }
@@ -1152,7 +1159,7 @@ footer {
       <li><a href="collections.html">Collections</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="featured.html">Featured</a></li>
-      <li><a href="collections.html">Shop</a></li>
+      <li><a href="shop.html">Shop</a></li>
       <li><a href="giftcard.html">Gift Cards</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -1322,7 +1329,7 @@ footer {
     <div class="wear-img-col rv">
       <div class="img-wrap">
         <img
-          src="assets/images/paintings-you-can-wear.jpg"
+          src="assets/images/IMG_9949.PNG"
           alt="Five original Rhytara alcohol ink paintings arranged around the Rhytara wordmark and the line: Carry the rhythm of nature."
           width="1154" height="2048"
           loading="lazy"
@@ -1362,10 +1369,13 @@ footer {
         <p class="rv">I'm Rashmi Rao, an artist whose journey across color, painting and design has shaped the world of Rhytara. What began as original artwork has found a new expression in fabric&mdash;bringing my love for nature, movement and color into something that can be worn.</p>
         <p class="rv">Rhytara is my way of inviting art into everyday life, one piece at a time.</p>
       </div>
-      <a href="contact.html" class="about-link text-link rv">
-        Meet Rashmi
-        <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      </a>
+      <div class="about-actions rv">
+        <a href="contact.html" class="about-link text-link">
+          Meet Rashmi
+          <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+        <a href="https://www.rashmiraodesigns.com/" class="btn-olive">Explore the Art &rarr;</a>
+      </div>
     </div>
   </div>
 </section>

@@ -180,7 +180,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding-bottom: 72px;
   background: var(--bg);
 }
-.page-hero .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: 72px; }
+.page-hero .wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: 48px; }
 .page-hero-eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
   letter-spacing: .22em; text-transform: uppercase;
@@ -188,15 +188,33 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .page-hero-h1 {
   font-family: var(--ff-serif);
-  font-size: clamp(52px, 6vw, 82px);
+  font-size: clamp(51px, 6vw, 81px);
   font-weight: 400; line-height: 1.02;
   color: var(--text); letter-spacing: -.01em;
   max-width: 560px;
 }
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
 .page-hero-media { min-width: 0; }
-.page-hero-media .img-wrap { aspect-ratio: 16 / 10; overflow: hidden; background: var(--beige); }
-.page-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.page-hero-media .img-wrap { position: relative; aspect-ratio: 2 / 1; overflow: hidden; background: var(--beige); }
+.page-hero-media .img-wrap::before,
+.page-hero-media .img-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14%;
+  z-index: 2;
+  pointer-events: none;
+}
+.page-hero-media .img-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(250,248,245,.62), transparent 82%);
+}
+.page-hero-media .img-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(250,248,245,.62), transparent 82%);
+}
+.page-hero-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 72px; }
 
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
@@ -296,6 +314,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .story-grid-row--lead .img-wrap { aspect-ratio: 1.12 / 1; }
 .story-grid-row--observation .img-wrap { aspect-ratio: 1 / 1.08; }
+.story-grid-row--observation .img-wrap:nth-child(2) img { transform: translateX(4%) scale(1.1); transform-origin: center; }
 .story-grid-row--textile .img-wrap { aspect-ratio: 1.45 / 1; }
 .story-grid-row--closing .img-wrap { aspect-ratio: 1.25 / 1; }
 .story-grid-copy {
@@ -368,10 +387,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 ============================================================ */
 .journey-bg { background: var(--dark); }
 .journey-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(380px, 500px);
-  gap: 80px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
 }
 .journey-bg .eyebrow { color: var(--olive); letter-spacing: .22em; }
 .journey-bg .h2 { color: #FAF8F5; margin-bottom: 34px; }
@@ -382,16 +400,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-width: 56ch;
 }
 .journey-copy p + p { margin-top: 20px; }
+.journey-intro-copy,
+.journey-intro-copy p,
+.journey-step-copy,
+.journey-step-copy p {
+  width: 100%;
+  max-width: none;
+}
 
 .journey-panel-col {
   display: grid;
   gap: 28px;
   width: 100%;
-  max-width: 760px;
+  max-width: none;
 }
 .journey-copy {
   display: grid;
   gap: 36px;
+  width: 100%;
 }
 .journey-panel {
   background: rgba(255,255,255,0.03);
@@ -403,6 +429,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .journey-steps {
   position: relative;
   display: grid;
+  grid-template-columns: 1fr;
   gap: 18px;
   padding-left: 42px;
 }
@@ -471,8 +498,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   line-height: 1.85;
 }
 .journey-img-col .img-wrap {
-  aspect-ratio: 4 / 5;
-  border-radius: 32px;
+  aspect-ratio: 4 / 3;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 28px 70px rgba(0,0,0,0.34);
 }
@@ -487,17 +514,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transform: scale(1.03);
 }
 .journey-gallery {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 14px;
+  width: 100%;
+  overflow: hidden;
 }
 .journey-gallery .img-wrap:first-child {
-  grid-column: 1 / -1;
-  aspect-ratio: 4 / 5;
+  grid-column: auto;
+  aspect-ratio: 4 / 3;
 }
 .journey-gallery .img-wrap {
-  aspect-ratio: 1 / 1.18;
-  border-radius: 24px;
+  flex: 0 0 calc((100% - 14px) / 2);
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
@@ -506,18 +536,41 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: transform 0.5s ease;
 }
 .journey-gallery .img-wrap:hover img { transform: scale(1.03); }
-
+.journey-gallery-wrap {
+  position: relative;
+  padding: 0 34px;
+}
+.journey-gallery-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  border: 1px solid rgba(250,248,245,0.28);
+  border-radius: 50%;
+  background: rgba(17,17,17,0.72);
+  color: #FAF8F5;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.journey-gallery-arrow:hover { border-color: var(--olive); color: var(--olive); }
+.journey-gallery-arrow--prev { left: 0; }
+.journey-gallery-arrow--next { right: 0; }
 @media (max-width: 980px) {
-  .journey-split { grid-template-columns: 1fr; }
-  .journey-img-col { order: 2; }
+  .journey-split { gap: 48px; }
+  .journey-img-col { order: 1; width: 100%; }
+  .journey-copy { order: 2; }
   .journey-panel-col { width: 100%; }
 }
 
 @media (max-width: 680px) {
-  .journey-panel { padding: 28px 22px 24px; }
   .journey-steps { padding-left: 24px; }
+  .journey-steps::before { left: 8px; }
+  .journey-panel { padding: 28px 22px 24px; }
   .journey-step { grid-template-columns: 70px 1fr; }
-  .journey-step::before { left: -26px; }
+  .journey-step::before { left: -22px; top: 6px; }
   .journey-step-year { min-width: 70px; }
 
   /* Small extra spacing under the panel for clarity on narrow screens */
@@ -558,21 +611,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: #3a3a3a; font-weight: 300; line-height: 1.55;
 }
 
-/* philosophy image block - single full-height art image */
+/* philosophy image block - preserve the complete uploaded collage */
 .phil-imgs {
   display: flex;
   height: 100%;
+  align-items: stretch;
 }
 .phil-grid {
   display: grid;
   grid-template-columns: 1fr;
   width: 100%;
+  height: 100%;
   align-items: stretch;
 }
 .phil-card {
   width: 100%;
   height: 100%;
-  min-height: 100%;
+  aspect-ratio: auto;
+  min-height: 0;
   background: var(--white);
   overflow: hidden;
   border: 1px solid rgba(17,17,17,0.06);
@@ -580,61 +636,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .phil-imgs .img-wrap::before { background: var(--white); }
 .phil-imgs .img-wrap img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
   display: block;
+}
+.phil-imgs .img-wrap video {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 .phil-card:hover img {
   transform: scale(1.03);
-}
-
-/* ============================================================
-   4. MADE WITH PURPOSE - light bg, editorial callout
-   Mirrors: Cord Studio "Crafted in India"
-============================================================ */
-.purpose-bg { background: var(--white); }
-.purpose-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center;
-}
-.purpose-imgs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.purpose-imgs .img-wrap:nth-child(1) { aspect-ratio: 3/4; }
-.purpose-imgs .img-wrap:nth-child(2) { aspect-ratio: 3/4; margin-top: 36px; }
-.purpose-imgs .img-wrap:nth-child(3) { aspect-ratio: 3/2; grid-column: 1 / -1; }
-.purpose-imgs .img-wrap:nth-child(1)::before { background: linear-gradient(135deg,#c0d0c8,#608070); }
-.purpose-imgs .img-wrap:nth-child(2)::before { background: linear-gradient(135deg,#d0c0b8,#9a7868); }
-.purpose-imgs .img-wrap:nth-child(3)::before { background: linear-gradient(135deg,#d8c8a0,#a89060); }
-
-.purpose-copy .eyebrow { margin-bottom: 14px; }
-.purpose-copy .h2 { margin-bottom: 28px; }
-.purpose-copy .body-text p + p { margin-top: 16px; }
-
-.purpose-pillars { display: flex; flex-direction: column; gap: 0; margin-top: 48px; }
-.pillar {
-  display: flex; gap: 18px; align-items: flex-start;
-  padding: 16px 0; border-bottom: 1px solid var(--beige);
-}
-.pillar:first-child { border-top: 1px solid var(--beige); }
-.pillar-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(109,117,80,0.1);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 14px;
-}
-.pillar-text strong {
-  display: block; font-family: var(--ff-sans); font-size: 12px;
-  letter-spacing: .1em; text-transform: uppercase;
-  font-weight: 500; color: var(--text); margin-bottom: 3px;
-}
-.pillar-text span {
-  font-family: var(--ff-sans); font-size: 13px;
-  font-weight: 300; color: var(--muted); line-height: 1.5;
 }
 
 /* ============================================================
@@ -650,6 +666,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-copy-col .eyebrow { margin-bottom: 14px; }
 .about-copy-col .h2 { margin-bottom: 20px; }
 .about-link { margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; }
+.about-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 36px; }
 
 /* ============================================================
    FINAL SECTION - closing brand statement
@@ -999,7 +1016,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 ============================================================ */
 footer {
   background: #0e0e0e;
-  color: rgba(250,248,245,0.38);
+  color: rgba(250,248,245,0.62);
   padding: 68px 0 40px;
 }
 .ft-grid {
@@ -1033,12 +1050,12 @@ footer {
 .ft-hd {
   font-family: var(--ff-sans); font-size: 10px;
   letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(250,248,245,0.22); margin-bottom: 20px; font-weight: 400;
+  color: rgba(250,248,245,0.55); margin-bottom: 20px; font-weight: 400;
 }
 .ft-links { list-style: none; }
 .ft-links li + li { margin-top: 10px; }
-.ft-links a { font-size: 13px; font-weight: 300; transition: color .25s; }
-.ft-links a:hover { color: rgba(250,248,245,0.85); }
+.ft-links a { font-size: 13px; font-weight: 300; color: rgba(250,248,245,0.78); transition: color .25s; }
+.ft-links a:hover { color: #FAF8F5; }
 .ft-bottom {
   max-width: 1400px; margin: 40px auto 0;
   padding: 24px 52px 0; border-top: 1px solid rgba(250,248,245,0.06);
@@ -1085,7 +1102,7 @@ footer {
 ============================================================ */
 @media (max-width: 1100px) {
   .story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .journey-split, .phil-split, .purpose-split, .about-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
+  .journey-split, .phil-split, .about-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .press-logo:nth-child(4n) { border-right: 1px solid var(--beige); }
   .press-logo:nth-child(2n) { border-right: none; }
@@ -1099,7 +1116,7 @@ footer {
   .section, .section-lg { padding: 72px 0; }
   .page-hero { padding-top: 110px; padding-bottom: 48px; }
   .page-hero .wrap { grid-template-columns: 1fr; gap: 36px; }
-  .page-hero-media .img-wrap { aspect-ratio: 4 / 3; }
+  .page-hero-media .img-wrap { aspect-ratio: 2 / 1; }
   .story-copy .h2 { white-space: normal; }
   .story-grid { gap: 4px; }
   .story-grid-row { gap: 4px; }
@@ -1136,7 +1153,7 @@ footer {
       <li><a href="collections.html">Collections</a></li>
       <li><a href="about.html" class="active">About</a></li>
       <li><a href="featured.html">Featured</a></li>
-      <li><a href="collections.html">Shop</a></li>
+      <li><a href="shop.html">Shop</a></li>
       <li><a href="giftcard.html">Gift Cards</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -1164,7 +1181,7 @@ footer {
     </div>
     <div class="page-hero-media rv">
       <div class="img-wrap">
-        <img src="assets/images/about-page-banner.png" alt="Rhytara landscape artwork inspired by nature's rhythm" decoding="async">
+        <img src="assets/images/about-page-banner-new.jpeg" alt="Rhytara landscape artwork inspired by nature's rhythm" decoding="async">
       </div>
     </div>
   </div>
@@ -1329,7 +1346,9 @@ footer {
       </div>
 
       <div class="journey-img-col rv">
-        <div class="journey-gallery">
+        <div class="journey-gallery-wrap">
+          <button class="journey-gallery-arrow journey-gallery-arrow--prev" id="journeyGalleryPrev" type="button" aria-label="Previous Journey image">&lsaquo;</button>
+          <div class="journey-gallery">
           <div class="img-wrap">
             <img src="assets/images/story/journey-9814.jpeg" alt="Rashmi Rao in the studio" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
@@ -1345,6 +1364,8 @@ footer {
           <div class="img-wrap">
             <img src="assets/images/story/journey-9818.jpeg" alt="Wearable art" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
+          </div>
+          <button class="journey-gallery-arrow journey-gallery-arrow--next" id="journeyGalleryNext" type="button" aria-label="Next Journey image">&rsaquo;</button>
         </div>
       </div>
     </div>
@@ -1388,7 +1409,9 @@ footer {
       <div class="phil-imgs rv">
         <div class="phil-grid">
           <div class="img-wrap phil-card">
-            <img src="assets/images/Philosophy.jpeg" alt="Rhytara philosophy artwork" loading="eager" decoding="async" onerror="this.style.display='none'">
+            <video autoplay muted loop playsinline preload="metadata" aria-label="Rhytara philosophy artwork in motion">
+              <source src="assets/video/philosophy-rebuilt.m4v" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
@@ -1396,79 +1419,7 @@ footer {
   </div>
 </section>
 
-<!-- ========== 4. MADE WITH PURPOSE ========== -->
-<section class="purpose-bg section">
-  <div class="wrap">
-    <div class="purpose-split">
-      <div class="purpose-imgs rv">
-        <div class="img-wrap">
-          <img src="assets/images/collection-ink.jpg" alt="Ink detail" loading="lazy" onerror="this.style.display='none'">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/images/collection-original.jpg" alt="Canvas" loading="lazy" onerror="this.style.display='none'">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/images/collection-wearable.jpg" alt="Wearable art" loading="lazy" onerror="this.style.display='none'">
-        </div>
-      </div>
-
-      <div class="purpose-copy">
-        <h2 class="h2 rv">Not Just a Print.<br>Not Just a <em>Saree.</em></h2>
-        <div class="body-text rv" style="margin-top:24px;">
-          <p>Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>
-        </div>
-
-        <div class="purpose-pillars rv">
-          <div class="pillar">
-            <span class="pillar-icon">◈</span>
-            <div class="pillar-text">
-              <strong>The Artwork Comes First</strong>
-              <span>Every design originates from Rashmi Rao's original artwork, created as an independent work of art before it becomes a textile</span>
-            </div>
-          </div>
-          <div class="pillar">
-            <span class="pillar-icon">✦</span>
-            <div class="pillar-text">
-              <strong>Limited by Design</strong>
-              <span>Each Nature's Rhythm design is produced as a limited edition of 250 pieces. No endless production, no mass repetition. Once an edition is gone, it is gone</span>
-            </div>
-          </div>
-          <div class="pillar">
-            <span class="pillar-icon">✧</span>
-            <div class="pillar-text">
-              <strong>Signed &amp; Numbered</strong>
-              <span>Every limited-edition piece is individually signed and numbered, creating a direct connection between the artwork, the edition and its wearer</span>
-            </div>
-          </div>
-          <div class="pillar">
-            <span class="pillar-icon">⬡</span>
-            <div class="pillar-text">
-              <strong>Certificate of Authenticity</strong>
-              <span>Each piece is accompanied by a Certificate of Authenticity, documenting its connection to the original artwork and its edition</span>
-            </div>
-          </div>
-          <div class="pillar">
-            <span class="pillar-icon">❖</span>
-            <div class="pillar-text">
-              <strong>The Fabric Matters</strong>
-              <span>The artwork is translated onto carefully selected Georgette satin, chosen for its fluid drape, soft movement and ability to carry the depth and detail of the artwork</span>
-            </div>
-          </div>
-          <div class="pillar">
-            <span class="pillar-icon">◇</span>
-            <div class="pillar-text">
-              <strong>Art with Provenance</strong>
-              <span>The story doesn't stop with the artwork. It continues through the textile, the edition, the artist's signature and the person who eventually wears it</span>
-            </div>
-          </div>
-        </div>
-        <blockquote class="journey-panel-note" style="font-style:italic; margin-top:32px; border-top:1px solid var(--beige); padding-top:24px; color:var(--olive);">Few pieces. One artistic origin. A story worth keeping.</blockquote>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 4b. MEET THE ARTIST ========== -->
+<!-- ========== 4. MEET THE ARTIST ========== -->
 <section class="about-bg section">
   <div class="wrap">
     <div class="about-split">
@@ -1485,65 +1436,60 @@ footer {
           <p>Her artistic journey has moved through fine art, illustration, design, daily creative explorations, exhibitions and alcohol ink&mdash;eventually leading to Nature's Rhythm and the creation of Rhytara Collections.</p>
           <p>Rhytara is the next chapter of that journey.</p>
         </div>
-        <a href="contact.html" class="about-link text-link rv">
-          Meet the Artist
-          <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        </a>
+        <div class="about-actions rv">
+          <a href="contact.html" class="about-link text-link">
+            Meet the Artist
+            <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </a>
+          <a href="https://www.rashmiraodesigns.com/" class="btn-olive">Explore the Art &rarr;</a>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== 5. IN THE PRESS ========== -->
+<!-- ========== 5. WORDS FROM THE JOURNEY ========== -->
 <section class="press-bg section-lg">
   <div class="wrap">
     <div class="press-header">
       <div>
-        <h2 class="h2 rv">In the Press</h2>
+        <h2 class="h2 rv">Words from<br><em>the Journey.</em></h2>
       </div>
-      <span class="press-hd-right rv">8 Publications · 12+ Features</span>
+      <span class="press-hd-right rv">8 Reflections · 1 Journey</span>
     </div>
   </div>
 
-  <!-- MARQUEE TICKER - infinite scroll of publication names -->
+  <!-- MARQUEE TICKER - infinite scroll of testimonial themes -->
   <div class="marquee-track">
     <div class="marquee-inner" id="marqueeInner">
       <!-- Set A -->
       <div class="marquee-item">
-        <span class="marquee-pub">Vogue India</span>
+        <span class="marquee-pub">New York Lifestyles Magazine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Elle Décor</span>
+        <span class="marquee-pub">Resident Magazine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Architectural Digest</span>
+        <span class="marquee-pub">Pleasanton Weekly</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Harper's Bazaar</span>
+        <span class="marquee-pub">Livermore Vine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">India Art Fair</span>
+        <span class="marquee-pub">Pleasanton Weekly · Studio Tour</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Condé Nast Traveller</span>
-        <span class="marquee-sep"></span>
-        <span class="marquee-pub">Better Homes &amp; Gardens</span>
-        <span class="marquee-sep"></span>
-        <span class="marquee-pub">T Magazine</span>
+        <span class="marquee-pub">The Independent</span>
         <span class="marquee-sep"></span>
       </div>
       <!-- Set B - exact duplicate for seamless loop -->
       <div class="marquee-item" aria-hidden="true">
-        <span class="marquee-pub">Vogue India</span>
+        <span class="marquee-pub">New York Lifestyles Magazine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Elle Décor</span>
+        <span class="marquee-pub">Resident Magazine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Architectural Digest</span>
+        <span class="marquee-pub">Pleasanton Weekly</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Harper's Bazaar</span>
+        <span class="marquee-pub">Livermore Vine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">India Art Fair</span>
+        <span class="marquee-pub">Pleasanton Weekly · Studio Tour</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Condé Nast Traveller</span>
-        <span class="marquee-sep"></span>
-        <span class="marquee-pub">Better Homes &amp; Gardens</span>
-        <span class="marquee-sep"></span>
-        <span class="marquee-pub">T Magazine</span>
+        <span class="marquee-pub">The Independent</span>
         <span class="marquee-sep"></span>
       </div>
     </div>
@@ -1553,18 +1499,18 @@ footer {
   <div class="wrap">
     <div class="press-pullquote rv">
       <span class="pq-mark">"</span>
-      <p class="pq-text">Works that do not announce themselves loudly. They simply hold their ground, and hold your eye.</p>
-      <span class="pq-attr">Elle Décor India, 2023</span>
+      <p class="pq-text">“The work is beautiful. It was a real experience viewing them. They just drew me inside.”</p>
+      <span class="pq-attr">Amber · Dublin, California</span>
     </div>
 
-    <!-- ARTICLE CARDS -->
+    <!-- TESTIMONIAL CARDS -->
     <div class="press-cards-wrap">
       <div class="press-cards" id="pressCards">
 
         <div class="press-card rv">
-          <span class="pc-pub">Vogue India</span>
-          <h3 class="pc-headline">"The Indian Artists Redefining What It Means to Collect Art"</h3>
-          <p class="pc-excerpt">Rashmi Rao's alcohol ink series on Yupo Paper has drawn comparisons to the great Japanese ink masters, yet remains entirely, unmistakably Indian in its emotional register.</p>
+          <span class="pc-pub">The Artist &amp; Her Vision</span>
+          <h3 class="pc-headline">“Nature’s Rhythm to me is a circadian heartbeat of the earth. Your exhibit reflects the healing nature of nature in its essence. In nature, nothing is perfect and everything is perfect.”</h3>
+          <p class="pc-excerpt">Bharadwaj T. · Solo Exhibition Visitor</p>
           <div class="pc-footer">
             <span class="pc-date">March 2024</span>
             <span class="pc-arrow">
@@ -1574,9 +1520,9 @@ footer {
         </div>
 
         <div class="press-card rv">
-          <span class="pc-pub">Elle Décor India</span>
-          <h3 class="pc-headline">"The Art of Staying: Works Designed to Outlive Their Moment"</h3>
-          <p class="pc-excerpt">In a market saturated with decorative gestures, Rashmi Rao's practice stands apart for its refusal to perform. These are paintings that hold their ground.</p>
+          <span class="pc-pub">Inspired by Nature</span>
+          <h3 class="pc-headline">“Your expressions of nature at its best are simply incredible. Keep up with your passion and let your hard work speak.”</h3>
+          <p class="pc-excerpt">Radhika Y. · Rhytara Collector</p>
           <div class="pc-footer">
             <span class="pc-date">October 2023</span>
             <span class="pc-arrow">
@@ -1586,9 +1532,9 @@ footer {
         </div>
 
         <div class="press-card rv">
-          <span class="pc-pub">Architectural Digest</span>
-          <h3 class="pc-headline">"The Collectors' New Favourite: Art That Lives on the Wall and the Body"</h3>
-          <p class="pc-excerpt">The wearable art saree collection, limited to 8 pieces per design, has found its way into wardrobes as far as Singapore and London. Each one carries its certificate of origin.</p>
+          <span class="pc-pub">Art You Can Wear</span>
+          <h3 class="pc-headline">“You are a perfect blend of great craft, creative brain and poignant heart—a true artist.”</h3>
+          <p class="pc-excerpt">Geetha R. · Collection Guest</p>
           <div class="pc-footer">
             <span class="pc-date">June 2023</span>
             <span class="pc-arrow">
@@ -1598,9 +1544,9 @@ footer {
         </div>
 
         <div class="press-card rv">
-          <span class="pc-pub">Harper's Bazaar</span>
-          <h3 class="pc-headline">"Monsoon on Paper: The Alcohol Ink Series That Stopped a Room"</h3>
-          <p class="pc-excerpt">Rashmi's Monsoon Dream, exhibited at the India Art Fair, drew the longest crowd of the afternoon, quietly, without a placard demanding attention.</p>
+          <span class="pc-pub">A Connection to Nature</span>
+          <h3 class="pc-headline">“Wishing you more success as you continue painting nature, bringing it so close to our lives, and embracing every moment when we drape your authentic saree.”</h3>
+          <p class="pc-excerpt">Chandana G. · Rhytara Collector</p>
           <div class="pc-footer">
             <span class="pc-date">February 2024</span>
             <span class="pc-arrow">
@@ -1610,9 +1556,9 @@ footer {
         </div>
 
         <div class="press-card rv">
-          <span class="pc-pub">T Magazine</span>
-          <h3 class="pc-headline">"Ten Studios in India Where the Work is Actually Worth Owning"</h3>
-          <p class="pc-excerpt">A rare list that skips the gallery system entirely. Rhytara appears alongside names that have been collected internationally for a decade or more.</p>
+          <span class="pc-pub">A Journey of Art</span>
+          <h3 class="pc-headline">“Your art is always inspiring and touching human lives. I’m so very proud to see your art being recognized and awarded.”</h3>
+          <p class="pc-excerpt">Archana G. · Art Community</p>
           <div class="pc-footer">
             <span class="pc-date">November 2023</span>
             <span class="pc-arrow">
@@ -1622,14 +1568,34 @@ footer {
         </div>
 
         <div class="press-card rv">
-          <span class="pc-pub">Condé Nast Traveller</span>
-          <h3 class="pc-headline">"Art Worth Travelling For: India's Most Compelling Studio Destinations"</h3>
-          <p class="pc-excerpt">The studio visit, by appointment only, has become something collectors quietly pass on to each other. It is the kind of place that explains why people still travel to see art.</p>
+          <span class="pc-pub">An Artistic Experience</span>
+          <h3 class="pc-headline">“The work is beautiful. It was a real experience viewing them. They just drew me inside.”</h3>
+          <p class="pc-excerpt">Amber · Dublin, California</p>
           <div class="pc-footer">
             <span class="pc-date">April 2023</span>
             <span class="pc-arrow">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
             </span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">An Art World of Stories</span>
+          <h3 class="pc-headline">“Your art world is containing the story of lives and this whole world. Thanks for exhibiting and sharing these beautiful pieces.”</h3>
+          <p class="pc-excerpt">Chloe · San Ramon</p>
+          <div class="pc-footer">
+            <span class="pc-date">07</span>
+            <span class="pc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+
+        <div class="press-card rv">
+          <span class="pc-pub">The Magic of Art</span>
+          <h3 class="pc-headline">“Fantastically creative and talented. Beautiful!”</h3>
+          <p class="pc-excerpt">Lisa H. · Danville</p>
+          <div class="pc-footer">
+            <span class="pc-date">08</span>
+            <span class="pc-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
           </div>
         </div>
 
@@ -1855,6 +1821,19 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 }
 </script>
 
+<!-- Journey image controls -->
+<script>
+(function () {
+  const gallery = document.querySelector('.journey-gallery');
+  const prev = document.getElementById('journeyGalleryPrev');
+  const next = document.getElementById('journeyGalleryNext');
+  if (!gallery || !prev || !next) return;
+  const step = () => gallery.clientWidth * 0.92;
+  prev.addEventListener('click', () => gallery.scrollBy({ left: -step(), behavior: 'smooth' }));
+  next.addEventListener('click', () => gallery.scrollBy({ left: step(), behavior: 'smooth' }));
+}());
+</script>
+
 <!-- -- Text Reveal - animate-skill text-reveal.tsx pattern -- -->
 <script>
 (function() {
@@ -1923,7 +1902,7 @@ if (typeof gsap !== 'undefined') {
     });
 
     /* Clip-path reveals for image grids - skill: decisive ease-in-out, 1.3s */
-    ['.story-grid', '.journey-img-col', '.phil-imgs', '.purpose-imgs', '.social-grid'].forEach(sel => {
+    ['.story-grid', '.journey-img-col', '.phil-imgs', '.social-grid'].forEach(sel => {
       const el = document.querySelector(sel);
       if (!el) return;
       gsap.fromTo(el,

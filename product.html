@@ -228,6 +228,24 @@
       100% { background-position: 0% 50%; }
     }
     .main-image-wrap.zoomed { cursor: zoom-out; }
+    .main-image-wrap::before,
+    .main-image-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 24%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .main-image-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, rgba(250,248,245,.96), transparent 78%);
+    }
+    .main-image-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, rgba(250,248,245,.96), transparent 78%);
+    }
 
     /* Shimmer overlay - shown while loading */
     .shimmer {
@@ -591,10 +609,10 @@
 
     /* ----------- PRODUCT FOOTER ----------- */
     .pp-footer {
-      background: var(--bg);
-      border-top: 1px solid var(--beige);
+      background: var(--dark);
+      border-top: 1px solid rgba(250,248,245,0.08);
       padding: 60px 52px 40px;
-      color: var(--text);
+      color: rgba(250,248,245,0.78);
     }
     .pp-footer-grid {
       max-width: 1240px;
@@ -620,7 +638,7 @@
       font-family: var(--font-serif);
       font-size: 24px;
       letter-spacing: .05em;
-      color: var(--text);
+      color: #FAF8F5;
     }
     @media (max-width: 768px) {
       .pp-ft-brand-mark { height: 48px; }
@@ -628,14 +646,14 @@
     .pp-ft-tagline {
       font-size: 13px;
       line-height: 1.9;
-      color: var(--muted);
+      color: rgba(250,248,245,0.78);
       max-width: 360px;
     }
     .pp-ft-hd {
       font-size: 11px;
       letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--text);
+      color: rgba(250,248,245,0.55);
       margin-bottom: 18px;
     }
     .pp-ft-links {
@@ -646,13 +664,13 @@
       gap: 10px;
     }
     .pp-ft-links a {
-      color: var(--muted);
+      color: rgba(250,248,245,0.78);
       text-decoration: none;
       font-size: 13px;
       line-height: 1.8;
       transition: color .2s;
     }
-    .pp-ft-links a:hover { color: var(--text); }
+    .pp-ft-links a:hover { color: #FAF8F5; }
     .pp-ft-bottom {
       max-width: 1240px;
       margin: 30px auto 0;
@@ -662,7 +680,7 @@
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      color: var(--muted);
+      color: rgba(250,248,245,0.62);
       font-size: 11px;
       letter-spacing: .14em;
     }
@@ -722,7 +740,7 @@
       <li><a href="collections.html">Collections</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="featured.html">Featured</a></li>
-      <li><a href="collections.html">Shop</a></li>
+      <li><a href="shop.html">Shop</a></li>
       <li><a href="giftcard.html">Gift Cards</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
@@ -958,7 +976,7 @@
             <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="acc-body"><div class="acc-content">
-            Each painting is rolled into an archival tube or flat-packed in foam-lined crating depending on size. All shipments are fully insured and tracked.<br/><br/>
+            Each Rhytara piece is thoughtfully prepared and packaged for its journey to you. Shipping timelines and delivery details may vary by destination and will be shared at the time of purchase.<br/><br/>
             <table>
               <tr><td>Preparation</td><td>4-6 weeks</td></tr>
               <tr><td>India delivery</td><td>3-5 days after dispatch</td></tr>
@@ -998,67 +1016,67 @@
   </section>
 
   <section class="testimonial-marquee" aria-labelledby="testimonialTitle">
-    <p class="testimonial-heading" id="testimonialTitle">Words from the Journey</p>
+    <p class="testimonial-heading" id="testimonialTitle">The Rhytara Experience</p>
     <div class="testimonial-viewport">
       <div class="testimonial-track">
         <div class="testimonial-group">
           <article class="testimonial-card">
-            <p>“Wishing you a love filled journey and more success as you grow in, painting the nature and showing us the nature so close to our life and embracing every moment when we drape your authentic Saree.”</p>
-            <span>Chandana G. &middot; Rhytara Collector</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“Thank you for this amazing chance to take to something magic and unique. I felt beautiful energy just being around you and your art and I definitely want to have a piece of it in my life and to feel this energy again.”</p>
+            <p>“I felt beautiful energy just being around you and your art. I definitely want to have a piece of it in my life and feel this energy again.”</p>
             <span>Diana L. &middot; Trunk Show Guest</span>
           </article>
           <article class="testimonial-card">
-            <p>“Hearty congratulations on your exquisite pieces, Rashmi. You are a perfect blend of great craft, creative brain and poignant heart, a true artist.”</p>
-            <span>Geetha R. &middot; Collection Guest</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“I’m truly amazed with the treasures you have created. Keep up with your passion and let your hard work speak. Your expressions of nature at its best are simply incredible.”</p>
-            <span>Radhika Y. &middot; Rhytara Collector</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“I’m mesmerized by Nature’s Rhythm beautiful collection. I’m lost in the hues. Congratulations and good luck.”</p>
+            <p>“I’m mesmerized by Nature’s Rhythm beautiful collection. I’m lost in the hues.”</p>
             <span>Swati K. &middot; Rhytara Collector</span>
           </article>
           <article class="testimonial-card">
-            <p>“I’m so very proud to see your art being recognized and awarded. You’re always inspiring and touching human lives. Keep rocking.”</p>
-            <span>Archana G. &middot; Art Community</span>
+            <p>“...embracing every moment when we drape your authentic saree.”</p>
+            <span>Chandana G. &middot; Rhytara Collector</span>
           </article>
           <article class="testimonial-card">
-            <p>“Nature’s rhythm to me is a circadian heartbeat of the earth. Your exhibit composed through the abstractness, elegance and chaotic harmony really reflects the healing nature provides in its essence. In nature, nothing is perfect and everything is perfect. Your exhibit reflects just that.”</p>
-            <span>Bharadwaj T. &middot; Solo Exhibition Visitor</span>
+            <p>“I’m truly amazed with the treasures you have created. Your expressions of nature at its best are simply incredible.”</p>
+            <span>Radhika Y. &middot; Rhytara Collector</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“You are a perfect blend of great craft, creative brain and poignant heart—a true artist.”</p>
+            <span>Geetha R. &middot; Collection Guest</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“Each piece becomes personal, no matter the person.”</p>
+            <span>Shamini S. &amp; Sarvanan M. &middot; November 2025</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“I felt beautiful energy just being around you and your art... I definitely want to have a piece of it in my life.”</p>
+            <span>Diana L. &middot; Trunk Show Guest</span>
           </article>
         </div>
         <div class="testimonial-group" aria-hidden="true">
           <article class="testimonial-card">
-            <p>“Wishing you a love filled journey and more success as you grow in, painting the nature and showing us the nature so close to our life and embracing every moment when we drape your authentic Saree.”</p>
-            <span>Chandana G. &middot; Rhytara Collector</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“Thank you for this amazing chance to take to something magic and unique. I felt beautiful energy just being around you and your art and I definitely want to have a piece of it in my life and to feel this energy again.”</p>
+            <p>“I felt beautiful energy just being around you and your art. I definitely want to have a piece of it in my life and feel this energy again.”</p>
             <span>Diana L. &middot; Trunk Show Guest</span>
           </article>
           <article class="testimonial-card">
-            <p>“Hearty congratulations on your exquisite pieces, Rashmi. You are a perfect blend of great craft, creative brain and poignant heart, a true artist.”</p>
-            <span>Geetha R. &middot; Collection Guest</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“I’m truly amazed with the treasures you have created. Keep up with your passion and let your hard work speak. Your expressions of nature at its best are simply incredible.”</p>
-            <span>Radhika Y. &middot; Rhytara Collector</span>
-          </article>
-          <article class="testimonial-card">
-            <p>“I’m mesmerized by Nature’s Rhythm beautiful collection. I’m lost in the hues. Congratulations and good luck.”</p>
+            <p>“I’m mesmerized by Nature’s Rhythm beautiful collection. I’m lost in the hues.”</p>
             <span>Swati K. &middot; Rhytara Collector</span>
           </article>
           <article class="testimonial-card">
-            <p>“I’m so very proud to see your art being recognized and awarded. You’re always inspiring and touching human lives. Keep rocking.”</p>
-            <span>Archana G. &middot; Art Community</span>
+            <p>“...embracing every moment when we drape your authentic saree.”</p>
+            <span>Chandana G. &middot; Rhytara Collector</span>
           </article>
           <article class="testimonial-card">
-            <p>“Nature’s rhythm to me is a circadian heartbeat of the earth. Your exhibit composed through the abstractness, elegance and chaotic harmony really reflects the healing nature provides in its essence. In nature, nothing is perfect and everything is perfect. Your exhibit reflects just that.”</p>
-            <span>Bharadwaj T. &middot; Solo Exhibition Visitor</span>
+            <p>“I’m truly amazed with the treasures you have created. Your expressions of nature at its best are simply incredible.”</p>
+            <span>Radhika Y. &middot; Rhytara Collector</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“You are a perfect blend of great craft, creative brain and poignant heart—a true artist.”</p>
+            <span>Geetha R. &middot; Collection Guest</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“Each piece becomes personal, no matter the person.”</p>
+            <span>Shamini S. &amp; Sarvanan M. &middot; November 2025</span>
+          </article>
+          <article class="testimonial-card">
+            <p>“I felt beautiful energy just being around you and your art... I definitely want to have a piece of it in my life.”</p>
+            <span>Diana L. &middot; Trunk Show Guest</span>
           </article>
         </div>
       </div>
