@@ -202,19 +202,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 14%;
+  width: 22%;
   z-index: 2;
   pointer-events: none;
 }
 .page-hero-media .img-wrap::before {
   left: 0;
-  background: linear-gradient(to right, rgba(250,248,245,.62), transparent 82%);
+  background: linear-gradient(to right, rgba(250,248,245,1), rgba(250,248,245,0.8) 25%, transparent);
 }
 .page-hero-media .img-wrap::after {
   right: 0;
-  background: linear-gradient(to left, rgba(250,248,245,.62), transparent 82%);
+  background: linear-gradient(to left, rgba(250,248,245,1), rgba(250,248,245,0.8) 25%, transparent);
 }
-.page-hero-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.page-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 72px; }
 
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
@@ -422,7 +422,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .journey-panel {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(250,248,245,0.08);
-  border-radius: 30px;
+  border-radius: 0;
   padding: 38px 38px 34px;
   box-shadow: 0 22px 56px rgba(0,0,0,0.16);
 }
@@ -499,7 +499,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .journey-img-col .img-wrap {
   aspect-ratio: 4 / 3;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 28px 70px rgba(0,0,0,0.34);
 }
@@ -527,7 +527,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   flex: 0 0 calc((100% - 14px) / 2);
   min-width: 0;
   aspect-ratio: 4 / 3;
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
@@ -535,7 +535,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 0.5s ease;
 }
-.journey-gallery .img-wrap:hover img { transform: scale(1.03); }
+.journey-gallery .img-wrap.is-portrait {
+  background: #0f0f0d;
+}
+.journey-gallery .img-wrap.is-portrait img {
+  object-fit: cover;
+  object-position: 50% 18%;
+  transform: scale(1.12);
+}
+.journey-gallery .img-wrap:hover img { transform: scale(1.15); }
 .journey-gallery-wrap {
   position: relative;
   padding: 0 34px;
@@ -660,7 +668,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px; align-items: center;
+  gap: 48px; align-items: center;
 }
 .about-img-col .img-wrap { aspect-ratio: 4/5; border-radius: 4px; }
 .about-copy-col .eyebrow { margin-bottom: 14px; }
@@ -1349,8 +1357,8 @@ footer {
         <div class="journey-gallery-wrap">
           <button class="journey-gallery-arrow journey-gallery-arrow--prev" id="journeyGalleryPrev" type="button" aria-label="Previous Journey image">&lsaquo;</button>
           <div class="journey-gallery">
-          <div class="img-wrap">
-            <img src="assets/images/story/journey-9814.jpeg" alt="Rashmi Rao in the studio" loading="eager" decoding="async" onerror="this.style.display='none'">
+          <div class="img-wrap is-portrait">
+            <img src="assets/images/about-portrait.jpg" alt="Portrait of Rashmi Rao" loading="eager" decoding="async" onerror="this.style.display='none'">
           </div>
           <div class="img-wrap">
             <img src="assets/images/story/journey-9815.jpeg" alt="Studio detail" loading="eager" decoding="async" onerror="this.style.display='none'">
@@ -1441,7 +1449,7 @@ footer {
             Meet the Artist
             <svg width="16" height="8" viewBox="0 0 16 8" fill="none"><path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
           </a>
-          <a href="https://www.rashmiraodesigns.com/" class="btn-olive">Explore the Art &rarr;</a>
+          <a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer" class="btn-olive">Explore the Art &rarr;</a>
         </div>
       </div>
     </div>
@@ -1450,15 +1458,6 @@ footer {
 
 <!-- ========== 5. WORDS FROM THE JOURNEY ========== -->
 <section class="press-bg section-lg">
-  <div class="wrap">
-    <div class="press-header">
-      <div>
-        <h2 class="h2 rv">Words from<br><em>the Journey.</em></h2>
-      </div>
-      <span class="press-hd-right rv">8 Reflections · 1 Journey</span>
-    </div>
-  </div>
-
   <!-- MARQUEE TICKER - infinite scroll of testimonial themes -->
   <div class="marquee-track">
     <div class="marquee-inner" id="marqueeInner">
@@ -1472,7 +1471,7 @@ footer {
         <span class="marquee-sep"></span>
         <span class="marquee-pub">Livermore Vine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Pleasanton Weekly · Studio Tour</span>
+        <span class="marquee-pub">Studio Tour</span>
         <span class="marquee-sep"></span>
         <span class="marquee-pub">The Independent</span>
         <span class="marquee-sep"></span>
@@ -1487,11 +1486,20 @@ footer {
         <span class="marquee-sep"></span>
         <span class="marquee-pub">Livermore Vine</span>
         <span class="marquee-sep"></span>
-        <span class="marquee-pub">Pleasanton Weekly · Studio Tour</span>
+        <span class="marquee-pub">Studio Tour</span>
         <span class="marquee-sep"></span>
         <span class="marquee-pub">The Independent</span>
         <span class="marquee-sep"></span>
       </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="press-header">
+      <div>
+        <h2 class="h2 rv">Words from<br><em>the Journey.</em></h2>
+      </div>
+      <span class="press-hd-right rv">8 Reflections · 1 Journey</span>
     </div>
   </div>
 

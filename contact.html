@@ -201,11 +201,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: flex-end;
-  gap: 80px;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  gap: 64px;
   padding-bottom: 72px;
   border-bottom: 1px solid var(--beige);
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .hero-left .page-eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
@@ -219,10 +224,31 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   color: var(--text); letter-spacing: -.02em;
 }
 .hero-h1 em { font-style: italic; font-weight: 300; color: var(--olive); }
-.hero-right { padding-bottom: 12px; }
+/* Image is the visual anchor of this hero - it takes the larger, dedicated
+   column and matches the text column's own height exactly. The img-wrap is
+   position:absolute so it takes no part in sizing .hero-image itself
+   (an in-flow, height:100% image would otherwise pull in its own 900x1600
+   aspect ratio and inflate the row well past what the text needs); instead
+   .hero-image's height comes purely from the grid row (desktop, stretched to
+   match .hero-left) or its own min-height floor (mobile, stacked). */
+.hero-image {
+  position: relative;
+  min-height: 420px;
+}
+.hero-image .img-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--beige);
+}
+.hero-image .img-wrap img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 15%;
+}
 .hero-desc {
   font-family: var(--ff-sans); font-size: 15px; font-weight: 300;
-  color: #3a3a3a; line-height: 1.85; max-width: 480px; margin-bottom: 36px;
+  color: #3a3a3a; line-height: 1.85; max-width: 480px;
+  margin-top: 32px; margin-bottom: 36px;
 }
 .hero-meta-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -499,8 +525,6 @@ footer {
       <div class="hero-left">
         <span class="page-eyebrow">LET'S CONNECT</span>
         <h1 class="hero-h1">Begin a<br><em>Meaningful</em><br>Conversation.</h1>
-      </div>
-      <div class="hero-right">
         <p class="hero-desc">Every Rhytara piece begins with a story, a feeling, or a moment in nature. Have a question about a saree, a special occasion, gifting, styling, or a collaboration? I'd love to hear from you.</p>
         <div class="hero-meta-grid">
           <div class="meta-box">
@@ -515,6 +539,11 @@ footer {
             <span class="meta-label">STAY CONNECTED</span>
             <span class="meta-val">Follow Rhytara on Instagram <a href="https://instagram.com" target="_blank" rel="noopener">@rhytara</a> for new pieces, stories behind the designs, and glimpses into the world of wearable art.</span>
           </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="img-wrap">
+          <img src="assets/images/contact-hero.jpg" alt="A Rhytara wearable-art saree, worn outdoors" loading="lazy" decoding="async" onerror="this.closest('.img-wrap').style.background='var(--beige)'; this.remove()">
         </div>
       </div>
     </div>
