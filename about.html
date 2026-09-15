@@ -285,10 +285,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-family: var(--ff-serif);
   font-size: 22px; font-style: italic; font-weight: 400;
   line-height: 1.6; color: var(--olive);
-  border-left: 2px solid var(--olive);
-  padding-left: 22px; margin: 28px auto 0; max-width: 100%;
+  margin: 28px auto 0; max-width: 100%;
   width: max-content;
-  text-align: left;
+  text-align: center;
 }
 
 /* Editorial mosaic inspired by the supplied About reference. */
@@ -675,39 +674,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-copy-col .h2 { margin-bottom: 20px; }
 .about-link { margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; }
 .about-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-top: 36px; }
-
-/* ============================================================
-   FINAL SECTION - closing brand statement
-============================================================ */
-.final-bg { background: var(--dark); padding: 120px 0; }
-.final-inner { text-align: center; }
-.final-eyebrow {
-  font-family: var(--ff-sans); font-size: 11px;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 20px; display: block;
-}
-.final-h {
-  font-family: var(--ff-serif);
-  font-size: clamp(40px, 6vw, 76px);
-  font-weight: 400; line-height: 1.08;
-  color: #FAF8F5;
-}
-.final-h em { font-style: italic; font-weight: 300; color: rgba(250,248,245,0.65); }
-.final-tagline {
-  font-family: var(--ff-sans); font-size: 14px; font-weight: 300;
-  color: rgba(250,248,245,0.55); margin-top: 18px;
-}
-.btn-outline-light {
-  display: inline-block;
-  padding: 15px 34px;
-  font-family: var(--ff-sans); font-size: 11px;
-  letter-spacing: 0.16em; text-transform: uppercase; font-weight: 400;
-  color: #FAF8F5;
-  border: 1px solid rgba(250,248,245,0.35);
-  background: none;
-  transition: border-color .25s, background .25s;
-}
-.btn-outline-light:hover { border-color: rgba(250,248,245,0.8); background: rgba(250,248,245,0.06); }
 
 /* ============================================================
    5. IN THE PRESS  - Marquee ticker + Article cards
@@ -1699,7 +1665,7 @@ footer {
         <h2 class="h2 rv">Start a<br><em>Conversation.</em></h2>
         <p class="body-text rv" style="margin-top:20px;max-width:400px;">Whether you are collecting, commissioning, or considering a collaboration. Every inquiry is answered personally. No assistants, no automated replies.</p>
         <div class="connect-btns">
-          <a href="contact.html" class="btn-olive rv">Commission a Piece</a>
+          <a href="contact.html" class="btn-olive rv">INQUIRE</a>
           <a href="collections.html" class="btn-outline rv">View Available Works</a>
         </div>
         <a href="mailto:rashmi@rhytara.com" class="text-link rv" style="display:inline-block;margin-top:20px;">rashmi@rhytara.com</a>
@@ -1715,17 +1681,6 @@ footer {
         <p class="nl-sub rv">No noise. No promotions. Only work that matters.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ========== FINAL SECTION ========== -->
-<section class="final-bg">
-  <div class="wrap final-inner">
-    <h2 class="final-h rv">Carry the <em>Rhythm.</em></h2>
-    <p class="final-tagline rv">Born from art. Inspired by nature. Made to move with you.</p>
-    <span class="final-eyebrow rv">Rhytara</span>
-    <p class="final-tagline rv">Woven in stillness, inspired by nature's rhythm.</p>
-    <a href="collections.html" class="btn-outline-light rv" style="margin-top:32px;">Explore the Collection &rarr;</a>
   </div>
 </section>
 
@@ -1749,14 +1704,14 @@ footer {
       <p class="ft-hd">Studio</p>
       <ul class="ft-links">
         <li><a href="about.html">About Rhytara</a></li>
-        <li><a href="about.html">Meet the Artist</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
     <div>
-      <p class="ft-hd">Featured</p>
+      <p class="ft-hd">Artists</p>
       <ul class="ft-links">
-        <li><a href="featured.html">Exhibitions, Publications &amp; Press</a></li>
+        <li><a href="about.html">Meet the Artist</a></li>
+        <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
       </ul>
     </div>
   </div>

@@ -43,18 +43,26 @@
       {%- endif -%}
     </div>
 
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'menu' -%}
-        <div {{ block.shopify_attributes }}>
-          <p class="ft-hd">{{ block.settings.heading }}</p>
-          <ul class="ft-links">
-            {%- for link in block.settings.menu.links -%}
-              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-            {%- endfor -%}
-          </ul>
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
+    <div>
+      <p class="ft-hd">Collections</p>
+      <ul class="ft-links">
+        <li><a href="{{ routes.collections_url }}">Nature's Rhythm</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Studio</p>
+      <ul class="ft-links">
+        <li><a href="{{ pages['about'].url | default: routes.root_url | append: 'pages/about' }}">About</a></li>
+        <li><a href="{{ routes.root_url | append: 'pages/contact' }}">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="ft-hd">Artists</p>
+      <ul class="ft-links">
+        <li><a href="{{ pages['about'].url | default: routes.root_url | append: 'pages/about' }}">Meet the Artist</a></li>
+        <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
+      </ul>
+    </div>
   </div>
 
   <div class="ft-bottom">
@@ -93,7 +101,7 @@
     "blocks": [
       { "type": "menu", "settings": { "heading": "Collections" } },
       { "type": "menu", "settings": { "heading": "Studio" } },
-      { "type": "menu", "settings": { "heading": "Services" } }
+      { "type": "menu", "settings": { "heading": "Artists" } }
     ]
   }
 }

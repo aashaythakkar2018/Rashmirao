@@ -495,14 +495,14 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
       <p class="ft-hd">Studio</p>
       <ul class="ft-links">
         <li><a href="about.html">About Rhytara</a></li>
-        <li><a href="about.html">Meet the Artist</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
     <div>
-      <p class="ft-hd">Featured</p>
+      <p class="ft-hd">Artists</p>
       <ul class="ft-links">
-        <li><a href="featured.html">Exhibitions, Publications &amp; Press</a></li>
+        <li><a href="about.html">Meet the Artist</a></li>
+        <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
       </ul>
     </div>
   </div>
@@ -519,6 +519,21 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
 <script>
   let currentInr = 9500;
   let deliveryMethod = 'email';
+  const giftCardUsdOverrides = {
+    9500: 100,
+    15000: 150
+  };
+
+  const originalFormatPrice = window.formatPrice;
+  if (typeof window.formatPrice === 'function') {
+    window.formatPrice = function (inrAmt) {
+      const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD';
+      if (isUsd && giftCardUsdOverrides[inrAmt]) {
+        return '$ ' + giftCardUsdOverrides[inrAmt].toLocaleString('en-US');
+      }
+      return originalFormatPrice(inrAmt);
+    };
+  }
 
   function closeAnn() {
     const ann = document.getElementById('ann');
@@ -531,13 +546,21 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
     document.querySelectorAll('.denom-card').forEach(c => c.classList.remove('active'));
     cardEl.classList.add('active');
     currentInr = inrVal;
-    updateCardDisplay(inrVal);
+    updateCardDisplay(inrVal, usdVal);
   }
 
-  function updateCardDisplay(inrVal) {
+  function updateCardDisplay(inrVal, usdOverride) {
     const gcDisplay = document.getElementById('gcAmountDisplay');
     if (!gcDisplay) return;
     gcDisplay.setAttribute('data-price-inr', inrVal);
+    const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD';
+    const fixedUsd = Number.isFinite(usdOverride) ? usdOverride : giftCardUsdOverrides[inrVal];
+
+    if (isUsd && typeof fixedUsd === 'number') {
+      gcDisplay.textContent = '$ ' + fixedUsd.toLocaleString('en-US');
+      return;
+    }
+
     if (typeof window.formatPrice === 'function') {
       gcDisplay.textContent = window.formatPrice(inrVal);
     } else {
