@@ -853,7 +853,7 @@
         <span class="pi-price" id="productPrice">₹85,000</span>
         <span class="pi-price-label" id="priceLabel">MRP (INR)</span>
       </div>
-      <p class="pi-tax-note">Tax included · Insured worldwide shipping</p>
+      <p class="pi-tax-note">Tax and shipping excluded</p>
 
       <div class="pi-availability" id="pi-avail">
         <span class="avail-dot"></span>
@@ -1108,7 +1108,7 @@
         </ul>
       </div>
       <div>
-          <p class="pp-ft-hd">Artists</p>
+          <p class="pp-ft-hd">Artist</p>
         <ul class="pp-ft-links">
             <li><a href="about.html">Meet the Artist</a></li>
             <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
@@ -1143,7 +1143,7 @@
         title: 'Echoes Of Earth',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 85000,
+        priceInr: 24780,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1165,7 +1165,7 @@
         title: 'Grounding Nature',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 65000,
+        priceInr: 24780,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1186,7 +1186,7 @@
         title: 'Magical Pansies',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 72000,
+        priceInr: 24780,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1208,7 +1208,7 @@
         title: 'Purple Petals Reverie',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 92000,
+        priceInr: 24780,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1229,7 +1229,7 @@
         title: 'Shifting Glacier',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 18500,
+        priceInr: 24780,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1619,6 +1619,10 @@
       btn.closest('.option-pills').querySelectorAll('.option-pill')
         .forEach(p => p.classList.remove('active'))
       btn.classList.add('active')
+      if (group === 'size' && P.category.indexOf('Wearable') !== -1) {
+        selectedPriceInr = (btn.textContent.indexOf('58 inch') !== -1 ? 310 : 295) * 84
+        updatePrices()
+      }
       animate(btn, { scale: [0.95, 1] }, { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] })
     }
 
@@ -1630,11 +1634,12 @@
 
     /* ----------- CURRENCY ----------- */
     const PRICE_INR = P.priceInr
+    let selectedPriceInr = PRICE_INR
 
     function updatePrices() {
       if (window.formatPrice) {
-        document.getElementById('productPrice').textContent = window.formatPrice(PRICE_INR)
-        const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD'
+        document.getElementById('productPrice').textContent = window.formatPrice(selectedPriceInr)
+        const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD'
         document.getElementById('priceLabel').textContent = isUsd ? 'MRP (USD)' : 'MRP (INR)'
         document.querySelectorAll('.rel-price[data-inr]').forEach(el => {
           const inr = parseInt(el.dataset.inr)
@@ -1669,5 +1674,10 @@
     lazyLoadRelated()
 
   </script>
+<script src="assets/js/shopify-config.js"></script>
+<script src="assets/js/shopify.js?v=2"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/cart-drawer.js"></script>
+<script src="assets/js/static-shopify-bridge.js"></script>
 </body>
 </html>

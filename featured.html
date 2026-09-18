@@ -56,6 +56,7 @@
       font-family: var(--ff-sans);
       background: var(--bg);
       color: var(--text);
+      padding-top: 0;
       font-weight: 300;
       line-height: 1.65;
       overflow-x: hidden;
@@ -67,15 +68,35 @@
     ul, ol { list-style: none; }
 
     /* ============================================================
+       ANNOUNCEMENT BAR
+    ============================================================ */
+    .ann {
+      background: var(--rust); color: #FAF8F5;
+      text-align: center; padding: 11px 48px;
+      font-family: var(--ff-sans); font-size: 11px;
+      letter-spacing: .16em; text-transform: uppercase;
+      font-weight: 400; position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500; height: 42px; overflow: hidden;
+    }
+    .ann-close {
+      position: absolute; right: 20px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(250,248,245,.55); font-size: 20px;
+      line-height: 1; transition: color .2s; padding: 4px 8px;
+    }
+    .ann-close:hover { color: #FAF8F5; }
+
+    /* ============================================================
        NAVIGATION  (matches the shared shell on every other page)
     ============================================================ */
     .nav {
-      position: sticky; top: 0; z-index: 400;
+      position: fixed; top: 42px; left: 0; right: 0; z-index: 400;
       background: rgba(250,248,245,0.96);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 1px 0 rgba(17,17,17,0.08);
     }
+    .nav.no-ann { top: 0; }
     .nav-inner {
       max-width: 1400px; margin: 0 auto; padding: 0 52px;
       height: 72px; display: flex;
@@ -128,6 +149,7 @@
        SHARED LAYOUT PRIMITIVES
     ============================================================ */
     .wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
+    main { padding-top: 114px; }
     .section { padding: var(--sp-7) 0; }
     .eyebrow {
       display: block;
@@ -625,6 +647,12 @@
 </head>
 <body>
 
+<!-- ========== ANNOUNCEMENT ========== -->
+<div class="ann" id="ann">
+  New In: Nature's Rhythm
+  <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">&times;</button>
+</div>
+
 <!-- ========== NAVIGATION ========== -->
 <nav class="nav scrolled" id="nav" data-nav-solid="true">
   <div class="nav-inner">
@@ -900,7 +928,7 @@
       </ul>
     </div>
     <div>
-        <p class="ft-hd">Artists</p>
+        <p class="ft-hd">Artist</p>
       <ul class="ft-links">
           <li><a href="about.html">Meet the Artist</a></li>
           <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
@@ -938,6 +966,13 @@
 <script>
 function openCart()  { document.getElementById('cartDrawer').classList.add('open');    document.getElementById('cartScrim').classList.add('show');    document.body.style.overflow = 'hidden'; }
 function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
+function closeAnn() {
+  var announcement = document.getElementById('ann');
+  var navigation = document.getElementById('nav');
+  if (announcement) announcement.style.display = 'none';
+  if (navigation) navigation.classList.add('no-ann');
+  document.querySelector('main').style.paddingTop = '72px';
+}
 
 (function () {
   var marqueeGroup = document.querySelector('.ny-exhibit-group');

@@ -68,9 +68,15 @@ repository subpath as well as from a custom domain.
 
 ### Custom domain
 
-Add a file named `CNAME` in this folder containing only your domain
-(e.g. `rashmiraodesigns.com`), commit it, then set the domain under
-**Settings → Pages**.
+The project includes a `CNAME` file for `rhytara.com`. In the GitHub
+repository, open **Settings → Pages → Custom domain**, enter `rhytara.com`,
+and enable HTTPS after DNS verification completes.
+
+Point the domain DNS to GitHub Pages using the four A records GitHub provides,
+or use the repository's GitHub Pages URL as the CNAME target. Keep
+`bjmcta-mt.myshopify.com` in `assets/js/shopify-config.js`; that permanent
+Shopify domain is required for Storefront API requests even when the frontend
+is served from `rhytara.com`.
 
 ## External dependencies
 

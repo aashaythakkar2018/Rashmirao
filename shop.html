@@ -1379,7 +1379,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       </ul>
     </div>
     <div>
-      <p class="ft-hd">Artists</p>
+      <p class="ft-hd">Artist</p>
       <ul class="ft-links">
         <li><a href="about.html">Meet the Artist</a></li>
         <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
@@ -1405,7 +1405,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <span class="cart-total-lbl">Subtotal</span>
       <span class="cart-total-val" id="cartTotal">₹ 0</span>
     </div>
-    <a href="contact.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;" onclick="closeCart()">Proceed to Checkout</a>
+    <a id="cartCheckout" href="contact.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;" onclick="closeCart()">Proceed to Checkout</a>
   </div>
 </div>
 
@@ -1802,5 +1802,10 @@ if (typeof gsap !== 'undefined') {
   });
 }
 </script>
+<script src="assets/js/shopify-config.js"></script>
+<script src="assets/js/shopify.js?v=2"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/cart-drawer.js"></script>
+<script src="assets/js/static-shopify-bridge.js"></script>
 </body>
 </html>

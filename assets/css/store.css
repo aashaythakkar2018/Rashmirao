@@ -1,0 +1,155 @@
+/* ============================================================
+   store.css - Rashmi Rao Designs / Rhytara
+   Shared cart-drawer chrome + storefront helpers.
+   Loaded on every page; replaces the four copy-pasted drawer
+   style blocks. var() fallbacks cover pages that name their
+   tokens differently (e.g. product.html uses --font-serif / --bg).
+============================================================ */
+
+:root {
+  --store-serif: var(--ff-serif, var(--font-serif, 'Cormorant Garamond', Georgia, serif));
+  --store-sans:  var(--ff-sans,  var(--font-sans,  'DM Sans', system-ui, sans-serif));
+  --store-mono:  var(--ff-mono,  var(--font-mono,  'DM Mono', 'Courier New', monospace));
+  --store-white: var(--white, #ffffff);
+  --store-text:  var(--text, #111111);
+  --store-muted: var(--muted, #6B6B6B);
+  --store-beige: var(--beige, #E9E3DB);
+  --store-olive: var(--olive, #6D7550);
+}
+
+/* -- Drawer -------------------------------------------------- */
+.cart-scrim {
+  position: fixed; inset: 0;
+  background: rgba(17, 17, 17, 0.45);
+  z-index: 600;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s;
+}
+.cart-scrim.show { opacity: 1; pointer-events: all; }
+
+.cart-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 400px; max-width: 96vw;
+  background: var(--store-white);
+  z-index: 700;
+  display: flex; flex-direction: column;
+  box-shadow: -6px 0 40px rgba(0, 0, 0, 0.14);
+  transform: translateX(100%);
+  transition: transform .4s cubic-bezier(.25, .46, .45, .94);
+}
+.cart-drawer.open { transform: translateX(0); }
+
+.cart-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 26px 30px;
+  border-bottom: 1px solid var(--store-beige);
+  flex-shrink: 0;
+}
+.cart-ttl { font-family: var(--store-serif); font-size: 22px; font-weight: 400; }
+.cart-x {
+  font-size: 22px; line-height: 1; color: var(--store-muted);
+  background: none; border: none; cursor: pointer;
+  transition: color .2s; padding: 4px;
+}
+.cart-x:hover { color: var(--store-text); }
+
+.cart-body { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.cart-empty-msg { text-align: center; padding: 52px 0; }
+.cart-empty-msg p:first-child {
+  font-family: var(--store-serif); font-size: 22px;
+  color: var(--store-text); margin-bottom: 10px; font-weight: 400;
+}
+.cart-empty-msg p { font-size: 13px; color: var(--store-muted); font-weight: 300; }
+
+.cart-item {
+  display: flex; gap: 16px;
+  margin-bottom: 22px; padding-bottom: 22px;
+  border-bottom: 1px solid var(--store-beige);
+}
+.cart-item-img {
+  width: 76px; height: 96px;
+  object-fit: cover; flex-shrink: 0;
+  background: var(--store-beige);
+}
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-family: var(--store-serif); font-size: 16px; font-weight: 400; margin-bottom: 4px; }
+.cart-item-sub { font-size: 11px; color: var(--store-muted); letter-spacing: .05em; }
+.cart-item-price { font-family: var(--store-mono); font-size: 14px; color: var(--store-olive); margin-top: 8px; }
+
+.cart-qty {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 10px;
+  border: 1px solid var(--store-beige);
+  padding: 2px 4px;
+}
+.cart-qty-btn {
+  font-size: 15px; line-height: 1; width: 22px; height: 22px;
+  color: var(--store-muted); background: none; border: none; cursor: pointer;
+  transition: color .2s;
+}
+.cart-qty-btn:hover { color: var(--store-text); }
+.cart-qty-val { font-family: var(--store-mono); font-size: 12px; min-width: 14px; text-align: center; }
+
+.cart-rm {
+  font-size: 18px; line-height: 1; color: rgba(17, 17, 17, 0.2);
+  background: none; border: none; cursor: pointer;
+  align-self: flex-start; transition: color .2s; padding: 2px;
+}
+.cart-rm:hover { color: #c00; }
+
+.cart-foot {
+  padding: 22px 30px;
+  border-top: 1px solid var(--store-beige);
+  flex-shrink: 0;
+}
+.cart-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 18px;
+}
+.cart-total-lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--store-muted); }
+.cart-total-val { font-family: var(--store-mono); font-size: 18px; color: var(--store-text); }
+.cart-continue { text-align: center; margin-top: 10px; }
+.cart-continue button {
+  font-family: var(--store-sans); font-size: 10px;
+  letter-spacing: .13em; text-transform: uppercase;
+  color: var(--store-muted); background: none; border: none;
+  cursor: pointer; transition: color .2s;
+}
+.cart-continue button:hover { color: var(--store-text); }
+
+/* Checkout button - a sane baseline so it looks right on pages whose own
+   .btn-olive rules don't reach it (e.g. product.html). Pages that do style
+   .btn-olive will override colour/spacing as usual. */
+#cartCheckout {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 15px 20px;
+  font-family: var(--store-sans); font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: #fff; background: var(--store-olive);
+  border: none; cursor: pointer; text-decoration: none;
+  transition: opacity .2s;
+}
+#cartCheckout:hover { opacity: .9; }
+#cartCheckout[disabled] { opacity: .6; pointer-events: none; }
+
+/* -- Grid loading / empty states --------------------------------------- */
+.store-skeleton { position: relative; overflow: hidden; background: var(--store-beige); }
+.store-skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: store-shimmer 1.4s infinite;
+}
+@keyframes store-shimmer { 100% { transform: translateX(100%); } }
+
+.store-grid-msg {
+  grid-column: 1 / -1;
+  text-align: center; padding: 60px 20px;
+  font-family: var(--store-serif); font-size: 18px; color: var(--store-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-drawer, .cart-scrim { transition: none; }
+  .store-skeleton::after { animation: none; }
+}

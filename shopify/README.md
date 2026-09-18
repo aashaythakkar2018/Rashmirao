@@ -13,16 +13,16 @@ live copy. Requires `node` (used only to parse the JS object literal).
 
 ## What's in it
 
-6 products / 26 rows:
+6 products / 30 rows:
 
-| Handle | Title | Price (INR) | Inventory |
+| Handle | Title | Price (USD) | Inventory |
 |---|---|---|---|
-| `echoes-of-earth` | Echoes Of Earth | 85,000 | 1 |
-| `grounding-nature` | Grounding Nature | 65,000 | 1 |
-| `magical-pansies` | Magical Pansies | 72,000 | 0 (sold) |
-| `purple-petal` | Purple Petal | 92,000 | 1 |
-| `shifting-glacier` | Shifting Glacier | 18,500 | 5 (edition 3 of 8) |
-| `rhytara-gift-card` | Rhytara Gift Card | 10,000 / 50,000 | untracked |
+| `echoes-of-earth` | Echoes Of Earth | 295 / 310 by width | 1 |
+| `grounding-nature` | Grounding Nature | 295 / 310 by width | 1 |
+| `magical-pansies` | Magical Pansies | 295 / 310 by width | 1 |
+| `purple-petals-reverie` | Purple Petals Reverie | 295 / 310 by width | 1 |
+| `shifting-glacier` | Shifting Glacier | 295 / 310 by width | 1 |
+| `rhytara-gift-card` | Rhytara Gift Card | 100 / 150 | untracked |
 
 Images are pulled from `raw.githubusercontent.com` at import time — all 23
 URLs were verified reachable. They only stay reachable while the repo is
@@ -38,10 +38,9 @@ Shopify admin → Products → Import → upload `products.csv`. Leave
 
 These were inferred from the site. Check them against what you actually want:
 
-1. **Prices are INR.** The CSV carries the `data-price-inr` values verbatim.
-   The store's currency must be set to INR before importing, or every price
-   will be read as USD. The site's USD toggle is a live FX conversion, so
-   there are no fixed USD prices to import.
+1. **Prices are USD.** The frontend source catalogue remains stored as INR
+   values for compatibility, and the generator converts them at 84 INR per USD.
+   Set the Shopify store currency to USD before importing.
 2. **Sold work is published with 0 inventory.** `magical-pansies` imports as
    active and sold-out rather than hidden, matching how the site still shows
    it. Set `Status` to `draft` if it should come off the storefront.

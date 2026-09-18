@@ -1,6 +1,6 @@
 /**
  * currency.js - Rashmi Rao Designs
- * Shared INR ↔ USD toggle with live exchange rate.
+ * Shared USD ↔ INR toggle with live exchange rate.
  *
  * Rate source: open.er-api.com (free, no API key required)
  * Falls back to ₹84/$ if the network request fails.
@@ -21,13 +21,13 @@
   /* -- Constants ---------------- */
   var RATE_KEY     = 'rrd_inr_per_usd';   // cached rate (INR per 1 USD)
   var TIME_KEY     = 'rrd_rate_ts';        // cache timestamp
-  var CURR_KEY     = 'rrd_currency';       // 'INR' or 'USD'
+  var CURR_KEY     = 'rrd_currency_v2';    // 'INR' or 'USD'; USD is the new default
   var CACHE_MS     = 3600000;             // 1 hour
   var FALLBACK     = 84;                  // ₹84 = $1 (used if API unavailable)
 
   /* -- State --------------------- */
   var inrPerUsd = FALLBACK;
-  var current   = localStorage.getItem(CURR_KEY) || 'INR';
+  var current   = localStorage.getItem(CURR_KEY) || 'USD';
 
   /* -- Formatting ---------------- */
   function fmt(inrAmt) {
@@ -75,6 +75,10 @@
       if (current === 'USD') refreshAllPrices();
       return;
     }
+
+    // USD is the store currency; keep catalogue prices aligned with Shopify's
+    // fixed import conversion rather than applying a second live FX change.
+    if (current === 'USD') return;
 
     // Fetch from open.er-api.com - free, CORS-enabled, updated daily
     fetch('https://open.er-api.com/v6/latest/USD')

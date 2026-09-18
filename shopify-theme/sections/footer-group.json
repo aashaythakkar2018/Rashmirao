@@ -15,7 +15,7 @@
       "blocks": {
         "c1": { "type": "menu", "settings": { "heading": "Collections" } },
         "c2": { "type": "menu", "settings": { "heading": "Studio" } },
-        "c3": { "type": "menu", "settings": { "heading": "Artists" } }
+        "c3": { "type": "menu", "settings": { "heading": "Artist" } }
       },
       "block_order": ["c1", "c2", "c3"],
       "settings": { "wordmark": "Rhytara" }

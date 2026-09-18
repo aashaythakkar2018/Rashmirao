@@ -21,6 +21,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "shopify", "products.csv")
 
 VENDOR = "Rhytara"
+INR_PER_USD = 84
+SAREE_PRICES_USD = {"44 inch": 295, "58 inch": 310}
 # Shopify pulls images over HTTP at import time, so they must be public URLs.
 # The repo is public, so raw.githubusercontent serves them directly.
 IMAGE_BASE = "https://raw.githubusercontent.com/aashaythakkar2018/Rashmirao/main/"
@@ -214,7 +216,8 @@ def main():
             r["Variant Inventory Qty"] = qty_from(p["specs"], sold)
             r["Variant Inventory Policy"] = "deny"
             r["Variant Fulfillment Service"] = "manual"
-            r["Variant Price"] = str(p["priceInr"])
+            price_usd = SAREE_PRICES_USD.get(opt_val, p["priceInr"] / INR_PER_USD)
+            r["Variant Price"] = f"{price_usd:.2f}"
             r["Variant Requires Shipping"] = "TRUE"
             r["Variant Taxable"] = "TRUE"
             r["Gift Card"] = "FALSE"
@@ -259,12 +262,12 @@ def main():
                 )
                 r["Status"] = "active"
             r["Option1 Name"] = "Denomination"
-            r["Option1 Value"] = f"Rs {inr:,} - {name}"
-            r["Variant SKU"] = f"RHY-GC-{inr}"
+            r["Option1 Value"] = f"USD {usd:,} - {name}"
+            r["Variant SKU"] = f"RHY-GC-{usd}"
             r["Variant Inventory Tracker"] = ""
             r["Variant Inventory Policy"] = "continue"
             r["Variant Fulfillment Service"] = "manual"
-            r["Variant Price"] = str(inr)
+            r["Variant Price"] = f"{usd:.2f}"
             r["Variant Requires Shipping"] = "FALSE"
             r["Variant Taxable"] = "FALSE"
             r["Gift Card"] = "TRUE"

@@ -500,7 +500,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
       </ul>
     </div>
     <div>
-      <p class="ft-hd">Artists</p>
+      <p class="ft-hd">Artist</p>
       <ul class="ft-links">
         <li><a href="about.html">Meet the Artist</a></li>
         <li><a href="https://www.rashmiraodesigns.com/" target="_blank" rel="noopener noreferrer">Explore the Art</a></li>
@@ -528,7 +528,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   const originalFormatPrice = window.formatPrice;
   if (typeof window.formatPrice === 'function') {
     window.formatPrice = function (inrAmt) {
-      const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD';
+      const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD';
       if (isUsd && giftCardUsdOverrides[inrAmt]) {
         return '$ ' + giftCardUsdOverrides[inrAmt].toLocaleString('en-US');
       }
@@ -554,7 +554,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
     const gcDisplay = document.getElementById('gcAmountDisplay');
     if (!gcDisplay) return;
     gcDisplay.setAttribute('data-price-inr', inrVal);
-    const isUsd = (localStorage.getItem('rrd_currency') || 'INR') === 'USD';
+    const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD';
     const fixedUsd = Number.isFinite(usdOverride) ? usdOverride : giftCardUsdOverrides[inrVal];
 
     if (isUsd && typeof fixedUsd === 'number') {
