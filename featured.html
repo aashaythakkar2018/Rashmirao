@@ -313,7 +313,8 @@
       transition: opacity .25s ease, visibility .25s ease;
     }
     .ny-lightbox.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
-    .ny-lightbox-image { display: block; max-width: min(92vw, 1200px); max-height: 86vh; width: auto; height: auto; object-fit: contain; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+    .ny-lightbox-image { display: block; max-width: min(92vw, 1200px); max-height: 86vh; width: auto; height: auto; object-fit: contain; box-shadow: 0 24px 70px rgba(0,0,0,.35); transition: transform .25s ease; }
+    .ny-lightbox.is-open .ny-lightbox-image { transform: scale(1.03); }
     .ny-lightbox-close { position: absolute; top: 22px; right: 28px; width: 44px; height: 44px; color: #FAF8F5; font-size: 30px; line-height: 1; border: 1px solid rgba(250,248,245,.35); border-radius: 50%; cursor: pointer; }
     .ny-lightbox-caption { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); color: rgba(250,248,245,.78); font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
     body.ny-lightbox-open { overflow: hidden; }
@@ -387,9 +388,10 @@
       border-bottom: 1px solid var(--beige);
       display: flex; flex-direction: column; justify-content: space-between;
     }
-    .recognition-image { width: calc(100% + (var(--sp-3) * 2)); height: 165px; margin: calc(var(--sp-3) * -1) calc(var(--sp-3) * -1) var(--sp-3); overflow: hidden; background: var(--beige); }
+    .recognition-image { width: calc(100% + (var(--sp-3) * 2)); height: 247.5px; margin: calc(var(--sp-3) * -1) calc(var(--sp-3) * -1) var(--sp-3); overflow: hidden; background: var(--beige); }
     .recognition-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
     .recognition-item:hover .recognition-image img { transform: scale(1.04); }
+    .recognition-image { cursor: zoom-in; }
     .recognition-place {
       color: var(--olive); font-family: var(--ff-mono);
       font-size: var(--fs-label); letter-spacing: .08em; text-transform: uppercase;
@@ -829,31 +831,31 @@
       </div>
       <div class="recognition-grid">
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/collection/echoes-of-earth-01.jpg" alt="Echoes Of Earth artwork" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/echoes-of-earth-recognition.jpg" alt="Echoes Of Earth artwork with First Place award" loading="lazy" decoding="async"></div>
           <span class="recognition-place">First Place &middot; 2025</span>
           <h3 class="recognition-work">Echoes of Earth</h3>
           <span class="recognition-source">Spring Art Show<br>Livermore</span>
         </article>
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/collection/grounding-nature-01.jpg" alt="Grounding Nature artwork" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/grounding-nature-recognition.jpg" alt="Grounding Nature artwork with Second Place award" loading="lazy" decoding="async"></div>
           <span class="recognition-place">Second Place &middot; 2025</span>
           <h3 class="recognition-work">Grounding Nature</h3>
           <span class="recognition-source">Spring Art Show<br>Livermore</span>
         </article>
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/collection/magical-pansies-04.jpg" alt="Cosmic Blossom artwork" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/cosmic-blossom-recognition.jpg" alt="Cosmic Blossom Honorable Mention recognition" loading="lazy" decoding="async"></div>
           <span class="recognition-place">Honorable Mention &middot; 2025</span>
           <h3 class="recognition-work">Cosmic Blossom</h3>
           <span class="recognition-source">FreshWorks XIII<br>Harrington Gallery</span>
         </article>
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/ny-exhibit/IMG_7931.JPG" alt="Grounding Nature artwork at New York exhibition" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/grounding-nature-vote.jpg" alt="Grounding Nature at the Vote for Favourite Artwork recognition" loading="lazy" decoding="async"></div>
           <span class="recognition-place">Second Place &middot; 2026</span>
           <h3 class="recognition-work">Grounding Nature</h3>
           <span class="recognition-source">Vote for Your Favorite Artwork<br>New York</span>
         </article>
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/ny-exhibit/IMG_7965.JPG" alt="Artist Talk Magazine exhibition moment" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/artist-talk-magazine.png" alt="Artist Talk Magazine recognition" loading="lazy" decoding="async"></div>
           <span class="recognition-place">Interview &middot; 2026</span>
           <h3 class="recognition-work">Artist Talk Magazine</h3>
           <span class="recognition-source">Six-page artist interview<br>Issue 45</span>
@@ -996,13 +998,14 @@ function closeAnn() {
     if (!image) return;
     lightboxImage.src = image.currentSrc || image.src;
     lightboxImage.alt = image.alt || 'Expanded New York exhibition image';
-    lightboxCaption.textContent = (tile.querySelector('.ny-exhibit-caption') || {}).textContent || '';
+    lightboxCaption.textContent = (tile.querySelector('.ny-exhibit-caption') ||
+      tile.closest('.recognition-item')?.querySelector('.recognition-work') || {}).textContent || '';
     lightbox.classList.add('is-open');
     document.body.classList.add('ny-lightbox-open');
     closeButton.focus();
   }
 
-  document.querySelectorAll('.ny-exhibit-image').forEach(function (tile) {
+  document.querySelectorAll('.ny-exhibit-image, .recognition-image').forEach(function (tile) {
     var tileImage = tile.querySelector('img');
     if (tileImage) {
       tile.style.setProperty('--tile-image', 'url("' + (tileImage.currentSrc || tileImage.src) + '")');

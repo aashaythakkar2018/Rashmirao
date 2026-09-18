@@ -32,7 +32,7 @@
   /* -- Formatting ---------------- */
   function fmt(inrAmt) {
     if (current === 'USD') {
-      var usd = Math.round(inrAmt / inrPerUsd);
+      var usd = Math.round(inrAmt / FALLBACK);
       return '$ ' + usd.toLocaleString('en-US');
     }
     return '₹ ' + parseInt(inrAmt, 10).toLocaleString('en-IN');
