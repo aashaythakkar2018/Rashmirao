@@ -29,13 +29,17 @@
   var inrPerUsd = FALLBACK;
   var current   = localStorage.getItem(CURR_KEY) || 'USD';
 
-  /* -- Formatting ---------------- */
+  /* -- Formatting ----------------
+     USD is the primary, stable price: it never moves with the exchange
+     rate. INR is a live-converted display of that fixed USD price, so it
+     tracks the real rate whenever someone toggles to it. */
   function fmt(inrAmt) {
+    var usd = Math.round(inrAmt / FALLBACK);
     if (current === 'USD') {
-      var usd = Math.round(inrAmt / FALLBACK);
       return '$ ' + usd.toLocaleString('en-US');
     }
-    return '₹ ' + parseInt(inrAmt, 10).toLocaleString('en-IN');
+    var inr = Math.round(usd * inrPerUsd);
+    return '₹ ' + inr.toLocaleString('en-IN');
   }
 
   /* -- DOM update ---------------- */
@@ -72,15 +76,13 @@
     // Use cached rate if it's fresh
     if (cached && (Date.now() - cacheTime) < CACHE_MS) {
       inrPerUsd = parseFloat(cached);
-      if (current === 'USD') refreshAllPrices();
+      if (current === 'INR') refreshAllPrices();
       return;
     }
 
-    // USD is the store currency; keep catalogue prices aligned with Shopify's
-    // fixed import conversion rather than applying a second live FX change.
-    if (current === 'USD') return;
-
-    // Fetch from open.er-api.com - free, CORS-enabled, updated daily
+    // Fetch from open.er-api.com - free, CORS-enabled, updated daily.
+    // Runs on every page load (not just when INR is active) so the rate is
+    // already warm and instant the moment someone toggles to INR.
     fetch('https://open.er-api.com/v6/latest/USD')
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -91,8 +93,8 @@
           inrPerUsd = data.rates.INR;
           localStorage.setItem(RATE_KEY, inrPerUsd);
           localStorage.setItem(TIME_KEY, Date.now());
-          // Refresh displayed prices with accurate rate
-          if (current === 'USD') refreshAllPrices();
+          // Refresh displayed prices with the live rate
+          if (current === 'INR') refreshAllPrices();
         }
       })
       .catch(function (err) {
@@ -125,8 +127,8 @@
    */
   window.initCurrency = function () {
     syncToggleUI();
-    if (current === 'USD') refreshAllPrices(); // apply saved preference immediately
-    fetchLiveRate();                           // update rate async (refreshes again if USD)
+    refreshAllPrices(); // apply saved preference immediately (fallback rate if INR and not yet live)
+    fetchLiveRate();    // update rate async (refreshes again once the live rate lands, if INR)
   };
 
 }());
