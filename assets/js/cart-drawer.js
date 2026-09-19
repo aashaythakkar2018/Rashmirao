@@ -154,7 +154,12 @@
       event.preventDefault();
       co.disabled = true;
       co.textContent = 'Redirecting…';
-      Cart.checkout();
+      Cart.checkout().catch(function (error) {
+        co.disabled = false;
+        co.textContent = 'Proceed to Checkout';
+        if (window.showToast) window.showToast(error.message || 'Checkout is unavailable.');
+        console.error('[Cart] Checkout failed', error);
+      });
     });
 
     var body = document.getElementById('cartBody');

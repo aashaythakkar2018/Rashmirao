@@ -207,7 +207,17 @@
     },
 
     checkout: function () {
-      if (state.checkoutUrl) window.location.href = state.checkoutUrl;
+      if (state.checkoutUrl) {
+        window.location.assign(state.checkoutUrl);
+        return Promise.resolve(state.checkoutUrl);
+      }
+      if (!state.id) return Promise.reject(new Error('Your cart is empty.'));
+      return fetchCart(state.id).then(function (cart) {
+        if (!cart || !cart.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
+        apply(cart);
+        window.location.assign(state.checkoutUrl);
+        return state.checkoutUrl;
+      });
     }
   };
 
