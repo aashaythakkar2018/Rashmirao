@@ -348,11 +348,11 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
         <span class="denom-label">Select Denomination</span>
         <div class="denom-grid" id="denomGrid">
           <div class="denom-card active" onclick="selectDenomCard(this, 9500, 100)">
-            <span class="denom-price" data-price-inr="9500">₹9,500</span>
+            <span class="denom-price" data-price-inr="9500" data-fixed-usd="100">$ 100</span>
             <span class="denom-title">The Thoughtful Gift</span>
           </div>
           <div class="denom-card" onclick="selectDenomCard(this, 15000, 150)">
-            <span class="denom-price" data-price-inr="15000">₹15,000</span>
+            <span class="denom-price" data-price-inr="15000" data-fixed-usd="150">$ 150</span>
             <span class="denom-title">The Signature Gift</span>
           </div>
         </div>
@@ -550,6 +550,19 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
     updateCardDisplay(inrVal, usdVal);
   }
 
+  function syncDenomCardPrices() {
+    const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD';
+    document.querySelectorAll('.denom-price[data-price-inr]').forEach(function (el) {
+      const inrVal = Number(el.dataset.priceInr || 0);
+      const fixedUsd = Number(el.dataset.fixedUsd || 0);
+      if (isUsd && fixedUsd > 0) {
+        el.textContent = '$ ' + fixedUsd.toLocaleString('en-US');
+        return;
+      }
+      el.textContent = '₹' + inrVal.toLocaleString('en-IN');
+    });
+  }
+
   function updateCardDisplay(inrVal, usdOverride) {
     const gcDisplay = document.getElementById('gcAmountDisplay');
     if (!gcDisplay) return;
@@ -591,10 +604,27 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
     }
   }
 
+  const originalToggleCurrency = window.toggleCurrency;
+  if (typeof originalToggleCurrency === 'function') {
+    window.toggleCurrency = function () {
+      originalToggleCurrency();
+      syncDenomCardPrices();
+    };
+  }
+
+  const originalInitCurrency = window.initCurrency;
+  if (typeof originalInitCurrency === 'function') {
+    window.initCurrency = function () {
+      originalInitCurrency();
+      syncDenomCardPrices();
+    };
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     if (typeof window.initCurrency === 'function') {
       window.initCurrency();
     }
+    syncDenomCardPrices();
     updateCardDisplay(currentInr);
   });
 </script>
