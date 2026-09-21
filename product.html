@@ -369,6 +369,8 @@
       color: var(--gold); margin-bottom: 18px;
     }
 
+    .price-was { text-decoration: line-through; color: var(--muted); font-size: .7em; font-weight: 300; opacity: .8; }
+    .price-now { color: inherit; }
     .pi-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
     .pi-price {
       font-family: var(--font-mono); font-size: 30px;
@@ -431,8 +433,34 @@
     .ships-in {
       display: flex; align-items: center; gap: 9px;
       font-size: 12px; color: var(--muted); font-weight: 300; padding: 12px 0;
+      font-family: var(--font-sans);
     }
     .ships-in svg { flex-shrink: 0; color: var(--olive); }
+
+    .product-copy-statement {
+      display: block;
+      margin: 10px 0 18px;
+      padding: 14px 0;
+      border-top: 1px solid var(--beige);
+      border-bottom: 1px solid var(--beige);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      color: var(--text);
+      font-weight: 500;
+      background: rgba(255,255,255,0.12);
+    }
+
+    #coaCopyStatement {
+      display: block;
+      margin-top: 12px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text);
+      font-weight: 300;
+    }
 
     /* -- Trust badges -- */
     .trust-badges {
@@ -897,6 +925,7 @@
         </svg>
         Ships in 4-6 weeks. Archival foam packaging, fully insured
       </div>
+      <p class="product-copy-statement" id="productCopyStatement"></p>
 
       <!-- Trust badges -->
       <div class="trust-badges" id="trustBadges">
@@ -994,7 +1023,8 @@
           </button>
           <div class="acc-body"><div class="acc-content">
             Every original work ships with a hand-signed physical certificate, embossed with the studio seal, catalogued with a unique registration number. A digital PDF version is emailed for insurance and resale purposes.<br/><br/>
-            The certificate documents: title, year, medium, dimensions, edition status, and provenance history.
+            The certificate documents: title, year, medium, dimensions, edition status, and provenance history.<br/><br/>
+            <span id="coaCopyStatement" class="coa-copy-statement"></span>
           </div></div>
         </div>
       </div>
@@ -1127,7 +1157,7 @@
 
   <!-- Currency module -->
   <script src="assets/js/site.js" defer></script>
-  <script src="assets/js/currency.js?v=3" onerror="console.warn('currency.js not found - using INR defaults')"></script>
+  <script src="assets/js/currency.js?v=4" onerror="console.warn('currency.js not found - using INR defaults')"></script>
 
   <!-- ------------------------------------
        FRAMER MOTION v11 - Vanilla JS / ESM
@@ -1139,6 +1169,8 @@
     /* -------------------------------------------
        ALL PRODUCTS - add more products here to scale
        ------------------------------------------- */
+    const PRODUCT_COPY_STATEMENT = '© RHYTARA — The artwork, design, and printed fabric are protected intellectual property and may not be reproduced, altered, cut, or repurposed to create dresses, garments, accessories, or derivative products without prior written authorization.'
+
     const PRODUCTS = {
       'monsoon-dream': {
         title: 'Echoes Of Earth',
@@ -1317,7 +1349,17 @@
       if (aboutContent) {
         const paragraphs = P.description.split('\n\n')
           .map(paragraph => `<p>${paragraph}</p>`).join('')
-        aboutContent.innerHTML = paragraphs + (P.quote ? `<em>${P.quote}</em>` : '')
+        aboutContent.innerHTML = paragraphs + (P.quote ? `<em>${P.quote}</em>` : '') + `<p><strong>Product Copy:</strong> ${PRODUCT_COPY_STATEMENT}</p>`
+      }
+
+      const productCopyStatement = document.getElementById('productCopyStatement')
+      if (productCopyStatement) {
+        productCopyStatement.textContent = PRODUCT_COPY_STATEMENT
+      }
+
+      const coaCopyStatement = document.getElementById('coaCopyStatement')
+      if (coaCopyStatement) {
+        coaCopyStatement.textContent = PRODUCT_COPY_STATEMENT
       }
 
       // Dimensions & Specifications table
@@ -1628,13 +1670,14 @@
 
     function updatePrices() {
       if (window.formatPrice) {
-        document.getElementById('productPrice').textContent = window.formatPrice(selectedPriceInr)
+        document.getElementById('productPrice').innerHTML = window.formatOfferPriceHtml(selectedPriceInr)
         const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD'
         document.getElementById('priceLabel').textContent = isUsd ? 'MRP (USD)' : 'MRP (INR)'
         document.querySelectorAll('.rel-price[data-inr]').forEach(el => {
           const inr = parseInt(el.dataset.inr)
           const isSold = el.classList.contains('sold')
-          el.textContent = window.formatPrice(inr) + (isSold ? ' (Sold)' : '')
+          if (isSold) el.textContent = window.formatPrice(inr) + ' (Sold)'
+          else el.innerHTML = window.formatOfferPriceHtml(inr)
         })
       }
     }
@@ -1667,7 +1710,7 @@
 <script src="assets/js/shopify-config.js"></script>
 <script src="assets/js/shopify.js?v=2"></script>
 <script src="assets/js/cart.js?v=2"></script>
-<script src="assets/js/cart-drawer.js?v=2"></script>
+<script src="assets/js/cart-drawer.js?v=3"></script>
 <script src="assets/js/static-shopify-bridge.js?v=2"></script>
 </body>
 </html>

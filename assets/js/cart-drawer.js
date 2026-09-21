@@ -21,6 +21,12 @@
     return '₹ ' + (parseInt(inr, 10) || 0).toLocaleString('en-IN');
   }
 
+  function isGift(line) { return /gift/i.test(line.title || ''); }
+  function fmtOfferLine(line, inr) {
+    if (isGift(line) || typeof window.formatOfferPriceHtml !== 'function') return fmt(inr);
+    return window.formatOfferPriceHtml(inr);
+  }
+
   /* -- Inject markup ------------------------------------------------------- */
   function ensureMarkup() {
     if (document.getElementById('cartDrawer')) return;
@@ -116,7 +122,7 @@
           '<div class="cart-item-info">' +
             '<div class="cart-item-name">' + esc(line.title) + '</div>' +
             '<div class="cart-item-sub">' + esc(subLine(line)) + '</div>' +
-            '<div class="cart-item-price">' + fmt(line.lineTotalInr || line.priceInr * line.quantity) + '</div>' +
+            '<div class="cart-item-price">' + fmtOfferLine(line, line.lineTotalInr || line.priceInr * line.quantity) + '</div>' +
             '<div class="cart-qty">' +
               '<button class="cart-qty-btn" type="button" data-act="dec" aria-label="Decrease quantity">−</button>' +
               '<span class="cart-qty-val">' + line.quantity + '</span>' +
@@ -128,7 +134,14 @@
     }).join('');
 
     var total = document.getElementById('cartTotal');
-    if (total) total.textContent = fmt(c.subtotalInr);
+    if (total) {
+      var allArt = c.lines.every(function (l) { return !isGift(l); });
+      if (allArt && typeof window.formatOfferPriceHtml === 'function') {
+        total.innerHTML = window.formatOfferPriceHtml(c.subtotalInr);
+      } else {
+        total.textContent = fmt(c.subtotalInr);
+      }
+    }
   }
   window.renderCart = render;
 

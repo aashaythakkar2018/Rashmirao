@@ -42,12 +42,42 @@
     return '₹ ' + inr.toLocaleString('en-IN');
   }
 
+  /* -- Launch offer ----------------
+     15% off for the first month. Display-only: the matching discount must
+     also exist in Shopify (automatic discount) so checkout charges the same.
+     After OFFER_END the site reverts to plain prices on its own. */
+  var OFFER_PCT = 15;
+  var OFFER_END = new Date('2026-10-21T23:59:59+05:30');
+
+  function offerActive() { return Date.now() <= OFFER_END.getTime(); }
+
+  function money(amount, cur) {
+    if (cur === 'USD') {
+      return '$ ' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    return '₹ ' + Math.round(amount).toLocaleString('en-IN');
+  }
+
+  /* Discounted price string, computed from the fixed USD price. */
+  function fmtOffer(inrAmt) {
+    var usd = Math.round(inrAmt / FALLBACK) * (100 - OFFER_PCT) / 100;
+    return current === 'USD' ? money(usd, 'USD') : money(usd * inrPerUsd, 'INR');
+  }
+
+  /* HTML: struck-through original + real (discounted) amount. */
+  function fmtOfferHtml(inrAmt) {
+    if (!offerActive()) return fmt(inrAmt);
+    return '<s class="price-was">' + fmt(inrAmt) + '</s> <span class="price-now">' + fmtOffer(inrAmt) + '</span>';
+  }
+
   /* -- DOM update ---------------- */
   function refreshAllPrices() {
     document.querySelectorAll('[data-price-inr]').forEach(function (el) {
       var inr  = parseInt(el.dataset.priceInr, 10);
       var sold = el.dataset.sold === 'true';
-      el.textContent = sold ? fmt(inr) + ' (Sold)' : fmt(inr);
+      if (sold) { el.textContent = fmt(inr) + ' (Sold)'; return; }
+      if (el.hasAttribute('data-no-offer')) { el.textContent = fmt(inr); return; }
+      el.innerHTML = fmtOfferHtml(inr);
     });
     // Re-render cart if the page has one
     if (typeof window.renderCart === 'function') {
@@ -120,6 +150,11 @@
   window.formatPrice = function (inrAmt) {
     return fmt(inrAmt);
   };
+
+  /** HTML with the original struck through and the offer price beside it. */
+  window.formatOfferPriceHtml = fmtOfferHtml;
+  window.offerActive = offerActive;
+  window.OFFER_PCT = OFFER_PCT;
 
   /**
    * Call once after DOM ready (e.g. at the bottom of each page's <script>).

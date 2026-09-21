@@ -934,6 +934,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
 @media (max-width: 480px) {
   .artwork-grid { grid-template-columns: 1fr; }
 }
+.price-was { text-decoration: line-through; color: var(--muted); font-weight: 300; margin-right: 6px; opacity: .8; }
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
@@ -942,7 +943,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
 
 <!-- ========== ANNOUNCEMENT ========== -->
 <div class="ann" id="ann">
-  New In: Nature's Rhythm
+  Launch offer: 15% off for the first month. Nature's Rhythm, the first collection from Rhytara.
   <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">×</button>
 </div>
 
@@ -1006,7 +1007,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
             <span class="hero-stat-l">Works Available</span>
           </div>
           <div>
-            <span class="hero-stat-n">2024</span>
+            <span class="hero-stat-n">2026</span>
             <span class="hero-stat-l">Latest Series</span>
           </div>
           <div>
@@ -1413,7 +1414,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- Shared currency module (live rate + INR↔USD toggle) -->
-<script src="assets/js/currency.js?v=3"></script>
+<script src="assets/js/currency.js?v=4"></script>
 <script src="assets/js/site.js" defer></script>
 
 <!-- ========== SCRIPTS ========== -->
@@ -1806,7 +1807,7 @@ if (typeof gsap !== 'undefined') {
 <script src="assets/js/shopify-config.js"></script>
 <script src="assets/js/shopify.js?v=2"></script>
 <script src="assets/js/cart.js?v=2"></script>
-<script src="assets/js/cart-drawer.js?v=2"></script>
+<script src="assets/js/cart-drawer.js?v=3"></script>
 <script src="assets/js/static-shopify-bridge.js?v=2"></script>
 </body>
 </html>

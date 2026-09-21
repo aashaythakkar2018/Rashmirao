@@ -230,6 +230,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
 @media(max-width:1100px){.hero-split{grid-template-columns:1fr;gap:48px;}.configurator-layout{grid-template-columns:1fr;gap:52px;}.steps-grid{grid-template-columns:1fr 1fr;gap:24px;}.dark-cta-inner{flex-direction:column;gap:40px;}.ft-grid{grid-template-columns:1fr 1fr;gap:44px;}}
 @media(max-width:768px){
   .wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.nav-links{display:none;}.nav-burger{display:flex;}.section{padding:72px 0;}.page-hero{padding-top:130px;padding-bottom:56px;}.denom-grid{grid-template-columns:1fr;}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
+.price-was { text-decoration: line-through; color: var(--muted); font-weight: 300; margin-right: 6px; opacity: .8; }
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
@@ -238,7 +239,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
 
 <!-- ANNOUNCEMENT BAR -->
 <div class="ann" id="ann">
-  Gift a Little Rhytara — Give the gift of art, beauty, and a story to wear
+  Launch offer: 15% off for the first month. Nature's Rhythm, the first collection from Rhytara.
   <button class="ann-close" onclick="closeAnn()" aria-label="Close announcement">×</button>
 </div>
 
@@ -313,7 +314,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
               </div>
               <div style="text-align:right;">
                 <span class="gc-amount-label">Gift Value</span>
-                <div class="gc-amount-display" id="gcAmountDisplay" data-price-inr="9500">₹9,500</div>
+                <div class="gc-amount-display" id="gcAmountDisplay" data-no-offer data-price-inr="9500">$ 100</div>
               </div>
             </div>
             <div class="gc-mid">
@@ -348,11 +349,11 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
         <span class="denom-label">Select Denomination</span>
         <div class="denom-grid" id="denomGrid">
           <div class="denom-card active" onclick="selectDenomCard(this, 9500, 100)">
-            <span class="denom-price" data-price-inr="9500" data-fixed-usd="100">$ 100</span>
+            <span class="denom-price" data-no-offer data-price-inr="9500" data-fixed-usd="100">$ 100</span>
             <span class="denom-title">The Thoughtful Gift</span>
           </div>
           <div class="denom-card" onclick="selectDenomCard(this, 15000, 150)">
-            <span class="denom-price" data-price-inr="15000" data-fixed-usd="150">$ 150</span>
+            <span class="denom-price" data-no-offer data-price-inr="15000" data-fixed-usd="150">$ 150</span>
             <span class="denom-title">The Signature Gift</span>
           </div>
         </div>
@@ -515,7 +516,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
 
 <div class="toast" id="toast">Gift card request processed!</div>
 
-<script src="assets/js/currency.js?v=3"></script>
+<script src="assets/js/currency.js?v=4"></script>
 <script src="assets/js/site.js" defer></script>
 <script>
   let currentInr = 9500;
@@ -529,11 +530,20 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   if (typeof window.formatPrice === 'function') {
     window.formatPrice = function (inrAmt) {
       const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD';
-      if (isUsd && giftCardUsdOverrides[inrAmt]) {
-        return '$ ' + giftCardUsdOverrides[inrAmt].toLocaleString('en-US');
+      const usdOverride = giftCardUsdOverrides[inrAmt];
+      if (isUsd && Number.isFinite(usdOverride)) {
+        return '$ ' + usdOverride.toLocaleString('en-US');
       }
       return originalFormatPrice(inrAmt);
     };
+  }
+
+  function getGiftCardUsdValue(inrVal) {
+    const key = Number(inrVal);
+    if (Object.prototype.hasOwnProperty.call(giftCardUsdOverrides, key)) {
+      return Number(giftCardUsdOverrides[key]);
+    }
+    return null;
   }
 
   function closeAnn() {
@@ -566,20 +576,17 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   function updateCardDisplay(inrVal, usdOverride) {
     const gcDisplay = document.getElementById('gcAmountDisplay');
     if (!gcDisplay) return;
-    gcDisplay.setAttribute('data-price-inr', inrVal);
+    const numericInr = Number(inrVal) || 0;
+    gcDisplay.setAttribute('data-price-inr', numericInr);
     const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD';
-    const fixedUsd = Number.isFinite(usdOverride) ? usdOverride : giftCardUsdOverrides[inrVal];
+    const fixedUsd = Number.isFinite(usdOverride) ? usdOverride : getGiftCardUsdValue(numericInr);
 
-    if (isUsd && typeof fixedUsd === 'number') {
+    if (isUsd && fixedUsd !== null && Number.isFinite(fixedUsd)) {
       gcDisplay.textContent = '$ ' + fixedUsd.toLocaleString('en-US');
       return;
     }
 
-    if (typeof window.formatPrice === 'function') {
-      gcDisplay.textContent = window.formatPrice(inrVal);
-    } else {
-      gcDisplay.textContent = '₹' + inrVal.toLocaleString('en-IN');
-    }
+    gcDisplay.textContent = '₹' + numericInr.toLocaleString('en-IN');
   }
 
   function updateCardName(val) {
@@ -604,28 +611,21 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
     }
   }
 
-  const originalToggleCurrency = window.toggleCurrency;
-  if (typeof originalToggleCurrency === 'function') {
-    window.toggleCurrency = function () {
-      originalToggleCurrency();
-      syncDenomCardPrices();
-    };
-  }
+  window.toggleCurrency = function () {
+    const currentCurrency = (localStorage.getItem('rrd_currency_v2') || 'USD');
+    const nextCurrency = currentCurrency === 'USD' ? 'INR' : 'USD';
+    localStorage.setItem('rrd_currency_v2', nextCurrency);
+    syncDenomCardPrices();
+    updateCardDisplay(currentInr, getGiftCardUsdValue(currentInr));
+  };
 
-  const originalInitCurrency = window.initCurrency;
-  if (typeof originalInitCurrency === 'function') {
-    window.initCurrency = function () {
-      originalInitCurrency();
-      syncDenomCardPrices();
-    };
-  }
+  window.initCurrency = function () {
+    syncDenomCardPrices();
+    updateCardDisplay(currentInr, getGiftCardUsdValue(currentInr));
+  };
 
   document.addEventListener('DOMContentLoaded', function () {
-    if (typeof window.initCurrency === 'function') {
-      window.initCurrency();
-    }
-    syncDenomCardPrices();
-    updateCardDisplay(currentInr);
+    window.initCurrency();
   });
 </script>
 </body>
