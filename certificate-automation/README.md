@@ -1,13 +1,15 @@
 # Rhytara — Certificate of Authenticity System
 
-A small backend + dashboard for manually issuing Certificate of Authenticity
-PDFs and emailing them to customers. There is **no Shopify integration** —
+A small local backend + dashboard for generating Certificate of Authenticity
+PDFs. There is **no Shopify integration** and **no automatic emailing** —
 every certificate is created by a staff member typing in the details on the
-dashboard.
+dashboard, downloading the PDF, and attaching/sending it themselves (e.g.
+from their own Gmail).
 
-This is a **separate backend service**. It does not modify, replace, or
-depend on the existing Rhytara static frontend (`index.html` / `shop.html` /
-etc. one level up).
+This is a **separate backend service**, and it runs **locally only** — not
+deployed anywhere public. It does not modify, replace, or depend on the
+existing Rhytara static frontend (`index.html` / `shop.html` / etc. one
+level up).
 
 ---
 
@@ -20,12 +22,18 @@ etc. one level up).
    design** — a duplicate is rejected outright, never silently allowed.
 3. It renders a Certificate of Authenticity PDF from
    [`templates/certificate.html`](templates/certificate.html), stores it,
-   and generates a secure download URL.
-4. It emails the customer a proper thank-you note with a download button
-   for their certificate.
+   and generates a download link, which opens automatically in a new tab.
+4. The staff member downloads that PDF and sends it to the customer
+   themselves (attach it to an email, WhatsApp it, however they normally
+   communicate with clients).
 5. The dashboard shows every certificate issued — name, design, edition
    number, status — searchable and filterable, with the ability to correct
-   a customer's name and resend, or retry one that failed.
+   a customer's name and regenerate the PDF.
+
+There is a working email-sending subsystem in the code
+(`src/services/email/`, including a Gmail provider) that was built earlier
+and then deliberately disconnected from the issuance flow at the user's
+request — see section 9 if you ever want to turn automatic sending back on.
 
 ---
 
@@ -41,12 +49,10 @@ issueCertificate(input)
         │      UNIQUE (design_code, certificate_number) constraint to
         │      reject a duplicate number for that design outright
         │
-        ├─► generateAndStoreCertificate()
-        │      ├─ buildCertificateTemplateData()
-        │      ├─ renderCertificatePdf()      (Puppeteer)
-        │      └─ CertificateStorage.upload()  (S3 or local)
-        │
-        └─► EmailProvider.send()  →  markEmailed()
+        └─► generateAndStoreCertificate()
+               ├─ buildCertificateTemplateData()
+               ├─ renderCertificatePdf()      (Puppeteer)
+               └─ CertificateStorage.upload()  (local, by default)
 ```
 
 **Duplicate protection** is a single database constraint:
@@ -56,19 +62,12 @@ and Grounding Nature), but never twice for the same design — enforced by
 Postgres itself, not just application logic, so it holds even under
 concurrent requests.
 
-**Replaceable pieces**, each behind a small interface so swapping providers
-is a config change, not a rewrite:
-- `services/storage/CertificateStorage.ts` — `LocalCertificateStorage` (dev)
-  or `S3CertificateStorage` (production, any S3-compatible provider).
-- `services/email/EmailProvider.ts` — `ConsoleEmailProvider` (dev, just logs)
-  or `ResendEmailProvider` (production).
-
 ---
 
 ## 3. Admin dashboard
 
-A browser dashboard at `/admin/dashboard` (served by this same service — no
-separate deploy). It shows:
+A browser dashboard at `/admin/dashboard` (served by this same local
+service). It shows:
 
 - **Totals** — how many certificates issued, by status, and a per-design
   breakdown (how many of each design's edition have gone out).
@@ -78,23 +77,19 @@ separate deploy). It shows:
   number instead; nothing is auto-generated behind your back.
 - **Search/filter** by customer name, email, order number, design, or
   status.
-- **Fix a wrong name and resend** — click *Edit name*, correct it, *Save*,
-  then *Resend*. Resend regenerates the certificate PDF from the corrected
-  data and emails it immediately.
-- **Retry a failed one** — if generation or sending failed (a transient
-  render/upload/email error), the same *Resend* button tries again with
-  the same stored data.
+- **Download the PDF** — every row with a generated certificate has a
+  Download PDF link.
+- **Fix a wrong name** — click *Edit name*, correct it, *Save*, then
+  *Regenerate PDF* to get a corrected certificate reflecting the fix.
+- **Retry a failed one** — if PDF generation failed (a transient
+  render/upload error), the same *Regenerate PDF* button tries again.
 
 It auto-refreshes every 15 seconds so multiple staff members see the same
 up-to-date list.
 
-**Access:** open `https://YOUR_BACKEND_DOMAIN/admin/dashboard`, enter the
+**Access:** open `http://localhost:3000/admin/dashboard`, enter the
 `ADMIN_API_TOKEN` value once (stored in that browser's local storage, sent
-as the `x-admin-token` header on every API call). The dashboard page itself
-has no login wall — anyone with the URL can see the empty shell — but no
-data loads and no action works without the correct token. Put this behind
-your host's IP allowlist or basic auth if it needs to be off-limits to more
-than "anyone who knows the URL and the token."
+as the `x-admin-token` header on every API call).
 
 ---
 
@@ -145,27 +140,36 @@ DATA=~/.local/rhytara-postgres/data
 It needs to be running (`pg_ctl ... start`) before `npm run migrate` or
 `npm run dev`/`npm start` will work. It does **not** start automatically on
 login — start it manually, or set up a `launchd` agent if you want it
-always running. This is a fine setup for local development; for production,
-use a managed Postgres (RDS, Neon, Supabase, Railway Postgres, etc.).
+always running.
+
+### Running the dashboard day to day
+
+```bash
+cd certificate-automation
+~/.local/rhytara-postgres/pg17/bin/pg_ctl -D ~/.local/rhytara-postgres/data -l ~/.local/rhytara-postgres/logfile -o "-p 5433 -k /tmp" start
+npm run dev
+```
+
+Then open `http://localhost:3000/admin/dashboard` in a browser on this Mac.
+Leave the terminal running while you use it; `Ctrl+C` stops the server.
 
 ---
 
 ## 5. Environment variables
 
-See [`.env.example`](.env.example) for the full, commented list. Summary:
+See [`.env.example`](.env.example) for the full, commented list. The ones
+that actually matter for the local, PDF-only workflow:
 
 | Variable | Purpose |
 |---|---|
-| `EMAIL_PROVIDER` | `resend` or `console` |
-| `EMAIL_FROM`, `EMAIL_REPLY_TO`, `EMAIL_API_KEY` | Transactional email config — set `EMAIL_FROM` to your real business email once a provider is configured |
-| `CERTIFICATE_STORAGE_PROVIDER` | `s3` or `local` |
-| `CERTIFICATE_STORAGE_*` | Bucket/region/credentials/endpoint for `s3` |
-| `CERTIFICATE_LINK_SECRET` | Signs local-storage download links (`local` provider only) |
+| `CERTIFICATE_STORAGE_PROVIDER` | `local` (default, fine for this use case) or `s3` |
+| `CERTIFICATE_LINK_SECRET` | Signs local-storage download links |
 | `APP_BASE_URL`, `PORT` | This service's own URL and port |
 | `DATABASE_URL` | Postgres connection string |
-| `CERTIFICATE_TEST_MODE` | `true` routes every email to `TEST_EMAIL` instead of the real customer |
-| `TEST_EMAIL` | Recipient used while `CERTIFICATE_TEST_MODE=true` |
 | `ADMIN_API_TOKEN` | Required header value (`x-admin-token`) for `/admin/dashboard/api/*` — also what you type into the dashboard's login screen |
+
+The `EMAIL_*` / `GMAIL_*` variables are only relevant if you turn automatic
+sending back on (section 9) — otherwise leave them as-is.
 
 Never commit `.env`. `.env.example` contains no real secrets.
 
@@ -181,13 +185,11 @@ npm run migrate
 ```
 
 Re-running `npm run migrate` is safe — already-applied files are skipped.
-Add new migrations as `002_*.sql`, `003_*.sql`, etc.
 
 The one table, `certificates`, holds every issued (or attempted)
 certificate — order number, customer name/email, design, certificate
 number, edition size, status, PDF URL, and timestamps. See
-[`migrations/001_init.sql`](migrations/001_init.sql) for the full schema
-and the reasoning behind the unique constraint.
+[`migrations/001_init.sql`](migrations/001_init.sql) for the full schema.
 
 ---
 
@@ -218,7 +220,7 @@ into the dashboard's "Issue certificate" form (case-insensitive). Fields:
     "collection": "Nature's Rhythm",
     "code": "EOE",
     "editionTotal": 250,
-    "story": "The certificate/email copy for this design."
+    "story": "The certificate copy for this design."
   }
 }
 ```
@@ -228,104 +230,45 @@ into the dashboard's "Issue certificate" form (case-insensitive). Fields:
 - `editionTotal` is the denominator shown on the certificate (e.g. "037 of
   250") and the default pre-filled on the dashboard form — override it per
   certificate on the form if a particular design's edition size differs.
-- Changes are picked up within 60 seconds without restarting the service
-  (the file is re-read periodically, not cached forever).
+- Changes are picked up within 60 seconds without restarting the service.
 
 ---
 
-## 9. Email configuration
+## 9. Turning automatic email sending back on
 
-Set `EMAIL_PROVIDER=resend` and `EMAIL_API_KEY` to your Resend API key for
-production, and `EMAIL_FROM` to your real business email address (once its
-sending domain is verified with the provider). `EMAIL_PROVIDER=console`
-(the default) logs the email instead of sending anything — useful for local
-development without a real provider.
+The code for this already exists and was tested working — it's just not
+called from the issuance flow anymore. If you want it back:
 
-To use a different provider (SendGrid, Postmark, SES, etc.), implement
-`EmailProvider` (`src/services/email/EmailProvider.ts`) the same way
-`ResendEmailProvider` does, add it to the switch in
-`src/services/email/index.ts`, and point `EMAIL_PROVIDER` at it.
-
-The email body template — a proper thank-you note, not just a receipt — is
-[`templates/email.html`](templates/email.html).
-
----
-
-## 10. Test mode
-
-```
-CERTIFICATE_TEST_MODE=true
-TEST_EMAIL=you@example.com
-```
-
-While `true`: certificates are generated and stored for real, and the
-certificate URL is logged, but the email always goes to `TEST_EMAIL`
-instead of the real customer — regardless of what was typed into the form.
-
-Set `CERTIFICATE_TEST_MODE=false` to email real customers.
+1. In `src/certificates/issueCertificate.ts`, `issueCertificate()` and
+   `regenerateCertificate()` used to also build and send an email after
+   generating the PDF — see git history (the commit that added
+   `certificate-automation/`) for the exact code, which called
+   `buildCertificateEmailHtml()` and `getEmailProvider().send()`.
+2. Set `EMAIL_PROVIDER=gmail` (sends via a real Gmail inbox using an App
+   Password) or `EMAIL_PROVIDER=resend` (a dedicated transactional
+   provider, sends as your own verified domain) in `.env`.
+3. For Gmail: set `GMAIL_USER` and `GMAIL_APP_PASSWORD` (a 16-character
+   code from https://myaccount.google.com/apppasswords — requires 2-Step
+   Verification on that account first).
+4. Keep `CERTIFICATE_TEST_MODE=true` and `TEST_EMAIL` set to your own
+   address while testing, so nothing goes to a real customer by accident.
 
 ---
 
-## 11. Production deployment
-
-This is a standard Node.js HTTP service — it runs on any common Node
-hosting environment (Render, Railway, Fly.io, a VM behind nginx, ECS/Fargate,
-etc.). It does **not** require Vercel/Netlify (Puppeteer's headless
-Chromium is not a good fit for typical serverless function limits).
-
-```bash
-npm install
-npm run build       # compiles TypeScript → dist/
-npm run migrate      # apply migrations against the production DATABASE_URL
-npm start             # runs dist/src/index.js
-```
-
-Checklist:
-- [ ] `DATABASE_URL` points at a real Postgres instance (managed Postgres —
-      RDS, Neon, Supabase, Railway Postgres, etc. — all work).
-- [ ] `CERTIFICATE_STORAGE_PROVIDER=s3`, bucket is **private**, credentials
-      set. Never use `local` storage in production — it isn't durable
-      across deploys/restarts on most hosts.
-- [ ] `EMAIL_PROVIDER=resend` (or your chosen provider), `EMAIL_API_KEY` set,
-      `EMAIL_FROM` is your real business address, sending domain verified.
-- [ ] `CERTIFICATE_TEST_MODE=false`.
-- [ ] `APP_BASE_URL` is this service's real public HTTPS URL.
-- [ ] `ADMIN_API_TOKEN` is a long random value — this is the password for
-      the dashboard, which can edit and resend every certificate.
-
----
-
-## 12. Troubleshooting
+## 10. Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
-| "Certificate number N has already been issued for X" | Someone already issued that exact number for that design. Check the dashboard's search for it — if it's a genuine mistake on the existing one, edit/resend that one instead of trying to create a second. |
-| Certificate generated but no email received | Check `CERTIFICATE_TEST_MODE` — if `true`, the email went to `TEST_EMAIL`, not the customer. |
+| "Certificate number N has already been issued for X" | Someone already issued that exact number for that design. Search the dashboard for it — if it's a genuine mistake, edit/regenerate that one instead of creating a second. |
 | PDF looks wrong / missing images | Brand assets not yet added under `assets/` — see section 7. Missing images render as blank, not an error. |
 | Dashboard shows "Unauthorized" | Wrong `x-admin-token` — check for typos when copying `ADMIN_API_TOKEN` out of `.env`. |
-| `/admin/dashboard/api/*` returns 503 | `ADMIN_API_TOKEN` isn't set in the environment — the API refuses to run without it. |
+| Dashboard won't load at all | Is the local Postgres running (`pg_ctl ... status`)? Is `npm run dev` still running in a terminal? |
 
 ---
 
-## 13. Design decisions worth knowing about
+## 11. What's still a placeholder
 
-- **No Shopify integration.** An earlier version of this system read order
-  data from Shopify via webhooks; that entire integration was removed in
-  favor of manual entry, since the actual business need was a simple,
-  fully-controlled issuance workflow, not automation tied to checkout.
-- **Duplicate protection is a database constraint, not just a check in
-  code** — `UNIQUE (design_code, certificate_number)` — so it holds even
-  under concurrent requests, not just in the common case.
-- **Certificate numbers are never auto-assigned.** The dashboard suggests
-  the next unused number per design, but the field is always editable —
-  staff have full control, per the original requirement.
-
----
-
-## 14. What's still a placeholder
-
-These are intentionally not invented and must be supplied before going
-live:
+These are intentionally not invented and must be supplied before real use:
 
 - `config/designs.json` → each design's real `story` text.
 - `assets/logo/` → the Rhytara logo.

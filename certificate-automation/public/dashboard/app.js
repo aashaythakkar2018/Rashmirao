@@ -101,10 +101,9 @@
 
   // ------------------------------------------------------------- stats --
   function renderStats(stats) {
-    var order = ['emailed', 'generated', 'processing', 'pending', 'failed'];
+    var order = ['generated', 'processing', 'pending', 'failed'];
     var labels = {
-      emailed: 'Emailed',
-      generated: 'Generated',
+      generated: 'Ready to download',
       processing: 'Processing',
       pending: 'Pending',
       failed: 'Failed',
@@ -174,21 +173,10 @@
   });
 
   // ------------------------------------------------------------ meta ----
-  async function loadMeta() {
-    try {
-      var r = await api('/meta');
-      var meta = r.json;
-      var badge = document.getElementById('modeBadge');
-      if (meta.testMode) {
-        badge.textContent = 'Test mode — emails go to ' + (meta.testEmail || 'TEST_EMAIL');
-        badge.className = 'badge';
-      } else {
-        badge.textContent = 'Live — emailing real customers';
-        badge.className = 'badge live';
-      }
-    } catch (err) {
-      // handled by api()
-    }
+  function showModeBadge() {
+    var badge = document.getElementById('modeBadge');
+    badge.textContent = 'PDF only — download and send manually';
+    badge.className = 'badge';
   }
 
   // -------------------------------------------------------- certificates --
@@ -227,15 +215,15 @@
     }
 
     var certCell = cert.certificate_url
-      ? '<a href="' + cert.certificate_url + '" target="_blank" rel="noopener">View PDF</a>'
+      ? '<a href="' + cert.certificate_url + '" target="_blank" rel="noopener" download>Download PDF</a>'
       : '<span class="muted">—</span>';
 
     var actions = '<div class="action-btns">';
     if (!isEditing) {
       actions += '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Edit name</button>';
     }
-    actions += '<button class="btn btn-sm btn-primary" data-action="resend" data-id="' + cert.id + '">' +
-      (cert.status === 'emailed' ? 'Resend' : 'Generate &amp; send') + '</button>';
+    actions += '<button class="btn btn-sm btn-primary" data-action="regenerate" data-id="' + cert.id + '">' +
+      (cert.status === 'generated' ? 'Regenerate PDF' : 'Generate PDF') + '</button>';
     actions += '</div>';
     if (cert.error_message) {
       actions += '<div class="muted" style="margin-top:6px;max-width:220px;font-size:11px;">' + esc(cert.error_message) + '</div>';
@@ -309,7 +297,7 @@
       btn.disabled = true;
       try {
         await api('/certificates/' + id, { method: 'PATCH', body: { customerFirstName: first, customerLastName: last } });
-        toast('Name updated. Click "Resend" to send a corrected certificate.');
+        toast('Name updated. Click "Regenerate PDF" to get a corrected certificate.');
         state.editingId = null;
         loadCertificates();
       } catch (err) {
@@ -318,19 +306,18 @@
       }
       return;
     }
-    if (action === 'resend') {
-      if (!confirm('Regenerate the certificate PDF and email it now?')) return;
+    if (action === 'regenerate') {
       btn.disabled = true;
-      btn.textContent = 'Sending…';
+      btn.textContent = 'Generating…';
       try {
-        await api('/certificates/' + id + '/resend', { method: 'POST' });
-        toast('Certificate generated and sent.');
+        await api('/certificates/' + id + '/regenerate', { method: 'POST' });
+        toast('Certificate PDF is ready.');
         loadCertificates();
         loadStats();
       } catch (err) {
-        toast('Send failed: ' + err.message, true);
+        toast('Generation failed: ' + err.message, true);
         btn.disabled = false;
-        btn.textContent = 'Resend';
+        btn.textContent = 'Regenerate PDF';
       }
       return;
     }
@@ -361,15 +348,17 @@
     if (!body.certificateNumber) { issueError.textContent = 'Enter a certificate number.'; return; }
 
     issueSubmit.disabled = true;
-    issueStatus.textContent = 'Generating certificate and sending email…';
+    issueStatus.textContent = 'Generating certificate PDF…';
 
     try {
       var r = await api('/certificates', { method: 'POST', body: body });
       if (r.status === 207) {
-        // row created but generation/email failed
-        toast('Certificate record created, but sending failed: ' + (r.json.error || 'unknown error'), true);
+        // row created but PDF generation failed
+        toast('Certificate record created, but PDF generation failed: ' + (r.json.error || 'unknown error'), true);
       } else {
-        toast('Certificate issued and sent to ' + body.customerEmail + '.');
+        var url = r.json.job && r.json.job.certificate_url;
+        toast('Certificate ready. Scroll down to download it and attach it to your email.');
+        if (url) window.open(url, '_blank');
       }
       issueForm.reset();
       issueStatus.textContent = '';
@@ -424,7 +413,7 @@
 
   // ------------------------------------------------------------- boot ---
   function boot() {
-    loadMeta();
+    showModeBadge();
     refreshAll();
     startAutoRefresh();
   }

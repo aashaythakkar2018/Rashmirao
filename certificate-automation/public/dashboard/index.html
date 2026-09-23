@@ -75,7 +75,7 @@
               <input id="f_lastName" type="text" />
             </label>
             <label class="span-2">
-              <span>Customer email</span>
+              <span>Customer email (for your records — not sent automatically)</span>
               <input id="f_email" type="email" required />
             </label>
             <label>
@@ -90,10 +90,11 @@
             </label>
           </div>
           <div class="issue-actions">
-            <button type="submit" id="issueSubmit" class="btn btn-primary">Issue certificate &amp; send</button>
+            <button type="submit" id="issueSubmit" class="btn btn-primary">Generate certificate</button>
             <span id="issueStatus" class="inline-status"></span>
           </div>
           <p id="issueError" class="form-error"></p>
+          <p class="hint">This generates the PDF and opens it in a new tab — download it and attach it to your own email to send.</p>
         </form>
       </section>
 
@@ -105,8 +106,7 @@
           <input id="searchInput" type="text" placeholder="Search name, email, order #, design, number…" />
           <select id="statusFilter">
             <option value="">All statuses</option>
-            <option value="emailed">Emailed</option>
-            <option value="generated">Generated (not emailed)</option>
+            <option value="generated">Ready to download</option>
             <option value="processing">Processing</option>
             <option value="pending">Pending</option>
             <option value="failed">Failed</option>

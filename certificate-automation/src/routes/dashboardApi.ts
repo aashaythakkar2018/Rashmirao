@@ -10,22 +10,18 @@ import {
 } from '../db/certificates';
 import {
   issueCertificate,
-  resendCertificate,
+  regenerateCertificate,
   DuplicateCertificateNumberError,
 } from '../certificates/issueCertificate';
 import { loadDesigns, findDesignForProductTitle } from '../config/designs';
-import { env } from '../config/env';
 import { logger } from '../utils/logger';
 
 export const dashboardApiRouter = Router();
 dashboardApiRouter.use(requireAdminToken);
 
-/** GET /admin/dashboard/api/meta - tells the UI whether it's pointed at test or live sends. */
+/** GET /admin/dashboard/api/meta - static info the dashboard shell needs on load. */
 dashboardApiRouter.get('/meta', (_req, res) => {
-  res.json({
-    testMode: env.CERTIFICATE_TEST_MODE,
-    testEmail: env.CERTIFICATE_TEST_MODE ? env.TEST_EMAIL ?? null : null,
-  });
+  res.json({});
 });
 
 /** GET /admin/dashboard/api/designs - the "Issue certificate" form's design dropdown. */
@@ -92,7 +88,8 @@ const IssueCertificateBody = z.object({
  * POST /admin/dashboard/api/certificates
  * Issues a brand-new certificate: validates the design exists, checks the
  * certificate number isn't already used for that design, generates the
- * PDF, stores it, and emails it - all in this one request.
+ * PDF, and stores it. Does NOT send anything - you download the PDF from
+ * the response (or the dashboard table) and send it yourself.
  */
 dashboardApiRouter.post('/certificates', async (req, res) => {
   const parsed = IssueCertificateBody.safeParse(req.body);
@@ -121,8 +118,9 @@ dashboardApiRouter.post('/certificates', async (req, res) => {
     });
 
     if (cert.status === 'failed') {
-      // Row was created (so the number is now reserved), but generation or
-      // email failed - surface that clearly rather than pretending success.
+      // Row was created (so the number is now reserved), but PDF
+      // generation failed - surface that clearly rather than pretending
+      // success.
       return res.status(207).json({ ok: false, job: cert, error: cert.error_message });
     }
     res.status(201).json({ ok: true, job: cert });
@@ -143,8 +141,8 @@ const UpdateNameBody = z.object({
 
 /**
  * PATCH /admin/dashboard/api/certificates/:id
- * Corrects the customer name only. Does not regenerate or send anything by
- * itself - call POST .../resend afterwards to issue a corrected certificate.
+ * Corrects the customer name only. Does not regenerate the PDF by itself -
+ * call POST .../regenerate afterwards to get a corrected PDF.
  */
 dashboardApiRouter.patch('/certificates/:id', async (req, res) => {
   const id = Number(req.params.id);
@@ -167,22 +165,21 @@ dashboardApiRouter.patch('/certificates/:id', async (req, res) => {
 });
 
 /**
- * POST /admin/dashboard/api/certificates/:id/resend
- * Regenerates the PDF from this row's current data and re-sends the email.
- * Works the same whether the certificate was previously 'emailed' (a
- * deliberate resend) or 'failed' (a retry) - there's no external system to
- * re-check against, so both cases just try again with what's on file.
+ * POST /admin/dashboard/api/certificates/:id/regenerate
+ * Re-renders the PDF from this row's current data (so a name correction
+ * takes effect, or to retry one that failed) and re-stores it. Does not
+ * send anything.
  */
-dashboardApiRouter.post('/certificates/:id/resend', async (req, res) => {
+dashboardApiRouter.post('/certificates/:id/regenerate', async (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isInteger(id)) return res.status(400).json({ error: 'Invalid id' });
 
   try {
-    const cert = await resendCertificate(id);
+    const cert = await regenerateCertificate(id);
     res.json({ ok: true, job: cert });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    logger.error('Dashboard: resend failed', { certificateId: id, error: message });
+    logger.error('Dashboard: regenerate failed', { certificateId: id, error: message });
     res.status(422).json({ ok: false, error: message });
   }
 });
