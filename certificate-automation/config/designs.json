@@ -1,0 +1,32 @@
+{
+  "Echoes of Earth": {
+    "collection": "Nature's Rhythm",
+    "code": "EOE",
+    "editionTotal": 250,
+    "story": "PLACEHOLDER_ECHOES_OF_EARTH_STORY"
+  },
+  "Grounding Nature": {
+    "collection": "Nature's Rhythm",
+    "code": "GN",
+    "editionTotal": 250,
+    "story": "PLACEHOLDER_GROUNDING_NATURE_STORY"
+  },
+  "Shifting Glacier": {
+    "collection": "Nature's Rhythm",
+    "code": "SG",
+    "editionTotal": 250,
+    "story": "PLACEHOLDER_SHIFTING_GLACIER_STORY"
+  },
+  "Purple Petals Reverie": {
+    "collection": "Nature's Rhythm",
+    "code": "PPR",
+    "editionTotal": 250,
+    "story": "PLACEHOLDER_PURPLE_PETALS_REVERIE_STORY"
+  },
+  "Magical Pansies": {
+    "collection": "Nature's Rhythm",
+    "code": "MP",
+    "editionTotal": 250,
+    "story": "PLACEHOLDER_MAGICAL_PANSIES_STORY"
+  }
+}

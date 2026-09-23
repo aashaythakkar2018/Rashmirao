@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Rhytara Certificate of Authenticity</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f3efe7;font-family:Georgia,'Times New Roman',serif;color:#2a2016;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3efe7;padding:32px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border:1px solid #e4dcc8;max-width:600px;width:100%;">
+          <tr>
+            <td style="padding:36px 40px 8px;text-align:center;">
+              <p style="letter-spacing:0.3em;text-transform:uppercase;font-size:12px;color:#7a5c2e;margin:0 0 4px;">Rhytara</p>
+              <p style="letter-spacing:0.08em;text-transform:uppercase;font-size:11px;color:#9a8a68;margin:0;">{{collection_name}}</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:26px 40px 0;">
+              <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">Dear {{customer_first_name}},</p>
+              <p style="font-size:15px;line-height:1.75;margin:0 0 14px;">
+                Thank you for welcoming a piece of Rhytara into your life. Every design in the
+                Nature's Rhythm Collection begins as an original painting by Rashmi Rao, long
+                before it becomes a saree — so what you now hold is not simply a garment, but a
+                numbered, one-of-a-kind piece of that story.
+              </p>
+              <p style="font-size:15px;line-height:1.75;margin:0 0 4px;">You have acquired:</p>
+
+              {{certificate_items_html}}
+
+              <p style="font-size:15px;line-height:1.75;margin:8px 0 8px;">
+                Your Certificate{{plural_suffix}} of Authenticity {{is_are}} ready below — it
+                records your piece's design, its edition number, and the order it belongs to, as
+                a permanent record of provenance.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:10px 40px 30px;text-align:center;">
+              {{download_buttons_html}}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 28px;">
+              <p style="font-size:14px;line-height:1.75;margin:0;">
+                We're glad you're part of this collection, and we hope this piece brings you as
+                much joy to wear as it did to create.
+              </p>
+              <p style="font-size:14px;line-height:1.75;margin:16px 0 0;">
+                With gratitude,<br />
+                <strong>The Rhytara Team</strong>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 32px;border-top:1px solid #eee6d3;">
+              <p style="font-size:12px;line-height:1.6;color:#8a7a58;margin:20px 0 0;">
+                Certificate issued: {{issue_date}}<br />
+                Order: {{order_number}}
+              </p>
+              <p style="font-size:11px;line-height:1.6;color:#9a8a68;margin:16px 0 0;">
+                Rhytara — Nature's Rhythm Collection
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/* Rhytara Certificate of Authenticity - print-ready, A4 portrait.
+   Kept deliberately simple/maintainable: swap fonts, colors and the
+   background frame image without touching certificate.html or app code. */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 210mm;
+  height: 297mm;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: #2a2016;
+  background: #faf6ee;
+}
+
+.certificate {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 16mm;
+  background: #faf6ee;
+  border: 2px solid #9a7b3f;
+  outline: 8px solid #faf6ee;
+  outline-offset: -14mm;
+}
+
+.certificate::before {
+  content: '';
+  position: absolute;
+  inset: 10mm;
+  border: 1px solid #c9ad6e;
+  pointer-events: none;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 10mm;
+}
+
+.header .logo {
+  height: 20mm;
+  margin-bottom: 4mm;
+  object-fit: contain;
+}
+
+.header .brand-name {
+  font-size: 13pt;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #7a5c2e;
+  margin: 0 0 2mm;
+}
+
+.header .title {
+  font-size: 26pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  color: #4a3418;
+}
+
+.header .subtitle {
+  font-size: 10pt;
+  color: #6b5a3e;
+  margin-top: 3mm;
+  line-height: 1.6;
+}
+
+.body {
+  display: flex;
+  gap: 8mm;
+  margin-top: 10mm;
+}
+
+.artwork {
+  width: 62mm;
+  flex-shrink: 0;
+}
+
+.artwork img {
+  width: 100%;
+  height: 78mm;
+  object-fit: cover;
+  border: 1px solid #c9ad6e;
+}
+
+.details {
+  flex: 1;
+}
+
+.details .intro {
+  font-size: 10.5pt;
+  line-height: 1.7;
+  margin: 0 0 6mm;
+  color: #3a2c16;
+}
+
+.details .intro strong {
+  color: #4a3418;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 40mm 1fr;
+  row-gap: 4mm;
+  font-size: 10.5pt;
+}
+
+.field-grid dt {
+  color: #7a5c2e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 8.5pt;
+  font-weight: normal;
+  padding-top: 0.5mm;
+}
+
+.field-grid dd {
+  margin: 0;
+  font-weight: bold;
+  color: #2a2016;
+}
+
+.story {
+  margin-top: 8mm;
+  padding-top: 5mm;
+  border-top: 1px solid #d8c393;
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: #4a3a22;
+  font-style: italic;
+}
+
+.footer {
+  position: absolute;
+  bottom: 20mm;
+  left: 16mm;
+  right: 16mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.signature-block {
+  text-align: left;
+}
+
+.signature-block img {
+  height: 16mm;
+  display: block;
+  margin-bottom: 2mm;
+  object-fit: contain;
+}
+
+.signature-block .name {
+  font-size: 10.5pt;
+  font-weight: bold;
+  border-top: 1px solid #4a3418;
+  padding-top: 1.5mm;
+  display: inline-block;
+}
+
+.signature-block .role {
+  font-size: 8.5pt;
+  color: #6b5a3e;
+  display: block;
+}
+
+.issue-block {
+  text-align: right;
+  font-size: 9pt;
+  color: #4a3a22;
+}
+
+.issue-block .order-number {
+  margin-top: 1.5mm;
+  color: #7a5c2e;
+}
