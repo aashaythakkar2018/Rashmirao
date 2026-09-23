@@ -255,7 +255,46 @@ called from the issuance flow anymore. If you want it back:
 
 ---
 
-## 10. Troubleshooting
+## 10. Setting this up on your client's Mac
+
+Two scripts in [`scripts/`](scripts/) handle this without needing her to
+touch a terminal command by hand:
+
+1. **Get the code onto her Mac.** Easiest way: on her Mac, open
+   https://github.com/aashaythakkar2018/Rashmirao, click the green **Code**
+   button → **Download ZIP**, then unzip it (double-click the downloaded
+   file). Everything you need is in the `certificate-automation` folder
+   inside it — the rest of that download is the separate Rhytara website
+   and can be ignored.
+2. **First-time setup.** Inside `certificate-automation`, open the
+   `scripts` folder and double-click **`setup-mac.command`**. A Terminal
+   window opens and does everything automatically: installs the local
+   database (no admin password needed), installs the project's
+   dependencies, and creates a fresh, unique login token. It'll pause and
+   ask you to install Node.js first if it isn't already on her Mac (opens
+   the official installer — just click through it, then run
+   `setup-mac.command` again).
+3. **The dashboard login token** is printed clearly at the end of setup —
+   write it down or take a screenshot. It's also saved in the new `.env`
+   file if you need to find it again later (open it in TextEdit, look for
+   `ADMIN_API_TOKEN=`).
+4. **Using it day to day.** Double-click **`start.command`** any time she
+   wants to open the dashboard — it starts everything and opens the
+   dashboard in her browser automatically. Leave that Terminal window open
+   while she's using it; closing it (or `Ctrl+C`) stops the service.
+
+Each of you (this Mac and hers) has its own separate local database — the
+certificates issued here don't appear on her copy and vice versa. If you
+want a single shared list both of you see, that's the hosted-deployment
+path from earlier, which you asked to hold off on for now.
+
+Both scripts are safe to run more than once — every step skips itself if
+it's already done, so re-running `setup-mac.command` after an interruption
+(e.g. she had to install Node.js first) just picks up where it left off.
+
+---
+
+## 11. Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
@@ -266,7 +305,7 @@ called from the issuance flow anymore. If you want it back:
 
 ---
 
-## 11. What's still a placeholder
+## 12. What's still a placeholder
 
 These are intentionally not invented and must be supplied before real use:
 
