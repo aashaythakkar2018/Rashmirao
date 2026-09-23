@@ -104,7 +104,10 @@
     }
 
     var c = Cart.get();
-    setBadge(c.totalQuantity || 0);
+    var totalQty = Number(c.totalQuantity) || c.lines.reduce(function (sum, line) {
+      return sum + (Number(line.quantity) || 0);
+    }, 0);
+    setBadge(totalQty);
 
     if (!c.lines.length) {
       body.innerHTML = '<div class="cart-empty-msg"><p>Your cart is empty.</p>' +
@@ -115,6 +118,8 @@
 
     foot.style.display = 'block';
     body.innerHTML = c.lines.map(function (line) {
+      var qty = Number(line.quantity) || 1;
+      var itemTotal = Number(line.lineTotalInr) || ((Number(line.priceInr) || 0) * qty);
       return '' +
         '<div class="cart-item" data-line="' + line.id + '">' +
           '<img class="cart-item-img" src="' + esc(line.image || '') + '" alt="' + esc(line.title) + '" ' +
@@ -122,10 +127,10 @@
           '<div class="cart-item-info">' +
             '<div class="cart-item-name">' + esc(line.title) + '</div>' +
             '<div class="cart-item-sub">' + esc(subLine(line)) + '</div>' +
-            '<div class="cart-item-price">' + fmtOfferLine(line, line.lineTotalInr || line.priceInr * line.quantity) + '</div>' +
+            '<div class="cart-item-price">' + fmtOfferLine(line, itemTotal) + '</div>' +
             '<div class="cart-qty">' +
               '<button class="cart-qty-btn" type="button" data-act="dec" aria-label="Decrease quantity">−</button>' +
-              '<span class="cart-qty-val">' + line.quantity + '</span>' +
+              '<span class="cart-qty-val">' + qty + '</span>' +
               '<button class="cart-qty-btn" type="button" data-act="inc" aria-label="Increase quantity">+</button>' +
             '</div>' +
           '</div>' +
@@ -135,11 +140,14 @@
 
     var total = document.getElementById('cartTotal');
     if (total) {
+      var subtotal = Number(c.subtotalInr) || c.lines.reduce(function (sum, line) {
+        return sum + (Number(line.lineTotalInr) || ((Number(line.priceInr) || 0) * (Number(line.quantity) || 1)));
+      }, 0);
       var allArt = c.lines.every(function (l) { return !isGift(l); });
       if (allArt && typeof window.formatOfferPriceHtml === 'function') {
-        total.innerHTML = window.formatOfferPriceHtml(c.subtotalInr);
+        total.innerHTML = window.formatOfferPriceHtml(subtotal);
       } else {
-        total.textContent = fmt(c.subtotalInr);
+        total.textContent = fmt(subtotal);
       }
     }
   }

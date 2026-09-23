@@ -61,9 +61,15 @@
       var opts = (m.selectedOptions || []).filter(function (o) {
         return !/^(title|default title)$/i.test(o.value);
       });
+      var qty = Number(l.quantity) || 1;
+      var unitPriceInr = money(m.price) || 0;
+      var lineTotalInr = money(l.cost && l.cost.totalAmount);
+      if (lineTotalInr == null || Number(lineTotalInr) <= 0) {
+        lineTotalInr = unitPriceInr * qty;
+      }
       return {
         id: l.id,
-        quantity: l.quantity,
+        quantity: qty,
         variantId: m.id,
         title: prod.title || m.title || 'Item',
         handle: prod.handle || '',
@@ -71,15 +77,24 @@
         options: opts,
         attributes: (l.attributes || []).filter(function (a) { return a.value; }),
         image: img,
-        priceInr: money(m.price),
-        lineTotalInr: money(l.cost && l.cost.totalAmount)
+        priceInr: unitPriceInr,
+        lineTotalInr: lineTotalInr
       };
     });
+    var totalQuantity = Number(cart.totalQuantity) || lines.reduce(function (sum, line) {
+      return sum + (Number(line.quantity) || 0);
+    }, 0);
+    var subtotalInr = money(cart.cost && cart.cost.subtotalAmount);
+    if (subtotalInr == null || Number(subtotalInr) <= 0) {
+      subtotalInr = lines.reduce(function (sum, line) {
+        return sum + (Number(line.lineTotalInr) || 0);
+      }, 0);
+    }
     return {
       id: cart.id,
       checkoutUrl: cart.checkoutUrl,
-      totalQuantity: cart.totalQuantity || 0,
-      subtotalInr: money(cart.cost && cart.cost.subtotalAmount),
+      totalQuantity: totalQuantity,
+      subtotalInr: subtotalInr || 0,
       lines: lines
     };
   }
