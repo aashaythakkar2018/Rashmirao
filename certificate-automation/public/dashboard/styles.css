@@ -125,6 +125,8 @@ h1, h2 { font-family: Georgia, 'Times New Roman', serif; margin: 0; }
 .panel-head h2 { font-size: 16px; }
 
 .hint { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+.issue-result { margin-top: 12px; }
+.issue-result .btn { display: inline-block; text-decoration: none; }
 
 .inline-status { font-size: 12px; color: var(--muted); }
 

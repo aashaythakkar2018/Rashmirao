@@ -328,10 +328,13 @@
   var issueSubmit = document.getElementById('issueSubmit');
   var issueStatus = document.getElementById('issueStatus');
   var issueError = document.getElementById('issueError');
+  var issueResult = document.getElementById('issueResult');
+  var issueDownloadBtn = document.getElementById('issueDownloadBtn');
 
   issueForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     issueError.textContent = '';
+    issueResult.hidden = true;
 
     var body = {
       orderNumber: document.getElementById('f_orderNumber').value.trim(),
@@ -357,8 +360,12 @@
         toast('Certificate record created, but PDF generation failed: ' + (r.json.error || 'unknown error'), true);
       } else {
         var url = r.json.job && r.json.job.certificate_url;
-        toast('Certificate ready. Scroll down to download it and attach it to your email.');
-        if (url) window.open(url, '_blank');
+        if (url) {
+          toast('Certificate ready — download button is below the form.');
+          issueDownloadBtn.href = url;
+          issueResult.hidden = false;
+          window.open(url, '_blank');
+        }
       }
       issueForm.reset();
       issueStatus.textContent = '';
