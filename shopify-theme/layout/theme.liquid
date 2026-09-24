@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
+  {%- comment -%}
+    This store is headless: the public site lives at rhytara.com (GitHub Pages).
+    This theme only exists for Shopify's checkout/API needs, so bounce visitors
+    who land on the myshopify.com domain straight back to the real frontend.
+  {%- endcomment -%}
+  {%- if request.page_type == 'index' and request.host != 'rhytara.com' and request.host != 'www.rhytara.com' -%}
+    <meta http-equiv="refresh" content="0; url=https://rhytara.com/">
+    <script>window.location.replace('https://rhytara.com/');</script>
+  {%- endif -%}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="{{ settings.color_bg | default: '#FAF8F5' }}">
