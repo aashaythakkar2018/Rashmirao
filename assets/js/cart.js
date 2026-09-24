@@ -37,7 +37,7 @@
     '  cost { totalAmount { amount currencyCode } }',
     '  attributes { key value }',
     '  merchandise { ... on ProductVariant {',
-    '    id title',
+    '    id title availableForSale',
     '    image { url altText }',
     '    price { amount currencyCode }',
     '    selectedOptions { name value }',
@@ -51,19 +51,23 @@
     return Math.round(parseFloat(node.amount) * (node.currencyCode === 'USD' ? 84 : 1));
   }
 
-  /* Lines whose merchandise no longer resolves (variant/product hard-deleted
-     since this cart was created, e.g. a catalogue re-import). Left alone,
-     these only surface as a confusing "no longer available" wall at
-     Shopify's checkout - so callers should strip them first. */
-  function deadLineIds(cart) {
+  /* Lines that can no longer actually be bought: merchandise hard-deleted
+     since this cart was created (e.g. a catalogue re-import), or a variant
+     that was available when added but has since sold out. Left alone,
+     either case only surfaces as a confusing "no longer available" wall at
+     Shopify's own checkout - so callers strip these first, every time the
+     cart is read, not just at add-time. */
+  function unpurchasableLineIds(cart) {
     var nodes = (cart && cart.lines && cart.lines.nodes) || [];
-    return nodes.filter(function (l) { return !l.merchandise; }).map(function (l) { return l.id; });
+    return nodes
+      .filter(function (l) { return !l.merchandise || l.merchandise.availableForSale === false; })
+      .map(function (l) { return l.id; });
   }
 
   function normalise(cart) {
     if (!cart) return EMPTY;
     var lines = (cart.lines && cart.lines.nodes ? cart.lines.nodes : []).filter(function (l) {
-      return !!l.merchandise;
+      return !!l.merchandise && l.merchandise.availableForSale !== false;
     }).map(function (l) {
       var m = l.merchandise || {};
       var prod = m.product || {};
@@ -119,6 +123,15 @@
 
   function emit() {
     document.dispatchEvent(new CustomEvent('cart:change', { detail: Cart.get() }));
+  }
+
+  /* Lets the customer know why their cart just changed, instead of the
+     count silently dropping with no explanation. */
+  function notifyRemoved(count) {
+    if (!window.showToast) return;
+    window.showToast(count === 1
+      ? '1 item in your cart just sold out and was removed.'
+      : count + ' items in your cart just sold out and were removed.');
   }
 
   function apply(cart) {
@@ -187,9 +200,10 @@
       return fetchCart(id)
         .then(function (cart) {
           if (!cart) { state = EMPTY; persist(); emit(); return; }
-          var dead = deadLineIds(cart);
-          if (!dead.length) { apply(cart); return; }
-          return linesRemove(dead);
+          var dead = unpurchasableLineIds(cart);
+          apply(cart); // sets state.id first - linesRemove() below needs it
+          if (!dead.length) return;
+          return linesRemove(dead).then(function () { notifyRemoved(dead.length); });
         })
         .catch(function (e) {
           console.warn('[Cart] rehydrate failed', e);
@@ -238,10 +252,12 @@
       if (!state.id) return Promise.reject(new Error('Your cart is empty.'));
       return fetchCart(state.id).then(function (cart) {
         if (!cart || !cart.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
-        var dead = deadLineIds(cart);
+        var dead = unpurchasableLineIds(cart);
         var cleanup = dead.length ? linesRemove(dead) : Promise.resolve(apply(cart));
         return cleanup.then(function () {
+          if (dead.length) notifyRemoved(dead.length);
           if (!state.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
+          if (state.totalQuantity <= 0) throw new Error('Your cart is empty.');
           window.location.assign(state.checkoutUrl);
           return state.checkoutUrl;
         });
