@@ -789,6 +789,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .wear-img-col .img-wrap::before { background: linear-gradient(160deg,#c8b8d0,#8a6898,#6a4878); }
 .wear-img-col .img-wrap img { height: auto; }
 .wear-img-col .img-wrap::before { display: none; }
+/* Source collage has a thin closing rule baked in near its bottom edge;
+   nudge the image up slightly so overflow:hidden crops that line off. */
+.wear-img-col .img-wrap img { transform: scale(1.03); transform-origin: top center; }
 .wear-copy-col { padding: 40px 32px 40px 0; display: flex; flex-direction: column; justify-content: center; }
 .wear-lead { margin-top: 24px; max-width: 430px; }
 .process { margin-top: 44px; }
@@ -1359,7 +1362,7 @@ footer {
       </div>
     </div>
     <div class="wear-copy-col">
-      <span class="eyebrow rv">Paintings You Can Wear</span>
+      <span class="eyebrow rv">Where Art Meets the Drape</span>
       <h2 class="h2 rv">Paintings<br>You Can Wear.</h2>
       <p class="wear-lead body-text rv">Every Rhytara design begins with an original work of art. Through color, composition and textile printing, the painting is transformed into a saree&mdash;bringing the artwork beyond the canvas and into motion.</p>
       <a href="collections.html" class="wear-link text-link rv">
@@ -1384,7 +1387,7 @@ footer {
       </div>
     </div>
     <div class="about-copy-col">
-      <span class="eyebrow rv">Meet the Artist Behind Rhytara</span>
+      <span class="eyebrow rv">Where Every Creation Begins With a Brushstroke</span>
       <h2 class="h2 rv">The Artist<br>Behind Rhytara</h2>
       <div class="about-bio body-text">
         <p class="rv">I'm Rashmi Rao, an artist whose journey across color, painting and design has shaped the world of Rhytara. What began as original artwork has found a new expression in fabric&mdash;bringing my love for nature, movement and color into something that can be worn.</p>
@@ -1404,7 +1407,7 @@ footer {
 <!-- ========== 5. SOME STORIES ARE MEANT TO BE WORN ========== -->
 <section class="lic-bg section" id="stories">
   <div class="wrap stories-inner">
-    <span class="eyebrow rv">Some Stories Are Meant to Be Worn</span>
+    <span class="eyebrow rv">Wear a Piece of the Story. Carry It With You.</span>
     <h2 class="h2 rv">Some stories are meant<br>to be worn.</h2>
     <p class="stories-copy rv">Each piece carries a story of color, movement and nature. Find the one that speaks to you, and make it part of your own story.</p>
     <a href="collections.html" class="btn-outline-light rv">Find Your Rhytara &rarr;</a>
@@ -1415,7 +1418,7 @@ footer {
 <section class="coll-bg section" id="collected">
   <div class="wrap">
     <div class="collect-hd">
-      <span class="eyebrow rv">Made to Be Collected</span>
+      <span class="eyebrow rv">Limited Pieces of an Artistic Journey.</span>
       <h2 class="h2 rv">Made to be collected.</h2>
       <p class="collect-lead rv">Rhytara designs are produced in thoughtfully considered editions, created for those who see beauty not simply as something to wear, but something to keep.</p>
     </div>
