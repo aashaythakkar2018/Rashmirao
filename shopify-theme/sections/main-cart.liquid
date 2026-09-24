@@ -1,7 +1,7 @@
 {%- comment -%} Full cart page - the no-JS fallback for the drawer. {%- endcomment -%}
 <section class="section">
   <div class="wrap">
-    <span class="eyebrow">{{ shop.name }}</span>
+    <a href="{{ routes.root_url }}" class="eyebrow cart-eyebrow">{{ shop.name }}</a>
     <h1 class="sec-h2">{{ 'sections.cart.title' | t }}</h1>
 
     {%- if cart.item_count == 0 -%}

@@ -3402,6 +3402,11 @@ footer {
   letter-spacing: .22em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 18px; display: block;
 }
+.eyebrow.cart-eyebrow {
+  font-size: 14px;
+  width: fit-content;
+}
+.eyebrow.cart-eyebrow:hover { color: var(--olive); }
 .h2 {
   font-family: var(--ff-serif);
   font-size: clamp(36px, 4vw, 58px);
