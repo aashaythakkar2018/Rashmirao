@@ -498,6 +498,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .badge-sold  { background: rgba(250,248,245,0.95); color: var(--muted); }
 .badge-new   { background: var(--olive); color: #fff; }
 .badge-ltd   { background: var(--olive); color: #fff; }
+.badge-low-stock { background: var(--rust, #7a5248); color: #fff; }
+.art-card.is-sold-out .art-badge { background: rgba(250,248,245,0.95); color: var(--muted); }
 
 /* Heart / wishlist button */
 .art-heart {
@@ -588,6 +590,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: var(--olive); color: #fff; border: 1px solid var(--olive);
 }
 .reveal-btn-add:hover { background: var(--olive-dk); transform: translateY(-2px); }
+.reveal-btn-add:disabled,
+.reveal-btn-add.is-disabled {
+  background: var(--beige); color: var(--muted); border-color: var(--beige);
+  cursor: not-allowed;
+}
+.reveal-btn-add:disabled:hover,
+.reveal-btn-add.is-disabled:hover { background: var(--beige); transform: none; }
 .reveal-btn-inq {
   background: rgba(250,248,245,0.08); color: rgba(250,248,245,0.7);
   border: 1px solid rgba(250,248,245,0.15);
@@ -1070,7 +1079,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
     <div class="artwork-grid" id="artworkGrid">
 
       <!-- CARD 1 - Echoes Of Earth -->
-      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-dream" onclick="cardClick(event,this)">
+      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-dream" data-handle="echoes-of-earth" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
@@ -1107,7 +1116,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       </div>
 
       <!-- CARD 2 - Grounding Nature -->
-      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2023" data-id="crimson-solitude" onclick="cardClick(event,this)">
+      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2023" data-id="crimson-solitude" data-handle="grounding-nature" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
@@ -1141,7 +1150,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       </div>
 
       <!-- CARD 3 - Magical Pansies -->
-      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="whispers-of-ochre" onclick="cardClick(event,this)">
+      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="whispers-of-ochre" data-handle="magical-pansies" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
@@ -1175,7 +1184,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       </div>
 
       <!-- CARD 4 - Purple Petals Reverie -->
-      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="the-blue-hour" onclick="cardClick(event,this)">
+      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="the-blue-hour" data-handle="purple-petals-reverie" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
@@ -1209,7 +1218,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       </div>
 
       <!-- CARD 5 - Shifting Glacier -->
-      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-saree" onclick="cardClick(event,this)">
+      <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-saree" data-handle="shifting-glacier" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">

@@ -389,6 +389,14 @@
     .avail-dot {
       width: 7px; height: 7px; border-radius: 50%; background: var(--olive);
     }
+    /* Live remaining-count, fetched from Shopify - hidden until a real
+       number resolves (see hydrateLiveAvailability() below), so it never
+       shows a placeholder or stale figure. */
+    .pi-live-stock {
+      font-size: 11px; color: var(--muted); font-weight: 300;
+      margin: -12px 0 18px;
+    }
+    .pi-live-stock.is-low { color: var(--rust, #7a5248); font-weight: 400; }
 
     /* -- Options -- */
     .option-group { margin-bottom: 18px; }
@@ -408,6 +416,12 @@
     }
     .option-pill:hover { border-color: var(--text); }
     .option-pill.active { border-color: var(--olive); background: var(--olive); color: #fff; }
+    .option-pill.is-sold-out {
+      color: var(--muted); border-color: var(--beige); text-decoration: line-through;
+      cursor: not-allowed; opacity: .6;
+    }
+    .option-pill.is-sold-out:hover { border-color: var(--beige); }
+    .option-pill.is-sold-out.active { background: transparent; color: var(--muted); }
 
     /* -- CTAs -- */
     .cta-stack { display: flex; flex-direction: column; gap: 10px; margin: 22px 0; }
@@ -419,6 +433,10 @@
       transition: background .25s; will-change: transform;
     }
     .btn-primary:hover { background: var(--olive-dk); }
+    .btn-primary:disabled {
+      background: var(--beige); color: var(--muted); cursor: not-allowed;
+    }
+    .btn-primary:disabled:hover { background: var(--beige); }
     .btn-secondary {
       width: 100%; padding: 15px 24px;
       background: transparent; color: var(--text);
@@ -898,6 +916,7 @@
         <span class="avail-dot"></span>
         <span id="pi-avail-text">Available · Ships in 4-6 weeks with archival packaging</span>
       </div>
+      <p class="pi-live-stock" id="piLiveStock" hidden></p>
 
       <div class="pi-divider"></div>
 
@@ -1181,6 +1200,7 @@
     const PRODUCTS = {
       'monsoon-dream': {
         title: 'Echoes Of Earth',
+        handle: 'echoes-of-earth',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
         priceInr: 24780,
@@ -1203,6 +1223,7 @@
       },
       'crimson-solitude': {
         title: 'Grounding Nature',
+        handle: 'grounding-nature',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
         priceInr: 24780,
@@ -1224,6 +1245,7 @@
       },
       'whispers-of-ochre': {
         title: 'Magical Pansies',
+        handle: 'magical-pansies',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
         priceInr: 24780,
@@ -1246,6 +1268,7 @@
       },
       'the-blue-hour': {
         title: 'Purple Petals Reverie',
+        handle: 'purple-petals-reverie',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
         priceInr: 24780,
@@ -1267,6 +1290,7 @@
       },
       'monsoon-saree': {
         title: 'Shifting Glacier',
+        handle: 'shifting-glacier',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
         priceInr: 24780,
@@ -1294,6 +1318,7 @@
     const pid     = params.get('id') || 'monsoon-dream'
     const P       = PRODUCTS[pid] || PRODUCTS['monsoon-dream']
     const IMAGES  = P.images
+    window.CURRENT_PRODUCT_HANDLE = P.handle || null
 
     /* ----------- POPULATE ALL PAGE ELEMENTS FROM PRODUCT DATA ----------- */
     function populatePage() {
@@ -1418,6 +1443,92 @@
 
     // Run population immediately
     populatePage()
+
+    /* ----------- LIVE AVAILABILITY (as per Shopify backend) -----------
+       populatePage() above renders from the static PRODUCTS fallback, same
+       as always. This layers real Shopify data on top once it loads: marks
+       a sold-out size pill, keeps the Purchase button in sync with
+       whichever size is selected (not just whether the product overall has
+       ANY size in stock), and shows a live "X of N remaining" count. If
+       Shopify can't be reached, or quantityAvailable isn't readable yet
+       (needs the unauthenticated_read_product_inventory Storefront scope),
+       everything just stays exactly as populatePage() already rendered -
+       nothing here can make the page worse than the static fallback. */
+    var liveVariantsBySize = {}; // '44 inch' | '58 inch' -> { id, availableForSale }
+    var liveQuantities = {};     // variant id -> number
+
+    function sizeLabelFromPill(pill) {
+      return pill && pill.textContent.indexOf('58 inch') !== -1 ? '58 inch' : '44 inch';
+    }
+
+    function applyLiveStateForSelectedPill() {
+      var activePill = document.querySelector('.option-pills .option-pill.active');
+      var size = sizeLabelFromPill(activePill);
+      var live = liveVariantsBySize[size];
+      var cartBtn = document.getElementById('addToCartBtn');
+      var availText = document.getElementById('pi-avail-text');
+      var availDot = document.querySelector('#pi-avail .avail-dot');
+      var stockEl = document.getElementById('piLiveStock');
+
+      if (live && live.availableForSale === false) {
+        if (cartBtn) { cartBtn.disabled = true; cartBtn.textContent = 'Sold Out — ' + size }
+        if (availText) availText.textContent = 'Sold out in ' + size + ' · try the other size, or get in touch'
+        if (availDot) availDot.style.background = 'var(--rust, #7a5248)'
+      } else if (!P.sold) {
+        // Live data says available (or live data isn't in yet) and the
+        // static fallback didn't mark this product sold - normal state.
+        if (cartBtn) { cartBtn.disabled = false; cartBtn.textContent = 'Purchase This Work' }
+        if (availText) availText.textContent = 'Available · Ships in 4-6 weeks with archival packaging'
+        if (availDot) availDot.style.background = 'var(--olive)'
+      }
+
+      if (stockEl) {
+        var qty = live && typeof liveQuantities[live.id] === 'number' ? liveQuantities[live.id] : null
+        // Sold-out is already stated clearly on the availability line above -
+        // repeating it here would just be noise, so only show this line for
+        // its one real job: the live remaining count while in stock.
+        if (qty === null || qty <= 0) {
+          stockEl.hidden = true
+        } else {
+          var total = (P.edition.match(/(\d[\d,]*)/) || [,'250'])[1]
+          stockEl.hidden = false
+          stockEl.textContent = qty + ' of ' + total + ' remaining in ' + size
+          stockEl.classList.toggle('is-low', qty <= 10)
+        }
+      }
+    }
+
+    function markPillSoldOut(size) {
+      document.querySelectorAll('.option-pills .option-pill').forEach(function (pill) {
+        if (sizeLabelFromPill(pill) === size && pill.closest('.option-group').querySelector('.option-label').textContent === 'Print Size') {
+          pill.classList.add('is-sold-out')
+        }
+      })
+    }
+
+    function hydrateLiveAvailability() {
+      if (!window.Store || !window.Store.isConfigured() || !P.handle) return
+      window.Store.getProduct(P.handle).then(function (liveProduct) {
+        if (!liveProduct || !liveProduct.variants) return
+        liveProduct.variants.forEach(function (v) {
+          var opt = (v.selectedOptions || []).find(function (o) { return /size|width/i.test(o.name) })
+          var size = opt ? opt.value : null
+          if (!size) return
+          liveVariantsBySize[size] = v
+          if (v.availableForSale === false) markPillSoldOut(size)
+        })
+        applyLiveStateForSelectedPill()
+
+        var variantIds = Object.keys(liveVariantsBySize).map(function (s) { return liveVariantsBySize[s].id }).filter(Boolean)
+        return window.Store.getVariantQuantities(variantIds).then(function (quantities) {
+          liveQuantities = quantities
+          applyLiveStateForSelectedPill()
+        })
+      }).catch(function (e) {
+        console.warn('[Product] Live availability check failed - showing static fallback only', e)
+      })
+    }
+    hydrateLiveAvailability()
 
     let currentIdx = 0
     let isTransitioning = false
@@ -1655,12 +1766,14 @@
 
     /* ----------- OPTIONS ----------- */
     window.selectPill = function(btn, group) {
+      if (btn.classList.contains('is-sold-out')) return // can't select a size Shopify says is unavailable
       btn.closest('.option-pills').querySelectorAll('.option-pill')
         .forEach(p => p.classList.remove('active'))
       btn.classList.add('active')
       if (group === 'size' && P.category.indexOf('Wearable') !== -1) {
         selectedPriceInr = (btn.textContent.indexOf('58 inch') !== -1 ? 310 : 295) * 84
         updatePrices()
+        if (typeof applyLiveStateForSelectedPill === 'function') applyLiveStateForSelectedPill()
       }
       animate(btn, { scale: [0.95, 1] }, { duration: 0.2, ease: [0.34, 1.56, 0.64, 1] })
     }

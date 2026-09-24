@@ -311,6 +311,46 @@
       .catch(function (e) { console.warn('[Store] getProduct', e); return null; });
   }
 
+  /**
+   * getVariantQuantities([variantGid, ...]) -> Promise<{ [variantGid]: number }>
+   *
+   * Live remaining-stock count per variant, straight from Shopify - this is
+   * what powers the "X of 250 remaining" countdown. Deliberately a separate,
+   * isolated query from getProduct()/getProducts(): quantityAvailable
+   * requires the Storefront API's `unauthenticated_read_product_inventory`
+   * access scope, which this store's token may not have yet. If it's
+   * missing (or the request fails for any other reason), this resolves to
+   * `{}` - callers must treat every id as "unknown" and fall back to their
+   * static edition-size copy, never to a hardcoded number and never to an
+   * error. That failure must never be allowed to affect getProduct/
+   * getProducts, which is why this isn't just an extra field tacked onto
+   * CARD_FIELDS/FULL_FIELDS - the shared query() throws on ANY GraphQL
+   * error, so a missing scope there would break add-to-cart and checkout
+   * for everyone, not just hide a countdown.
+   *
+   * Once the scope is granted in Shopify admin, this starts returning real
+   * numbers automatically - no other code change needed, for existing
+   * listings or new ones.
+   */
+  function getVariantQuantities(variantIds) {
+    if (!isConfigured() || !variantIds || !variantIds.length) return Promise.resolve({});
+    var q = 'query($ids:[ID!]!){ nodes(ids:$ids){ ... on ProductVariant { id quantityAvailable } } }';
+    return query(q, { ids: variantIds })
+      .then(function (d) {
+        var out = {};
+        (d && d.nodes ? d.nodes : []).forEach(function (n) {
+          if (n && n.id && typeof n.quantityAvailable === 'number') out[n.id] = n.quantityAvailable;
+        });
+        return out;
+      })
+      .catch(function (e) {
+        console.warn('[Store] Live inventory count unavailable - likely missing the ' +
+          '"unauthenticated_read_product_inventory" Storefront API scope. ' +
+          'Falling back to static edition-size copy.', e);
+        return {};
+      });
+  }
+
   /** getRecommendations(productGid) -> Promise<Array<card>> */
   function getRecommendations(productId) {
     if (!isConfigured() || !productId) return Promise.resolve([]);
@@ -328,6 +368,7 @@
     getProducts: getProducts,
     getProduct: getProduct,
     getRecommendations: getRecommendations,
+    getVariantQuantities: getVariantQuantities,
     _normaliseCard: normaliseCard,
     _normaliseFull: normaliseFull
   };
