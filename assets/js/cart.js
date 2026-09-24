@@ -51,9 +51,20 @@
     return Math.round(parseFloat(node.amount) * (node.currencyCode === 'USD' ? 84 : 1));
   }
 
+  /* Lines whose merchandise no longer resolves (variant/product hard-deleted
+     since this cart was created, e.g. a catalogue re-import). Left alone,
+     these only surface as a confusing "no longer available" wall at
+     Shopify's checkout - so callers should strip them first. */
+  function deadLineIds(cart) {
+    var nodes = (cart && cart.lines && cart.lines.nodes) || [];
+    return nodes.filter(function (l) { return !l.merchandise; }).map(function (l) { return l.id; });
+  }
+
   function normalise(cart) {
     if (!cart) return EMPTY;
-    var lines = (cart.lines && cart.lines.nodes ? cart.lines.nodes : []).map(function (l) {
+    var lines = (cart.lines && cart.lines.nodes ? cart.lines.nodes : []).filter(function (l) {
+      return !!l.merchandise;
+    }).map(function (l) {
       var m = l.merchandise || {};
       var prod = m.product || {};
       var img = (m.image && m.image.url) ||
@@ -175,8 +186,10 @@
       if (!id || !Store.isConfigured()) { emit(); return Promise.resolve(state); }
       return fetchCart(id)
         .then(function (cart) {
-          if (cart) apply(cart);
-          else { state = EMPTY; persist(); emit(); }
+          if (!cart) { state = EMPTY; persist(); emit(); return; }
+          var dead = deadLineIds(cart);
+          if (!dead.length) { apply(cart); return; }
+          return linesRemove(dead);
         })
         .catch(function (e) {
           console.warn('[Cart] rehydrate failed', e);
@@ -222,16 +235,16 @@
     },
 
     checkout: function () {
-      if (state.checkoutUrl) {
-        window.location.assign(state.checkoutUrl);
-        return Promise.resolve(state.checkoutUrl);
-      }
       if (!state.id) return Promise.reject(new Error('Your cart is empty.'));
       return fetchCart(state.id).then(function (cart) {
         if (!cart || !cart.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
-        apply(cart);
-        window.location.assign(state.checkoutUrl);
-        return state.checkoutUrl;
+        var dead = deadLineIds(cart);
+        var cleanup = dead.length ? linesRemove(dead) : Promise.resolve(apply(cart));
+        return cleanup.then(function () {
+          if (!state.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
+          window.location.assign(state.checkoutUrl);
+          return state.checkoutUrl;
+        });
       });
     }
   };
