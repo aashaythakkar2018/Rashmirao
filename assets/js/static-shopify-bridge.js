@@ -64,6 +64,21 @@
         throw err;
       }
       return window.Cart.add(variant.id, 1).then(function () {
+        // Cart.add() can resolve with no GraphQL userErrors and still not
+        // actually have added anything purchasable - e.g. Shopify itself
+        // can't compute a delivery option for the buyer's market (missing
+        // shipping rates), which silently zeroes the line. Confirm the
+        // line is really there before claiming success, so the customer
+        // is never told "added to cart" while the cart quietly stays
+        // empty with no explanation.
+        var landed = window.Cart.get().lines.some(function (l) { return l.variantId === variant.id; });
+        if (!landed) {
+          if (window.showToast) {
+            window.showToast('Could not add ' + title + ' - checkout is not fully set up yet. Please contact us.');
+          }
+          console.error('[Shopify] Cart.add() resolved but the line never landed (likely no shipping rate for this market): ' + handle);
+          return;
+        }
         if (window.showToast) window.showToast(title + ' added to cart');
         window.openCart();
       });
