@@ -197,11 +197,11 @@ textarea:focus-visible {
     transform: translateX(100%) !important;
   }
 
-  .hero-sound-btn {
-    right: 16px !important;
-    bottom: calc(var(--nav-offset, 72px) + 40px) !important;
-    max-width: calc(100vw - 32px);
-  }
+  /* Positioning for .hero-sound-btn lives in index.html's own responsive
+     block, where the hero CTA layout it must clear is actually known.
+     (This rule used to compute "bottom" from --nav-offset, a TOP navbar
+     offset - a mismatched value that produced an unpredictable position
+     and caused the button to overlap the hero's CTA button.) */
 
   .nav-links.mobile-open {
     max-width: calc(100vw - 32px);

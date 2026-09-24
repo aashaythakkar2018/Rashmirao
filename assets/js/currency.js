@@ -157,6 +157,26 @@
   window.OFFER_PCT = OFFER_PCT;
 
   /**
+   * Exposed so a page that overrides window.toggleCurrency/initCurrency
+   * (e.g. giftcard.html, which needs its own price logic for the fixed
+   * $100/$150 denominations) can still keep the toggle switch's visual
+   * state - thumb position, which label is bold - in sync with the real
+   * currency, instead of reimplementing this.
+   */
+  window.syncCurrencyToggleUI = syncToggleUI;
+
+  /**
+   * The fixed rate used to encode a stable USD price as the "inrAmt"
+   * this module's functions take (inrAmt / FALLBACK = the real USD price -
+   * see fmt() above). Exposed so a page with its own fixed USD prices (e.g.
+   * giftcard.html's $100/$150) can pass formatPrice(usd * this) and get a
+   * correctly live-rate-converted INR amount back, instead of duplicating
+   * this constant or - worse - passing a stale, independently-set INR
+   * number that drifts from the real exchange rate.
+   */
+  window.CURRENCY_USD_ENCODING_RATE = FALLBACK;
+
+  /**
    * Call once after DOM ready (e.g. at the bottom of each page's <script>).
    * Syncs the toggle UI, applies saved currency, and kicks off the live rate fetch.
    */

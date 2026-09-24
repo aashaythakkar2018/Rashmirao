@@ -464,11 +464,17 @@ footer {
   .info-grid { grid-template-columns: 1fr; gap: 36px; }
   .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
 }
+@media (max-width: 1024px) {
+  /* "Gift Cards" (two words) was wrapping to a second line from
+     769-1023px, since the mobile hamburger only kicked in at 768px while
+     the full 6-item text nav needed more like 1024px to fit comfortably.
+     Isolated so the phone-only rules below don't start applying early. */
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+}
 @media (max-width: 768px) {
   .wrap { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
-  .nav-links { display: none; }
-  .nav-burger { display: flex; }
   .section { padding: 72px 0; }
   .page-hero { padding-top: 130px; }
   .hero-meta-grid { grid-template-columns: 1fr; gap: 14px; }
@@ -699,7 +705,7 @@ footer {
 
 <div class="toast" id="toast">Message received. Rashmi will respond within 48 hours.</div>
 
-<script src="assets/js/currency.js?v=4"></script>
+<script src="assets/js/currency.js?v=5"></script>
 <script src="assets/js/site.js" defer></script>
 <script>
 function closeAnn() {

@@ -912,11 +912,17 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
   .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
   .hero-row { grid-template-columns: 1fr; gap: 36px; }
 }
+@media (max-width: 1024px) {
+  /* "Gift Cards" (two words) was wrapping to a second line from
+     769-1023px, since the mobile hamburger only kicked in at 768px while
+     the full 6-item text nav needed more like 1024px to fit comfortably.
+     Isolated so the phone-only rules below don't start applying early. */
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+}
 @media (max-width: 768px) {
   .wrap { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
-  .nav-links { display: none; }
-  .nav-burger { display: flex; }
   .section { padding: 72px 0; }
   .page-hero { padding-top: 130px; }
   .filter-inner { padding: 0 16px; overflow-x: auto; gap: 12px; }
@@ -1414,7 +1420,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- Shared currency module (live rate + INR↔USD toggle) -->
-<script src="assets/js/currency.js?v=4"></script>
+<script src="assets/js/currency.js?v=5"></script>
 <script src="assets/js/site.js" defer></script>
 
 <!-- ========== SCRIPTS ========== -->

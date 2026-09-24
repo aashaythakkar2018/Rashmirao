@@ -304,8 +304,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .story-grid-row--observation { grid-template-columns: minmax(150px, .9fr) repeat(3, minmax(0, 1fr)); }
-.story-grid-row--textile { grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(180px, .8fr); }
-.story-grid-row--closing { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.story-grid-row--textile { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(150px, .9fr); }
 .story-grid .img-wrap {
   min-height: 220px;
   border-radius: 0;
@@ -314,8 +313,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .story-grid-row--lead .img-wrap { aspect-ratio: 1.12 / 1; }
 .story-grid-row--observation .img-wrap { aspect-ratio: 1 / 1.08; }
 .story-grid-row--observation .img-wrap:nth-child(2) img { transform: translateX(4%) scale(1.1); transform-origin: center; }
-.story-grid-row--textile .img-wrap { aspect-ratio: 1.45 / 1; }
-.story-grid-row--closing .img-wrap { aspect-ratio: 1.25 / 1; }
+.story-grid-row--textile .img-wrap { aspect-ratio: 1 / 1.08; }
 .story-grid-copy {
   display: flex;
   flex-direction: column;
@@ -1082,11 +1080,17 @@ footer {
   .press-logo:nth-child(2n) { border-right: none; }
   .ft-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
 }
+@media (max-width: 1024px) {
+  /* "Gift Cards" (two words) was wrapping to a second line from
+     769-1023px, since the mobile hamburger only kicked in at 768px while
+     the full 6-item text nav needed more like 1024px to fit comfortably.
+     Isolated so the phone-only rules below don't start applying early. */
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+}
 @media (max-width: 768px) {
   .wrap { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
-  .nav-links { display: none; }
-  .nav-burger { display: flex; }
   .section, .section-lg { padding: 72px 0; }
   .page-hero { padding-top: 110px; padding-bottom: 48px; }
   .page-hero .wrap { grid-template-columns: 1fr; gap: 36px; }
@@ -1096,14 +1100,20 @@ footer {
   .story-grid-row { gap: 4px; }
   .story-grid-row--lead,
   .story-grid-row--observation,
-  .story-grid-row--textile,
-  .story-grid-row--closing { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story-grid-row--textile { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .story-grid-copy { padding: 24px 18px; }
   .story-grid-copy p { max-width: none; }
   .story-pull { width: auto; max-width: 100%; font-size: 18px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .ft-grid { grid-template-columns: 1fr; gap: 36px; }
   .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  /* Testimonial cards: the 360px fixed width below was designed for
+     tablet/desktop (where 2+ cards + a peek of the next fit nicely). On a
+     phone it overflowed the viewport and looked cut off/distorted - scale
+     it to the viewport instead, with a smaller peek of the next card. */
+  .press-pullquote { padding: 0 24px; }
+  .press-card { flex: 0 0 84vw; padding: 28px 24px; }
+  .press-cards-wrap::after { width: 36px; }
 }
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
@@ -1194,10 +1204,10 @@ footer {
               <img src="assets/images/story/grid-02.jpg" alt="Rashmi sketching outdoors" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
             </div>
           </div>
           <div class="story-grid-row story-grid-row--observation">
@@ -1209,33 +1219,25 @@ footer {
               <img src="assets/images/story/grid-08.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-10.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-07.jpg" alt="Watercolor mountain painting" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-06.jpg" alt="Evening sky" loading="lazy" onerror="this.style.display='none'">
             </div>
           </div>
           <div class="story-grid-row story-grid-row--textile">
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-10.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-05.jpg" alt="Silk fabric detail" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-09.jpg" alt="Watercolor mountain landscape" loading="lazy" onerror="this.style.display='none'">
             </div>
-            <div class="story-grid-copy">
-              <h3>From Painting<br>to Textile</h3>
-              <p>Each Rhytara design begins as an original artwork and is translated into a repeat pattern on Georgette satin.</p>
-            </div>
-          </div>
-          <div class="story-grid-row story-grid-row--closing">
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
             </div>
-            <div class="img-wrap rv">
-              <img src="assets/images/story/pink-saree.jpeg" alt="Pink saree detail" loading="lazy" onerror="this.style.display='none'">
-            </div>
-            <div class="img-wrap rv">
-              <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
+            <div class="story-grid-copy">
+              <h3>From Painting<br>to Textile</h3>
+              <p>Each Rhytara design begins as an original artwork and is translated into a repeat pattern on Georgette satin.</p>
             </div>
           </div>
         </div>

@@ -98,7 +98,7 @@
       display: block; width: 22px; height: 1.5px;
       background: currentColor; border-radius: 2px;
     }
-    @media (max-width: 600px) { .nav-burger { display: flex; } }
+    @media (max-width: 1024px) { .nav-burger { display: flex; } }
 
     /* -- CURRENCY TOGGLE -- */
     .currency-toggle {
@@ -738,8 +738,18 @@
       .pp-footer-grid { grid-template-columns: 1fr; gap: 24px; }
       .pp-ft-bottom { padding: 0 28px; justify-content: center; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 1024px) {
+      /* Every other page hides the text nav (and shows the hamburger) at
+         1024px; this page did it at 600px, so 601-1024px showed the full
+         desktop nav squeezed into tablet width, overlapping the currency
+         toggle and cart icon, with "Gift Cards" wrapping to a second line.
+         Must come after the base ".nav-links" rule above (line ~85) to win
+         the cascade - a plain, unconditional rule beats a media-query rule
+         of equal specificity that appears earlier in the file, regardless
+         of whether the query matches. */
       .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
       .related-grid { grid-template-columns: 1fr; gap: 16px; }
       .trust-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .gallery { grid-template-columns: 56px 1fr; gap: 10px; }
@@ -1154,7 +1164,7 @@
 
   <!-- Currency module -->
   <script src="assets/js/site.js" defer></script>
-  <script src="assets/js/currency.js?v=4" onerror="console.warn('currency.js not found - using INR defaults')"></script>
+  <script src="assets/js/currency.js?v=5" onerror="console.warn('currency.js not found - using INR defaults')"></script>
 
   <!-- ------------------------------------
        FRAMER MOTION v11 - Vanilla JS / ESM

@@ -111,6 +111,11 @@
       font-family: var(--ff-serif); font-size: 18px; font-weight: 500;
       letter-spacing: 0.1em; text-transform: uppercase; color: var(--text);
     }
+    @media (max-width: 380px) {
+      /* matches index/shop/collections/about/product - the wordmark next
+         to the mark gets tight below 380px, so it's dropped there. */
+      .nav-logo-type { display: none; }
+    }
     .nav-links { display: flex; gap: var(--sp-4); }
     .nav-links a {
       font-family: var(--ff-sans); font-size: var(--fs-label);
@@ -613,10 +618,17 @@
       .exhibit-detail { grid-column: 2; }
       .ft-grid { grid-template-columns: 1fr 1fr; row-gap: var(--sp-6); }
     }
-    @media (max-width: 768px) {
-      .nav-inner { padding: 0 28px; }
+    @media (max-width: 1024px) {
+      /* "Gift Cards" (two words) was wrapping to a second line from
+         769-1023px, since the mobile hamburger only kicked in at 768px
+         while the full 6-item text nav needed more like 1024px to fit
+         comfortably. Isolated so the phone-only rules below (many of them
+         unrelated to nav) don't start applying early on tablets. */
       .nav-links { display: none; }
       .nav-burger { display: flex; }
+    }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 28px; }
       .wrap { padding: 0 28px; }
       .featured-hero { padding: var(--sp-6) 0 var(--sp-5); }
       .featured-hero-media { max-height: 420px; }
@@ -882,7 +894,6 @@
       </div>
       <div class="media-placeholder press-media">
         <img src="IMG_0123.JPG" alt="Tri-Valley Life newspaper feature on Rashmi Rao's Nature's Rhythm exhibition" loading="lazy" decoding="async">
-        <span>Press coverage image</span>
       </div>
     </div>
   </section>
