@@ -195,16 +195,23 @@ number, edition size, status, PDF URL, and timestamps. See
 
 ## 7. Certificate template editing
 
-Edit [`templates/certificate.html`](templates/certificate.html) (structure)
-and [`templates/certificate.css`](templates/certificate.css) (styling) —
-both are plain HTML/CSS with `{{variable}}` placeholders, no build step.
-Available variables are listed in
-[`src/services/certificate/templateData.ts`](src/services/certificate/templateData.ts).
+The certificate is the client-supplied design at
+[`templates/certificate-background.jpg`](templates/certificate-background.jpg)
+— left completely untouched — with exactly three values overlaid on top by
+[`templates/certificate.html`](templates/certificate.html) /
+[`templates/certificate.css`](templates/certificate.css): the design name
+(on the "Title of Artwork" line), the edition number (e.g. "037/250"), and
+the customer's name. Nothing else is rendered — no logo, no artwork photo,
+no story copy.
 
-Brand assets go in `assets/logo/`, `assets/signature/`, `assets/artwork/`
-(see the `README.md` in each folder for exact filenames expected). Until
-real assets are added, the certificate renders correctly with those slots
-blank — nothing breaks.
+To change which three values are shown or where they sit on the page, edit
+the `.field-*` rules in `certificate.css` (positions are percentages of the
+page, since the background image is a fixed 3:2 design) and the matching
+`{{variable}}` in `certificate.html`. Available variables are listed in
+[`src/services/certificate/templateData.ts`](src/services/certificate/templateData.ts).
+To use a different background image entirely, replace
+`certificate-background.jpg` with one of the same aspect ratio and
+re-check the field positions.
 
 ---
 
@@ -225,8 +232,10 @@ into the dashboard's "Issue certificate" form (case-insensitive). Fields:
 }
 ```
 
-- `code` is used to look up `assets/artwork/{code}.jpg`, as the duplicate-
-  protection key, and in generated filenames.
+- `code` is used as the duplicate-protection key and in generated filenames
+  (e.g. `certificates/EOE/...`) — still load-bearing.
+- `collection` and `story` are currently unused by the certificate PDF (see
+  section 7) but are kept here in case a future design brings them back.
 - `editionTotal` is the denominator shown on the certificate (e.g. "037 of
   250") and the default pre-filled on the dashboard form — override it per
   certificate on the form if a particular design's edition size differs.
@@ -299,7 +308,7 @@ it's already done, so re-running `setup-mac.command` after an interruption
 | Symptom | Likely cause |
 |---|---|
 | "Certificate number N has already been issued for X" | Someone already issued that exact number for that design. Search the dashboard for it — if it's a genuine mistake, edit/regenerate that one instead of creating a second. |
-| PDF looks wrong / missing images | Brand assets not yet added under `assets/` — see section 7. Missing images render as blank, not an error. |
+| PDF looks wrong / text lands in the wrong spot | The three overlaid fields are positioned by percentage in `certificate.css` — see section 7. |
 | Dashboard shows "Unauthorized" | Wrong `x-admin-token` — check for typos when copying `ADMIN_API_TOKEN` out of `.env`. |
 | Dashboard won't load at all | Is the local Postgres running (`pg_ctl ... status`)? Is `npm run dev` still running in a terminal? |
 
@@ -307,12 +316,11 @@ it's already done, so re-running `setup-mac.command` after an interruption
 
 ## 12. What's still a placeholder
 
-These are intentionally not invented and must be supplied before real use:
+Nothing — the certificate design is the client-supplied background image,
+and all three fields it needs (design name, edition number, customer name)
+come straight from the `certificates` row.
 
-- `config/designs.json` → each design's real `story` text.
-- `assets/logo/` → the Rhytara logo.
-- `assets/signature/` → Rashmi Rao's signature.
-- `assets/artwork/` → one image per design.
-
-None of these require touching application code — drop the files in and
-edit the JSON.
+`assets/logo/`, `assets/signature/`, `assets/artwork/`, and the `story`
+field in `config/designs.json` are no longer used by the certificate PDF
+(the earlier, richer template that read them was replaced — see section 7)
+but are left in place in case a future design wants them back.

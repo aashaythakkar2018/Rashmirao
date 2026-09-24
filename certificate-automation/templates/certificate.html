@@ -7,53 +7,10 @@
 </head>
 <body>
   <div class="certificate">
-    <div class="header">
-      <img class="logo" src="{{logo_url}}" alt="Rhytara" onerror="this.style.display='none'" />
-      <p class="brand-name">Rhytara</p>
-      <h1 class="title">Certificate of Authenticity</h1>
-      <p class="subtitle">
-        This document certifies that the artwork detailed below is an original, authentic<br />
-        creation from the {{collection_name}} collection by artist {{artist_name}}.
-      </p>
-    </div>
-
-    <div class="body">
-      <div class="artwork">
-        <img src="{{artwork_image_url}}" alt="{{design_name}}" onerror="this.style.display='none'" />
-      </div>
-      <div class="details">
-        <p class="intro">
-          Issued to <strong>{{customer_full_name}}</strong>, in recognition of their acquisition
-          of an original, limited-edition Rhytara artwork.
-        </p>
-        <dl class="field-grid">
-          <dt>Collection</dt>
-          <dd>{{collection_name}}</dd>
-
-          <dt>Design</dt>
-          <dd>{{design_name}}</dd>
-
-          <dt>Edition</dt>
-          <dd>{{edition_number}}</dd>
-
-          <dt>Order Number</dt>
-          <dd>{{order_number}}</dd>
-        </dl>
-        <p class="story">{{artwork_story}}</p>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div class="signature-block">
-        <img src="{{signature_url}}" alt="Signature" onerror="this.style.display='none'" />
-        <span class="name">{{artist_name}}</span>
-        <span class="role">Artist &amp; Founder, Rhytara</span>
-      </div>
-      <div class="issue-block">
-        <div>Issued {{issue_date}}</div>
-        <div class="order-number">Order {{order_number}}</div>
-      </div>
-    </div>
+    <img class="bg" src="{{background_url}}" alt="" />
+    <div class="field field-design">{{design_name}}</div>
+    <div class="field field-edition">{{edition_number}}</div>
+    <div class="field field-customer">{{customer_full_name}}</div>
   </div>
 </body>
 </html>
