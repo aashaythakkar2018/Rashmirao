@@ -16,15 +16,20 @@
   var Cart = window.Cart;
   var configured = Cart && Cart.isConfigured && Cart.isConfigured();
 
-  function fmt(inr) {
-    if (typeof window.formatPrice === 'function') return window.formatPrice(inr);
-    return '₹ ' + (parseInt(inr, 10) || 0).toLocaleString('en-IN');
+  function fmtUsd(usd) {
+    if (typeof window.formatUsdExact === 'function') return window.formatUsdExact(usd);
+    return '$ ' + usd.toFixed(2);
   }
 
-  function isGift(line) { return /gift/i.test(line.title || ''); }
-  function fmtOfferLine(line, inr) {
-    if (isGift(line) || typeof window.formatOfferPriceHtml !== 'function') return fmt(inr);
-    return window.formatOfferPriceHtml(inr);
+  /* Shows exactly what Shopify will charge. When Shopify's automatic
+     discount has lowered the amount, the list price is struck through
+     beside it. The offer is never recalculated here: the amount from
+     Shopify already includes it. */
+  function priceHtml(fullUsd, payUsd) {
+    if (fullUsd - payUsd > 0.005) {
+      return '<s class="price-was">' + fmtUsd(fullUsd) + '</s> <span class="price-now">' + fmtUsd(payUsd) + '</span>';
+    }
+    return fmtUsd(payUsd);
   }
 
   /* -- Inject markup ------------------------------------------------------- */
@@ -83,7 +88,9 @@
   function subLine(line) {
     var bits = [];
     if (line.variantTitle) bits.push(line.variantTitle);
-    (line.options || []).forEach(function (o) { bits.push(o.value); });
+    (line.options || []).forEach(function (o) {
+      if (bits.indexOf(o.value) === -1) bits.push(o.value);
+    });
     (line.attributes || []).forEach(function (a) {
       if (!/^_/.test(a.key)) bits.push(a.key + ': ' + a.value);
     });
@@ -119,7 +126,6 @@
     foot.style.display = 'block';
     body.innerHTML = c.lines.map(function (line) {
       var qty = Number(line.quantity) || 1;
-      var itemTotal = Number(line.lineTotalInr) || ((Number(line.priceInr) || 0) * qty);
       return '' +
         '<div class="cart-item" data-line="' + line.id + '">' +
           '<img class="cart-item-img" src="' + esc(line.image || '') + '" alt="' + esc(line.title) + '" ' +
@@ -127,7 +133,7 @@
           '<div class="cart-item-info">' +
             '<div class="cart-item-name">' + esc(line.title) + '</div>' +
             '<div class="cart-item-sub">' + esc(subLine(line)) + '</div>' +
-            '<div class="cart-item-price">' + fmtOfferLine(line, itemTotal) + '</div>' +
+            '<div class="cart-item-price">' + priceHtml(line.fullUsd, line.payUsd) + '</div>' +
             '<div class="cart-qty">' +
               '<button class="cart-qty-btn" type="button" data-act="dec" aria-label="Decrease quantity">−</button>' +
               '<span class="cart-qty-val">' + qty + '</span>' +
@@ -140,15 +146,9 @@
 
     var total = document.getElementById('cartTotal');
     if (total) {
-      var subtotal = Number(c.subtotalInr) || c.lines.reduce(function (sum, line) {
-        return sum + (Number(line.lineTotalInr) || ((Number(line.priceInr) || 0) * (Number(line.quantity) || 1)));
-      }, 0);
-      var allArt = c.lines.every(function (l) { return !isGift(l); });
-      if (allArt && typeof window.formatOfferPriceHtml === 'function') {
-        total.innerHTML = window.formatOfferPriceHtml(subtotal);
-      } else {
-        total.textContent = fmt(subtotal);
-      }
+      var full = 0, pay = 0;
+      c.lines.forEach(function (line) { full += line.fullUsd; pay += line.payUsd; });
+      total.innerHTML = priceHtml(full, pay);
     }
   }
   window.renderCart = render;

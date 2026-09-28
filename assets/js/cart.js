@@ -51,6 +51,12 @@
     return Math.round(parseFloat(node.amount) * (node.currencyCode === 'USD' ? 84 : 1));
   }
 
+  function usd(node) {
+    if (!node || node.amount == null) return 0;
+    var n = parseFloat(node.amount);
+    return node.currencyCode === 'USD' ? n : n / 84;
+  }
+
   /* Lines that can no longer actually be bought: merchandise hard-deleted
      since this cart was created (e.g. a catalogue re-import), or a variant
      that was available when added but has since sold out. Left alone,
@@ -82,6 +88,12 @@
       if (lineTotalInr == null || Number(lineTotalInr) <= 0) {
         lineTotalInr = unitPriceInr * qty;
       }
+      /* Exact USD amounts, unrounded. `fullUsd` is the list price; `payUsd`
+         is what Shopify will actually charge for the line, with its
+         automatic discount already applied. The drawer shows these as-is
+         and must not apply the offer again on top. */
+      var fullUsd = usd(m.price) * qty;
+      var payUsd = usd(l.cost && l.cost.totalAmount) || fullUsd;
       return {
         id: l.id,
         quantity: qty,
@@ -93,7 +105,9 @@
         attributes: (l.attributes || []).filter(function (a) { return a.value; }),
         image: img,
         priceInr: unitPriceInr,
-        lineTotalInr: lineTotalInr
+        lineTotalInr: lineTotalInr,
+        fullUsd: fullUsd,
+        payUsd: payUsd
       };
     });
     var totalQuantity = Number(cart.totalQuantity) || lines.reduce(function (sum, line) {

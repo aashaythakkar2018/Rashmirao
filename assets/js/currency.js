@@ -153,6 +153,12 @@
 
   /** HTML with the original struck through and the offer price beside it. */
   window.formatOfferPriceHtml = fmtOfferHtml;
+
+  /** An exact USD amount (e.g. what Shopify will charge) in the active
+      currency, to the cent. No offer maths applied. */
+  window.formatUsdExact = function (usdAmt) {
+    return current === 'USD' ? money(usdAmt, 'USD') : money(usdAmt * inrPerUsd, 'INR');
+  };
   window.offerActive = offerActive;
   window.OFFER_PCT = OFFER_PCT;
 
