@@ -16,10 +16,22 @@ function getBrowser(): Promise<Browser> {
   if (!browserPromise) {
     browserPromise = puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+      ],
+    }).catch((error) => {
+      browserPromise = null;
+      throw error;
     });
   }
   return browserPromise;
+}
+
+function discardBrowser(browser: Browser) {
+  if (browserPromise) browserPromise = null;
+  void browser.close().catch(() => undefined);
 }
 
 export async function closeBrowser() {
@@ -45,8 +57,9 @@ export async function renderCertificatePdf(data: CertificateTemplateData): Promi
   );
 
   const browser = await getBrowser();
-  const page = await browser.newPage();
+  let page;
   try {
+    page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
     const pdf = await page.pdf({
       format: 'A4',
@@ -54,7 +67,12 @@ export async function renderCertificatePdf(data: CertificateTemplateData): Promi
       preferCSSPageSize: true,
     });
     return Buffer.from(pdf);
+  } catch (error) {
+    if (/connection closed|target closed|browser.*closed/i.test(String(error))) {
+      discardBrowser(browser);
+    }
+    throw error;
   } finally {
-    await page.close();
+    await page?.close().catch(() => undefined);
   }
 }
