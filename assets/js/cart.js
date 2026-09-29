@@ -10,6 +10,7 @@
  *   Cart.remove(lineId)              remove a line
  *   Cart.get()                       current normalised cart (sync)
  *   Cart.checkout()                  hand off to Shopify's hosted checkout
+ *   Cart.buyNow(variantId, qty, attrs) straight to checkout, bypassing the bag
  *
  * Fires a `cart:change` event on `document` after every mutation; the drawer
  * listens for it. Shopify checkout prices are USD; the existing display layer
@@ -260,6 +261,24 @@
     remove: function (lineId) {
       if (!state.id) return Promise.resolve(state);
       return linesRemove([lineId]);
+    },
+
+    /* Single-item checkout in its own cart, so the shopping bag is untouched. */
+    buyNow: function (variantId, quantity, attributes) {
+      if (!Store.isConfigured()) return Promise.reject(new Error('Store not connected'));
+      if (!variantId) return Promise.reject(new Error('No variant selected'));
+      var line = { merchandiseId: variantId, quantity: quantity || 1 };
+      if (attributes && attributes.length) {
+        line.attributes = attributes.filter(function (a) { return a && a.key && a.value; });
+      }
+      var q = 'mutation($lines:[CartLineInput!]){ cartCreate(input:{lines:$lines}){ ' +
+        'cart { checkoutUrl } userErrors { message } } }';
+      return Store.query(q, { lines: [line] }).then(function (d) {
+        var cart = userErr(d, 'cartCreate').cart;
+        if (!cart || !cart.checkoutUrl) throw new Error('Shopify checkout is unavailable.');
+        window.location.assign(cart.checkoutUrl);
+        return cart.checkoutUrl;
+      });
     },
 
     checkout: function () {

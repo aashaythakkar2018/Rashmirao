@@ -32,7 +32,16 @@ disabled with a notice. Nothing breaks, so you can deploy at any point.
    | `magical-pansies` | Magical Pansies | 295 / 310 by width |
    | `purple-petals-reverie` | Purple Petals Reverie | 295 / 310 by width |
    | `shifting-glacier` | Shifting Glacier | 295 / 310 by width |
-   | `rhytara-gift-card` | Rhytara Gift Card | 100 / 150 |
+
+   Gift cards are **not** imported from the CSV. The gift card is one native
+   Shopify gift card product (Products → Gift cards), created in the admin:
+
+   | Handle | Title | Denominations (USD) |
+   |---|---|---|
+   | `rhytara-giftcard` | RHYTARA GIFT CARD | 100 / 150 |
+
+   Skip the CSV's `rhytara-gift-card` rows when importing so a duplicate,
+   non-gift-card product is not created.
 
    Regenerate the CSV any time the site copy changes:
    `python3 shopify/build-products-csv.py` (see [`shopify/README.md`](shopify/README.md)).
@@ -120,7 +129,7 @@ Commit and deploy exactly as before (see [`README.md`](README.md)). No build ste
 | `index.html` | Homepage grid ← `featured` collection |
 | `collections.html` | Full grid, filter counts, sort ← `all` collection |
 | `product.html` | Product detail, images, variants, metafields ← `?handle=`; "you may also like" ← Shopify recommendations. Legacy `?id=` links auto-map to the new handles. |
-| `giftcard.html` | Denomination cards ← `rhytara-gift-card` variants. Add to cart carries recipient name / email / message as line-item properties. |
+| `giftcard.html` | $100 / $150 cards → the 100.00 / 150.00 denominations of `rhytara-giftcard` (matched by price). "Send Gift Card" opens a one-item Shopify checkout (`Cart.buyNow`) carrying Shopify's gift-card recipient properties, so Shopify emails the code to the recipient after payment. |
 | everywhere | The cart drawer, badge and "Proceed to Checkout" ← Shopify Cart API; checkout redirects to `your-store.myshopify.com/cart/c/…` |
 
 The cart is persisted per browser (`localStorage` key `rrd_cart_id`) and survives
