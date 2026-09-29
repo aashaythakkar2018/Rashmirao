@@ -452,9 +452,13 @@ footer {
   font-family: var(--ff-sans); font-size: 12px;
   letter-spacing: .1em; text-transform: uppercase;
   padding: 14px 32px; opacity: 0; pointer-events: none;
-  transition: opacity .35s, transform .35s; z-index: 900; white-space: nowrap; border-radius: 4px;
+  transition: opacity .35s, transform .35s; z-index: 900; border-radius: 4px;
+  width: max-content; max-width: calc(100vw - 40px); text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.is-error { background: #7a5248; }
+.contact-form .btn-olive[disabled] { opacity: .7; cursor: progress; }
+.form-honey { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* RESPONSIVE */
 @media (max-width: 1100px) {
@@ -603,10 +607,15 @@ footer {
         <p class="form-intro-text">Whether you're looking for a saree for a special moment, choosing a gift, or envisioning something together, I'd love to hear from you.</p>
       </div>
 
-      <form class="contact-form" onsubmit="handleFormSubmit(event)">
+      <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)" novalidate>
+        <div class="form-honey" aria-hidden="true">
+          <label for="f-honey">Leave this field empty</label>
+          <input id="f-honey" name="botcheck" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
         <div class="form-group">
           <label class="form-label" for="f-category">INQUIRY CATEGORY</label>
-          <select id="f-category" class="form-select">
+          <select id="f-category" name="category" class="form-select">
             <option value="FIND YOUR RHYTARA">FIND YOUR RHYTARA (Pieces, Sizing, Gifting)</option>
             <option value="CREATE WITH US">CREATE WITH US (Collaborations, Events, Styling)</option>
             <option value="SHARE THE STORY">SHARE THE STORY (Press, Editorial, Interviews)</option>
@@ -616,21 +625,21 @@ footer {
 
         <div class="form-group">
           <label class="form-label" for="f-name">NAME</label>
-          <input id="f-name" class="form-input" type="text" placeholder="Your name" required>
+          <input id="f-name" name="name" class="form-input" type="text" placeholder="Your name" autocomplete="name" maxlength="120" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="f-email">EMAIL ADDRESS</label>
-          <input id="f-email" class="form-input" type="email" placeholder="your@email.com" required>
+          <input id="f-email" name="email" class="form-input" type="email" placeholder="your@email.com" autocomplete="email" maxlength="254" required>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="f-message">MESSAGE</label>
-          <textarea id="f-message" class="form-textarea" placeholder="Share a few details with us..." required></textarea>
+          <textarea id="f-message" name="message" class="form-textarea" placeholder="Share a few details with us..." maxlength="5000" required></textarea>
         </div>
 
         <div class="form-submit-row">
-          <button type="submit" class="btn-olive">
+          <button type="submit" class="btn-olive" id="contactSubmit">
             CONNECT WITH RHYTARA &rarr;
           </button>
           <p class="form-trust-note">Every message is personally read by Rashmi. Your details remain private.</p>
@@ -739,14 +748,67 @@ function selectCategoryByTitle(categoryTitle) {
   });
 }
 
-function handleFormSubmit(e) {
-  e.preventDefault();
+// Web3Forms access key: public by design, it can only deliver to studio@rhytara.com.
+const CONTACT_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = 'e83decf9-acf1-4f4f-bd51-9b5671adcc21';
+
+function showContactToast(text, isError) {
   const toast = document.getElementById('toast');
-  if (toast) {
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3800);
+  if (!toast) return;
+  toast.textContent = text;
+  toast.classList.toggle('is-error', !!isError);
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), isError ? 6000 : 4200);
+}
+
+async function handleFormSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const button = document.getElementById('contactSubmit');
+  const f = {
+    name: document.getElementById('f-name'),
+    email: document.getElementById('f-email'),
+    message: document.getElementById('f-message'),
+    honey: document.getElementById('f-honey')
+  };
+  const name = f.name.value.trim();
+  const email = f.email.value.trim();
+  const message = f.message.value.trim();
+  const category = document.getElementById('f-category').value;
+
+  if (!name) { f.name.focus(); return showContactToast('Please enter your name.', true); }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { f.email.focus(); return showContactToast('Please enter a valid email address.', true); }
+  if (!message) { f.message.focus(); return showContactToast('Please add a short message.', true); }
+  if (f.honey.value) return;
+
+  const label = button.innerHTML;
+  button.disabled = true;
+  button.textContent = 'SENDING…';
+  try {
+    const res = await fetch(CONTACT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: 'Rhytara inquiry · ' + category + ' · ' + name,
+        from_name: 'Rhytara Website',
+        replyto: email,
+        Category: category,
+        Name: name,
+        Email: email,
+        Message: message
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) === 'false') throw new Error(data.message || 'Send failed');
+    form.reset();
+    showContactToast('Message received. Rashmi will respond within 48 hours.');
+  } catch (err) {
+    showContactToast('Sorry, your message could not be sent. Please email studio@rhytara.com.', true);
+  } finally {
+    button.disabled = false;
+    button.innerHTML = label;
   }
-  e.target.reset();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
