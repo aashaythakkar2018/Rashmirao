@@ -49,6 +49,54 @@ textarea:focus-visible {
   text-align: center;
 }
 
+/* Touch tablets can't hover-pause the marquee, so testimonials become a swipeable row there too. */
+@media (min-width: 769px) and (max-width: 1180px) and (hover: none) {
+  .testimonial-track {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    animation: none !important;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 28px;
+    padding: 0 28px 4px;
+    box-sizing: border-box;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .testimonial-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-group {
+    gap: 14px;
+    padding-right: 28px;
+  }
+
+  .testimonial-group[aria-hidden="true"],
+  .testimonial-group:first-child .testimonial-card:last-child {
+    display: none;
+  }
+
+  .testimonial-card {
+    flex: 0 0 auto;
+    width: 360px;
+    height: 188px;
+    min-height: 0;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+  }
+
+  .testimonial-card p {
+    font-size: 16px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
 @media (max-width: 768px) {
   html,
   body {
@@ -290,13 +338,50 @@ textarea:focus-visible {
     flex-shrink: 0;
   }
 
-  .testimonial-group,
   .ny-exhibit-group {
     max-width: 100%;
   }
 
+  /* Testimonials: one swipeable row of equal, compact cards (no marquee on touch). */
+  .testimonial-track {
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 20px;
+    padding: 0 20px 4px;
+    box-sizing: border-box;
+  }
+
+  .testimonial-group {
+    gap: 12px;
+    padding-right: 20px;
+  }
+
+  .testimonial-group[aria-hidden="true"],
+  .testimonial-group:first-child .testimonial-card:last-child {
+    display: none;
+  }
+
   .testimonial-card {
-    max-width: calc(100vw - 40px);
+    flex: 0 0 auto;
+    width: min(78vw, 320px);
+    height: 176px;
+    min-height: 0;
+    padding: 18px 20px;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+  }
+
+  .testimonial-card p {
+    font-size: 16px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .testimonial-card span {
+    margin-top: 12px;
+    line-height: 1.5;
   }
 
   .cart-drawer {

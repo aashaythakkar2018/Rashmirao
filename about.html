@@ -290,62 +290,60 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-align: center;
 }
 
-/* Editorial mosaic inspired by the supplied About reference. */
+/* Editorial mosaic: three rows, each with its own column widths, sized from the About reference. */
 .story-grid {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 .story-grid-row {
   display: grid;
-  gap: 5px;
+  gap: 8px;
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
+  min-height: 0; /* stops image intrinsic heights from overriding the row aspect-ratio */
 }
-.story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.story-grid-row--observation { grid-template-columns: minmax(150px, .9fr) repeat(3, minmax(0, 1fr)); }
-.story-grid-row--textile { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(150px, .9fr); }
+.story-grid-row--lead { grid-template-columns: 290fr 315fr 297fr 351fr; aspect-ratio: 1277 / 195; }
+.story-grid-row--observation { grid-template-columns: 293fr 280fr 327fr 355fr; aspect-ratio: 1279 / 232; }
+.story-grid-row--textile { grid-template-columns: 322fr 396fr 255fr 294fr; aspect-ratio: 1291 / 212; }
 .story-grid .img-wrap {
-  min-height: 220px;
+  height: 100%;
+  min-height: 0;
   border-radius: 0;
   overflow: hidden;
 }
-.story-grid-row--lead .img-wrap { aspect-ratio: 1.12 / 1; }
-.story-grid-row--observation .img-wrap { aspect-ratio: 1 / 1.08; }
-.story-grid-row--observation .img-wrap:nth-child(2) img { transform: translateX(4%) scale(1.1); transform-origin: center; }
-.story-grid-row--textile .img-wrap { aspect-ratio: 1 / 1.08; }
 .story-grid-copy {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 28px 24px;
-  background: var(--bg);
+  padding: 24px 26px;
+  background: #EEEAE4;
 }
 .story-grid-copy h3 {
   font-family: var(--ff-sans);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
-  letter-spacing: .22em;
-  line-height: 1.7;
+  letter-spacing: .26em;
+  line-height: 1.6;
   text-transform: uppercase;
   color: var(--text);
-  max-width: 150px;
 }
 .story-grid-copy h3::after {
   content: '';
   display: block;
-  width: 28px;
+  width: 30px;
   height: 1px;
   background: var(--text);
   margin-top: 18px;
 }
 .story-grid-copy p {
   font-family: var(--ff-sans);
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.65;
   color: var(--muted);
-  max-width: 190px;
+  max-width: 230px;
   margin-top: 18px;
 }
 .story-grid .img-wrap img {
@@ -978,6 +976,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: background .25s; cursor: pointer;
 }
 .nl-btn:hover { background: var(--olive-dk); }
+.nl-btn[disabled] { opacity: .7; cursor: progress; }
+.nl-input[aria-invalid="true"] { border-color: #a4493d; }
 .nl-sub {
   font-family: var(--ff-sans); font-size: 11px;
   color: var(--muted); margin-top: 12px; font-weight: 300; line-height: 1.6;
@@ -1073,7 +1073,13 @@ footer {
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .story-grid-row--lead { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .story-grid-row--lead { aspect-ratio: 1277 / 265; }
+  .story-grid-row--observation { aspect-ratio: 1279 / 315; }
+  .story-grid-row--textile { aspect-ratio: 1291 / 288; }
+  .story-grid-copy { padding: 18px 18px; }
+  .story-grid-copy h3 { font-size: 10.5px; letter-spacing: .2em; }
+  .story-grid-copy h3::after, .story-grid-copy p { margin-top: 12px; }
+  .story-grid-copy p { font-size: 11.5px; }
   .journey-split, .phil-split, .about-split, .connect-inner { grid-template-columns: 1fr; gap: 52px; }
   .social-grid { grid-template-columns: repeat(2, 1fr); }
   .press-logo:nth-child(4n) { border-right: 1px solid var(--beige); }
@@ -1100,7 +1106,8 @@ footer {
   .story-grid-row { gap: 4px; }
   .story-grid-row--lead,
   .story-grid-row--observation,
-  .story-grid-row--textile { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story-grid-row--textile { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; aspect-ratio: auto; }
+  .story-grid .img-wrap { height: auto; aspect-ratio: 4 / 3; }
   .story-grid-copy { padding: 24px 18px; }
   .story-grid-copy p { max-width: none; }
   .story-pull { width: auto; max-width: 100%; font-size: 18px; }
@@ -1208,16 +1215,16 @@ footer {
               <img src="assets/images/story/grid-02.jpg" alt="Rashmi sketching outdoors" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-11.jpg" alt="Sunset over the hills" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="img-wrap rv">
-              <img src="assets/images/story/grid-11.jpg" alt="Vineyard sunset" loading="lazy" onerror="this.style.display='none'">
+              <img src="assets/images/story/grid-03.jpg" alt="Moonrise over the hills" loading="lazy" onerror="this.style.display='none'">
             </div>
           </div>
           <div class="story-grid-row story-grid-row--observation">
             <div class="story-grid-copy">
-              <h3>Observation<br>Fuels Creativity</h3>
-              <p>From landscapes and flowers to skies and water, nature is my constant inspiration.</p>
+              <h3>Embracing<br>the Creativity</h3>
+              <p>From the chaos and textures to the moments they hold, art is a constant exploration.</p>
             </div>
             <div class="img-wrap rv">
               <img src="assets/images/story/grid-08.jpg" alt="Alcohol ink artwork" loading="lazy" onerror="this.style.display='none'">
@@ -1240,8 +1247,8 @@ footer {
               <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="story-grid-copy">
-              <h3>From Painting<br>to Textile</h3>
-              <p>Each Rhytara design begins as an original artwork and is translated into a repeat pattern on Georgette satin.</p>
+              <h3>From Nature&rsquo;s<br>to Texture</h3>
+              <p>Raw beauty, reimagined in layers, where landscapes, colours and emotions come alive. One brushstroke at a time.</p>
             </div>
           </div>
         </div>
@@ -1680,11 +1687,12 @@ footer {
       <div class="connect-nl">
         <span class="connect-nl-label rv">Stay in the Loop</span>
         <p class="body-text rv" style="margin-bottom:24px;font-size:14px;">New works, exhibition invites, and studio notes, when there is something worth sharing.</p>
-        <div class="nl-row rv">
-          <input type="email" class="nl-input" placeholder="Your email address" aria-label="Newsletter email">
-          <button class="nl-btn" onclick="this.textContent='✓ Joined'">Join</button>
-        </div>
-        <p class="nl-sub rv">No noise. No promotions. Only work that matters.</p>
+        <form class="nl-row rv" id="nlForm" novalidate>
+          <input type="email" class="nl-input" id="nlEmail" placeholder="Your email address" aria-label="Newsletter email" autocomplete="email" maxlength="254" required>
+          <input type="checkbox" name="botcheck" id="nlHoney" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+          <button type="submit" class="nl-btn" id="nlBtn">Join</button>
+        </form>
+        <p class="nl-sub rv" id="nlSub" aria-live="polite">No noise. No promotions. Only work that matters.</p>
       </div>
     </div>
   </div>
@@ -1907,6 +1915,59 @@ if (typeof gsap !== 'undefined') {
     el.style.opacity = '1'; el.style.transform = 'none';
   });
 }
+
+// Newsletter sign-ups go to studio@rhytara.com through Web3Forms (public key).
+(function () {
+  var form = document.getElementById('nlForm');
+  if (!form) return;
+  var input = document.getElementById('nlEmail');
+  var button = document.getElementById('nlBtn');
+  var note = document.getElementById('nlSub');
+  var defaultNote = note.textContent;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      input.setAttribute('aria-invalid', 'true');
+      note.textContent = 'Please enter a valid email address.';
+      input.focus();
+      return;
+    }
+    if (document.getElementById('nlHoney').checked) return;
+    input.removeAttribute('aria-invalid');
+    button.disabled = true;
+    button.textContent = '…';
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: 'e83decf9-acf1-4f4f-bd51-9b5671adcc21',
+        subject: 'Rhytara newsletter sign-up · ' + email,
+        from_name: 'Rhytara Website',
+        replyto: email,
+        Form: 'Stay in the Loop (About page)',
+        Email: email
+      })
+    }).then(function (res) {
+      return res.json().then(function (data) {
+        if (!res.ok || data.success === false) throw new Error(data.message);
+      });
+    }).then(function () {
+      form.reset();
+      button.textContent = '✓ Joined';
+      note.textContent = 'Thank you. You’re on the list.';
+    }).catch(function () {
+      button.disabled = false;
+      button.textContent = 'Join';
+      note.textContent = 'Sorry, that didn’t go through. Please try again.';
+    });
+  });
+  input.addEventListener('input', function () {
+    input.removeAttribute('aria-invalid');
+    if (!button.disabled) note.textContent = defaultNote;
+  });
+}());
 </script>
 </body>
 </html>
