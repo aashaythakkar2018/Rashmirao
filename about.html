@@ -304,9 +304,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   align-items: stretch;
   min-height: 0; /* stops image intrinsic heights from overriding the row aspect-ratio */
 }
-.story-grid-row--lead { grid-template-columns: 290fr 315fr 297fr 351fr; aspect-ratio: 1277 / 195; }
+.story-grid-row--lead { grid-template-columns: 290fr 315fr 297fr 351fr; aspect-ratio: 1279 / 232; }
 .story-grid-row--observation { grid-template-columns: 293fr 280fr 327fr 355fr; aspect-ratio: 1279 / 232; }
-.story-grid-row--textile { grid-template-columns: 322fr 396fr 255fr 294fr; aspect-ratio: 1291 / 212; }
+.story-grid-row--textile { grid-template-columns: 322fr 396fr 255fr 294fr; aspect-ratio: 1279 / 232; }
 .story-grid .img-wrap {
   height: 100%;
   min-height: 0;
@@ -492,78 +492,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 13px;
   line-height: 1.85;
 }
-.journey-img-col .img-wrap {
-  aspect-ratio: 4 / 3;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: 0 28px 70px rgba(0,0,0,0.34);
-}
-.journey-img-col .img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-}
-.journey-img-col .img-wrap:hover img {
-  transform: scale(1.03);
-}
-.journey-gallery {
-  display: flex;
-  gap: 14px;
-  width: 100%;
-  overflow: hidden;
-}
-.journey-gallery .img-wrap:first-child {
-  grid-column: auto;
-  aspect-ratio: 4 / 3;
-}
-.journey-gallery .img-wrap {
-  flex: 0 0 calc((100% - 14px) / 2);
-  min-width: 0;
-  aspect-ratio: 4 / 3;
-  border-radius: 0;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-}
-.journey-gallery .img-wrap img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform 0.5s ease;
-}
-.journey-gallery .img-wrap.is-portrait {
-  background: #0f0f0d;
-}
-.journey-gallery .img-wrap.is-portrait img {
-  object-fit: cover;
-  object-position: 50% 18%;
-  transform: scale(1.12);
-}
-.journey-gallery .img-wrap:hover img { transform: scale(1.15); }
-.journey-gallery-wrap {
-  position: relative;
-  padding: 0 34px;
-}
-.journey-gallery-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 2;
-  width: 36px;
-  height: 36px;
-  transform: translateY(-50%);
-  border: 1px solid rgba(250,248,245,0.28);
-  border-radius: 50%;
-  background: rgba(17,17,17,0.72);
-  color: #FAF8F5;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-}
-.journey-gallery-arrow:hover { border-color: var(--olive); color: var(--olive); }
-.journey-gallery-arrow--prev { left: 0; }
-.journey-gallery-arrow--next { right: 0; }
 @media (max-width: 980px) {
   .journey-split { gap: 48px; }
-  .journey-img-col { order: 1; width: 100%; }
   .journey-copy { order: 2; }
   .journey-panel-col { width: 100%; }
 }
@@ -1073,9 +1003,9 @@ footer {
    RESPONSIVE
 ============================================================ */
 @media (max-width: 1100px) {
-  .story-grid-row--lead { aspect-ratio: 1277 / 265; }
+  .story-grid-row--lead { aspect-ratio: 1279 / 315; }
   .story-grid-row--observation { aspect-ratio: 1279 / 315; }
-  .story-grid-row--textile { aspect-ratio: 1291 / 288; }
+  .story-grid-row--textile { aspect-ratio: 1279 / 315; }
   .story-grid-copy { padding: 18px 18px; }
   .story-grid-copy h3 { font-size: 10.5px; letter-spacing: .2em; }
   .story-grid-copy h3::after, .story-grid-copy p { margin-top: 12px; }
@@ -1333,29 +1263,6 @@ footer {
         </div>
       </div>
 
-      <div class="journey-img-col rv">
-        <div class="journey-gallery-wrap">
-          <button class="journey-gallery-arrow journey-gallery-arrow--prev" id="journeyGalleryPrev" type="button" aria-label="Previous Journey image">&lsaquo;</button>
-          <div class="journey-gallery">
-          <div class="img-wrap is-portrait">
-            <img src="assets/images/about-portrait.jpg" alt="Portrait of Rashmi Rao" loading="eager" decoding="async" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap">
-            <img src="assets/images/story/journey-9815.jpeg" alt="Studio detail" loading="eager" decoding="async" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap">
-            <img src="assets/images/story/journey-9816.jpeg" alt="Painting detail" loading="eager" decoding="async" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap">
-            <img src="assets/images/story/journey-9817.jpeg" alt="Studio process" loading="eager" decoding="async" onerror="this.style.display='none'">
-          </div>
-          <div class="img-wrap">
-            <img src="assets/images/story/journey-9818.jpeg" alt="Wearable art" loading="eager" decoding="async" onerror="this.style.display='none'">
-          </div>
-          </div>
-          <button class="journey-gallery-arrow journey-gallery-arrow--next" id="journeyGalleryNext" type="button" aria-label="Next Journey image">&rsaquo;</button>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -1798,19 +1705,6 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 }
 </script>
 
-<!-- Journey image controls -->
-<script>
-(function () {
-  const gallery = document.querySelector('.journey-gallery');
-  const prev = document.getElementById('journeyGalleryPrev');
-  const next = document.getElementById('journeyGalleryNext');
-  if (!gallery || !prev || !next) return;
-  const step = () => gallery.clientWidth * 0.92;
-  prev.addEventListener('click', () => gallery.scrollBy({ left: -step(), behavior: 'smooth' }));
-  next.addEventListener('click', () => gallery.scrollBy({ left: step(), behavior: 'smooth' }));
-}());
-</script>
-
 <!-- -- Text Reveal - animate-skill text-reveal.tsx pattern -- -->
 <script>
 (function() {
@@ -1879,7 +1773,7 @@ if (typeof gsap !== 'undefined') {
     });
 
     /* Clip-path reveals for image grids - skill: decisive ease-in-out, 1.3s */
-    ['.story-grid', '.journey-img-col', '.phil-imgs', '.social-grid'].forEach(sel => {
+    ['.story-grid', '.phil-imgs', '.social-grid'].forEach(sel => {
       const el = document.querySelector(sel);
       if (!el) return;
       gsap.fromTo(el,
