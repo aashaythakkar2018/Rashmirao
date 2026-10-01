@@ -154,6 +154,9 @@
         opt2.value = d.name;
         opt2.dataset.code = d.code;
         opt2.dataset.skuCode = d.skuCode || '';
+        opt2.dataset.skuLineCode = d.skuLineCode || '';
+        opt2.dataset.editionTotal = d.editionTotal;
+        opt2.dataset.nextSuggestedNumber = d.nextSuggestedNumber;
         opt2.textContent = d.name;
         formSelect.appendChild(opt2);
       });
@@ -162,6 +165,28 @@
     }
   }
 
+
+  function updateSkuSuggestion() {
+    var select = document.getElementById('f_designName');
+    var skuInput = document.getElementById('f_sku');
+    var hint = document.getElementById('f_skuHint');
+    var design = state.designs.find(function (d) { return d.name === select.value; });
+    if (!design) return;
+    if (!design.skuCode || !design.skuLineCode) {
+      skuInput.value = '';
+      hint.textContent = 'No SKU prefix is configured for this design yet. Enter the complete SKU exactly as printed on the physical piece.';
+      return;
+    }
+    if (design.nextSuggestedNumber > design.editionTotal) {
+      skuInput.value = '';
+      hint.textContent = 'All known editions are assigned for this design. Confirm any remaining SKU directly against the physical label.';
+      return;
+    }
+    skuInput.value = 'RHY-' + design.skuCode + '-' + design.skuLineCode + '-' + pad(design.nextSuggestedNumber, design.editionTotal);
+    hint.textContent = 'Suggested next SKU based on known sold pieces and issued certificates. Confirm the complete SKU matches the physical label.';
+  }
+
+  document.getElementById('f_designName').addEventListener('change', updateSkuSuggestion);
   // Typing a SKU whose design code is known picks that design for you.
   document.getElementById('f_sku').addEventListener('input', function (e) {
     var match = /^RHY-([A-Z]{2,5})-/.exec(e.target.value.replace(/\s+/g, '').toUpperCase());

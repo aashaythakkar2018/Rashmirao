@@ -16,10 +16,13 @@ level up).
 ## 1. What it does
 
 1. A staff member opens `/admin/dashboard` and fills in: the order number,
-   the customer's name and email, the design, and the **SKU of the physical
-   saree** exactly as Rashmi assigned it (e.g. `RHY-EOE-GRS-002/250`).
-2. The edition number is read from that SKU — the system never generates or
-   renumbers editions. It checks the SKU belongs to the chosen design, and
+  the customer's name and email, the design, and the **complete SKU of the
+  physical saree** (e.g. `RHY-EOE-GRS-002/250`). For configured SKU prefixes,
+  the dashboard suggests the next number from the highest recorded
+  certificate or known sold SKU; the staff member confirms it against the
+  physical label. The complete SKU remains editable.
+2. The edition number is read from the submitted SKU — the server never
+  renumbers it. It checks the SKU belongs to the chosen design, and
    that neither that SKU nor that edition of the design has already been
    certified — a duplicate is rejected outright, never silently allowed.
 3. It renders a Certificate of Authenticity PDF from

@@ -25,14 +25,25 @@ dashboardApiRouter.get('/meta', (_req, res) => {
 });
 
 /** GET /admin/dashboard/api/designs - the "Issue certificate" form's design dropdown. */
-dashboardApiRouter.get('/designs', (_req, res) => {
-  const designs = Object.entries(loadDesigns()).map(([name, d]) => ({
+dashboardApiRouter.get('/designs', async (_req, res) => {
+  const config = loadDesigns();
+  const editionTotals: Record<string, number> = {};
+  for (const d of Object.values(config)) editionTotals[d.code] = d.editionTotal;
+  const stats = await getCertificateStats(editionTotals);
+  const issued = new Map(stats.byDesign.map((d) => [d.designCode, d]));
+
+  const designs = Object.entries(config).map(([name, d]) => {
+    const latestRecorded = (issued.get(d.code)?.nextSuggestedNumber ?? 1) - 1;
+    return {
     name,
     code: d.code,
     skuCode: d.skuCode ?? null,
+    skuLineCode: d.skuLineCode ?? null,
     collection: d.collection,
     editionTotal: d.editionTotal,
-  }));
+    nextSuggestedNumber: Math.max(d.lastKnownEditionNumber ?? 0, latestRecorded) + 1,
+  };
+  });
   res.json({ designs });
 });
 

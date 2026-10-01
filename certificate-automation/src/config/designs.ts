@@ -6,6 +6,10 @@ export interface DesignConfig {
   code: string;
   /** The design segment of this design's SKUs, e.g. "SGL" in RHY-SGL-GRS-001/250. */
   skuCode?: string;
+  /** The fabric/line segment of the complete SKU, e.g. "GRS". */
+  skuLineCode?: string;
+  /** Highest known sold edition in the supplied SKU list. */
+  lastKnownEditionNumber?: number;
   editionTotal: number;
   story: string;
 }
