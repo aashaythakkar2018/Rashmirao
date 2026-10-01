@@ -21,6 +21,7 @@ export interface IssueCertificateInput {
   designCode: string;
   certificateNumber: number;
   editionTotal: number;
+  sku: string;
 }
 
 /**
@@ -30,8 +31,8 @@ export interface IssueCertificateInput {
  * downloads the PDF from the dashboard and attaches/sends it themselves
  * (e.g. from their own Gmail), by design.
  *
- * Throws DuplicateCertificateNumberError if that number was already used
- * for this design - the caller (the dashboard API) turns that into a 409.
+ * Throws DuplicateCertificateNumberError if that edition number or SKU was
+ * already used - the caller (the dashboard API) turns that into a 409.
  */
 export async function issueCertificate(input: IssueCertificateInput): Promise<Certificate> {
   const cert = await createCertificate({
@@ -43,6 +44,7 @@ export async function issueCertificate(input: IssueCertificateInput): Promise<Ce
     design_code: input.designCode,
     certificate_number: input.certificateNumber,
     edition_total: input.editionTotal,
+    sku: input.sku,
   });
 
   try {
@@ -55,7 +57,7 @@ export async function issueCertificate(input: IssueCertificateInput): Promise<Ce
     logger.info('Certificate issued', {
       certificateId: cert.id,
       design: input.designName,
-      number: input.certificateNumber,
+      sku: input.sku,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

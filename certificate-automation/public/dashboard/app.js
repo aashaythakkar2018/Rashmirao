@@ -153,9 +153,8 @@
         var opt2 = document.createElement('option');
         opt2.value = d.name;
         opt2.dataset.code = d.code;
-        opt2.dataset.editionTotal = d.editionTotal;
-        opt2.dataset.nextSuggested = d.nextSuggestedNumber;
-        opt2.textContent = d.name + ' (next: ' + d.nextSuggestedNumber + '/' + d.editionTotal + ')';
+        opt2.dataset.skuCode = d.skuCode || '';
+        opt2.textContent = d.name;
         formSelect.appendChild(opt2);
       });
     } catch (err) {
@@ -163,13 +162,14 @@
     }
   }
 
-  document.getElementById('f_designName').addEventListener('change', function (e) {
-    var opt = e.target.selectedOptions[0];
-    if (!opt || !opt.dataset.code) return;
-    document.getElementById('f_certNumber').value = opt.dataset.nextSuggested;
-    document.getElementById('f_editionTotal').value = opt.dataset.editionTotal;
-    document.getElementById('f_certHint').textContent =
-      'Next unused number for this design: ' + opt.dataset.nextSuggested + ' of ' + opt.dataset.editionTotal + '. You can change it.';
+  // Typing a SKU whose design code is known picks that design for you.
+  document.getElementById('f_sku').addEventListener('input', function (e) {
+    var match = /^RHY-([A-Z]{2,5})-/.exec(e.target.value.replace(/\s+/g, '').toUpperCase());
+    if (!match) return;
+    var select = document.getElementById('f_designName');
+    Array.prototype.forEach.call(select.options, function (opt) {
+      if (opt.dataset.skuCode && opt.dataset.skuCode.toUpperCase() === match[1]) select.value = opt.value;
+    });
   });
 
   // ------------------------------------------------------------ meta ----
@@ -235,6 +235,7 @@
       '<td>' + nameCell + '</td>' +
       '<td>' + esc(cert.design_name || '—') + '</td>' +
       '<td class="mono">' + pad(cert.certificate_number, cert.edition_total) + '</td>' +
+      '<td class="mono">' + esc(cert.sku || '—') + '</td>' +
       '<td><span class="status-pill status-' + cert.status + '">' + statusLabel(cert.status) + '</span></td>' +
       '<td>' + certCell + '</td>' +
       '<td>' + actions + '</td>' +
@@ -255,7 +256,7 @@
       var result = r.json;
       var tbody = document.getElementById('certTableBody');
       tbody.innerHTML = result.rows.map(renderRow).join('') ||
-        '<tr><td colspan="7" class="muted" style="text-align:center;padding:24px;">No certificates match these filters.</td></tr>';
+        '<tr><td colspan="8" class="muted" style="text-align:center;padding:24px;">No certificates match these filters.</td></tr>';
 
       var totalPages = Math.max(1, Math.ceil(result.total / state.pageSize));
       document.getElementById('pageInfo').textContent = 'Page ' + state.page + ' of ' + totalPages + ' — ' + result.total + ' total';
@@ -342,13 +343,11 @@
       customerFirstName: document.getElementById('f_firstName').value.trim(),
       customerLastName: document.getElementById('f_lastName').value.trim(),
       customerEmail: document.getElementById('f_email').value.trim(),
-      certificateNumber: Number(document.getElementById('f_certNumber').value),
+      sku: document.getElementById('f_sku').value.trim(),
     };
-    var editionTotalVal = document.getElementById('f_editionTotal').value;
-    if (editionTotalVal) body.editionTotal = Number(editionTotalVal);
 
     if (!body.designName) { issueError.textContent = 'Choose a design.'; return; }
-    if (!body.certificateNumber) { issueError.textContent = 'Enter a certificate number.'; return; }
+    if (!body.sku) { issueError.textContent = 'Enter the SKU of the saree.'; return; }
 
     issueSubmit.disabled = true;
     issueStatus.textContent = 'Generating certificate PDF…';
@@ -372,7 +371,7 @@
       refreshAll();
     } catch (err) {
       if (err.status === 409) {
-        issueError.textContent = err.message; // duplicate certificate number for this design
+        issueError.textContent = err.message; // SKU or edition already certified
       } else {
         issueError.textContent = 'Could not issue certificate: ' + err.message;
       }

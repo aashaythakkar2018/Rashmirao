@@ -22,7 +22,8 @@ export async function generateAndStoreCertificate(
   });
 
   const editionRef = formatEditionNumber(cert.certificate_number, cert.edition_total).replace('/', '-of-');
-  const filename = buildCertificateFilename(cert.order_number, `${cert.design_code}-${editionRef}`);
+  const pieceRef = cert.sku ? cert.sku.replace('/', '-of-') : `${cert.design_code}-${editionRef}`;
+  const filename = buildCertificateFilename(cert.order_number, pieceRef);
   const key = `certificates/${cert.design_code}/${filename}`;
 
   const storage = getCertificateStorage();

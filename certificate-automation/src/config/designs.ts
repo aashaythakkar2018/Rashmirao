@@ -4,6 +4,8 @@ import { paths } from './env';
 export interface DesignConfig {
   collection: string;
   code: string;
+  /** The design segment of this design's SKUs, e.g. "SGL" in RHY-SGL-GRS-001/250. */
+  skuCode?: string;
   editionTotal: number;
   story: string;
 }

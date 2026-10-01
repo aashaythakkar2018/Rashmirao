@@ -6,7 +6,6 @@ import {
   getCertificateStats,
   updateCertificateCustomerName,
   getCertificateById,
-  getNextSuggestedNumber,
 } from '../db/certificates';
 import {
   issueCertificate,
@@ -14,6 +13,7 @@ import {
   DuplicateCertificateNumberError,
 } from '../certificates/issueCertificate';
 import { loadDesigns, findDesignForProductTitle } from '../config/designs';
+import { parseSku, checkSkuMatchesDesign, InvalidSkuError } from '../certificates/sku';
 import { logger } from '../utils/logger';
 
 export const dashboardApiRouter = Router();
@@ -25,18 +25,15 @@ dashboardApiRouter.get('/meta', (_req, res) => {
 });
 
 /** GET /admin/dashboard/api/designs - the "Issue certificate" form's design dropdown. */
-dashboardApiRouter.get('/designs', async (_req, res) => {
-  const designs = loadDesigns();
-  const withSuggestions = await Promise.all(
-    Object.entries(designs).map(async ([name, d]) => ({
-      name,
-      code: d.code,
-      collection: d.collection,
-      editionTotal: d.editionTotal,
-      nextSuggestedNumber: await getNextSuggestedNumber(d.code),
-    }))
-  );
-  res.json({ designs: withSuggestions });
+dashboardApiRouter.get('/designs', (_req, res) => {
+  const designs = Object.entries(loadDesigns()).map(([name, d]) => ({
+    name,
+    code: d.code,
+    skuCode: d.skuCode ?? null,
+    collection: d.collection,
+    editionTotal: d.editionTotal,
+  }));
+  res.json({ designs });
 });
 
 /** GET /admin/dashboard/api/stats */
@@ -80,14 +77,14 @@ const IssueCertificateBody = z.object({
   customerLastName: z.string().trim().optional().default(''),
   customerEmail: z.string().trim().email('A valid customer email is required'),
   designName: z.string().trim().min(1, 'Design is required'),
-  certificateNumber: z.coerce.number().int().positive('Certificate number must be a positive number'),
-  editionTotal: z.coerce.number().int().positive().optional(),
+  sku: z.string().trim().min(1, 'SKU is required'),
 });
 
 /**
  * POST /admin/dashboard/api/certificates
- * Issues a brand-new certificate: validates the design exists, checks the
- * certificate number isn't already used for that design, generates the
+ * Issues a brand-new certificate: validates the design exists, reads the
+ * edition number from the piece's SKU (never generated here), checks
+ * neither the SKU nor that edition is already certified, generates the
  * PDF, and stores it. Does NOT send anything - you download the PDF from
  * the response (or the dashboard table) and send it yourself.
  */
@@ -105,6 +102,15 @@ dashboardApiRouter.post('/certificates', async (req, res) => {
     });
   }
 
+  let parsedSku;
+  try {
+    parsedSku = parseSku(input.sku);
+    checkSkuMatchesDesign(parsedSku, input.designName, design);
+  } catch (err) {
+    if (err instanceof InvalidSkuError) return res.status(400).json({ error: err.message });
+    throw err;
+  }
+
   try {
     const cert = await issueCertificate({
       orderNumber: input.orderNumber,
@@ -113,8 +119,9 @@ dashboardApiRouter.post('/certificates', async (req, res) => {
       customerEmail: input.customerEmail,
       designName: input.designName,
       designCode: design.code,
-      certificateNumber: input.certificateNumber,
-      editionTotal: input.editionTotal ?? design.editionTotal,
+      certificateNumber: parsedSku.editionNumber,
+      editionTotal: parsedSku.editionTotal,
+      sku: parsedSku.sku,
     });
 
     if (cert.status === 'failed') {

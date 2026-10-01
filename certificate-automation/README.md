@@ -16,10 +16,12 @@ level up).
 ## 1. What it does
 
 1. A staff member opens `/admin/dashboard` and fills in: the order number,
-   the customer's name and email, the design, and the certificate number to
-   issue for that design (e.g. "37" for the 37th Echoes of Earth piece).
-2. The system checks that number hasn't already been used **for that
-   design** — a duplicate is rejected outright, never silently allowed.
+   the customer's name and email, the design, and the **SKU of the physical
+   saree** exactly as Rashmi assigned it (e.g. `RHY-EOE-GRS-002/250`).
+2. The edition number is read from that SKU — the system never generates or
+   renumbers editions. It checks the SKU belongs to the chosen design, and
+   that neither that SKU nor that edition of the design has already been
+   certified — a duplicate is rejected outright, never silently allowed.
 3. It renders a Certificate of Authenticity PDF from
    [`templates/certificate.html`](templates/certificate.html), stores it,
    and generates a download link, which opens automatically in a new tab.
@@ -71,11 +73,9 @@ service). It shows:
 
 - **Totals** — how many certificates issued, by status, and a per-design
   breakdown (how many of each design's edition have gone out).
-- **Issue a new certificate** — the form described above. Selecting a
-  design pre-fills the next unused certificate number for that design as a
-  suggestion (highest issued + 1) — you're always free to type a different
-  number instead; nothing is auto-generated behind your back.
-- **Search/filter** by customer name, email, order number, design, or
+- **Issue a new certificate** — the form described above. Typing a SKU
+  whose design code is known (EOE, PPR, SGL) selects the design for you.
+- **Search/filter** by customer name, email, order number, design, SKU, or
   status.
 - **Download the PDF** — every row with a generated certificate has a
   Download PDF link.
@@ -187,31 +187,41 @@ npm run migrate
 Re-running `npm run migrate` is safe — already-applied files are skipped.
 
 The one table, `certificates`, holds every issued (or attempted)
-certificate — order number, customer name/email, design, certificate
-number, edition size, status, PDF URL, and timestamps. See
-[`migrations/001_init.sql`](migrations/001_init.sql) for the full schema.
+certificate — order number, customer name/email, design, SKU, edition
+number and size (parsed from the SKU), status, PDF URL, and timestamps. See
+[`migrations/`](migrations/) for the full schema. `sku` is unique, and is
+empty only on certificates issued before SKUs were recorded.
 
 ---
 
 ## 7. Certificate template editing
 
-The certificate is the client-supplied design at
-[`templates/certificate-background.jpg`](templates/certificate-background.jpg)
-— left completely untouched — with exactly three values overlaid on top by
+The certificate is an A4 landscape page built from
 [`templates/certificate.html`](templates/certificate.html) /
-[`templates/certificate.css`](templates/certificate.css): the design name
-(on the "Title of Artwork" line), the edition number (e.g. "037/250"), and
-the customer's name. Nothing else is rendered — no logo, no artwork photo,
-no story copy.
+[`templates/certificate.css`](templates/certificate.css). It keeps the look
+of the client-supplied design
+([`templates/certificate-background.jpg`](templates/certificate-background.jpg)):
+its cream paper, bronze border, and the corner and crown flourishes cut out
+of it as `ornament-corner.png` / `ornament-crown.png`. It shows:
 
-To change which three values are shown or where they sit on the page, edit
-the `.field-*` rules in `certificate.css` (positions are percentages of the
-page, since the background image is a fixed 3:2 design) and the matching
-`{{variable}}` in `certificate.html`. Available variables are listed in
-[`src/services/certificate/templateData.ts`](src/services/certificate/templateData.ts).
-To use a different background image entirely, replace
-`certificate-background.jpg` with one of the same aspect ratio and
-re-check the field positions.
+- Rhytara logo (`assets/logo/rhytara-logo.png`) and the collection name
+- Title of artwork, with its image (`assets/artwork/{code}.jpg`)
+- Edition number / 250, and the exact SKU
+- Artist (Rashmi Rao), medium, and provenance
+- Who it was issued to, order number, and date of issue (the day the
+  certificate was first issued — regenerating keeps the same date)
+- Artist signature, and an edition seal
+
+**Signature:** save Rashmi's signature as
+`assets/signature/rashmi-rao-signature.png` (dark ink on a transparent
+background) and it appears above the signature line on every certificate
+generated or regenerated after that. Until then the line is left blank for
+a hand signature — a signature is never fabricated.
+
+The medium and provenance wording live in
+[`src/services/certificate/templateData.ts`](src/services/certificate/templateData.ts)
+(`MEDIUM`, and `origin`), along with every `{{variable}}` the template can
+use. All text values are HTML-escaped before they reach the template.
 
 ---
 
@@ -226,19 +236,23 @@ into the dashboard's "Issue certificate" form (case-insensitive). Fields:
   "Echoes of Earth": {
     "collection": "Nature's Rhythm",
     "code": "EOE",
+    "skuCode": "EOE",
     "editionTotal": 250,
-    "story": "The certificate copy for this design."
+    "story": "The story copy for this design."
   }
 }
 ```
 
-- `code` is used as the duplicate-protection key and in generated filenames
-  (e.g. `certificates/EOE/...`) — still load-bearing.
-- `collection` and `story` are currently unused by the certificate PDF (see
-  section 7) but are kept here in case a future design brings them back.
-- `editionTotal` is the denominator shown on the certificate (e.g. "037 of
-  250") and the default pre-filled on the dashboard form — override it per
-  certificate on the form if a particular design's edition size differs.
+- `code` is the internal key used for duplicate protection, the artwork
+  file name, and storage folders (e.g. `certificates/EOE/...`).
+- `skuCode` is the design segment of this design's SKUs (`SGL` in
+  `RHY-SGL-GRS-001/250`). A SKU for a design with a `skuCode` must use it.
+  **Grounding Nature and Magical Pansies don't have one yet** — add theirs
+  once Rashmi confirms them; until then any unclaimed code is accepted for
+  those two.
+- `collection` is printed on the certificate ("Nature's Rhythm Collection").
+- `editionTotal` must match the `/250` in the SKU.
+- `story` is not printed on the certificate.
 - Changes are picked up within 60 seconds without restarting the service.
 
 ---
@@ -307,8 +321,9 @@ it's already done, so re-running `setup-mac.command` after an interruption
 
 | Symptom | Likely cause |
 |---|---|
-| "Certificate number N has already been issued for X" | Someone already issued that exact number for that design. Search the dashboard for it — if it's a genuine mistake, edit/regenerate that one instead of creating a second. |
-| PDF looks wrong / text lands in the wrong spot | The three overlaid fields are positioned by percentage in `certificate.css` — see section 7. |
+| "Edition N has already been issued for X" / "A certificate has already been issued for SKU …" | That piece is already certified. Search the dashboard for the SKU — correct and regenerate that one instead of creating a second. |
+| "… is not a Rhytara SKU" / "should be zero-padded" | Type the SKU exactly as on the piece, e.g. `RHY-EOE-GRS-001/250`. |
+| "SKU … belongs to X, not Y" | The design picked on the form doesn't match the SKU's design code. |
 | Dashboard shows "Unauthorized" | Wrong `x-admin-token` — check for typos when copying `ADMIN_API_TOKEN` out of `.env`. |
 | Dashboard won't load at all | Is the local Postgres running (`pg_ctl ... status`)? Is `npm run dev` still running in a terminal? |
 
@@ -316,11 +331,6 @@ it's already done, so re-running `setup-mac.command` after an interruption
 
 ## 12. What's still a placeholder
 
-Nothing — the certificate design is the client-supplied background image,
-and all three fields it needs (design name, edition number, customer name)
-come straight from the `certificates` row.
-
-`assets/logo/`, `assets/signature/`, `assets/artwork/`, and the `story`
-field in `config/designs.json` are no longer used by the certificate PDF
-(the earlier, richer template that read them was replaced — see section 7)
-but are left in place in case a future design wants them back.
+- **Rashmi's signature** — see section 7. The signature line prints blank
+  until `assets/signature/rashmi-rao-signature.png` is added.
+- **SKU codes for Grounding Nature and Magical Pansies** — see section 8.

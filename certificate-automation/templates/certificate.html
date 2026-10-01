@@ -7,10 +7,60 @@
 </head>
 <body>
   <div class="certificate">
-    <img class="bg" src="{{background_url}}" alt="" />
-    <div class="field field-design">{{design_name}}</div>
-    <div class="field field-edition">{{edition_number}}</div>
-    <div class="field field-customer">{{customer_full_name}}</div>
+    <div class="frame"></div>
+    <img class="corner corner-tl" src="{{corner_url}}" alt="" />
+    <img class="corner corner-tr" src="{{corner_url}}" alt="" />
+    <img class="corner corner-bl" src="{{corner_url}}" alt="" />
+    <img class="corner corner-br" src="{{corner_url}}" alt="" />
+
+    <header class="header">
+      <img class="logo" src="{{logo_url}}" alt="Rhytara" />
+      <h1 class="title">Certificate of Authenticity</h1>
+      <p class="collection">{{collection_name}}</p>
+      <img class="crown" src="{{crown_url}}" alt="" />
+      <p class="statement">
+        This certifies that the wearable artwork described below is an authentic, individually
+        numbered piece from the {{collection_name}} by {{artist_name}}, reproduced from the
+        artist's original artwork. All copyright and reproduction rights are retained by the artist.
+      </p>
+    </header>
+
+    <main class="body">
+      <figure class="artwork">
+        <img src="{{artwork_image_url}}" alt="{{design_name}}" />
+      </figure>
+
+      <section class="details">
+        <p class="label">Title of artwork</p>
+        <h2 class="design-name">{{design_name}}</h2>
+        <p class="edition">Edition <strong>{{edition_number}}</strong></p>
+
+        <dl class="facts">
+          <div class="{{sku_row_class}}"><dt>SKU</dt><dd class="mono">{{sku}}</dd></div>
+          <div><dt>Artist</dt><dd>{{artist_name}}</dd></div>
+          <div><dt>Medium</dt><dd>{{medium}}</dd></div>
+          <div><dt>Provenance</dt><dd>{{origin}}</dd></div>
+          <div><dt>Issued to</dt><dd>{{customer_full_name}}</dd></div>
+          <div><dt>Order no.</dt><dd class="mono">{{order_number}}</dd></div>
+          <div><dt>Date of issue</dt><dd>{{issue_date}}</dd></div>
+        </dl>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="signature">
+        <img src="{{signature_url}}" alt="" />
+        <span class="signature-line"></span>
+        <span class="signature-name">{{artist_name}}</span>
+        <span class="signature-role">Artist · Rhytara</span>
+      </div>
+
+      <div class="seal" aria-label="Limited edition {{edition_number}}">
+        <span class="seal-top">Limited Edition</span>
+        <span class="seal-number">{{edition_number}}</span>
+        <span class="seal-bottom">Rhytara</span>
+      </div>
+    </footer>
   </div>
 </body>
 </html>

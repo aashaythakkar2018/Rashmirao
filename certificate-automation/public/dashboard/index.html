@@ -78,15 +78,10 @@
               <span>Customer email (for your records — not sent automatically)</span>
               <input id="f_email" type="email" required />
             </label>
-            <label>
-              <span>Certificate number</span>
-              <input id="f_certNumber" type="number" min="1" required />
-              <span id="f_certHint" class="field-hint"></span>
-            </label>
-            <label>
-              <span>Edition size (denominator)</span>
-              <input id="f_editionTotal" type="number" min="1" />
-              <span class="field-hint">Defaults to the design's configured size.</span>
+            <label class="span-2">
+              <span>SKU of the physical saree</span>
+              <input id="f_sku" type="text" class="mono" placeholder="e.g. RHY-EOE-GRS-001/250" autocomplete="off" spellcheck="false" required />
+              <span id="f_skuHint" class="field-hint">Exactly as on the piece. The edition number on the certificate is read from it.</span>
             </label>
           </div>
           <div class="issue-actions">
@@ -106,7 +101,7 @@
           <h2>Certificates</h2>
         </div>
         <div class="filter-bar">
-          <input id="searchInput" type="text" placeholder="Search name, email, order #, design, number…" />
+          <input id="searchInput" type="text" placeholder="Search name, email, order #, design, SKU…" />
           <select id="statusFilter">
             <option value="">All statuses</option>
             <option value="generated">Ready to download</option>
@@ -128,6 +123,7 @@
                 <th>Customer</th>
                 <th>Design</th>
                 <th>Edition</th>
+                <th>SKU</th>
                 <th>Status</th>
                 <th>Certificate</th>
                 <th>Actions</th>

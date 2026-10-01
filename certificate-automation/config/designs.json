@@ -2,6 +2,7 @@
   "Echoes of Earth": {
     "collection": "Nature's Rhythm",
     "code": "EOE",
+    "skuCode": "EOE",
     "editionTotal": 250,
     "story": "Born from Rashmi Rao's original artwork from her Nature's Rhythm solo exhibition, Echoes of Earth reflects the quiet depth and organic beauty of nature through layered tones of green and gold — fluid ink movements and cell-like patterns evoking release, renewal, and the gentle unfolding of spring."
   },
@@ -14,12 +15,14 @@
   "Shifting Glacier": {
     "collection": "Nature's Rhythm",
     "code": "SG",
+    "skuCode": "SGL",
     "editionTotal": 250,
     "story": "Born from Rashmi Rao's original artwork from her Nature's Rhythm solo exhibition, Shifting Glacier captures the fluid essence of water through textured waves of blue, gold, and white — a reminder that even the most enduring elements of nature are continually transforming."
   },
   "Purple Petals Reverie": {
     "collection": "Nature's Rhythm",
     "code": "PPR",
+    "skuCode": "PPR",
     "editionTotal": 250,
     "story": "Born from Rashmi Rao's original artwork from her Nature's Rhythm solo exhibition, Purple Petals Reverie captures a dreamy moment within the heart of a bloom, where layers of violet and gold unfold around a heart-like core — a quiet journey of creation, transformation, and becoming."
   },

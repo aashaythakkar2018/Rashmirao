@@ -12,6 +12,7 @@ export interface Certificate {
   design_code: string;
   certificate_number: number;
   edition_total: number;
+  sku: string | null;
   certificate_url: string | null;
   storage_key: string | null;
   status: CertificateStatus;
@@ -31,11 +32,12 @@ export interface NewCertificateInput {
   design_code: string;
   certificate_number: number;
   edition_total: number;
+  sku: string;
 }
 
 export class DuplicateCertificateNumberError extends Error {
-  constructor(designName: string, certificateNumber: number) {
-    super(`Certificate number ${certificateNumber} has already been issued for ${designName}.`);
+  constructor(message: string) {
+    super(message);
     this.name = 'DuplicateCertificateNumberError';
   }
 }
@@ -51,8 +53,8 @@ export async function createCertificate(input: NewCertificateInput): Promise<Cer
     const res = await pool.query<Certificate>(
       `INSERT INTO certificates (
          order_number, customer_first_name, customer_last_name, customer_email,
-         design_name, design_code, certificate_number, edition_total, status
-       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'pending')
+         design_name, design_code, certificate_number, edition_total, sku, status
+       ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'pending')
        RETURNING *`,
       [
         input.order_number,
@@ -63,13 +65,18 @@ export async function createCertificate(input: NewCertificateInput): Promise<Cer
         input.design_code,
         input.certificate_number,
         input.edition_total,
+        input.sku,
       ]
     );
     return res.rows[0];
   } catch (err: any) {
     if (err && err.code === '23505') {
       // unique_violation
-      throw new DuplicateCertificateNumberError(input.design_name, input.certificate_number);
+      throw new DuplicateCertificateNumberError(
+        err.constraint === 'certificates_sku_key'
+          ? `A certificate has already been issued for SKU ${input.sku}.`
+          : `Edition ${input.certificate_number} has already been issued for ${input.design_name}.`
+      );
     }
     throw err;
   }
@@ -163,7 +170,7 @@ export async function listCertificates(
     const p = `$${params.length}`;
     conditions.push(
       `(customer_first_name ILIKE ${p} OR customer_last_name ILIKE ${p} OR customer_email ILIKE ${p} ` +
-        `OR order_number ILIKE ${p} OR design_name ILIKE ${p} OR CAST(certificate_number AS TEXT) ILIKE ${p})`
+        `OR order_number ILIKE ${p} OR design_name ILIKE ${p} OR sku ILIKE ${p} OR CAST(certificate_number AS TEXT) ILIKE ${p})`
     );
   }
 
@@ -230,13 +237,4 @@ export async function getCertificateStats(editionTotals: Record<string, number>)
   }));
 
   return { totalCertificates, byStatus, byDesign };
-}
-
-/** Highest certificate_number already used for a design - powers the "suggested next number" hint. */
-export async function getNextSuggestedNumber(designCode: string): Promise<number> {
-  const res = await pool.query<{ max_number: number | null }>(
-    `SELECT max(certificate_number) AS max_number FROM certificates WHERE design_code = $1`,
-    [designCode]
-  );
-  return (res.rows[0]?.max_number ?? 0) + 1;
 }
