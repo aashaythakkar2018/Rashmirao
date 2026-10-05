@@ -378,137 +378,122 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 /* ============================================================
-   2. THE JOURNEY - dark bg, refined step connector timeline
+   2. THE JOURNEY - dark bg, alternating copy/image tiles in the
+   same editorial language as the Our Story grid
 ============================================================ */
 .journey-bg { background: var(--dark); }
 .journey-split {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 56px;
 }
 .journey-bg .eyebrow { color: var(--olive); letter-spacing: .22em; }
 .journey-bg .h2 { color: #FAF8F5; margin-bottom: 34px; }
-.journey-copy p {
+.journey-intro-copy p {
   font-family: var(--ff-sans); font-size: 15px;
   font-weight: 300; line-height: 1.9;
   color: rgba(250,248,245,0.62);
-  max-width: 56ch;
-}
-.journey-copy p + p { margin-top: 20px; }
-.journey-intro-copy,
-.journey-intro-copy p,
-.journey-step-copy,
-.journey-step-copy p {
-  width: 100%;
-  max-width: none;
+  max-width: 62ch;
 }
 
-.journey-panel-col {
-  display: grid;
-  gap: 28px;
-  width: 100%;
-  max-width: none;
+.journey-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.journey-copy {
+.journey-grid-row {
   display: grid;
-  gap: 36px;
-  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  height: clamp(380px, 31vw, 440px);
 }
-.journey-panel {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(250,248,245,0.08);
+.journey-grid-row--wide { grid-template-columns: 1fr; height: auto; aspect-ratio: 1279 / 232; }
+.journey-grid .img-wrap {
+  position: relative;
+  min-height: 0;
   border-radius: 0;
-  padding: 38px 38px 34px;
-  box-shadow: 0 22px 56px rgba(0,0,0,0.16);
+  overflow: hidden;
+  background: #EEEAE4;
 }
-.journey-steps {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 18px;
-  padding-left: 42px;
-}
-
-.journey-panel { margin-bottom: 8px; }
-.journey-copy { gap: 28px; }
-.journey-steps::before {
-  content: '';
+/* Flat mat behind portrait photos, matching the copy tiles. */
+.journey-grid .img-wrap::before { background: #EEEAE4; }
+/* Absolute so a photo's own height never stretches its row; contain so
+   every photo is shown whole, never cropped. */
+.journey-grid .img-wrap img {
   position: absolute;
-  left: 18px;
-  top: 24px;
-  bottom: 24px;
-  width: 1px;
-  background: rgba(250,248,245,0.15);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
-.journey-step {
-  position: relative;
-  display: grid;
-  grid-template-columns: 82px 1fr;
-  gap: 18px;
-  align-items: start;
-  padding-bottom: 12px;
+.journey-grid .img-wrap:hover img { transform: none; }
+/* The closing fabric strip is a texture, so it still fills its band. */
+.journey-grid-row--wide .img-wrap img { object-fit: cover; }
+.journey-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 32px;
+  background: #EEEAE4;
 }
-.journey-step:last-child { padding-bottom: 0; }
-.journey-step::before {
-  content: '';
-  position: absolute;
-  left: -28px;
-  top: 6px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--olive);
-  box-shadow: 0 0 0 6px rgba(78,96,58,0.12);
-}
-.journey-step-year {
+.journey-tile-year {
   font-family: var(--ff-mono);
-  font-size: 11px;
+  font-size: 10.5px;
+  letter-spacing: .28em;
   text-transform: uppercase;
-  letter-spacing: .2em;
   color: var(--olive);
 }
-.journey-step-copy h3 {
-  font-family: var(--ff-serif);
-  font-size: 18px;
+.journey-tile h3 {
+  margin-top: 10px;
+  font-family: var(--ff-sans);
+  font-size: 12px;
   font-weight: 400;
-  line-height: 1.25;
-  margin: 0;
-  color: #FAF8F5;
+  letter-spacing: .26em;
+  line-height: 1.6;
+  text-transform: uppercase;
+  color: var(--text);
 }
-.journey-step-copy p {
-  margin: 10px 0 0;
+.journey-tile h3::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 1px;
+  background: var(--text);
+  margin-top: 14px;
+}
+.journey-tile p {
+  margin-top: 14px;
   font-family: var(--ff-sans);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 300;
-  line-height: 1.8;
-  color: rgba(250,248,245,0.58);
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 64ch;
 }
-.journey-panel-note {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(250,248,245,0.06);
-  color: rgba(250,248,245,0.44);
-  font-family: var(--ff-sans);
-  font-size: 13px;
-  line-height: 1.85;
+.journey-note {
+  margin: 48px auto 0;
+  max-width: 640px;
+  text-align: center;
+  font-family: var(--ff-serif);
+  font-size: 20px;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(250,248,245,0.7);
 }
-@media (max-width: 980px) {
-  .journey-split { gap: 48px; }
-  .journey-copy { order: 2; }
-  .journey-panel-col { width: 100%; }
-}
-
-@media (max-width: 680px) {
-  .journey-steps { padding-left: 24px; }
-  .journey-steps::before { left: 8px; }
-  .journey-panel { padding: 28px 22px 24px; }
-  .journey-step { grid-template-columns: 70px 1fr; }
-  .journey-step::before { left: -22px; top: 6px; }
-  .journey-step-year { min-width: 70px; }
-
-  /* Small extra spacing under the panel for clarity on narrow screens */
-  .journey-panel { margin-bottom: 20px; }
-  .journey-copy { gap: 20px; }
+@media (max-width: 768px) {
+  .journey-split { gap: 40px; }
+  .journey-grid, .journey-grid-row { gap: 4px; }
+  .journey-grid-row { grid-template-columns: 1fr; height: auto; }
+  /* Copy always leads its image once the row stacks. */
+  .journey-grid-row .journey-tile { order: -1; padding: 24px 18px; }
+  /* Stacked: each photo takes its natural height, shown in full. */
+  .journey-grid .img-wrap img { position: relative; height: auto; }
+  .journey-grid-row--wide { aspect-ratio: auto; }
+  .journey-grid-row--wide .img-wrap img { position: absolute; height: 100%; }
+  .journey-grid-row--wide .img-wrap { aspect-ratio: 2 / 1; }
+  .journey-tile p { max-width: none; }
+  .journey-note { font-size: 17px; margin-top: 36px; }
 }
 
 /* ============================================================
@@ -1197,73 +1182,97 @@ footer {
         <div class="journey-intro-copy rv">
           <p>Rather than following one fixed artistic style, Rashmi's journey has been shaped by curiosity&mdash;moving through different forms, subjects, mediums and creative challenges.</p>
         </div>
-
-        <div class="journey-panel-col">
-          <div class="journey-panel rv">
-            <div class="journey-steps">
-              <div class="journey-step">
-                <span class="journey-step-year">2010</span>
-                <div class="journey-step-copy">
-                  <h3>Art in Many Forms</h3>
-                  <p>The journey began with fine art, illustration and design, including wedding design illustrations, commissioned work and fine art. Group exhibitions became an early part of the journey, providing opportunities to explore different subjects, techniques and visual languages.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2018–2022</span>
-                <div class="journey-step-copy">
-                  <h3>Small Collections. Many Directions.</h3>
-                  <p>A period of creating small, focused collections&mdash;often through 30-day, 50-day and 100-day creative explorations. Each mini collection explored a different subject, idea, medium or visual language. Some became finished bodies of work. Others simply opened the door to the next experiment. This was a time of learning to embrace curiosity over consistency.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2023</span>
-                <div class="journey-step-copy">
-                  <h3>A Challenge That Changed Everything</h3>
-                  <p>While looking through leftover art supplies from earlier graphic design days, Rashmi came across alcohol inks&mdash;materials she had owned but had never truly explored. She decided to take on a challenge. Inktober became an invitation to experiment. What began with supplies that had been sitting untouched became an immersive exploration of fluidity, transparency, movement and color. A challenge became an artistic language.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2023–2024</span>
-                <div class="journey-step-copy">
-                  <h3>Finding Flow</h3>
-                  <p>The exploration continued beyond the challenge. Alcohol ink became a deeper part of the practice, leading to increasingly abstract explorations of nature, movement, energy and emotion.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2024</span>
-                <div class="journey-step-copy">
-                  <h3>Expanding the Language</h3>
-                  <p>The work continued to evolve through different visual directions&mdash;from Pantone-inspired color studies to the Folk &amp; Tribal Art Series for the City of Lafayette, alongside continuing abstract and mixed-media explorations. Different projects continued to reveal recurring threads of color, rhythm, nature and movement.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2024–2025</span>
-                <div class="journey-step-copy">
-                  <h3>Nature's Rhythm</h3>
-                  <p>Years of experimentation gradually converged. Nature became less something to depict and more something to observe, feel and translate. This evolving body of work became Nature's Rhythm.</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">2025</span>
-                <div class="journey-step-copy">
-                  <h3>Nature's Rhythm &mdash; Exhibition</h3>
-                  <p>A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?</p>
-                </div>
-              </div>
-              <div class="journey-step">
-                <span class="journey-step-year">Today</span>
-                <div class="journey-step-copy">
-                  <h3>From Canvas to Cloth</h3>
-                  <p>That question became the beginning of Rhytara Collections. Selected artworks from Nature's Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced.</p>
-                </div>
-              </div>
-            </div>
-            <blockquote class="journey-panel-note" style="font-style:italic;">From a challenge to a collection. From a painting to a piece you can wear. From art on the wall to art in motion. The journey continues.</blockquote>
-          </div>
-        </div>
       </div>
 
+      <div class="journey-grid">
+      <div class="journey-grid-row rv">
+        <div class="journey-tile">
+          <span class="journey-tile-year">2010</span>
+          <h3>Art in Many Forms</h3>
+          <p>The journey began with fine art, illustration and design, including wedding design illustrations, commissioned work and fine art. Group exhibitions became an early part of the journey, providing opportunities to explore different subjects, techniques and visual languages.</p>
+        </div>
+        <div class="img-wrap">
+          <img src="assets/images/story/grid-07.jpg" alt="Watercolour landscape painting" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-9815.jpeg" alt="Small watercolour collections displayed at an art fair stall" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="journey-tile">
+          <span class="journey-tile-year">2018&ndash;2022</span>
+          <h3>Small Collections. Many Directions.</h3>
+          <p>A period of creating small, focused collections&mdash;often through 30-day, 50-day and 100-day creative explorations. Each mini collection explored a different subject, idea, medium or visual language. Some became finished bodies of work. Others simply opened the door to the next experiment. This was a time of learning to embrace curiosity over consistency.</p>
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="journey-tile">
+          <span class="journey-tile-year">2023</span>
+          <h3>A Challenge That Changed Everything</h3>
+          <p>While looking through leftover art supplies from earlier graphic design days, Rashmi came across alcohol inks&mdash;materials she had owned but had never truly explored. She decided to take on a challenge. Inktober became an invitation to experiment. What began with supplies that had been sitting untouched became an immersive exploration of fluidity, transparency, movement and color. A challenge became an artistic language.</p>
+        </div>
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-9817.jpeg" alt="Inktober 2023 alcohol ink series" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-teal-flow.jpg" alt="Teal alcohol ink abstract" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="journey-tile">
+          <span class="journey-tile-year">2023&ndash;2024</span>
+          <h3>Finding Flow</h3>
+          <p>The exploration continued beyond the challenge. Alcohol ink became a deeper part of the practice, leading to increasingly abstract explorations of nature, movement, energy and emotion.</p>
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="journey-tile">
+          <span class="journey-tile-year">2024</span>
+          <h3>Expanding the Language</h3>
+          <p>The work continued to evolve through different visual directions&mdash;from Pantone-inspired color studies to the Folk &amp; Tribal Art Series for the City of Lafayette, alongside continuing abstract and mixed-media explorations. Different projects continued to reveal recurring threads of color, rhythm, nature and movement.</p>
+        </div>
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-9818.jpeg" alt="Folk and Tribal Art Series on display for the City of Lafayette" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-pink-rhythm.jpg" alt="Magenta alcohol ink abstract from Nature&rsquo;s Rhythm" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="journey-tile">
+          <span class="journey-tile-year">2024&ndash;2025</span>
+          <h3>Nature&rsquo;s Rhythm</h3>
+          <p>Years of experimentation gradually converged. Nature became less something to depict and more something to observe, feel and translate. This evolving body of work became Nature&rsquo;s Rhythm.</p>
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="journey-tile">
+          <span class="journey-tile-year">Nov&ndash;Dec 2025</span>
+          <h3>Nature&rsquo;s Rhythm &mdash; Solo Exhibition</h3>
+          <p>A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?</p>
+        </div>
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-9816.jpeg" alt="Rashmi Rao at her Nature&rsquo;s Rhythm solo exhibition" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="journey-grid-row rv">
+        <div class="img-wrap">
+          <img src="assets/images/story/journey-blue-abstract.jpg" alt="Blue abstract painting translated into the Shifting Glacier saree" loading="lazy" onerror="this.style.display='none'">
+        </div>
+        <div class="journey-tile">
+          <span class="journey-tile-year">2026 &middot; Today</span>
+          <h3>From Canvas to Cloth</h3>
+          <p>That question became the beginning of Rhytara Collections. Selected artworks from Nature&rsquo;s Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced.</p>
+        </div>
+      </div>
+      <div class="journey-grid-row journey-grid-row--wide rv">
+        <div class="img-wrap">
+          <img src="assets/images/shifting-glacier.jpg" alt="Shifting Glacier saree in Georgette satin" loading="lazy" onerror="this.style.display='none'">
+        </div>
+      </div>
+      </div>
     </div>
+    <blockquote class="journey-note rv">From a challenge to a collection. From a painting to a piece you can wear. From art on the wall to art in motion. The journey continues.</blockquote>
   </div>
 </section>
 
