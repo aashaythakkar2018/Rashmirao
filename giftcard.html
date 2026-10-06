@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gift Cards | Rhytara</title>
-<meta name="description" content="Gift a little Rhytara — Give the gift of art, beauty, and a story to wear with a Rashmi Rao gift card.">
+<meta name="description" content="Gift a little Rhytara — give the gift of art, beauty, and a story to wear with a Rashmi Rao gift card.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,10 +87,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 
 /* LAYOUT & SECTIONS */
 .wrap{max-width:1440px;margin:0 auto;padding:0 52px;}
-.section{padding:100px 0;}
+.section{padding:72px 0;}
 
 /* HERO */
-.page-hero{padding-top:156px;padding-bottom:80px;background:var(--bg);border-bottom:1px solid var(--beige);}
+.page-hero{padding-top:132px;padding-bottom:56px;background:var(--bg);border-bottom:1px solid var(--beige);}
 .hero-split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
 .hero-eyebrow{font-family:var(--ff-sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block;font-weight:400;}
 .hero-h1{font-family:var(--ff-serif);font-size:clamp(48px,5.8vw,80px);font-weight:400;line-height:1.05;color:var(--text);letter-spacing:-.02em;margin-bottom:24px;}
@@ -237,11 +237,18 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   .nav-links{display:none;}.nav-burger{display:flex;}
 }
 @media(max-width:768px){
-  .wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.section{padding:72px 0;}.page-hero{padding-top:130px;padding-bottom:56px;}.denom-grid{grid-template-columns:1fr;}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
+  .wrap{padding:0 24px;}.nav-inner{padding:0 24px;}.section{padding:48px 0;}.page-hero{padding-top:108px;padding-bottom:40px;}.denom-grid{grid-template-columns:1fr;}.steps-grid{grid-template-columns:1fr;gap:16px;}.ft-grid{grid-template-columns:1fr;gap:36px;}.ft-bottom{flex-direction:column;gap:10px;text-align:center;}}
 .price-was { text-decoration: line-through; color: var(--muted); font-weight: 300; margin-right: 6px; opacity: .8; }
+/* Phones: the fixed 16:10 card is too short for its text, so let the content set the height. */
+@media(max-width:480px){
+  .gift-card-canvas{aspect-ratio:auto;}
+  .gc-content{position:relative;inset:auto;padding:24px 22px;gap:18px;}
+  .gc-amount-display{font-size:22px;}
+}
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
+<link rel="stylesheet" href="assets/css/store.css">
 </head>
 <body>
 
@@ -274,9 +281,9 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
         </button>
         <span class="curr-lbl active" id="currLabelUSD">$ USD</span>
       </div>
-      <button class="nav-icon-btn" aria-label="Cart">
+      <button class="nav-icon-btn" onclick="openCart()" aria-label="Open cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        <span class="cart-badge">0</span>
+        <span class="cart-badge" id="cartBadge">0</span>
       </button>
       <button class="nav-burger" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
@@ -649,5 +656,6 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   // display) and keep the toggle switch's own visual state correct.
   initCurrency();
 </script>
+<script src="assets/js/cart-drawer.js?v=5"></script>
 </body>
 </html>

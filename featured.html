@@ -155,7 +155,7 @@
     ============================================================ */
     .wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
     main { padding-top: 114px; }
-    .section { padding: var(--sp-7) 0; }
+    .section { padding: 72px 0; }
     .eyebrow {
       display: block;
       color: var(--olive);
@@ -182,7 +182,7 @@
     /* ============================================================
        HERO
     ============================================================ */
-    .featured-hero { padding: var(--sp-6) 0 var(--sp-5); border-bottom: 1px solid var(--beige); }
+    .featured-hero { padding: var(--sp-5) 0; border-bottom: 1px solid var(--beige); }
     .featured-hero .eyebrow { margin-bottom: var(--sp-3); }
     .featured-hero-grid {
       display: grid;
@@ -672,11 +672,10 @@
       width: 400px; max-width: 96vw;
       background: var(--white); color: var(--text); z-index: 700;
       display: flex; flex-direction: column;
-      box-shadow: -6px 0 40px rgba(0,0,0,0.14);
       transform: translateX(100%);
       transition: transform .4s cubic-bezier(.25,.46,.45,.94);
     }
-    .cart-drawer.open { transform: translateX(0); }
+    .cart-drawer.open { transform: translateX(0); box-shadow: -6px 0 40px rgba(0,0,0,0.14); }
     .cart-top {
       display: flex; justify-content: space-between; align-items: center;
       padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0;
@@ -739,9 +738,9 @@
     @media (max-width: 768px) {
       .nav-inner { padding: 0 28px; }
       .wrap { padding: 0 28px; }
-      .featured-hero { padding: var(--sp-6) 0 var(--sp-5); }
+      .featured-hero { padding: var(--sp-4) 0 var(--sp-5); }
       .featured-hero-media { max-height: 420px; }
-      .section { padding: var(--sp-6) 0; }
+      .section { padding: var(--sp-5) 0; }
       .section-head { grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); margin-bottom: var(--sp-5); }
       .section-head .eyebrow { padding-top: 0; }
       .feature-index { gap: var(--sp-4); margin-top: var(--sp-5); }
@@ -769,6 +768,7 @@
     }
   </style>
   <link rel="stylesheet" href="assets/css/mobile.css">
+  <link rel="stylesheet" href="assets/css/store.css">
 </head>
 <body>
 
@@ -794,9 +794,6 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="nav-icon-btn" aria-label="Search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
       <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cartBadge">0</span>
@@ -888,7 +885,7 @@
           <h3 class="exhibit-name">London Underground Digital Exhibition</h3>
           <span class="exhibit-detail">London, UK</span>
           <span class="preview-float" aria-hidden="true">
-            <img src="assets/images/featured/london-exhibit.jpg" alt="London exhibition preview" loading="lazy" decoding="async">
+            <img src="assets/images/featured/london-underground-exhibition.jpg" alt="Artist Talk Magazine exhibition display in a London Underground Jubilee line station" loading="lazy" decoding="async">
           </span>
         </li>
         <li class="exhibit-row has-preview">
@@ -976,7 +973,7 @@
       </div>
       <div class="recognition-grid">
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/recognition/echoes-of-earth-recognition.jpg" alt="Echoes Of Earth artwork with First Place award" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/echoes-of-earth-recognition.jpg" alt="Echoes of Earth artwork with First Place award" loading="lazy" decoding="async"></div>
           <span class="recognition-place">First Place &middot; 2025</span>
           <h3 class="recognition-work">Echoes of Earth</h3>
           <span class="recognition-source">Spring Art Show<br>Livermore</span>
@@ -994,7 +991,7 @@
           <span class="recognition-source">FreshWorks XIII<br>Harrington Gallery</span>
         </article>
         <article class="recognition-item">
-          <div class="recognition-image"><img src="assets/images/recognition/grounding-nature-vote.jpg" alt="Grounding Nature at the Vote for Favourite Artwork recognition" loading="lazy" decoding="async"></div>
+          <div class="recognition-image"><img src="assets/images/recognition/grounding-nature-vote.jpg" alt="Grounding Nature at the Vote for Favorite Artwork recognition" loading="lazy" decoding="async"></div>
           <span class="recognition-place">Second Place &middot; 2026</span>
           <h3 class="recognition-work">Grounding Nature</h3>
           <span class="recognition-source">Vote for Your Favorite Artwork<br>New York</span>
@@ -1087,20 +1084,7 @@
   </div>
 </footer>
 
-<!-- ========== CART DRAWER ========== -->
-<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
-  <div class="cart-top">
-    <span class="cart-ttl">Your Cart</span>
-    <button class="cart-x" onclick="closeCart()" aria-label="Close cart">&times;</button>
-  </div>
-  <div class="cart-body">
-    <div class="cart-empty">Empty for now.<span>Discover the limited-edition wearable art collection.</span></div>
-  </div>
-  <div class="cart-foot">
-    <a href="collections.html" class="btn-olive">Explore Works</a>
-  </div>
-</div>
+<!-- Cart drawer markup is injected by assets/js/cart-drawer.js -->
 
 <div class="ny-lightbox" id="nyLightbox" role="dialog" aria-modal="true" aria-label="Expanded New York exhibition image">
   <button class="ny-lightbox-close" id="nyLightboxClose" type="button" aria-label="Close image">&times;</button>
@@ -1123,8 +1107,6 @@
 
 <script src="assets/js/site.js" defer></script>
 <script>
-function openCart()  { document.getElementById('cartDrawer').classList.add('open');    document.getElementById('cartScrim').classList.add('show');    document.body.style.overflow = 'hidden'; }
-function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
 function closeAnn() {
   var announcement = document.getElementById('ann');
   var navigation = document.getElementById('nav');
@@ -1359,5 +1341,10 @@ function closeAnn() {
   });
 }());
 </script>
+<script src="assets/js/shopify-config.js"></script>
+<script src="assets/js/shopify.js?v=3"></script>
+<script src="assets/js/cart.js?v=5"></script>
+<script src="assets/js/cart-drawer.js?v=5"></script>
+<script src="assets/js/static-shopify-bridge.js?v=5"></script>
 </body>
 </html>

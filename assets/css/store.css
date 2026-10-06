@@ -34,11 +34,10 @@
   background: var(--store-white);
   z-index: 700;
   display: flex; flex-direction: column;
-  box-shadow: -6px 0 40px rgba(0, 0, 0, 0.14);
   transform: translateX(100%);
   transition: transform .4s cubic-bezier(.25, .46, .45, .94);
 }
-.cart-drawer.open { transform: translateX(0); }
+.cart-drawer.open { transform: translateX(0); box-shadow: -6px 0 40px rgba(0,0,0,0.14); }
 
 .cart-top {
   display: flex; justify-content: space-between; align-items: center;

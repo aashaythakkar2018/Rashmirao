@@ -195,10 +195,18 @@
         // card's own existing copy, e.g. "Limited Edition · 250
         // Worldwide") - only the live remaining count (the numerator)
         // comes from Shopify.
-        var m = /(\d[\d,]*)/.exec(badge.textContent);
-        var total = m ? m[1] : '250';
+        // The edition size is read once and kept on the badge, so a second
+        // hydration doesn't mistake the live count for the denominator.
+        if (!badge.dataset.edition) {
+          var m = /(\d[\d,]*)/.exec(badge.textContent);
+          badge.dataset.edition = m ? m[1].replace(/,/g, '') : '250';
+        }
+        var total = parseInt(badge.dataset.edition, 10);
+        // Shopify stock can be set above the edition size; never claim more
+        // pieces remain than the edition holds.
+        var shown = Math.min(qty, total);
         badge.textContent = qty > 0
-          ? qty + ' of ' + total + ' Remaining'
+          ? shown + ' of ' + total + ' Remaining'
           : 'Sold Out';
         badge.classList.toggle('badge-low-stock', qty > 0 && qty <= 10);
       }

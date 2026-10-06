@@ -271,11 +271,9 @@ textarea:focus-visible {
   }
 
   .text-link,
-  .meta-val a,
   .option-label a,
   .ft-links a,
   .pp-ft-links a,
-  .press-links a,
   .contact-links a {
     display: inline-flex;
     align-items: center;
@@ -313,8 +311,9 @@ textarea:focus-visible {
     contain: paint;
   }
 
+  /* The About press ticker (.marquee-inner) keeps its animation on phones:
+     paused, it showed a single faded name and nothing else. */
   .testimonial-track,
-  .marquee-inner,
   .ny-exhibit-track {
     width: 100%;
     max-width: 100%;
@@ -327,7 +326,6 @@ textarea:focus-visible {
   }
 
   .testimonial-track::-webkit-scrollbar,
-  .marquee-inner::-webkit-scrollbar,
   .ny-exhibit-track::-webkit-scrollbar {
     display: none;
   }
@@ -433,8 +431,7 @@ textarea:focus-visible {
     align-items: center;
   }
 
-  .breadcrumb a,
-  .meta-val a {
+  .breadcrumb a {
     min-height: 40px;
     min-width: 44px;
     padding: 4px 3px;

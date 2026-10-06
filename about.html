@@ -177,7 +177,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .page-hero {
   padding-top: 120px;
-  padding-bottom: 72px;
+  padding-bottom: 56px;
   background: var(--bg);
 }
 .page-hero .wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: center; gap: 48px; }
@@ -215,7 +215,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: linear-gradient(to left, rgba(250,248,245,1), rgba(250,248,245,0.8) 25%, transparent);
 }
 .page-hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.hero-rule { width: 100%; height: 1px; background: var(--beige); margin-top: 72px; }
 
 .page-hero-h1 em { font-style: italic; font-weight: 300; }
 
@@ -223,8 +222,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   SHARED LAYOUT
   Reduced vertical rhythm for tighter section spacing
 ============================================================ */
-.section { padding: 100px 0; }
-.section-lg { padding: 100px 0; }
+.section { padding: 72px 0; }
+.section-lg { padding: 72px 0; }
 .wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
 .eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
@@ -985,11 +984,10 @@ footer {
   width: 400px; max-width: 96vw;
   background: var(--white); z-index: 700;
   display: flex; flex-direction: column;
-  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
   transform: translateX(100%);
   transition: transform .4s cubic-bezier(.25,.46,.45,.94);
 }
-.cart-drawer.open { transform: translateX(0); }
+.cart-drawer.open { transform: translateX(0); box-shadow: -6px 0 40px rgba(0,0,0,0.14); }
 .cart-top {
   display: flex; justify-content: space-between; align-items: center;
   padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0;
@@ -1034,8 +1032,8 @@ footer {
 @media (max-width: 768px) {
   .wrap { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
-  .section, .section-lg { padding: 72px 0; }
-  .page-hero { padding-top: 110px; padding-bottom: 48px; }
+  .section, .section-lg { padding: 48px 0; }
+  .page-hero { padding-top: 104px; padding-bottom: 40px; }
   .page-hero .wrap { grid-template-columns: 1fr; gap: 36px; }
   .page-hero-media .img-wrap { aspect-ratio: 2 / 1; }
   .story-copy .h2 { white-space: normal; }
@@ -1062,10 +1060,16 @@ footer {
     padding: 28px 24px;
   }
   .press-cards-wrap::after { display: none; }
+  .press-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 32px; }
+  /* Five tiles leave one orphan in a two-column grid; show a clean 2 × 2. */
+  .social-card:nth-child(5) { display: none; }
+  .social-sep { display: none; }
+  .connect-btns { margin-top: 28px; }
 }
 </style>
 <link rel="stylesheet" href="assets/css/animations.css">
 <link rel="stylesheet" href="assets/css/mobile.css">
+<link rel="stylesheet" href="assets/css/store.css">
 </head>
 <body>
 
@@ -1091,9 +1095,6 @@ footer {
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="nav-icon-btn" aria-label="Search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
       <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cartBadge">0</span>
@@ -1118,7 +1119,6 @@ footer {
       </div>
     </div>
   </div>
-  <div class="wrap"><div class="hero-rule rv"></div></div>
 </section>
 
 <!-- ========== 1. OUR STORY ========== -->
@@ -1184,8 +1184,8 @@ footer {
               <img src="assets/images/story/grid-01.jpg" alt="Rose garden" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="story-grid-copy">
-              <h3>From Nature&rsquo;s<br>to Texture</h3>
-              <p>Raw beauty, reimagined in layers, where landscapes, colours and emotions come alive. One brushstroke at a time.</p>
+              <h3>From Nature<br>to Texture</h3>
+              <p>Raw beauty, reimagined in layers, where landscapes, colors and emotions come alive. One brushstroke at a time.</p>
             </div>
           </div>
         </div>
@@ -1207,7 +1207,7 @@ footer {
           </div>
         </div>
         <div class="img-wrap rv">
-          <img src="assets/images/journey/coaster.jpg" srcset="assets/images/journey/coaster-640.jpg 640w, assets/images/journey/coaster.jpg 1289w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Watercolour road-and-hills painting printed on a coaster" width="1289" height="1106" loading="lazy" decoding="async">
+          <img src="assets/images/journey/coaster.jpg" srcset="assets/images/journey/coaster-640.jpg 640w, assets/images/journey/coaster.jpg 1289w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Watercolor road-and-hills painting printed on a coaster" width="1289" height="1106" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -1229,7 +1229,7 @@ footer {
       </div>
       <div class="journey-grid-row journey-grid-row--portrait journey-grid-row--image-first rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9815.jpeg" alt="Small watercolour collections displayed at an art fair stall" width="693" height="873" loading="lazy" decoding="async">
+          <img src="assets/images/story/journey-9815.jpeg" alt="Small watercolor collections displayed at an art fair stall" width="693" height="873" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2018&ndash;2022</span>
@@ -1289,7 +1289,7 @@ footer {
       </div>
       <div class="journey-grid-row journey-grid-row--compact rv">
         <div class="img-wrap">
-          <img src="assets/images/journey/blue-fabric.jpg" alt="Close-up of blue fabric showing the artwork's flowing colour and folds" width="464" height="304" loading="lazy" decoding="async">
+          <img src="assets/images/journey/blue-fabric.jpg" alt="Close-up of blue fabric showing the artwork's flowing color and folds" width="464" height="304" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2026 &middot; Today</span>
@@ -1327,19 +1327,19 @@ footer {
         <div class="phil-values rv">
           <div class="phil-value">
             <span class="phil-v-num">Flow</span>
-            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination</span>
+            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination.</span>
           </div>
           <div class="phil-value">
             <span class="phil-v-num">Awareness</span>
-            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination</span>
+            <span class="phil-v-text">Looking closely enough to notice what is emerging.</span>
           </div>
           <div class="phil-value">
             <span class="phil-v-num">Movement</span>
-            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination</span>
+            <span class="phil-v-text">Embracing change and transformation.</span>
           </div>
           <div class="phil-value">
             <span class="phil-v-num">Stillness</span>
-            <span class="phil-v-text">Allowing an idea to unfold without forcing its destination</span>
+            <span class="phil-v-text">Creating space for intuition and possibility.</span>
           </div>
         </div>
         <p class="phil-body body-text rv" style="margin-top:24px;">These ideas live within the artwork&mdash;and now, within what you wear.</p>
@@ -1583,7 +1583,7 @@ footer {
       </a>
       <a href="https://www.instagram.com/rhytara?stkn=d2FnOXhwOHhpZmJp" target="_blank" rel="noopener" class="social-card rv">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes of Earth" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="social-overlay">
           <div class="social-ig">
@@ -1615,7 +1615,7 @@ footer {
 
     <div class="social-cta rv">
       <a href="https://www.instagram.com/rhytara?stkn=d2FnOXhwOHhpZmJp" target="_blank" rel="noopener" class="social-handle">@rhytara</a>
-      <span style="color:rgba(250,248,245,0.15);">·</span>
+      <span class="social-sep" aria-hidden="true" style="color:rgba(250,248,245,0.15);">·</span>
       <a href="https://www.instagram.com/rhytara?stkn=d2FnOXhwOHhpZmJp" target="_blank" rel="noopener" class="btn-olive" style="padding:12px 28px;">Follow on Instagram</a>
     </div>
   </div>
@@ -1686,27 +1686,11 @@ footer {
   </div>
 </footer>
 
-<!-- ========== CART DRAWER ========== -->
-<div class="cart-scrim" id="cartScrim" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
-  <div class="cart-top">
-    <span class="cart-ttl">Your Cart</span>
-    <button class="cart-x" onclick="closeCart()">×</button>
-  </div>
-  <div class="cart-body">
-    <div class="cart-empty">Empty for now.<span>Discover original artworks ready to collect.</span></div>
-  </div>
-  <div class="cart-foot" style="padding:22px 30px;border-top:1px solid var(--beige);">
-    <a href="collections.html" class="btn-olive" style="width:100%;justify-content:center;display:flex;">Explore Works</a>
-  </div>
-</div>
+<!-- Cart drawer markup is injected by assets/js/cart-drawer.js -->
 
 <!-- ========== SCRIPTS ========== -->
 <script src="assets/js/site.js" defer></script>
 <script>
-/* Cart */
-function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartScrim').classList.add('show'); document.body.style.overflow = 'hidden'; }
-function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartScrim').classList.remove('show'); document.body.style.overflow = ''; }
 
 /* Announcement */
 function closeAnn() {
@@ -1907,5 +1891,10 @@ if (typeof gsap !== 'undefined') {
   });
 }());
 </script>
+<script src="assets/js/shopify-config.js"></script>
+<script src="assets/js/shopify.js?v=3"></script>
+<script src="assets/js/cart.js?v=5"></script>
+<script src="assets/js/cart-drawer.js?v=5"></script>
+<script src="assets/js/static-shopify-bridge.js?v=5"></script>
 </body>
 </html>

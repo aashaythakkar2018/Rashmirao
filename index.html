@@ -335,13 +335,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-sound-btn svg { flex-shrink: 0; }
 @media (max-width: 768px) {
-  /* Icon-only + moved clear of the CTA block below it - the text-label
-     version was overlapping the "Discover Nature's Rhythm" button (both
-     sat in the same bottom-right zone). 160px clears the CTA row layout
-     used from 481-768px; the ≤480px rule below gives more clearance for
-     the taller stacked layout that kicks in at that width. */
+  /* Icon-only, pinned to the top-right corner of the hero just under the
+     navbar. Any bottom-anchored position collided with the hero copy or
+     CTAs at some phone height, since that block grows with the text. */
   .hero-sound-btn {
-    bottom: 160px;
+    bottom: auto;
+    top: 88px;
     right: 20px;
     padding: 10px;
     width: 38px;
@@ -349,9 +348,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     gap: 0;
   }
   .hero-sound-btn #heroSoundText { display: none; }
-}
-@media (max-width: 480px) {
-  .hero-sound-btn { bottom: 238px; }
 }
 .hero-content {
   position: relative;
@@ -469,7 +465,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ============================================================
    SHARED SECTION LAYOUT
 ============================================================ */
-.section { padding: 100px 0; }
+.section { padding: 72px 0; }
 .wrap {
   max-width: 1400px;
   margin: 0 auto;
@@ -865,7 +861,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .contact-sub {
   font-family: var(--ff-sans); font-size: 16px; font-weight: 300;
   color: var(--muted); max-width: 380px;
-  margin: 20px auto 60px; line-height: 1.75;
+  margin: 20px auto 32px; line-height: 1.75;
 }
 .inq-list { max-width: 640px; margin: 0 auto; }
 .inq-row {
@@ -995,11 +991,10 @@ footer {
   background: var(--white);
   z-index: 700;
   display: flex; flex-direction: column;
-  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
   transform: translateX(100%);
   transition: transform .4s cubic-bezier(.25,.46,.45,.94);
 }
-.cart-drawer.open { transform: translateX(0); }
+.cart-drawer.open { transform: translateX(0); box-shadow: -6px 0 40px rgba(0,0,0,0.14); }
 .cart-top {
   display: flex; justify-content: space-between; align-items: center;
   padding: 26px 30px;
@@ -1087,13 +1082,13 @@ footer {
   .hero-content { padding: 0 24px; }
   .hero-h1 { font-size: 44px; }
   .hero-sub { font-size: 14px; }
-  .section { padding: 80px 0; }
+  .section { padding: 48px 0; }
   .coll-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   .coll-hd { flex-direction: column; align-items: flex-start; gap: 14px; }
   .art-row { margin-bottom: 72px; }
   .art-copy-col { padding: 28px 0 0; }
   .about-stats { gap: 24px; }
-  .about-copy-col, .wear-copy-col { padding: 36px 24px; }
+  .about-copy-col, .wear-copy-col { padding: 28px 24px 0; }
   .ft-grid { grid-template-columns: 1fr; gap: 36px; }
   .ft-bottom { flex-direction: column; gap: 10px; text-align: center; }
   .inq-label { font-size: 19px; }
@@ -1189,9 +1184,6 @@ footer {
     </ul>
 
     <div class="nav-actions">
-      <button class="nav-icon-btn" aria-label="Search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
 
       <!-- -- Currency Toggle -- -->
       <div class="currency-toggle" role="group" aria-label="Currency selector">
@@ -1309,12 +1301,12 @@ footer {
       </a>
       <a href="product.html?id=monsoon-dream" class="coll-card">
         <div class="img-wrap" style="height:100%;">
-          <img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes of Earth" loading="lazy" onerror="this.style.display='none'">
         </div>
         <span class="coll-num">03</span>
         <div class="coll-overlay"></div>
         <div class="coll-info">
-          <span class="coll-name">Echoes Of Earth</span>
+          <span class="coll-name">Echoes of Earth</span>
           <span class="coll-count">Botanical Palette</span>
           <span class="coll-go">View Design →</span>
         </div>

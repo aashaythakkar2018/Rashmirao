@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Echoes Of Earth | Rhytara</title>
+  <title>Echoes of Earth | Rhytara</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
@@ -534,7 +534,7 @@
     }
     .accordion-item.open .acc-chevron { transform: rotate(180deg); }
     .acc-body { max-height: 0; overflow: hidden; transition: max-height .42s cubic-bezier(.25,.46,.45,.94); }
-    .accordion-item.open .acc-body { max-height: 700px; }
+    .accordion-item.open .acc-body { max-height: 2400px; }
     .acc-content {
       padding-bottom: 20px;
       font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.9;
@@ -770,8 +770,17 @@
     @media (max-width: 600px) {
       .related-grid { grid-template-columns: 1fr; gap: 16px; }
       .trust-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-      .gallery { grid-template-columns: 56px 1fr; gap: 10px; }
-      .thumb { width: 50px; height: 62px; }
+      /* Phones: full-width image first, thumbnails as a swipeable row below it. */
+      .gallery { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+      .main-image-wrap { order: -1; }
+      .thumbs { flex-direction: row; overflow-x: auto; scrollbar-width: none; padding: 3px 0; }
+      .thumbs::-webkit-scrollbar { display: none; }
+      .thumb { width: 52px; height: 64px; }
+      .breadcrumb { padding: 12px 20px 0; white-space: nowrap; overflow: hidden; }
+      .breadcrumb #breadcrumbTitle { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+      .product-page { padding: 12px 20px 40px; gap: 28px; }
+      .related { padding: 32px 20px 40px; }
+      .related-link { display: inline-flex; align-items: center; min-height: 44px; }
       .testimonial-marquee { padding: 36px 0; }
       .testimonial-heading { padding: 0 20px; }
       .testimonial-card { min-height: 150px; padding: 20px; }
@@ -833,9 +842,9 @@
     <span class="breadcrumb-sep">/</span>
     <a href="collections.html">Collections</a>
     <span class="breadcrumb-sep">/</span>
-    <a href="collections.html">Alcohol Ink</a>
+    <a href="collections.html">Wearable Art</a>
     <span class="breadcrumb-sep">/</span>
-    <span id="breadcrumbTitle">Echoes Of Earth</span>
+    <span id="breadcrumbTitle">Echoes of Earth</span>
   </nav>
 
   <!-- -- PRODUCT PAGE -- -->
@@ -862,10 +871,10 @@
         </div>
 
         <!-- Badge -->
-        <span class="img-badge" id="imgBadge">New Work · 2024</span>
+        <span class="img-badge" id="imgBadge">Limited Edition · 250 Worldwide</span>
 
         <!-- Main image (fades in on load) -->
-        <img class="main-img" id="mainImg" alt="Echoes Of Earth by Rashmi Rao" />
+        <img class="main-img" id="mainImg" alt="Echoes of Earth by Rashmi Rao" />
 
         <!-- Zoom icon -->
         <div class="zoom-icon">
@@ -895,9 +904,9 @@
     <!-- -- PRODUCT INFO -- -->
     <div class="product-info" id="productInfo">
 
-      <p class="pi-category" id="pi-cat">Alcohol Ink · Original Work</p>
-      <h1 class="pi-title" id="pi-title">Echoes Of Earth</h1>
-      <p class="pi-medium" id="pi-med">Alcohol Ink on Yupo Paper · 36 × 48 inches · 2024</p>
+      <p class="pi-category" id="pi-cat">Wearable Art · Limited Edition</p>
+      <h1 class="pi-title" id="pi-title">Echoes of Earth</h1>
+      <p class="pi-medium" id="pi-med">Nature’s Rhythm — Limited Edition Wearable Art</p>
 
       <div class="edition-badge" id="pi-edition">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -914,7 +923,7 @@
 
       <div class="pi-availability" id="pi-avail">
         <span class="avail-dot"></span>
-        <span id="pi-avail-text">Available · Ships in 4-6 weeks with archival packaging</span>
+        <span id="pi-avail-text">Available · Ships in 4–6 weeks with archival packaging</span>
       </div>
       <p class="pi-live-stock" id="piLiveStock" hidden></p>
 
@@ -949,7 +958,7 @@
           <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
           <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
         </svg>
-        Ships in 4-6 weeks. Packaged with care.
+        Ships in 4–6 weeks. Packaged with care.
       </div>
       <p class="product-copy-statement" id="productCopyStatement"></p>
 
@@ -1035,9 +1044,9 @@
           <div class="acc-body"><div class="acc-content">
             Each Rhytara piece is thoughtfully prepared and packaged for its journey to you. Shipping timelines and delivery details may vary by destination and will be shared at the time of purchase.<br/><br/>
             <table>
-              <tr><td>Preparation</td><td>4-6 weeks</td></tr>
-              <tr><td>India delivery</td><td>3-5 days after dispatch</td></tr>
-              <tr><td>International</td><td>7-14 days after dispatch</td></tr>
+              <tr><td>Preparation</td><td>4–6 weeks</td></tr>
+              <tr><td>India delivery</td><td>3–5 days after dispatch</td></tr>
+              <tr><td>International</td><td>7–14 days after dispatch</td></tr>
               <tr><td>Returns</td><td>All sales final. Commissions non-refundable.</td></tr>
             </table>
           </div></div>
@@ -1199,7 +1208,7 @@
 
     const PRODUCTS = {
       'monsoon-dream': {
-        title: 'Echoes Of Earth',
+        title: 'Echoes of Earth',
         handle: 'echoes-of-earth',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
@@ -1214,12 +1223,12 @@
         mediumSpecs: { 'Care Instructions':'Dry clean only to preserve the beauty, color, and integrity of the fabric.', 'Limited Edition / Final Sale':'Only 250 pieces are available worldwide for this design. Once payment is completed, the sale is final. Sarees are non-refundable, and no returns or exchanges are accepted after payment.' },
         related: ['crimson-solitude','the-blue-hour','whispers-of-ochre','monsoon-saree'],
         images: [
-          { src:'assets/images/collection/echoes-of-earth-01.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-01.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-01.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-01.jpg?v=2', alt:'Echoes Of Earth, full view' },
+          { src:'assets/images/collection/echoes-of-earth-01.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-01.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-01.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-01.jpg?v=2', alt:'Echoes of Earth, full view' },
           { src:'assets/images/collection/echoes-of-earth-02.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-02.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-02.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-02.jpg?v=2', alt:'Detail, upper bloom' },
           { src:'assets/images/collection/echoes-of-earth-03.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-03.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-03.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-03.jpg?v=2', alt:'Studio context' },
           { src:'assets/images/collection/echoes-of-earth-04.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-04.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-04.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-04.jpg?v=2', alt:'Signature detail' },
           { src:'assets/images/collection/echoes-of-earth-05.jpg?v=2', thumb:'assets/images/collection/echoes-of-earth-05.jpg?v=2', fallback:'assets/images/collection/echoes-of-earth-05.jpg?v=2', thumbFallback:'assets/images/collection/echoes-of-earth-05.jpg?v=2', alt:'In situ' },
-          { src:'assets/images/collection/home-echoes-of-earth.jpg', thumb:'assets/images/collection/home-echoes-of-earth.jpg', fallback:'assets/images/collection/home-echoes-of-earth.jpg', thumbFallback:'assets/images/collection/home-echoes-of-earth.jpg', alt:'Echoes Of Earth, fabric drape close-up' },
+          { src:'assets/images/collection/home-echoes-of-earth.jpg', thumb:'assets/images/collection/home-echoes-of-earth.jpg', fallback:'assets/images/collection/home-echoes-of-earth.jpg', thumbFallback:'assets/images/collection/home-echoes-of-earth.jpg', alt:'Echoes of Earth, fabric drape close-up' },
         ],
       },
       'crimson-solitude': {
@@ -1264,7 +1273,7 @@
           { src:'assets/images/collection/magical-pansies-01.jpg?v=2', thumb:'assets/images/collection/magical-pansies-01.jpg?v=2', fallback:'assets/images/collection/magical-pansies-01.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-01.jpg?v=2', alt:'Magical Pansies, full view' },
           { src:'assets/images/collection/magical-pansies-02.jpg?v=2', thumb:'assets/images/collection/magical-pansies-02.jpg?v=2', fallback:'assets/images/collection/magical-pansies-02.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-02.jpg?v=2', alt:'Gold leaf detail' },
           { src:'assets/images/collection/magical-pansies-03.jpg?v=2', thumb:'assets/images/collection/magical-pansies-03.jpg?v=2', fallback:'assets/images/collection/magical-pansies-03.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-03.jpg?v=2', alt:'Surface texture' },
-          { src:'assets/images/collection/magical-pansies-04.jpg?v=2', thumb:'assets/images/collection/magical-pansies-04.jpg?v=2', fallback:'assets/images/collection/magical-pansies-04.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-04.jpg?v=2', alt:'Colour detail' },
+          { src:'assets/images/collection/magical-pansies-04.jpg?v=2', thumb:'assets/images/collection/magical-pansies-04.jpg?v=2', fallback:'assets/images/collection/magical-pansies-04.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-04.jpg?v=2', alt:'Color detail' },
           { src:'assets/images/collection/magical-pansies-05.jpg?v=2', thumb:'assets/images/collection/magical-pansies-05.jpg?v=2', fallback:'assets/images/collection/magical-pansies-05.jpg?v=2', thumbFallback:'assets/images/collection/magical-pansies-05.jpg?v=2', alt:'In studio' },
           { src:'assets/images/collection/home-magical-pansies.jpg', thumb:'assets/images/collection/home-magical-pansies.jpg', fallback:'assets/images/collection/home-magical-pansies.jpg', thumbFallback:'assets/images/collection/home-magical-pansies.jpg', alt:'Magical Pansies, fabric drape close-up' },
         ],
@@ -1285,7 +1294,7 @@
         mediumSpecs: { 'Care Instructions':'Dry clean only to preserve the beauty, color, and integrity of the fabric.', 'Limited Edition / Final Sale':'Only 250 pieces are available worldwide for this design. Once payment is completed, the sale is final. Sarees are non-refundable, and no returns or exchanges are accepted after payment.' },
         related: ['monsoon-dream','crimson-solitude','whispers-of-ochre','monsoon-saree'],
         images: [
-          { src:'assets/images/collection/purple-petals-reverie-01.jpg', thumb:'assets/images/collection/purple-petals-reverie-01.jpg', fallback:'assets/images/collection/purple-petals-reverie-01.jpg', thumbFallback:'assets/images/collection/purple-petals-reverie-01.jpg', alt:'Purple Petal, full view' },
+          { src:'assets/images/collection/purple-petals-reverie-01.jpg', thumb:'assets/images/collection/purple-petals-reverie-01.jpg', fallback:'assets/images/collection/purple-petals-reverie-01.jpg', thumbFallback:'assets/images/collection/purple-petals-reverie-01.jpg', alt:'Purple Petals Reverie, full view' },
           { src:'assets/images/collection/purple-petals-reverie-02.jpg', thumb:'assets/images/collection/purple-petals-reverie-02.jpg', fallback:'assets/images/collection/purple-petals-reverie-02.jpg', thumbFallback:'assets/images/collection/purple-petals-reverie-02.jpg', alt:'Indigo bloom detail' },
           { src:'assets/images/collection/purple-petals-reverie-03.jpg', thumb:'assets/images/collection/purple-petals-reverie-03.jpg', fallback:'assets/images/collection/purple-petals-reverie-03.jpg', thumbFallback:'assets/images/collection/purple-petals-reverie-03.jpg', alt:'Light point origin' },
           { src:'assets/images/collection/purple-petals-reverie-04.jpg', thumb:'assets/images/collection/purple-petals-reverie-04.jpg', fallback:'assets/images/collection/purple-petals-reverie-04.jpg', thumbFallback:'assets/images/collection/purple-petals-reverie-04.jpg', alt:'In studio' },
@@ -1311,7 +1320,7 @@
           { src:'assets/images/collection/shifting-glacier-01.jpg', thumb:'assets/images/collection/shifting-glacier-01.jpg', fallback:'assets/images/collection/shifting-glacier-01.jpg', thumbFallback:'assets/images/collection/shifting-glacier-01.jpg', alt:'Shifting Glacier, full drape' },
           { src:'assets/images/collection/shifting-glacier-02.jpg', thumb:'assets/images/collection/shifting-glacier-02.jpg', fallback:'assets/images/collection/shifting-glacier-02.jpg', thumbFallback:'assets/images/collection/shifting-glacier-02.jpg', alt:'Border detail' },
           { src:'assets/images/collection/shifting-glacier-03.jpg', thumb:'assets/images/collection/shifting-glacier-03.jpg', fallback:'assets/images/collection/shifting-glacier-03.jpg', thumbFallback:'assets/images/collection/shifting-glacier-03.jpg', alt:'Print detail close-up' },
-          { src:'assets/images/collection/shifting-glacier-04.jpg', thumb:'assets/images/collection/shifting-glacier-04.jpg', fallback:'assets/images/collection/shifting-glacier-04.jpg', thumbFallback:'assets/images/collection/shifting-glacier-04.jpg', alt:'Colour detail' },
+          { src:'assets/images/collection/shifting-glacier-04.jpg', thumb:'assets/images/collection/shifting-glacier-04.jpg', fallback:'assets/images/collection/shifting-glacier-04.jpg', thumbFallback:'assets/images/collection/shifting-glacier-04.jpg', alt:'Color detail' },
           { src:'assets/images/collection/shifting-glacier-05.jpg', thumb:'assets/images/collection/shifting-glacier-05.jpg', fallback:'assets/images/collection/shifting-glacier-05.jpg', thumbFallback:'assets/images/collection/shifting-glacier-05.jpg', alt:'In situ' },
           { src:'assets/images/collection/home-shifting-glacier.jpg', thumb:'assets/images/collection/home-shifting-glacier.jpg', fallback:'assets/images/collection/home-shifting-glacier.jpg', thumbFallback:'assets/images/collection/home-shifting-glacier.jpg', alt:'Shifting Glacier, fabric drape close-up' },
         ],
@@ -1378,7 +1387,7 @@
         const cartBtn = document.getElementById('addToCartBtn')
         if (cartBtn) { cartBtn.disabled = true; cartBtn.textContent = 'Sold' }
       } else {
-        if (availText) availText.textContent = 'Available · Ships in 4-6 weeks with archival packaging'
+        if (availText) availText.textContent = 'Available · Ships in 4–6 weeks with archival packaging'
       }
 
       // About the Work accordion content
@@ -1494,7 +1503,7 @@
         // Live data says available (or live data isn't in yet) and the
         // static fallback didn't mark this product sold - normal state.
         if (cartBtn) { cartBtn.disabled = false; cartBtn.textContent = 'Purchase This Work' }
-        if (availText) availText.textContent = 'Available · Ships in 4-6 weeks with archival packaging'
+        if (availText) availText.textContent = 'Available · Ships in 4–6 weeks with archival packaging'
         if (availDot) availDot.style.background = 'var(--olive)'
       }
 
@@ -1506,9 +1515,10 @@
         if (qty === null || qty <= 0) {
           stockEl.hidden = true
         } else {
-          var total = (P.edition.match(/(\d[\d,]*)/) || [,'250'])[1]
+          var total = parseInt((P.edition.match(/(\d[\d,]*)/) || [,'250'])[1].replace(/,/g, ''), 10)
           stockEl.hidden = false
-          stockEl.textContent = qty + ' of ' + total + ' remaining in ' + size
+          // Shopify stock can be set above the edition size; cap the count at the edition.
+          stockEl.textContent = Math.min(qty, total) + ' of ' + total + ' remaining in ' + size
           stockEl.classList.toggle('is-low', qty <= 10)
         }
       }

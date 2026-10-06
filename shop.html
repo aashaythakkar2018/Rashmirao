@@ -176,7 +176,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    SHARED UTILITIES
 ============================================================ */
 .wrap { max-width: 1400px; margin: 0 auto; padding: 0 52px; }
-.section { padding: 100px 0; }
+.section { padding: 72px 0; }
 .eyebrow {
   font-family: var(--ff-sans); font-size: 11px;
   letter-spacing: .22em; text-transform: uppercase;
@@ -205,7 +205,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    1. PAGE HERO  - editorial split
 ============================================================ */
 .page-hero {
-  padding-top: 156px; padding-bottom: 56px;
+  padding-top: 132px; padding-bottom: 48px;
   background: var(--white);
   border-bottom: 1px solid var(--beige);
 }
@@ -725,7 +725,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .s-stat-n {
   font-family: var(--ff-serif); font-size: 41px;
   font-weight: 400; color: var(--olive);
-  display: block; line-height: 1;
+  display: block; line-height: 1; white-space: nowrap;
 }
 .s-stat-l {
   font-family: var(--ff-sans); font-size: 11px;
@@ -878,11 +878,10 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
   width: 400px; max-width: 96vw;
   background: var(--white); z-index: 700;
   display: flex; flex-direction: column;
-  box-shadow: -6px 0 40px rgba(0,0,0,0.14);
   transform: translateX(100%);
   transition: transform .4s cubic-bezier(.25,.46,.45,.94);
 }
-.cart-drawer.open { transform: translateX(0); }
+.cart-drawer.open { transform: translateX(0); box-shadow: -6px 0 40px rgba(0,0,0,0.14); }
 .cart-top { display: flex; justify-content: space-between; align-items: center; padding: 26px 30px; border-bottom: 1px solid var(--beige); flex-shrink: 0; }
 .cart-ttl { font-family: var(--ff-serif); font-size: 22px; font-weight: 400; }
 .cart-x { font-size: 22px; color: var(--muted); transition: color .2s; padding: 4px; }
@@ -935,8 +934,10 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
 @media (max-width: 768px) {
   .wrap { padding: 0 24px; }
   .nav-inner { padding: 0 24px; }
-  .section { padding: 72px 0; }
-  .page-hero { padding-top: 130px; }
+  .section { padding: 48px 0; }
+  .series-stats { gap: 24px; }
+  .s-stat-n { font-size: 34px; }
+  .page-hero { padding-top: 108px; padding-bottom: 40px; }
   .filter-inner { padding: 0 16px; overflow-x: auto; gap: 12px; }
   .filter-right { display: none; }
   .artwork-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -981,9 +982,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="nav-icon-btn" aria-label="Search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
 
       <!-- -- Currency Toggle -- -->
       <div class="currency-toggle" role="group" aria-label="Currency selector">
@@ -1030,7 +1028,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
           </div>
           <div>
             <span class="hero-stat-n">10+</span>
-            <span class="hero-stat-l">Years Practising</span>
+            <span class="hero-stat-l">Years Practicing</span>
           </div>
         </div>
       </div>
@@ -1081,7 +1079,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
   <div class="wrap">
     <div class="artwork-grid" id="artworkGrid">
 
-      <!-- CARD 1 - Echoes Of Earth -->
+      <!-- CARD 1 - Echoes of Earth -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-dream" data-handle="echoes-of-earth" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
           <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
@@ -1090,19 +1088,19 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
           </button>
           <!-- Shimmer skeleton - 21st.dev Shimmer Skeleton (corr #19368) pattern -->
           <div class="img-shimmer" aria-hidden="true"></div>
-          <img data-src="assets/images/collection/echoes-of-earth-01.jpg" alt="Echoes Of Earth" decoding="async" class="img-loading">
+          <img data-src="assets/images/collection/echoes-of-earth-01.jpg" alt="Echoes of Earth" decoding="async" class="img-loading">
           <!-- Spotlight follows cursor - tom_ui TiltCard pattern -->
           <div class="card-spotlight"></div>
           <!-- Slide-up reveal overlay - isaiahbjork ProductRevealCard pattern -->
           <div class="art-card-reveal">
             <span class="reveal-eyebrow">Nature’s Rhythm — Limited Edition Wearable Art</span>
-            <h3 class="reveal-title">Echoes Of Earth</h3>
+            <h3 class="reveal-title">Echoes of Earth</h3>
             <p class="reveal-meta">Georgette Satin · 450 g · Limited Edition</p>
             <p class="reveal-desc"><span class="reveal-origin">Born from Rashmi Rao’s original artwork from her Nature’s Rhythm solo exhibition.</span><span class="reveal-product-copy">Echoes of Earth reflects the quiet depth and organic beauty of nature through layered tones of green and gold.</span></p>
             <div class="reveal-footer">
               <span class="reveal-price" data-price-inr="24780">$ 295</span>
               <div class="reveal-btns">
-                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Echoes Of Earth',24780,'assets/images/collection/echoes-of-earth-01.jpg'); event.stopPropagation()">Purchase</button>
+                <button class="reveal-btn reveal-btn-add" onclick="addToCart('Echoes of Earth',24780,'assets/images/collection/echoes-of-earth-01.jpg'); event.stopPropagation()">Purchase</button>
                 <a href="contact.html" class="reveal-btn reveal-btn-inq" onclick="event.stopPropagation()">Inquire</a>
               </div>
             </div>
@@ -1110,7 +1108,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
         </div>
         <div class="art-card-info">
           <span class="art-card-cat">Wearable Art · Limited Edition</span>
-          <h3 class="art-card-title">Echoes Of Earth</h3>
+          <h3 class="art-card-title">Echoes of Earth</h3>
           <div class="art-card-footer">
             <span class="art-card-price" data-price-inr="24780">$ 295</span>
             <span class="art-card-arrow"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
@@ -1278,13 +1276,13 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
     <div class="series-grid">
       <div class="series-imgs rv">
         <div class="series-single">
-          <img src="assets/images/TBS_5268.jpg" alt="Rhytara wearable art from The Nature's Rhythm collection" loading="lazy" decoding="async" onerror="this.style.display='none'">
+          <img src="assets/images/TBS_5268.jpg" alt="Rhytara wearable art from the Nature's Rhythm collection" loading="lazy" decoding="async" onerror="this.style.display='none'">
         </div>
-        <span class="series-tag">The Nature's Rhythm · 2026</span>
+        <span class="series-tag">Nature's Rhythm · 2026</span>
       </div>
       <div class="series-copy rv">
         <span class="eyebrow">Featured Series</span>
-        <h2 class="series-h">The Nature's<br><em>Rhythm.</em></h2>
+        <h2 class="series-h">Nature's<br><em>Rhythm.</em></h2>
         <p class="series-body">An evolving collection of limited-edition wearable artworks, translated from Rashmi Rao's original Nature's Rhythm paintings onto luminous georgette satin. Each design carries color, movement, and the quiet beauty of the natural world into everyday life.</p>
         <div class="series-stats">
           <div><span class="s-stat-n">5</span><span class="s-stat-l">Designs in Series</span></div>
@@ -1305,7 +1303,7 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
     <div class="wear-layout">
       <div class="rv">
         <h2 class="wear-h">Paintings You<br>Can <em>Wear.</em></h2>
-        <p class="wear-body">Each saree begins as an original painting. Adapted for silk and georgette, printed with archival pigments, limited to 8 pieces per design. Numbered, signed, dispatched with a certificate.</p>
+        <p class="wear-body">Each saree begins as an original painting. Adapted for silk and georgette, printed with archival pigments, limited to 250 pieces per design. Numbered, signed, dispatched with a certificate.</p>
         <a href="contact.html" class="btn-olive">Inquire</a>
       </div>
       <div class="wear-scroll rv">
@@ -1325,10 +1323,10 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
             <div class="wear-card-price" data-price-inr="24780">$ 295</div>
           </div>
         </a>
-        <a class="wear-card" href="product.html?id=monsoon-dream" aria-label="View Echoes Of Earth">
-          <div class="wear-card-img"><img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes Of Earth" loading="lazy" onerror="this.style.display='none'"></div>
+        <a class="wear-card" href="product.html?id=monsoon-dream" aria-label="View Echoes of Earth">
+          <div class="wear-card-img"><img src="assets/images/collection/home-echoes-of-earth.jpg" alt="Echoes of Earth" loading="lazy" onerror="this.style.display='none'"></div>
           <div class="wear-card-body">
-            <div class="wear-card-name">Echoes Of Earth</div>
+            <div class="wear-card-name">Echoes of Earth</div>
             <div class="wear-card-ed">Botanical Palette</div>
             <div class="wear-card-price" data-price-inr="24780">$ 295</div>
           </div>
@@ -1362,12 +1360,12 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <p class="purpose-collection-intro">Every Rhytara piece begins with a reason. A painting. A moment. A color. A feeling.</p>
     </div>
     <div class="purpose-collection-pillars">
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>The Artwork Comes First</strong><span>Every design originates from Rashmi Rao's original artwork, created as an independent work of art before it becomes a textile</span></div></div>
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Limited by Design</strong><span>Each Nature's Rhythm design is produced as a limited edition of 250 pieces. No endless production, no mass repetition. Once an edition is gone, it is gone</span></div></div>
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Signed &amp; Numbered</strong><span>Every limited-edition piece is individually signed and numbered, creating a direct connection between the artwork, the edition and its wearer</span></div></div>
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Certificate of Authenticity</strong><span>Each piece is accompanied by a Certificate of Authenticity, documenting its connection to the original artwork and its edition</span></div></div>
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>The Fabric Matters</strong><span>The artwork is translated onto carefully selected Georgette satin, chosen for its fluid drape, soft movement and ability to carry the depth and detail of the artwork</span></div></div>
-      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Art with Provenance</strong><span>The story doesn't stop with the artwork. It continues through the textile, the edition, the artist's signature and the person who eventually wears it</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>The Artwork Comes First</strong><span>Every design originates from Rashmi Rao's original artwork, created as an independent work of art before it becomes a textile.</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Limited by Design</strong><span>Each Nature's Rhythm design is produced as a limited edition of 250 pieces. No endless production, no mass repetition. Once an edition is gone, it is gone.</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Signed &amp; Numbered</strong><span>Every limited-edition piece is individually signed and numbered, creating a direct connection between the artwork, the edition and its wearer.</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Certificate of Authenticity</strong><span>Each piece is accompanied by a Certificate of Authenticity, documenting its connection to the original artwork and its edition.</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>The Fabric Matters</strong><span>The artwork is translated onto carefully selected Georgette satin, chosen for its fluid drape, soft movement and ability to carry the depth and detail of the artwork.</span></div></div>
+      <div class="pillar"><span class="pillar-icon"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M8 1 15 8 8 15 1 8Z" fill="#111"/><circle cx="8" cy="8" r="1.7" fill="#fff"/></svg></span><div class="pillar-text"><strong>Art with Provenance</strong><span>The story doesn't stop with the artwork. It continues through the textile, the edition, the artist's signature and the person who eventually wears it.</span></div></div>
     </div>
     <div class="purpose-collection-cta">
       <a href="about.html" class="btn-outline">Learn the Process &rarr;</a>
