@@ -31,6 +31,9 @@ echo "✓ Database running"
 
 echo "Starting Rhytara Certificate Dashboard..."
 echo ""
-( sleep 3 && open "http://localhost:3000/admin/dashboard/" ) &
+# Open in Google Chrome when it's installed, so certificate previews use
+# Chrome's PDF viewer; otherwise fall back to the default browser.
+DASHBOARD_URL="http://localhost:3000/admin/dashboard/"
+( sleep 3 && { open -a "Google Chrome" "$DASHBOARD_URL" 2>/dev/null || open "$DASHBOARD_URL"; } ) &
 
 npm run dev

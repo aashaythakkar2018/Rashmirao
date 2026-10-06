@@ -30,6 +30,11 @@ certificatesRouter.get('/download', (req, res) => {
     return res.status(404).send('Certificate not found');
   }
 
+  // Inline by default so the browser's PDF viewer previews it; ?download=1
+  // saves it instead.
+  const disposition = req.query.download === '1' ? 'attachment' : 'inline';
+  const fileName = path.basename(key).replace(/[^\w.-]/g, '_');
   res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `${disposition}; filename="${fileName}"`);
   res.sendFile(filePath);
 });

@@ -240,7 +240,8 @@
     }
 
     var certCell = cert.certificate_url
-      ? '<a href="' + cert.certificate_url + '" target="_blank" rel="noopener" download>Download PDF</a>'
+      ? '<a href="' + cert.certificate_url + '" target="_blank" rel="noopener">Preview PDF</a>' +
+        ' &middot; <a href="' + cert.certificate_url + '&download=1">Download</a>'
       : '<span class="muted">—</span>';
 
     var actions = '<div class="action-btns">';
@@ -355,6 +356,7 @@
   var issueStatus = document.getElementById('issueStatus');
   var issueError = document.getElementById('issueError');
   var issueResult = document.getElementById('issueResult');
+  var issuePreviewBtn = document.getElementById('issuePreviewBtn');
   var issueDownloadBtn = document.getElementById('issueDownloadBtn');
 
   issueForm.addEventListener('submit', async function (e) {
@@ -385,8 +387,9 @@
       } else {
         var url = r.json.job && r.json.job.certificate_url;
         if (url) {
-          toast('Certificate ready — download button is below the form.');
-          issueDownloadBtn.href = url;
+          toast('Certificate ready — preview and download buttons are below the form.');
+          issuePreviewBtn.href = url;
+          issueDownloadBtn.href = url + '&download=1';
           issueResult.hidden = false;
           window.open(url, '_blank');
         }

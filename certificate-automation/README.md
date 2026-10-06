@@ -80,8 +80,10 @@ service). It shows:
   whose design code is known (EOE, PPR, SGL) selects the design for you.
 - **Search/filter** by customer name, email, order number, design, SKU, or
   status.
-- **Download the PDF** — every row with a generated certificate has a
-  Download PDF link.
+- **Preview or download the PDF** — every row with a generated certificate
+  has a *Preview PDF* link, which opens it in a new browser tab (Chrome's
+  built-in PDF viewer), and a *Download* link that saves it straight to
+  the Downloads folder.
 - **Fix a wrong name** — click *Edit name*, correct it, *Save*, then
   *Regenerate PDF* to get a corrected certificate reflecting the fix.
 - **Retry a failed one** — if PDF generation failed (a transient
