@@ -106,6 +106,33 @@ visible difference at screen sizes. **Keep the full-resolution originals
 somewhere outside this repository** — they are the masters for print and for
 any future re-export, and they are not recoverable from these files.
 
+### Journey images
+
+The About page's journey section uses all eight uploads from `Journey RR images/`,
+with web copies in `assets/images/journey/`:
+
+| Original upload | Web image |
+| --- | --- |
+| `IMG_0027 (1).jpeg` | `alcohol-inks-challenge.jpg` |
+| `IMG_0028.jpg` | `finding-flow.jpg` |
+| `IMG_0029 (1).jpg` | `art-in-many-forms.jpg` |
+| `IMG_0030.jpg` | `expanding-the-language.jpg` |
+| `IMG_0031.JPG` | `natures-rhythm.jpg` |
+| `IMG_0032 (1).jpg` | `blue-fabric.jpg` |
+| `IMG_0033.jpeg` | `silk-scarf.jpg` |
+| `IMG_0034 (1).jpg` | `coaster.jpg` |
+
+Web copies are progressive JPEGs, resized to at most 1800 pixels on the long edge,
+with metadata stripped. The larger images also have `-640.jpg` versions selected
+through `srcset` for smaller screens. The originals are not modified.
+The blue fabric upload is only 464 × 304 pixels; it is not enlarged beyond its
+native width. A higher-resolution original would improve its sharpness.
+
+Journey frames follow each image's intrinsic aspect ratio so artwork is not
+cropped or letterboxed. Portrait milestones use narrower image columns on desktop
+and stack below their copy on mobile. The closing painting and saree remain fully
+visible side by side on desktop.
+
 ### Video
 
 The hero background clip is 30 seconds and is offered in two encodings; the

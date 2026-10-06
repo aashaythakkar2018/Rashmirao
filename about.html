@@ -405,31 +405,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  height: clamp(380px, 31vw, 440px);
 }
-.journey-grid-row--wide { grid-template-columns: 1fr; height: auto; aspect-ratio: 1279 / 232; }
-.journey-grid .img-wrap {
+.journey-grid-row--wide { grid-template-columns: 1fr; }
+.journey-grid-row--portrait {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+}
+.journey-grid-row--portrait.journey-grid-row--image-first {
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+}
+.journey-grid-row--compact {
+  grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+}
+.journey-grid-row--compact .img-wrap {
+  max-width: 464px;
+  align-self: center;
+}
+.journey-head {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: center;
+}
+.journey-grid .img-wrap,
+.journey-head .img-wrap {
   position: relative;
+  align-self: center;
   min-height: 0;
   border-radius: 0;
   overflow: hidden;
   background: #EEEAE4;
 }
-/* Flat mat behind portrait photos, matching the copy tiles. */
-.journey-grid .img-wrap::before { background: #EEEAE4; }
-/* Absolute so a photo's own height never stretches its row; contain so
-   every photo is shown whole, never cropped. */
-.journey-grid .img-wrap img {
-  position: absolute;
-  inset: 0;
+.journey-grid .img-wrap::before,
+.journey-head .img-wrap::before { background: #EEEAE4; }
+/* Let the image's intrinsic dimensions set the frame, not a fixed-height row. */
+.journey-grid .img-wrap img,
+.journey-head .img-wrap img {
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   display: block;
 }
-.journey-grid .img-wrap:hover img { transform: none; }
-/* The closing fabric strip is a texture, so it still fills its band. */
-.journey-grid-row--wide .img-wrap img { object-fit: cover; }
+.journey-grid .img-wrap:hover img,
+.journey-head .img-wrap:hover img { transform: none; }
+/* Columns proportional to each image's aspect ratio (602/805, 1200/1500)
+   so both frames share one height without cropping. */
+.journey-grid-row--gallery { grid-template-columns: minmax(0, .748fr) minmax(0, .8fr); }
+.journey-grid-row--gallery .img-wrap { align-self: start; }
 .journey-tile {
   display: flex;
   flex-direction: column;
@@ -484,14 +506,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 768px) {
   .journey-split { gap: 40px; }
   .journey-grid, .journey-grid-row { gap: 4px; }
-  .journey-grid-row { grid-template-columns: 1fr; height: auto; }
+  .journey-grid-row,
+  .journey-grid-row--portrait,
+  .journey-grid-row--portrait.journey-grid-row--image-first,
+  .journey-grid-row--compact,
+  .journey-grid-row--gallery { grid-template-columns: 1fr; }
   /* Copy always leads its image once the row stacks. */
   .journey-grid-row .journey-tile { order: -1; padding: 24px 18px; }
-  /* Stacked: each photo takes its natural height, shown in full. */
-  .journey-grid .img-wrap img { position: relative; height: auto; }
-  .journey-grid-row--wide { aspect-ratio: auto; }
-  .journey-grid-row--wide .img-wrap img { position: absolute; height: 100%; }
-  .journey-grid-row--wide .img-wrap { aspect-ratio: 2 / 1; }
+  .journey-head { grid-template-columns: 1fr; gap: 32px; }
   .journey-tile p { max-width: none; }
   .journey-note { font-size: 17px; margin-top: 36px; }
 }
@@ -1173,18 +1195,28 @@ footer {
 </section>
 
 <!-- ========== 2. THE JOURNEY ========== -->
-<section class="journey-bg section-lg">
+<section class="journey-bg section-lg" id="journey">
   <div class="wrap">
     <div class="journey-split">
-      <div class="journey-copy">
-        <span class="eyebrow rv">The Journey</span>
-        <h2 class="h2 rv">An Evolving<br>Relationship With<br><em>Art.</em></h2>
-        <div class="journey-intro-copy rv">
-          <p>Rather than following one fixed artistic style, Rashmi's journey has been shaped by curiosity&mdash;moving through different forms, subjects, mediums and creative challenges.</p>
+      <div class="journey-head">
+        <div class="journey-copy">
+          <span class="eyebrow rv">The Journey</span>
+          <h2 class="h2 rv">An Evolving<br>Relationship With<br><em>Art.</em></h2>
+          <div class="journey-intro-copy rv">
+            <p>Rather than following one fixed artistic style, Rashmi's journey has been shaped by curiosity&mdash;moving through different forms, subjects, mediums and creative challenges.</p>
+          </div>
+        </div>
+        <div class="img-wrap rv">
+          <img src="assets/images/journey/coaster.jpg" srcset="assets/images/journey/coaster-640.jpg 640w, assets/images/journey/coaster.jpg 1289w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Watercolour road-and-hills painting printed on a coaster" width="1289" height="1106" loading="lazy" decoding="async">
         </div>
       </div>
 
       <div class="journey-grid">
+      <div class="journey-grid-row journey-grid-row--wide rv">
+        <div class="img-wrap">
+          <img src="assets/images/journey/silk-scarf.jpg" srcset="assets/images/journey/silk-scarf-640.jpg 640w, assets/images/journey/silk-scarf.jpg 1800w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(100vw - 104px), 1296px" alt="Silk scarf printed with an original abstract painting" width="1800" height="705" loading="lazy" decoding="async">
+        </div>
+      </div>
       <div class="journey-grid-row rv">
         <div class="journey-tile">
           <span class="journey-tile-year">2010</span>
@@ -1192,12 +1224,12 @@ footer {
           <p>The journey began with fine art, illustration and design, including wedding design illustrations, commissioned work and fine art. Group exhibitions became an early part of the journey, providing opportunities to explore different subjects, techniques and visual languages.</p>
         </div>
         <div class="img-wrap">
-          <img src="assets/images/story/grid-07.jpg" alt="Watercolour landscape painting" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/art-in-many-forms.jpg" srcset="assets/images/journey/art-in-many-forms-640.jpg 640w, assets/images/journey/art-in-many-forms.jpg 1028w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Black and white ink and texture study" width="1028" height="570" loading="lazy" decoding="async">
         </div>
       </div>
-      <div class="journey-grid-row rv">
+      <div class="journey-grid-row journey-grid-row--portrait journey-grid-row--image-first rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9815.jpeg" alt="Small watercolour collections displayed at an art fair stall" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story/journey-9815.jpeg" alt="Small watercolour collections displayed at an art fair stall" width="693" height="873" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2018&ndash;2022</span>
@@ -1212,12 +1244,12 @@ footer {
           <p>While looking through leftover art supplies from earlier graphic design days, Rashmi came across alcohol inks&mdash;materials she had owned but had never truly explored. She decided to take on a challenge. Inktober became an invitation to experiment. What began with supplies that had been sitting untouched became an immersive exploration of fluidity, transparency, movement and color. A challenge became an artistic language.</p>
         </div>
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9817.jpeg" alt="Inktober 2023 alcohol ink series" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/alcohol-inks-challenge.jpg" srcset="assets/images/journey/alcohol-inks-challenge-640.jpg 640w, assets/images/journey/alcohol-inks-challenge.jpg 1800w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Three alcohol ink paintings from the 2023 Inktober challenge" width="1800" height="1800" loading="lazy" decoding="async">
         </div>
       </div>
-      <div class="journey-grid-row rv">
+      <div class="journey-grid-row journey-grid-row--portrait journey-grid-row--image-first rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-teal-flow.jpg" alt="Teal alcohol ink abstract" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/finding-flow.jpg" srcset="assets/images/journey/finding-flow-640.jpg 640w, assets/images/journey/finding-flow.jpg 1015w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(40vw - 45px), 515px" alt="Grey alcohol ink abstract" width="1015" height="1800" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2023&ndash;2024</span>
@@ -1232,12 +1264,12 @@ footer {
           <p>The work continued to evolve through different visual directions&mdash;from Pantone-inspired color studies to the Folk &amp; Tribal Art Series for the City of Lafayette, alongside continuing abstract and mixed-media explorations. Different projects continued to reveal recurring threads of color, rhythm, nature and movement.</p>
         </div>
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9818.jpeg" alt="Folk and Tribal Art Series on display for the City of Lafayette" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/expanding-the-language.jpg" srcset="assets/images/journey/expanding-the-language-640.jpg 640w, assets/images/journey/expanding-the-language.jpg 1800w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(50vw - 56px), 644px" alt="Magenta alcohol ink abstract with gold edges" width="1800" height="1528" loading="lazy" decoding="async">
         </div>
       </div>
-      <div class="journey-grid-row rv">
+      <div class="journey-grid-row journey-grid-row--portrait journey-grid-row--image-first rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-pink-rhythm.jpg" alt="Magenta alcohol ink abstract from Nature&rsquo;s Rhythm" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/natures-rhythm.jpg" srcset="assets/images/journey/natures-rhythm-640.jpg 640w, assets/images/journey/natures-rhythm.jpg 1350w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(40vw - 45px), 515px" alt="Rashmi Rao viewing her framed Nature&rsquo;s Rhythm paintings" width="1350" height="1800" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2024&ndash;2025</span>
@@ -1245,19 +1277,19 @@ footer {
           <p>Years of experimentation gradually converged. Nature became less something to depict and more something to observe, feel and translate. This evolving body of work became Nature&rsquo;s Rhythm.</p>
         </div>
       </div>
-      <div class="journey-grid-row rv">
+      <div class="journey-grid-row journey-grid-row--portrait rv">
         <div class="journey-tile">
           <span class="journey-tile-year">Nov&ndash;Dec 2025</span>
           <h3>Nature&rsquo;s Rhythm &mdash; Solo Exhibition</h3>
           <p>A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?</p>
         </div>
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9816.jpeg" alt="Rashmi Rao at her Nature&rsquo;s Rhythm solo exhibition" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story/journey-9816.jpeg" alt="Rashmi Rao at her Nature&rsquo;s Rhythm solo exhibition" width="682" height="1024" loading="lazy" decoding="async">
         </div>
       </div>
-      <div class="journey-grid-row rv">
+      <div class="journey-grid-row journey-grid-row--compact rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-blue-abstract.jpg" alt="Blue abstract painting translated into the Shifting Glacier saree" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/journey/blue-fabric.jpg" alt="Close-up of blue fabric showing the artwork's flowing colour and folds" width="464" height="304" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2026 &middot; Today</span>
@@ -1265,9 +1297,12 @@ footer {
           <p>That question became the beginning of Rhytara Collections. Selected artworks from Nature&rsquo;s Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced.</p>
         </div>
       </div>
-      <div class="journey-grid-row journey-grid-row--wide rv">
+      <div class="journey-grid-row journey-grid-row--gallery rv">
         <div class="img-wrap">
-          <img src="assets/images/shifting-glacier.jpg" alt="Shifting Glacier saree in Georgette satin" loading="lazy" onerror="this.style.display='none'">
+          <img src="assets/images/story/journey-blue-abstract.jpg" alt="Blue abstract painting translated into the Shifting Glacier saree" width="602" height="805" loading="lazy" decoding="async">
+        </div>
+        <div class="img-wrap">
+          <img src="assets/images/shifting-glacier.jpg" alt="Shifting Glacier saree in Georgette satin" width="1200" height="1500" loading="lazy" decoding="async">
         </div>
       </div>
       </div>
