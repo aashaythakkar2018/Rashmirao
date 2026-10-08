@@ -77,13 +77,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .cart-badge{background:var(--olive);color:#fff;font-family:var(--ff-mono);font-size:9px;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 .nav-burger{display:none;flex-direction:column;gap:5px;padding:4px;color:var(--text);}
 .nav-burger span{display:block;width:22px;height:1.5px;background:currentColor;border-radius:2px;}
-.currency-toggle{display:flex;align-items:center;gap:7px;}
-.curr-lbl{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;color:var(--muted);transition:color .25s;user-select:none;line-height:1;}
-.curr-lbl.active{color:var(--text);}
-.toggle-track{position:relative;width:36px;height:20px;background:var(--beige);border-radius:10px;cursor:pointer;border:1px solid rgba(17,17,17,0.14);transition:background .28s,border-color .28s;flex-shrink:0;}
-.toggle-track.usd{background:var(--olive);border-color:var(--olive);}
-.toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--white);border-radius:50%;transition:transform .28s cubic-bezier(.25,.46,.45,.94);box-shadow:0 1px 4px rgba(0,0,0,0.2);pointer-events:none;}
-.toggle-track.usd .toggle-thumb{transform:translateX(16px);}
 
 /* LAYOUT & SECTIONS */
 .wrap{max-width:1440px;margin:0 auto;padding:0 52px;}
@@ -274,13 +267,6 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <div class="currency-toggle" role="group" aria-label="Currency selector">
-        <span class="curr-lbl" id="currLabelINR">INR ₹</span>
-        <button class="toggle-track usd" id="currencyTrack" onclick="toggleCurrency()" role="switch" aria-checked="true" aria-label="Toggle currency">
-          <span class="toggle-thumb"></span>
-        </button>
-        <span class="curr-lbl active" id="currLabelUSD">$ USD</span>
-      </div>
       <button class="nav-icon-btn" onclick="openCart()" aria-label="Open cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cartBadge">0</span>
@@ -362,11 +348,7 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
         <p class="config-sub">Choose a gift that lets them discover a Rhytara piece they truly love.</p>
 
         <span class="denom-label">Select Denomination</span>
-        <!-- $100 and $150 are the real, stable prices. data-price-inr carries
-             them encoded at the site's 84 INR/USD reference rate (see
-             assets/js/currency.js) so the shared currency toggle can derive
-             a correctly LIVE-rate-converted INR amount from them - it is
-             not itself a price and should not be read as one. -->
+        <!-- Fixed USD denominations use the catalogue's legacy 84-unit encoding. -->
         <div class="denom-grid" id="denomGrid">
           <div class="denom-card active" onclick="selectDenomCard(this, 100)">
             <span class="denom-price" data-no-offer data-price-inr="8400">$ 100</span>
@@ -537,23 +519,12 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
 
 <div class="toast" id="toast">Gift card request processed!</div>
 
-<script src="assets/js/currency.js?v=6"></script>
+<script src="assets/js/currency.js?v=7"></script>
 <script src="assets/js/site.js" defer></script>
 <script src="assets/js/shopify-config.js"></script>
 <script src="assets/js/shopify.js?v=3"></script>
 <script src="assets/js/cart.js?v=5"></script>
 <script>
-  // USD is the real, stable price for gift cards, exactly like every other
-  // price on the site - $100 and $150. Nothing here reimplements currency
-  // conversion: the denomination cards and the preview's "Gift Value" are
-  // plain [data-price-inr] elements (encoded per the comment near the
-  // denomination markup above), so the shared currency.js pipeline
-  // (initCurrency/toggleCurrency/refreshAllPrices, unmodified) formats them
-  // correctly in whichever currency is active, INR always derived live from
-  // the real USD amount. An earlier version of this page duplicated that
-  // logic in page-local overrides that quietly fell out of sync with the
-  // toggle switch's own visual state - removed in favor of just feeding the
-  // shared pipeline correct data.
   let currentUsd = 100;
   // One Shopify gift card product; its 100.00 / 150.00 denominations map to the cards.
   const GIFT_CARD_HANDLE = 'rhytara-giftcard';
@@ -650,10 +621,6 @@ footer{background:#0e0e0e;color:rgba(250,248,245,0.62);padding:68px 0 40px;}
   // Restore the button if the customer comes back from checkout via the browser's back button.
   window.addEventListener('pageshow', () => setSending(false));
 
-  // toggleCurrency/initCurrency are intentionally NOT overridden here - the
-  // real ones from currency.js already update every [data-price-inr]
-  // element on the page (including the denomination cards and the preview
-  // display) and keep the toggle switch's own visual state correct.
   initCurrency();
 </script>
 <script src="assets/js/cart-drawer.js?v=5"></script>

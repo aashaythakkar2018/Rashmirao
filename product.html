@@ -101,33 +101,6 @@
     @media (max-width: 1024px) { .nav-burger { display: flex; } }
 
     /* -- CURRENCY TOGGLE -- */
-    .currency-toggle {
-      display: flex; align-items: center; gap: 7px;
-    }
-    .curr-lbl {
-      font-family: var(--font-mono); font-size: 11px;
-      letter-spacing: .08em; color: var(--muted);
-      transition: color .25s; user-select: none; line-height: 1;
-    }
-    .curr-lbl.active { color: var(--text); }
-    .toggle-track {
-      position: relative; width: 36px; height: 20px;
-      background: var(--beige);
-      border-radius: 10px; cursor: pointer;
-      border: 1px solid rgba(17,17,17,0.14);
-      transition: background .28s, border-color .28s;
-      flex-shrink: 0;
-    }
-    .toggle-track.usd { background: var(--olive); border-color: var(--olive); }
-    .toggle-thumb {
-      position: absolute; top: 2px; left: 2px;
-      width: 14px; height: 14px;
-      background: #FAF8F5; border-radius: 50%;
-      transition: transform .28s cubic-bezier(.25,.46,.45,.94);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.22);
-      pointer-events: none;
-    }
-    .toggle-track.usd .toggle-thumb { transform: translateX(16px); }
     .cart-count {
       width: 18px; height: 18px; border-radius: 50%;
       background: var(--olive); color: #fff;
@@ -759,8 +732,8 @@
     @media (max-width: 1024px) {
       /* Every other page hides the text nav (and shows the hamburger) at
          1024px; this page did it at 600px, so 601-1024px showed the full
-         desktop nav squeezed into tablet width, overlapping the currency
-         toggle and cart icon, with "Gift Cards" wrapping to a second line.
+         desktop nav squeezed into tablet width, overlapping the cart icon,
+         with "Gift Cards" wrapping to a second line.
          Must come after the base ".nav-links" rule above (line ~85) to win
          the cascade - a plain, unconditional rule beats a media-query rule
          of equal specificity that appears earlier in the file, regardless
@@ -812,16 +785,6 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <div class="currency-toggle" role="group" aria-label="Currency selector">
-        <span class="curr-lbl active" id="currLabelINR" aria-hidden="true">INR ₹</span>
-        <button class="toggle-track" id="currencyTrack"
-          onclick="toggleCurrency()"
-          role="switch" aria-checked="false"
-          aria-label="Toggle currency between INR and USD">
-          <span class="toggle-thumb"></span>
-        </button>
-        <span class="curr-lbl" id="currLabelUSD" aria-hidden="true">$ USD</span>
-      </div>
       <button class="nav-cart-btn" id="navCartBtn" type="button" onclick="openCart()" aria-label="View cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -916,8 +879,8 @@
       </div>
 
       <div class="pi-price-row">
-        <span class="pi-price" id="productPrice">₹85,000</span>
-        <span class="pi-price-label" id="priceLabel">MRP (INR)</span>
+        <span class="pi-price" id="productPrice"></span>
+        <span class="pi-price-label" id="priceLabel">MRP (USD)</span>
       </div>
       <p class="pi-tax-note">Tax and shipping excluded</p>
 
@@ -1192,7 +1155,7 @@
 
   <!-- Currency module -->
   <script src="assets/js/site.js" defer></script>
-  <script src="assets/js/currency.js?v=6" onerror="console.warn('currency.js not found - using INR defaults')"></script>
+  <script src="assets/js/currency.js?v=7" onerror="console.error('USD pricing module failed to load')"></script>
 
   <!-- ------------------------------------
        FRAMER MOTION v11 - Vanilla JS / ESM
@@ -1370,11 +1333,10 @@
       const piEdText = document.getElementById('pi-edition-text')
       if (piEdText) piEdText.textContent = P.edition
 
-      // Price (currency.js may override - we set the raw INR value)
       const priceEl = document.getElementById('productPrice')
       if (priceEl) {
         priceEl.dataset.inr = P.priceInr
-        priceEl.textContent = '₹' + P.priceInr.toLocaleString('en-IN')
+        priceEl.innerHTML = window.formatOfferPriceHtml(P.priceInr)
       }
 
       // Availability
@@ -1449,8 +1411,8 @@
         if (!rel) return
         const firstImg = rel.images[0]
         const priceStr = rel.sold
-          ? '₹' + rel.priceInr.toLocaleString('en-IN') + ' (Sold)'
-          : '₹' + rel.priceInr.toLocaleString('en-IN')
+          ? window.formatPrice(rel.priceInr) + ' (Sold)'
+          : window.formatOfferPriceHtml(rel.priceInr)
         const card = document.createElement('div')
         card.className = 'rel-card'
         card.setAttribute('onclick', `location.href='product.html?id=${relId}'`)
@@ -1817,8 +1779,7 @@
     function updatePrices() {
       if (window.formatPrice) {
         document.getElementById('productPrice').innerHTML = window.formatOfferPriceHtml(selectedPriceInr)
-        const isUsd = (localStorage.getItem('rrd_currency_v2') || 'USD') === 'USD'
-        document.getElementById('priceLabel').textContent = isUsd ? 'MRP (USD)' : 'MRP (INR)'
+        document.getElementById('priceLabel').textContent = 'MRP (USD)'
         document.querySelectorAll('.rel-price[data-inr]').forEach(el => {
           const inr = parseInt(el.dataset.inr)
           const isSold = el.classList.contains('sold')
@@ -1832,21 +1793,6 @@
     const poll = setInterval(() => {
       if (window.formatPrice) { updatePrices(); clearInterval(poll) }
     }, 80)
-    document.addEventListener('click', e => {
-      if (e.target.closest('.toggle-track')) {
-        // Micro-animation: flash price out → update → fade back in
-        const priceEl = document.getElementById('productPrice')
-        if (priceEl) {
-          priceEl.classList.add('price-switching')
-          setTimeout(() => {
-            updatePrices()
-            priceEl.classList.remove('price-switching')
-          }, 180)
-        } else {
-          setTimeout(updatePrices, 50)
-        }
-      }
-    })
 
     /* ----------- INIT ----------- */
     buildGallery()

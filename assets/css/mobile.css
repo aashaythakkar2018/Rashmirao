@@ -142,7 +142,6 @@ textarea:focus-visible {
   .ann-close,
   .nav-icon-btn,
   .nav-burger,
-  .toggle-track,
   .hero-sound-btn,
   .cart-x,
   .journey-gallery-arrow,
@@ -160,7 +159,6 @@ textarea:focus-visible {
   .nav-icon-btn,
   .nav-burger,
   .ann-close,
-  .toggle-track,
   .hero-sound-btn,
   .cart-x,
   .journey-gallery-arrow,
@@ -181,68 +179,6 @@ textarea:focus-visible {
 
   .nav-actions {
     gap: 8px;
-  }
-
-  .currency-toggle {
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 0;
-    width: 84px;
-    height: 40px;
-    padding: 3px;
-    border: 1px solid rgba(250,248,245,.24);
-    border-radius: 999px;
-    background: rgba(17,17,17,.24);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-
-  .currency-toggle .curr-lbl {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-    height: 100%;
-    font-size: 10px;
-    letter-spacing: .04em;
-    color: rgba(250,248,245,.58);
-    pointer-events: none;
-  }
-
-  .currency-toggle .curr-lbl.active {
-    color: var(--text, #111);
-  }
-
-  .toggle-track {
-    position: absolute !important;
-    inset: 3px !important;
-    z-index: 1;
-    width: calc(100% - 6px) !important;
-    min-width: 0 !important;
-    height: calc(100% - 6px) !important;
-    min-height: 0 !important;
-    padding: 0;
-    border: 0;
-    background: transparent !important;
-    border-radius: inherit;
-  }
-
-  .toggle-thumb {
-    top: 0 !important;
-    left: 0 !important;
-    width: 50% !important;
-    height: 100% !important;
-    border-radius: 999px !important;
-    background: #FAF8F5 !important;
-    transform: translateX(0) !important;
-  }
-
-  .toggle-track.usd .toggle-thumb {
-    transform: translateX(100%) !important;
   }
 
   /* Positioning for .hero-sound-btn lives in index.html's own responsive

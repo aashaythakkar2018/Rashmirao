@@ -7,7 +7,7 @@
  *
  * Exposes window.openCart / window.closeCart (kept as globals because the
  * existing nav buttons call them via inline onclick), and window.renderCart
- * so currency.js re-prices the drawer on an INR<->USD toggle.
+ * so currency.js can format drawer prices consistently in USD.
  * --------------------------------------------------------------------------
  */
 (function () {
@@ -47,7 +47,7 @@
         '<div class="cart-foot" id="cartFoot" style="display:none">' +
           '<div class="cart-total-row">' +
             '<span class="cart-total-lbl">Subtotal</span>' +
-            '<span class="cart-total-val" id="cartTotal">₹ 0</span>' +
+            '<span class="cart-total-val" id="cartTotal">$ 0</span>' +
           '</div>' +
           '<button type="button" class="btn-olive" id="cartCheckout" style="width:100%;justify-content:center;">Proceed to Checkout</button>' +
           '<div class="cart-continue"><button type="button" id="cartContinue">Continue Shopping</button></div>' +

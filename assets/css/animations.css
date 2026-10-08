@@ -298,17 +298,12 @@
 
 
 /* -----------------------------------------------
-   CURRENCY TOGGLE - price number micro-animation on switch
+   PRODUCT PRICE
    ----------------------------------------------- */
 .pi-price,
 #productPrice {
   transition: opacity 180ms ease, transform 180ms var(--ease-out-back);
   display: inline-block;
-}
-/* JS adds .price-switching class momentarily during currency change */
-.price-switching {
-  opacity: 0 !important;
-  transform: translateY(6px) !important;
 }
 
 
@@ -669,22 +664,11 @@ footer :focus-visible,
 body:has(.ann) { padding-top: 42px; }
 
 /* ---------------------------------------------------------------
-   12. CURRENCY TOGGLE FIT
-   Labels changed from bare glyphs to INR / USD plus symbol, which
-   roughly doubles the control's width. Below 768px the nav is
-   logo + search + toggle + cart + burger and would overflow.
+   12. MOBILE HEADER SPACING
    --------------------------------------------------------------- */
 @media (max-width: 768px) {
   .nav-actions { gap: 12px; }
-  .currency-toggle { gap: 5px; }
-  .curr-lbl { font-size: 10px; }
   /* The search button has no handler on any page. It is a dead control,
      so it is the first thing that should yield space. */
   .nav-icon-btn[aria-label="Search"] { display: none; }
-}
-@media (max-width: 400px) {
-  /* Keep the currency code, drop the now-redundant glyph */
-  #currLabelINR, #currLabelUSD { font-size: 0; }
-  #currLabelINR::after { content: "INR"; font-size: 10px; }
-  #currLabelUSD::after { content: "USD"; font-size: 10px; }
 }

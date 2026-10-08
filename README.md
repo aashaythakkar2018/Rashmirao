@@ -18,7 +18,7 @@ Pure HTML / CSS / JavaScript. No build step, no dependencies to install.
 ├── assets/
 │   ├── css/animations.css  Shared scroll/reveal animation styles
 │   ├── js/site.js          Shared site behaviour (nav, cart, reveals)
-│   ├── js/currency.js      Live currency conversion helper
+│   ├── js/currency.js      Shared USD price formatting and launch offer
 │   ├── images/             Photography and artwork
 │   └── video/              Hero background video
 ├── .nojekyll               Serve files as-is on GitHub Pages
@@ -88,7 +88,46 @@ the site degrades gracefully without them:
 | Google Fonts | Cormorant Garamond, DM Sans, DM Mono |
 | cdnjs (GSAP + ScrollTrigger) | Scroll-driven animations |
 | jsDelivr | Supporting library |
-| open.er-api.com | Live exchange rates for the currency switcher |
+
+## Storefront pricing
+
+All displayed prices use USD. The currency selector is currently removed, and
+previously saved INR preferences no longer affect prices. No exchange-rate
+request is made. Catalogue and cart amounts retain their legacy internal
+encoding of 84 units per USD, matching the Shopify integration; this is not a
+live exchange rate. Gift cards remain $100 and $150, without the launch offer.
+
+The homepage artist portrait uses a shorter responsive frame with a centered
+top-and-bottom crop. The original image file is unchanged.
+
+## Featured magazine interview
+
+The Featured page's magazine viewer is restricted to Rashmi Rao's interview,
+pages 62-67 of Artist Talk Magazine Issue 45. Desktop shows two-page spreads;
+mobile shows one page at a time. Previous/Next buttons and arrow keys stop at
+the interview boundaries, and reopening starts at page 62. Pages 62-63 are
+bundled locally; pages 64-67 load directly from the publisher and need an
+internet connection. The opening animation uses only interview pages.
+
+## Contact form delivery
+
+The static contact form submits to Web3Forms. Its public access key is configured
+in `contact.html`; the recipient mailbox is associated with that key in
+Web3Forms, not chosen by the email links displayed on the page. The configured
+route is Web3Forms to `rhytara.collections@gmail.com`, with Gmail forwarding
+intended to deliver to `studio@rhytara.com`. Forwarding must be verified and
+enabled in Gmail; it is not controlled by the website. The separate Shopify
+theme uses Shopify's native contact form instead.
+
+The form shows success and clears the enquiry only when Web3Forms returns an
+HTTP success response with `success: true`. Failed or invalid responses retain
+the entered details and display an error. Duplicate submissions are blocked
+while a request is pending.
+
+A provider success response confirms submission acceptance, not mailbox receipt.
+To verify delivery, send one labelled enquiry with a unique marker and confirm
+it in the recipient's inbox or spam folder, or inspect the provider's delivery
+record. Do not infer delivery from a success notification alone.
 
 ## Asset notes
 

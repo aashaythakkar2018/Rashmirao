@@ -182,38 +182,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .nav.scrolled .nav-links a { color: var(--muted); }
 .nav.scrolled .nav-links a:hover { color: var(--text); }
 
-/* -- CURRENCY TOGGLE -- */
-.currency-toggle {
-  display: flex; align-items: center; gap: 7px;
-}
-.curr-lbl {
-  font-family: var(--ff-mono); font-size: 11px;
-  letter-spacing: .08em; color: rgba(250,248,245,0.4);
-  transition: color .25s; user-select: none; line-height: 1;
-}
-.curr-lbl.active { color: rgba(250,248,245,0.92); }
-.nav.scrolled .curr-lbl { color: var(--muted); }
-.nav.scrolled .curr-lbl.active { color: var(--text); }
-.toggle-track {
-  position: relative; width: 36px; height: 20px;
-  background: rgba(250,248,245,0.18);
-  border-radius: 10px; cursor: pointer;
-  border: 1px solid rgba(250,248,245,0.22);
-  transition: background .28s, border-color .28s;
-  flex-shrink: 0;
-}
-.nav.scrolled .toggle-track { background: var(--beige); border-color: rgba(17,17,17,0.14); }
-.toggle-track.usd { background: var(--olive); border-color: var(--olive); }
-.toggle-thumb {
-  position: absolute; top: 2px; left: 2px;
-  width: 14px; height: 14px;
-  background: #FAF8F5; border-radius: 50%;
-  transition: transform .28s cubic-bezier(.25,.46,.45,.94);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.22);
-  pointer-events: none;
-}
-.toggle-track.usd .toggle-thumb { transform: translateX(16px); }
-
 .nav-actions { display: flex; align-items: center; gap: 20px; }
 .nav-icon-btn {
   display: flex;
@@ -529,16 +497,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .about-split {
   display: grid;
   grid-template-columns: 48% 52%;
-  min-height: 680px;
   align-items: center;
 }
-.about-img-col { overflow: hidden; min-height: 520px; order: 2; }
+.about-img-col { overflow: hidden; min-height: 0; order: 2; }
 .about-img-col .img-wrap {
-  height: 100%;
-  min-height: 520px;
+  height: clamp(360px, 48vw, 560px);
   width: min(100%, 800px);
   max-width: 800px;
   margin: 0 auto;
+}
+.about-img-col .img-wrap img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 .about-copy-col {
   order: 1;
@@ -1185,18 +1156,6 @@ footer {
 
     <div class="nav-actions">
 
-      <!-- -- Currency Toggle -- -->
-      <div class="currency-toggle" role="group" aria-label="Currency selector">
-        <span class="curr-lbl active" id="currLabelINR" aria-hidden="true">INR ₹</span>
-        <button class="toggle-track" id="currencyTrack"
-          onclick="toggleCurrency()"
-          role="switch" aria-checked="false"
-          aria-label="Toggle currency between INR and USD">
-          <span class="toggle-thumb"></span>
-        </button>
-        <span class="curr-lbl" id="currLabelUSD" aria-hidden="true">$ USD</span>
-      </div>
-
       <button class="nav-icon-btn" onclick="openCart()" aria-label="Open cart">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         <span class="cart-badge" id="cartBadge">0</span>
@@ -1495,7 +1454,7 @@ footer {
   <div class="cart-foot" id="cartFoot" style="display:none">
     <div class="cart-total-row">
       <span class="cart-total-lbl">Subtotal</span>
-      <span class="cart-total-val" id="cartTotal">₹ 0</span>
+      <span class="cart-total-val" id="cartTotal">$ 0</span>
     </div>
     <button id="cartCheckout" type="button" class="btn-olive" style="width:100%;justify-content:center;">Proceed to Checkout</button>
     <div class="cart-continue">
@@ -1504,8 +1463,8 @@ footer {
   </div>
 </div>
 
-<!-- Shared currency module (live rate + INR↔USD toggle) -->
-<script src="assets/js/currency.js?v=6"></script>
+<!-- Shared USD pricing module -->
+<script src="assets/js/currency.js?v=7"></script>
 <script src="assets/js/site.js" defer></script>
 
 <!-- ========== GSAP (loaded ASYNC - page is fully visible without it) ========== -->
