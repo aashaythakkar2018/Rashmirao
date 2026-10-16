@@ -396,28 +396,29 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .journey-grid {
+  --journey-row-h: clamp(260px, 26vw, 330px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .journey-grid-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  grid-auto-rows: minmax(var(--journey-row-h), auto);
+  gap: 6px;
 }
 .journey-grid-row--wide { grid-template-columns: 1fr; }
 .journey-grid-row--portrait {
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, .6fr);
 }
 .journey-grid-row--portrait.journey-grid-row--image-first {
-  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr);
 }
 .journey-grid-row--compact {
-  grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
 }
-.journey-grid-row--compact .img-wrap {
-  max-width: 464px;
-  align-self: center;
+.journey-grid-row--gallery {
+  grid-auto-rows: minmax(calc(var(--journey-row-h) * 1.25), auto);
 }
 .journey-head {
   display: grid;
@@ -434,10 +435,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
   background: #EEEAE4;
 }
+.journey-grid .img-wrap { align-self: stretch; }
 .journey-grid .img-wrap::before,
 .journey-head .img-wrap::before { background: #EEEAE4; }
-/* Let the image's intrinsic dimensions set the frame, not a fixed-height row. */
-.journey-grid .img-wrap img,
 .journey-head .img-wrap img {
   position: relative;
   width: 100%;
@@ -445,17 +445,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   object-fit: contain;
   display: block;
 }
+/* Grid images fill a fixed-height frame and crop, so rows stay compact. */
+.journey-grid .img-wrap img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.journey-grid .img-wrap img.journey-img--top { object-position: center 22%; }
 .journey-grid .img-wrap:hover img,
 .journey-head .img-wrap:hover img { transform: none; }
-/* Columns proportional to each image's aspect ratio (602/805, 1200/1500)
-   so both frames share one height without cropping. */
-.journey-grid-row--gallery { grid-template-columns: minmax(0, .748fr) minmax(0, .8fr); }
-.journey-grid-row--gallery .img-wrap { align-self: start; }
 .journey-tile {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px 32px;
+  padding: 28px 40px;
   background: #EEEAE4;
 }
 .journey-tile-year {
@@ -509,7 +516,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .journey-grid-row--portrait,
   .journey-grid-row--portrait.journey-grid-row--image-first,
   .journey-grid-row--compact,
-  .journey-grid-row--gallery { grid-template-columns: 1fr; }
+  .journey-grid-row--gallery { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .journey-grid-row { grid-auto-rows: auto; }
+  .journey-grid .img-wrap { height: clamp(220px, 68vw, 340px); }
   /* Copy always leads its image once the row stacks. */
   .journey-grid-row .journey-tile { order: -1; padding: 24px 18px; }
   .journey-head { grid-template-columns: 1fr; gap: 32px; }
@@ -1269,7 +1278,7 @@ footer {
       </div>
       <div class="journey-grid-row journey-grid-row--portrait journey-grid-row--image-first rv">
         <div class="img-wrap">
-          <img src="assets/images/journey/natures-rhythm.jpg" srcset="assets/images/journey/natures-rhythm-640.jpg 640w, assets/images/journey/natures-rhythm.jpg 1350w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(40vw - 45px), 515px" alt="Rashmi Rao viewing her framed Nature&rsquo;s Rhythm paintings" width="1350" height="1800" loading="lazy" decoding="async">
+          <img class="journey-img--top" src="assets/images/journey/natures-rhythm.jpg" srcset="assets/images/journey/natures-rhythm-640.jpg 640w, assets/images/journey/natures-rhythm.jpg 1350w" sizes="(max-width: 768px) calc(100vw - 48px), (max-width: 1400px) calc(40vw - 45px), 515px" alt="Rashmi Rao viewing her framed Nature&rsquo;s Rhythm paintings" width="1350" height="1800" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2024&ndash;2025</span>
@@ -1284,12 +1293,12 @@ footer {
           <p>A solo exhibition exploring the movement, energy and interconnectedness of the natural world through abstract color and fluid form. The exhibition brought together years of experimentation into one cohesive artistic expression. And then came another question: What if the artwork could leave the wall?</p>
         </div>
         <div class="img-wrap">
-          <img src="assets/images/story/journey-9816.jpeg" alt="Rashmi Rao at her Nature&rsquo;s Rhythm solo exhibition" width="682" height="1024" loading="lazy" decoding="async">
+          <img class="journey-img--top" src="assets/images/story/journey-9816.jpeg" alt="Rashmi Rao at her Nature&rsquo;s Rhythm solo exhibition" width="682" height="1024" loading="lazy" decoding="async">
         </div>
       </div>
       <div class="journey-grid-row journey-grid-row--compact rv">
         <div class="img-wrap">
-          <img src="assets/images/journey/blue-fabric.jpg" alt="Close-up of blue fabric showing the artwork's flowing color and folds" width="464" height="304" loading="lazy" decoding="async">
+          <img src="assets/images/story/journey-blue-abstract.jpg" alt="Blue abstract painting translated into the Shifting Glacier saree" width="602" height="805" loading="lazy" decoding="async">
         </div>
         <div class="journey-tile">
           <span class="journey-tile-year">2026 &middot; Today</span>
@@ -1297,12 +1306,9 @@ footer {
           <p>That question became the beginning of Rhytara Collections. Selected artworks from Nature&rsquo;s Rhythm are translated into textile compositions on Georgette satin, allowing the movement and rhythm of the original paintings to become something that can be worn, lived in and experienced.</p>
         </div>
       </div>
-      <div class="journey-grid-row journey-grid-row--gallery rv">
+      <div class="journey-grid-row journey-grid-row--wide rv">
         <div class="img-wrap">
-          <img src="assets/images/story/journey-blue-abstract.jpg" alt="Blue abstract painting translated into the Shifting Glacier saree" width="602" height="805" loading="lazy" decoding="async">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/images/shifting-glacier.jpg" alt="Shifting Glacier saree in Georgette satin" width="1200" height="1500" loading="lazy" decoding="async">
+          <img src="assets/images/journey/blue-fabric.jpg" alt="Close-up of blue fabric showing the artwork's flowing color and folds" width="464" height="304" loading="lazy" decoding="async">
         </div>
       </div>
       </div>
