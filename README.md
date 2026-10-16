@@ -100,7 +100,24 @@ live exchange rate. Gift cards remain $100 and $150, without the launch offer.
 The homepage artist portrait uses a shorter responsive frame with a centered
 top-and-bottom crop. The original image file is unchanged.
 
+Product listing images have no edition or remaining-stock labels. Live stock
+checks still disable Purchase for sold-out products. The Shopify theme also
+omits promotional and available labels on product cards, retaining Sold Out.
+
 ## Featured magazine interview
+
+The Featured page's Times Square photo is anchored to the top-right of its
+frame so the artwork billboard stays visible across screen sizes.
+
+The "Exhibited in, Featured in" marquee includes the original 12 photographs
+and all 14 uploads from the `16 oct images` folder. Web copies live in
+`assets/images/featured/october-16`; source uploads remain unchanged. Images
+retain their full frame and open in the existing lightbox. The marquee duration
+is 156 seconds to preserve its scrolling pace with the larger set.
+
+The Times Square Digital Showcase exhibition entry previews the first
+16 October upload on hover or keyboard focus, using the same floating-image
+treatment as the London Underground entry.
 
 The Featured page's magazine viewer is restricted to Rashmi Rao's interview,
 pages 62-67 of Artist Talk Magazine Issue 45. Desktop shows two-page spreads;

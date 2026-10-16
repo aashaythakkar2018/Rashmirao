@@ -462,20 +462,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   z-index: 2; top: 50%; left: 50%;
 }
 
-/* Availability badge */
-.art-badge {
-  position: absolute; top: 14px; left: 14px; z-index: 5;
-  font-family: var(--ff-sans); font-size: 9px;
-  letter-spacing: .15em; text-transform: uppercase;
-  padding: 4px 10px; font-weight: 500;
-}
-.badge-avail { background: rgba(250,248,245,0.95); color: var(--olive); }
-.badge-sold  { background: rgba(250,248,245,0.95); color: var(--muted); }
-.badge-new   { background: var(--olive); color: #fff; }
-.badge-ltd   { background: var(--olive); color: #fff; }
-.badge-low-stock { background: var(--rust, #7a5248); color: #fff; }
-.art-card.is-sold-out .art-badge { background: rgba(250,248,245,0.95); color: var(--muted); }
-
 /* Heart / wishlist button */
 .art-heart {
   position: absolute; top: 12px; right: 12px; z-index: 5;
@@ -1045,7 +1031,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <!-- CARD 1 - Echoes of Earth -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-dream" data-handle="echoes-of-earth" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1082,7 +1067,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <!-- CARD 2 - Grounding Nature -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2023" data-id="crimson-solitude" data-handle="grounding-nature" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1116,7 +1100,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <!-- CARD 3 - Magical Pansies -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="whispers-of-ochre" data-handle="magical-pansies" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1150,7 +1133,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <!-- CARD 4 - Purple Petals Reverie -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="the-blue-hour" data-handle="purple-petals-reverie" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>
@@ -1184,7 +1166,6 @@ footer { background: var(--dark); color: rgba(250,248,245,0.78); padding: 68px 0
       <!-- CARD 5 - Shifting Glacier -->
       <div class="art-card rv" data-cat="wearable" data-price="24780" data-year="2024" data-id="monsoon-saree" data-handle="shifting-glacier" onclick="cardClick(event,this)">
         <div class="art-card-img-wrap">
-          <span class="art-badge badge-ltd">Limited Edition · 250 Worldwide</span>
           <button class="art-heart" onclick="toggleHeart(this, event)" aria-label="Add to wishlist">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </button>

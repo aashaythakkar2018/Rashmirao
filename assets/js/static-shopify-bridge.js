@@ -8,7 +8,7 @@
      `handle` in its PRODUCTS entry (product.html) instead of adding a line
      here - that's the whole point of data-handle: new listings need zero
      JS changes to get working availability checks, sold-out state, and a
-     live countdown. */
+     stock checks. */
   var ID_TO_HANDLE = {
     'monsoon-dream': 'echoes-of-earth',
     'crimson-solitude': 'grounding-nature',
@@ -102,8 +102,6 @@
 
   function setCardSoldOut(card) {
     card.classList.add('is-sold-out');
-    var badge = card.querySelector('.art-badge');
-    if (badge) badge.textContent = 'Sold Out';
     var buyBtn = card.querySelector('.reveal-btn-add');
     if (buyBtn) {
       buyBtn.textContent = 'Sold Out';
@@ -138,11 +136,9 @@
   /**
    * Grid-card live hydration (shop.html, collections.html, and any future
    * page using the same .art-card markup): for every card with a
-   * data-handle, fetches its real Shopify availability and remaining
-   * count and updates the "Limited Edition · 250 Worldwide" badge to a
-   * live "X of 250 remaining" (or "Sold Out"), non-destructively - if
-   * live data can't be fetched (offline, scope not yet granted, etc.) the
-   * badge is simply left exactly as it was written in the page.
+   * data-handle, fetches its real Shopify availability and stock count
+   * and disables Purchase for sold-out products. Product images stay
+   * free of edition and remaining-stock labels.
    */
   function hydrateCardAvailability() {
     var cards = Array.prototype.slice.call(document.querySelectorAll('.art-card[data-handle], .art-card[data-id]'));
@@ -175,7 +171,7 @@
         });
       });
     }).catch(function (e) {
-      console.warn('[Shopify] Card availability hydration failed - leaving static badges as-is', e);
+      console.warn('[Shopify] Card availability hydration failed - leaving purchase controls unchanged', e);
     });
   }
 
@@ -188,28 +184,7 @@
         return;
       }
       var qty = variant && variant.id ? quantities[variant.id] : undefined;
-      if (typeof qty !== 'number') return; // scope not granted yet / unknown - leave the static badge text alone
-      var badge = card.querySelector('.art-badge');
-      if (badge) {
-        // The "250" denominator is the fixed edition size (from this
-        // card's own existing copy, e.g. "Limited Edition · 250
-        // Worldwide") - only the live remaining count (the numerator)
-        // comes from Shopify.
-        // The edition size is read once and kept on the badge, so a second
-        // hydration doesn't mistake the live count for the denominator.
-        if (!badge.dataset.edition) {
-          var m = /(\d[\d,]*)/.exec(badge.textContent);
-          badge.dataset.edition = m ? m[1].replace(/,/g, '') : '250';
-        }
-        var total = parseInt(badge.dataset.edition, 10);
-        // Shopify stock can be set above the edition size; never claim more
-        // pieces remain than the edition holds.
-        var shown = Math.min(qty, total);
-        badge.textContent = qty > 0
-          ? shown + ' of ' + total + ' Remaining'
-          : 'Sold Out';
-        badge.classList.toggle('badge-low-stock', qty > 0 && qty <= 10);
-      }
+      if (typeof qty !== 'number') return;
       if (qty <= 0) setCardSoldOut(card);
     });
   }

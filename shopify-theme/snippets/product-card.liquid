@@ -13,10 +13,6 @@
   <div class="art-card-img-wrap">
     {%- if product.available == false -%}
       <span class="art-badge badge-sold">&times; {{ 'products.product.sold_out' | t }}</span>
-    {%- elsif product.metafields.custom.badge != blank -%}
-      <span class="art-badge badge-new">{{ product.metafields.custom.badge }}</span>
-    {%- else -%}
-      <span class="art-badge badge-avail">&check; Available</span>
     {%- endif -%}
 
     <div class="img-shimmer" aria-hidden="true"></div>
