@@ -73,6 +73,28 @@ drop policy if exists "staff issue certificates" on public.certificates;
 create policy "staff issue certificates" on public.certificates
   for insert to authenticated with check (public.is_staff());
 
+-- ------------------------------------------------------ email log --
+-- One row each time a certificate is emailed from the dashboard (by the
+-- send-certificate function, as the signed-in staff member). The recipient's
+-- address is not kept - only that, when and by whom it was sent.
+create table if not exists public.certificate_emails (
+  id              bigint generated always as identity primary key,
+  certificate_id  bigint not null references public.certificates (id),
+  sent_by         text default (auth.jwt() ->> 'email'),
+  sent_at         timestamptz not null default now()
+);
+create index if not exists certificate_emails_certificate_idx on public.certificate_emails (certificate_id);
+
+alter table public.certificate_emails enable row level security;
+
+drop policy if exists "staff read email log" on public.certificate_emails;
+create policy "staff read email log" on public.certificate_emails
+  for select to authenticated using (public.is_staff());
+
+drop policy if exists "staff log emails" on public.certificate_emails;
+create policy "staff log emails" on public.certificate_emails
+  for insert to authenticated with check (public.is_staff());
+
 -- ------------------------------------------------------ PDF storage --
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('certificates', 'certificates', false, 10485760, array['application/pdf'])

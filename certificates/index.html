@@ -42,7 +42,6 @@
     <header class="topbar">
       <div class="topbar-title">
         <h1>Rhytara Certificates</h1>
-        <span class="badge">PDF only — download and send manually</span>
       </div>
       <div class="topbar-actions">
         <span id="userEmail" class="muted user-email"></span>
@@ -103,10 +102,11 @@
             <span id="issueStatus" class="inline-status" aria-live="polite"></span>
           </div>
           <p id="issueError" class="form-error" role="alert"></p>
-          <p class="hint">This generates the PDF and backs it up. The customer's name is printed on the certificate but not kept anywhere else. Download the PDF and attach it to your own email to send.</p>
+          <p class="hint">This generates the PDF and backs it up. The customer's name is printed on the certificate but not kept anywhere else. Then download it, or use "Send by email" to email it to the customer.</p>
           <div id="issueResult" class="issue-result" hidden>
             <button type="button" id="issuePreviewBtn" class="btn btn-primary">Preview certificate</button>
             <button type="button" id="issueDownloadBtn" class="btn btn-ghost">Download</button>
+            <button type="button" id="issueEmailBtn" class="btn btn-ghost">Send by email</button>
           </div>
         </form>
       </section>
@@ -133,6 +133,7 @@
                 <th>SKU</th>
                 <th>Issued</th>
                 <th>Certificate</th>
+                <th>Emailed</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -148,6 +149,31 @@
       </section>
     </main>
   </div>
+
+  <dialog id="sendDialog" class="send-dialog" aria-labelledby="sendTitle">
+    <form id="sendForm" method="dialog">
+      <h2 id="sendTitle">Send certificate by email</h2>
+      <p id="sendSummary" class="muted send-summary"></p>
+      <label>
+        <span>Customer's email</span>
+        <input id="s_to" type="email" autocomplete="off" required />
+      </label>
+      <label>
+        <span>First name for the greeting</span>
+        <input id="s_firstName" type="text" autocomplete="off" placeholder="Dear …" />
+      </label>
+      <label>
+        <span>Personal note (optional)</span>
+        <textarea id="s_note" rows="3" maxlength="2000"></textarea>
+      </label>
+      <p class="hint">Sent from rhytaracollections@gmail.com with the PDF attached. The email address isn't saved.</p>
+      <p id="sendError" class="form-error" role="alert"></p>
+      <div class="send-actions">
+        <button type="button" id="sendCancel" class="btn btn-ghost">Cancel</button>
+        <button type="submit" id="sendSubmit" class="btn btn-primary">Send</button>
+      </div>
+    </form>
+  </dialog>
 
   <div id="toast" class="toast" role="status"></div>
 

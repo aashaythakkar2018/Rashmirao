@@ -177,6 +177,14 @@ name, use "Correct name" in the dashboard: it replaces that certificate's PDF
 and keeps its order, edition, SKU and date of issue. Design names, SKU
 prefixes and edition sizes live in `certificates/designs.js`.
 
+"Send by email" calls the `send-certificate` Supabase Edge Function
+(`certificates/functions/send-certificate/`), which emails the stored PDF
+from the Rhytara Gmail account over SMTP. It needs two function secrets in
+Supabase: `GMAIL_USER` and `GMAIL_APP_PASSWORD` (a Google app password, which
+requires 2-Step Verification on that account). The recipient's address is not
+stored; each send is logged in `public.certificate_emails` and shown in the
+dashboard's Emailed column.
+
 ## Asset notes
 
 ### Images

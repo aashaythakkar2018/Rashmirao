@@ -27,6 +27,9 @@
     editingId: null,
     issued: {},       // design code -> highest certificate number issued
     lastIssued: null, // register row from the most recent "Generate certificate"
+    lastIssuedName: '',
+    sendingId: null,  // certificate open in the "Send by email" dialog
+    emailed: {},      // certificate id -> { last: sent_at, count }
   };
 
   // --------------------------------------------------------------- gates --
@@ -309,7 +312,7 @@
   // -------------------------------------------------------- certificates --
   function renderRow(cert) {
     var isEditing = state.editingId === cert.id;
-    var issued = new Date(cert.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    var issued = shortDate(cert.created_at);
 
     var actions;
     if (isEditing) {
@@ -323,8 +326,17 @@
         '<button class="btn btn-sm btn-ghost" data-action="cancel-edit">Cancel</button>' +
         '</div>';
     } else {
-      actions = '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Correct name</button>';
+      actions =
+        '<div class="action-btns">' +
+        '<button class="btn btn-sm btn-primary" data-action="email" data-id="' + cert.id + '">Send by email</button>' +
+        '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Correct name</button>' +
+        '</div>';
     }
+
+    var sent = state.emailed[cert.id];
+    var emailed = sent
+      ? esc(shortDate(sent.last)) + (sent.count > 1 ? ' <span class="muted">(' + sent.count + '×)</span>' : '')
+      : '<span class="muted">—</span>';
 
     return (
       '<tr>' +
@@ -335,12 +347,31 @@
       '<td class="nowrap">' + esc(issued) + '</td>' +
       '<td class="nowrap"><button class="link-btn" data-action="preview" data-id="' + cert.id + '">Preview PDF</button>' +
         ' &middot; <button class="link-btn" data-action="download" data-id="' + cert.id + '">Download</button></td>' +
+      '<td class="nowrap">' + emailed + '</td>' +
       '<td>' + actions + '</td>' +
       '</tr>'
     );
   }
 
+  function shortDate(iso) {
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
   var rowsById = {};
+
+  /** When each listed certificate was last emailed, from public.certificate_emails. */
+  async function loadEmailLog(ids) {
+    state.emailed = {};
+    if (!ids.length) return;
+    var res = await sb.from('certificate_emails').select('certificate_id, sent_at')
+      .in('certificate_id', ids).order('sent_at', { ascending: false });
+    if (res.error) { toast('Could not load the email log: ' + res.error.message, true); return; }
+    res.data.forEach(function (r) {
+      var e = state.emailed[r.certificate_id];
+      if (e) e.count += 1;
+      else state.emailed[r.certificate_id] = { last: r.sent_at, count: 1 };
+    });
+  }
 
   async function loadCertificates() {
     var q = sb.from('certificates').select('*', { count: 'exact' })
@@ -362,8 +393,9 @@
 
     rowsById = {};
     res.data.forEach(function (r) { rowsById[r.id] = r; });
+    await loadEmailLog(res.data.map(function (r) { return r.id; }));
     $('certTableBody').innerHTML = res.data.map(renderRow).join('') ||
-      '<tr><td colspan="7" class="muted empty-row">No certificates match these filters.</td></tr>';
+      '<tr><td colspan="8" class="muted empty-row">No certificates match these filters.</td></tr>';
 
     var total = res.count || 0;
     var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -385,6 +417,7 @@
     var cert = rowsById[btn.dataset.id];
 
     if (action === 'preview') { openPdf(cert, false, openBlankTab()); return; }
+    if (action === 'email') { openSendDialog(cert, ''); return; }
     if (action === 'download') { openPdf(cert, true); return; }
     if (action === 'edit') { state.editingId = cert.id; loadCertificates(); return; }
     if (action === 'cancel-edit') { state.editingId = null; loadCertificates(); return; }
@@ -469,6 +502,7 @@
       if (ins.error) throw new Error(ins.error.code === '23505' ? duplicate : 'Could not record the certificate: ' + ins.error.message);
 
       state.lastIssued = ins.data;
+      state.lastIssuedName = $('f_firstName').value.trim();
       $('issueResult').hidden = false;
       $('issueForm').reset();
       toast('Certificate ready and backed up — preview or download it below the form.');
@@ -487,6 +521,65 @@
   });
   $('issueDownloadBtn').addEventListener('click', function () {
     if (state.lastIssued) openPdf(state.lastIssued, true);
+  });
+  $('issueEmailBtn').addEventListener('click', function () {
+    if (state.lastIssued) openSendDialog(state.lastIssued, state.lastIssuedName);
+  });
+
+  // ----------------------------------------------------- send by email ---
+  /*
+   * The send-certificate Supabase function emails the stored PDF from the
+   * Rhytara Gmail account, as the signed-in user. The address is passed for
+   * that one email and not stored; the function logs only that it was sent.
+   */
+  var sendDialog = $('sendDialog');
+
+  function openSendDialog(cert, firstName) {
+    state.sendingId = cert.id;
+    $('sendForm').reset();
+    $('sendError').textContent = '';
+    $('s_firstName').value = firstName || '';
+    var sent = state.emailed[cert.id];
+    $('sendSummary').textContent =
+      'Order ' + cert.order_number + ' — ' + cert.design_name + ' ' + pad(cert.certificate_number, cert.edition_total) +
+      (sent ? '. Already emailed on ' + shortDate(sent.last) + '.' : '.');
+    sendDialog.showModal();
+    $('s_to').focus();
+  }
+
+  $('sendCancel').addEventListener('click', function () { sendDialog.close(); });
+
+  $('sendForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var error = $('sendError');
+    error.textContent = '';
+    $('sendSubmit').disabled = true;
+    $('sendSubmit').textContent = 'Sending…';
+    var to = $('s_to').value.trim();
+
+    var res = await sb.functions.invoke('send-certificate', {
+      body: {
+        certificateId: state.sendingId,
+        to: to,
+        firstName: $('s_firstName').value.trim(),
+        note: $('s_note').value.trim(),
+      },
+    });
+
+    $('sendSubmit').disabled = false;
+    $('sendSubmit').textContent = 'Send';
+    if (res.error) {
+      var message = res.error.message;
+      try {
+        var body = await res.error.context.json();
+        if (body && body.error) message = body.error;
+      } catch (_) { /* not a JSON error body */ }
+      error.textContent = message;
+      return;
+    }
+    sendDialog.close();
+    toast('Certificate emailed to ' + to + '.');
+    loadCertificates();
   });
 
   // ------------------------------------------------------------ filters --
