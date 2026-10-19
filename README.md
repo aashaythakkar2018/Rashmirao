@@ -151,10 +151,12 @@ record. Do not infer delivery from a success notification alone.
 `certificates/` is the staff dashboard at `rhytara.com/certificates` for
 issuing Certificate of Authenticity PDFs. It replaces running the local
 `certificate-automation/` service. It is a static page; a Supabase project
-holds the staff logins, the certificate history and the stored PDFs, and the
-PDF is rendered in the browser from `certificates/template/` (the same
-template the local service used). The page is `noindex` and not linked from
-the site.
+holds the staff logins, a backup of every certificate PDF, and a register of
+what was issued (order number, design, edition, SKU) that blocks issuing an
+edition twice. No customer details are stored: the customer's name is typed
+in, printed on the PDF, and kept nowhere else. The PDF is rendered in the
+browser from `certificates/template/` (the same template the local service
+used). The page is `noindex` and not linked from the site.
 
 One-time setup:
 
@@ -170,11 +172,10 @@ One-time setup:
 3. Put the project URL and anon key (Project Settings → API) in
    `certificates/config.js` and deploy.
 
-Certificates can't be deleted from the dashboard, and an issued
-certificate's order, design, edition and SKU are fixed by the database. Only
-the customer's name can be corrected in the dashboard, which regenerates the
-PDF. Design names, SKU prefixes and edition sizes live in
-`certificates/designs.js`.
+The register is append-only and PDFs can't be deleted. To correct a misspelt
+name, use "Correct name" in the dashboard: it replaces that certificate's PDF
+and keeps its order, edition, SKU and date of issue. Design names, SKU
+prefixes and edition sizes live in `certificates/designs.js`.
 
 ## Asset notes
 

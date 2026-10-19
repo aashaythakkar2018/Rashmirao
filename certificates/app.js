@@ -1,10 +1,12 @@
 /*
  * Rhytara certificate dashboard - rhytara.com/certificates.
  *
- * A static page: Supabase holds the staff logins, the certificate history
- * (public.certificates) and the PDFs (private "certificates" bucket), and
- * cert-render.js makes each PDF in the browser. Access rules live in
- * supabase-setup.sql, not here - this script only asks.
+ * A static page: Supabase holds the staff logins, a backup of every
+ * certificate PDF (private "certificates" bucket) and a register of what was
+ * issued (public.certificates: order, design, edition, SKU - no customer
+ * details), and cert-render.js makes each PDF in the browser. The customer's
+ * name is typed in, printed on the PDF, and not stored anywhere else.
+ * Access rules live in supabase-setup.sql, not here - this script only asks.
  */
 (function () {
   'use strict';
@@ -20,12 +22,11 @@
 
   var state = {
     page: 1,
-    status: '',
     design: '',
     search: '',
     editingId: null,
     issued: {},       // design code -> highest certificate number issued
-    lastIssued: null, // row from the most recent "Generate certificate"
+    lastIssued: null, // register row from the most recent "Generate certificate"
   };
 
   // --------------------------------------------------------------- gates --
@@ -153,26 +154,25 @@
 
   // --------------------------------------------------------- stats/designs --
   async function loadSummary() {
-    // The whole history is small (one row per saree sold), so stats and the
+    // The register is small (one row per saree sold), so stats and the
     // next-SKU suggestion are computed from a light select of every row.
-    var res = await sb.from('certificates').select('design_code, certificate_number, status');
+    var res = await sb.from('certificates').select('design_code, certificate_number, created_at');
     if (res.error) { toast('Could not load stats: ' + res.error.message, true); return; }
 
-    var byStatus = { generated: 0, pending: 0, failed: 0 };
     var count = {};
+    var thisMonth = 0;
+    var now = new Date();
     state.issued = {};
     res.data.forEach(function (r) {
-      byStatus[r.status] = (byStatus[r.status] || 0) + 1;
       count[r.design_code] = (count[r.design_code] || 0) + 1;
       state.issued[r.design_code] = Math.max(state.issued[r.design_code] || 0, r.certificate_number);
+      var d = new Date(r.created_at);
+      if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()) thisMonth += 1;
     });
 
-    var labels = { generated: 'Ready to download', pending: 'Pending', failed: 'Failed' };
     $('statsRow').innerHTML =
-      '<div class="stat-card"><div class="stat-value">' + res.data.length + '</div><div class="stat-label">Total certificates</div></div>' +
-      Object.keys(labels).map(function (k) {
-        return '<div class="stat-card"><div class="stat-value">' + byStatus[k] + '</div><div class="stat-label">' + labels[k] + '</div></div>';
-      }).join('');
+      '<div class="stat-card"><div class="stat-value">' + res.data.length + '</div><div class="stat-label">Certificates backed up</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + thisMonth + '</div><div class="stat-label">Issued this month</div></div>';
 
     document.querySelector('#designTable tbody').innerHTML = DESIGNS.map(function (d) {
       return '<tr><td>' + esc(d.name) + '</td><td class="mono">' + esc(d.code) + '</td>' +
@@ -266,22 +266,20 @@
     return 'Rhytara_Certificate_' + order + '_' + piece + '.pdf';
   }
 
-  /** Renders the row's PDF, stores it, and records the outcome on the row. */
-  async function generateAndStore(cert) {
-    try {
-      var blob = await window.RhytaraCertRender.renderPdf(cert, designByCode(cert.design_code) || findDesign(cert.design_name));
-      var path = cert.design_code + '/' + pdfFileName(cert);
-      var up = await sb.storage.from(BUCKET).upload(path, blob, { contentType: 'application/pdf', upsert: true });
-      if (up.error) throw up.error;
-      var done = await sb.from('certificates')
-        .update({ status: 'generated', pdf_path: path, error_message: null })
-        .eq('id', cert.id).select().single();
-      if (done.error) throw done.error;
-      return done.data;
-    } catch (err) {
-      var message = (err && err.message) || String(err);
-      await sb.from('certificates').update({ status: 'failed', error_message: message }).eq('id', cert.id);
-      throw new Error(message);
+  /**
+   * Renders a certificate and stores the PDF. `cert` is a register row plus
+   * the customer's name, which goes on the PDF only. Without `replace`, an
+   * existing file at that path (the same order and piece) is an error, never
+   * overwritten.
+   */
+  async function renderAndUpload(cert, path, replace) {
+    var blob = await window.RhytaraCertRender.renderPdf(cert, designByCode(cert.design_code) || findDesign(cert.design_name));
+    var up = await sb.storage.from(BUCKET).upload(path, blob, { contentType: 'application/pdf', upsert: !!replace });
+    if (up.error) {
+      if (!replace && /exists|duplicate/i.test(up.error.message)) {
+        throw new Error('A certificate PDF for order ' + cert.order_number + ' and ' + cert.sku + ' is already backed up.');
+      }
+      throw new Error('Could not back up the PDF: ' + up.error.message);
     }
   }
 
@@ -311,52 +309,32 @@
   // -------------------------------------------------------- certificates --
   function renderRow(cert) {
     var isEditing = state.editingId === cert.id;
-    var nameCell;
+    var issued = new Date(cert.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+    var actions;
     if (isEditing) {
-      nameCell =
+      actions =
         '<div class="name-edit-row">' +
-        '<input type="text" class="edit-first" value="' + esc(cert.customer_first_name || '') + '" placeholder="First" aria-label="First name" />' +
-        '<input type="text" class="edit-last" value="' + esc(cert.customer_last_name || '') + '" placeholder="Last" aria-label="Last name" />' +
+        '<input type="text" class="edit-first" placeholder="First name" aria-label="Corrected first name" autocomplete="off" />' +
+        '<input type="text" class="edit-last" placeholder="Last name" aria-label="Corrected last name" autocomplete="off" />' +
         '</div>' +
         '<div class="action-btns" style="margin-top:6px;">' +
-        '<button class="btn btn-sm btn-primary" data-action="save-name" data-id="' + cert.id + '">Save &amp; regenerate</button>' +
+        '<button class="btn btn-sm btn-primary" data-action="save-name" data-id="' + cert.id + '">Replace PDF</button>' +
         '<button class="btn btn-sm btn-ghost" data-action="cancel-edit">Cancel</button>' +
         '</div>';
     } else {
-      var fullName = [cert.customer_first_name, cert.customer_last_name].filter(Boolean).join(' ') || '—';
-      nameCell =
-        '<div class="name-cell"><strong>' + esc(fullName) + '</strong>' +
-        '<span class="muted">' + esc(cert.customer_email || '—') + '</span></div>';
+      actions = '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Correct name</button>';
     }
-
-    var certCell = cert.pdf_path && cert.status === 'generated'
-      ? '<button class="link-btn" data-action="preview" data-id="' + cert.id + '">Preview PDF</button>' +
-        ' &middot; <button class="link-btn" data-action="download" data-id="' + cert.id + '">Download</button>'
-      : '<span class="muted">—</span>';
-
-    var actions = '<div class="action-btns">';
-    if (!isEditing) {
-      actions += '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Edit name</button>';
-    }
-    actions += '<button class="btn btn-sm btn-primary" data-action="regenerate" data-id="' + cert.id + '">' +
-      (cert.status === 'generated' ? 'Regenerate PDF' : 'Generate PDF') + '</button>';
-    actions += '</div>';
-    if (cert.error_message) {
-      actions += '<div class="muted row-error">' + esc(cert.error_message) + '</div>';
-    }
-
-    var issued = new Date(cert.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
     return (
       '<tr>' +
       '<td class="mono">' + esc(cert.order_number) + '</td>' +
-      '<td>' + nameCell + '</td>' +
-      '<td>' + esc(cert.design_name || '—') + '</td>' +
+      '<td>' + esc(cert.design_name) + '</td>' +
       '<td class="mono">' + pad(cert.certificate_number, cert.edition_total) + '</td>' +
-      '<td class="mono nowrap">' + esc(cert.sku || '—') + '</td>' +
+      '<td class="mono nowrap">' + esc(cert.sku) + '</td>' +
       '<td class="nowrap">' + esc(issued) + '</td>' +
-      '<td><span class="status-pill status-' + esc(cert.status) + '">' + esc(cert.status === 'generated' ? 'ready' : cert.status) + '</span></td>' +
-      '<td>' + certCell + '</td>' +
+      '<td class="nowrap"><button class="link-btn" data-action="preview" data-id="' + cert.id + '">Preview PDF</button>' +
+        ' &middot; <button class="link-btn" data-action="download" data-id="' + cert.id + '">Download</button></td>' +
       '<td>' + actions + '</td>' +
       '</tr>'
     );
@@ -368,14 +346,13 @@
     var q = sb.from('certificates').select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range((state.page - 1) * PAGE_SIZE, state.page * PAGE_SIZE - 1);
-    if (state.status) q = q.eq('status', state.status);
     if (state.design) q = q.eq('design_code', state.design);
     if (state.search) {
       // Characters PostgREST's or() filter treats as syntax are dropped.
       var term = state.search.replace(/[,()*%\\:"]/g, ' ').trim();
       if (term) {
         var like = '%' + term + '%';
-        q = q.or(['order_number', 'customer_first_name', 'customer_last_name', 'customer_email', 'design_name', 'sku']
+        q = q.or(['order_number', 'design_name', 'sku']
           .map(function (col) { return col + '.ilike.' + like; }).join(','));
       }
     }
@@ -386,7 +363,7 @@
     rowsById = {};
     res.data.forEach(function (r) { rowsById[r.id] = r; });
     $('certTableBody').innerHTML = res.data.map(renderRow).join('') ||
-      '<tr><td colspan="9" class="muted empty-row">No certificates match these filters.</td></tr>';
+      '<tr><td colspan="7" class="muted empty-row">No certificates match these filters.</td></tr>';
 
     var total = res.count || 0;
     var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -416,40 +393,24 @@
       var row = btn.closest('tr');
       var first = row.querySelector('.edit-first').value.trim();
       var last = row.querySelector('.edit-last').value.trim();
-      if (!first) { toast('First name is required.', true); return; }
+      if (!first) { toast('Enter the corrected first name.', true); return; }
       btn.disabled = true;
-      btn.textContent = 'Saving…';
-      var upd = await sb.from('certificates')
-        .update({ customer_first_name: first, customer_last_name: last || null })
-        .eq('id', cert.id).select().single();
-      if (upd.error) {
-        toast('Could not save name: ' + upd.error.message, true);
+      btn.textContent = 'Generating…';
+      try {
+        // Same order, piece and date of issue; only the printed name changes.
+        await renderAndUpload(
+          Object.assign({}, cert, { customer_first_name: first, customer_last_name: last }),
+          cert.pdf_path,
+          true
+        );
+        state.editingId = null;
+        toast('Certificate PDF replaced with the corrected name.');
+        loadCertificates();
+      } catch (err) {
+        toast(err.message, true);
         btn.disabled = false;
-        btn.textContent = 'Save & regenerate';
-        return;
+        btn.textContent = 'Replace PDF';
       }
-      state.editingId = null;
-      btn.textContent = 'Generating…';
-      try {
-        await generateAndStore(upd.data);
-        toast('Name updated and the certificate PDF regenerated.');
-      } catch (err) {
-        toast('Name saved, but the PDF failed: ' + err.message, true);
-      }
-      refreshAll();
-      return;
-    }
-
-    if (action === 'regenerate') {
-      btn.disabled = true;
-      btn.textContent = 'Generating…';
-      try {
-        await generateAndStore(cert);
-        toast('Certificate PDF is ready.');
-      } catch (err) {
-        toast('Generation failed: ' + err.message, true);
-      }
-      refreshAll();
     }
   });
 
@@ -471,51 +432,54 @@
       return;
     }
 
-    $('issueSubmit').disabled = true;
-    status.textContent = 'Saving certificate…';
-
-    var ins = await sb.from('certificates').insert({
+    var record = {
       order_number: $('f_orderNumber').value.trim(),
-      customer_first_name: $('f_firstName').value.trim(),
-      customer_last_name: $('f_lastName').value.trim() || null,
-      customer_email: $('f_email').value.trim(),
       design_name: design.name,
       design_code: design.code,
       certificate_number: parsed.editionNumber,
       edition_total: parsed.editionTotal,
       sku: parsed.sku,
-    }).select().single();
+      created_at: new Date().toISOString(),
+    };
+    var duplicate = design.name + ' edition ' + pad(parsed.editionNumber, parsed.editionTotal) + ' (' + parsed.sku + ') already has a certificate.';
+    record.pdf_path = design.code + '/' + pdfFileName(record);
 
-    if (ins.error) {
-      $('issueSubmit').disabled = false;
-      status.textContent = '';
-      if (ins.error.code === '23505') {
-        error.textContent = /sku/.test(ins.error.message)
-          ? 'SKU ' + parsed.sku + ' already has a certificate.'
-          : design.name + ' edition ' + pad(parsed.editionNumber, parsed.editionTotal) + ' already has a certificate.';
-      } else {
-        error.textContent = 'Could not issue certificate: ' + ins.error.message;
-      }
-      return;
-    }
-
-    // Rendering runs in this tab, so no preview tab is opened until it's
-    // done: a background tab gets its rendering paused by the browser.
-    status.textContent = 'Generating certificate PDF…';
+    $('issueSubmit').disabled = true;
+    // Nothing is saved until the PDF is made, so a failure leaves no trace
+    // and the form keeps its values for another try.
     try {
-      var cert = await generateAndStore(ins.data);
-      state.lastIssued = cert;
+      status.textContent = 'Checking the register…';
+      var checks = await Promise.all([
+        sb.from('certificates').select('id').eq('sku', parsed.sku).limit(1),
+        sb.from('certificates').select('id').eq('design_code', design.code).eq('certificate_number', parsed.editionNumber).limit(1),
+      ]);
+      checks.forEach(function (c) { if (c.error) throw new Error('Could not check the register: ' + c.error.message); });
+      if (checks[0].data.length || checks[1].data.length) throw new Error(duplicate);
+
+      // Rendering runs in this tab, so no preview tab is opened until it's
+      // done: a background tab gets its rendering paused by the browser.
+      status.textContent = 'Generating certificate PDF…';
+      await renderAndUpload(Object.assign({}, record, {
+        customer_first_name: $('f_firstName').value.trim(),
+        customer_last_name: $('f_lastName').value.trim(),
+      }), record.pdf_path, false);
+
+      status.textContent = 'Recording it…';
+      var ins = await sb.from('certificates').insert(record).select().single();
+      if (ins.error) throw new Error(ins.error.code === '23505' ? duplicate : 'Could not record the certificate: ' + ins.error.message);
+
+      state.lastIssued = ins.data;
       $('issueResult').hidden = false;
       $('issueForm').reset();
-      toast('Certificate ready — preview or download it below the form.');
+      toast('Certificate ready and backed up — preview or download it below the form.');
+      state.page = 1;
+      refreshAll();
     } catch (err) {
-      toast('Certificate saved, but PDF generation failed: ' + err.message + ' Use "Generate PDF" in the list to retry.', true);
-      $('issueForm').reset();
+      error.textContent = err.message;
+    } finally {
+      $('issueSubmit').disabled = false;
+      status.textContent = '';
     }
-    $('issueSubmit').disabled = false;
-    status.textContent = '';
-    state.page = 1;
-    refreshAll();
   });
 
   $('issuePreviewBtn').addEventListener('click', function () {
@@ -527,7 +491,6 @@
 
   // ------------------------------------------------------------ filters --
   $('filterApply').addEventListener('click', function () {
-    state.status = $('statusFilter').value;
     state.design = $('designFilter').value;
     state.search = $('searchInput').value.trim();
     state.page = 1;

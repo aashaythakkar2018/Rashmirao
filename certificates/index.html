@@ -85,16 +85,12 @@
               </select>
             </label>
             <label>
-              <span>Customer first name</span>
-              <input id="f_firstName" type="text" required />
+              <span>Customer first name (printed on the certificate)</span>
+              <input id="f_firstName" type="text" autocomplete="off" required />
             </label>
             <label>
               <span>Customer last name</span>
-              <input id="f_lastName" type="text" />
-            </label>
-            <label class="span-2">
-              <span>Customer email (for your records — not sent automatically)</span>
-              <input id="f_email" type="email" required />
+              <input id="f_lastName" type="text" autocomplete="off" />
             </label>
             <label class="span-2">
               <span>SKU of the physical saree</span>
@@ -107,7 +103,7 @@
             <span id="issueStatus" class="inline-status" aria-live="polite"></span>
           </div>
           <p id="issueError" class="form-error" role="alert"></p>
-          <p class="hint">This generates the PDF, saves it to the certificate history and shows Preview and Download buttons — download it and attach it to your own email to send.</p>
+          <p class="hint">This generates the PDF and backs it up. The customer's name is printed on the certificate but not kept anywhere else. Download the PDF and attach it to your own email to send.</p>
           <div id="issueResult" class="issue-result" hidden>
             <button type="button" id="issuePreviewBtn" class="btn btn-primary">Preview certificate</button>
             <button type="button" id="issueDownloadBtn" class="btn btn-ghost">Download</button>
@@ -120,13 +116,7 @@
           <h2>Certificates</h2>
         </div>
         <div class="filter-bar">
-          <input id="searchInput" type="text" placeholder="Search name, email, order #, design, SKU…" />
-          <select id="statusFilter">
-            <option value="">All statuses</option>
-            <option value="generated">Ready to download</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
-          </select>
+          <input id="searchInput" type="text" placeholder="Search order #, design, SKU…" />
           <select id="designFilter">
             <option value="">All designs</option>
           </select>
@@ -138,12 +128,10 @@
             <thead>
               <tr>
                 <th>Order</th>
-                <th>Customer</th>
                 <th>Design</th>
                 <th>Edition</th>
                 <th>SKU</th>
                 <th>Issued</th>
-                <th>Status</th>
                 <th>Certificate</th>
                 <th>Actions</th>
               </tr>
