@@ -146,6 +146,36 @@ To verify delivery, send one labelled enquiry with a unique marker and confirm
 it in the recipient's inbox or spam folder, or inspect the provider's delivery
 record. Do not infer delivery from a success notification alone.
 
+## Certificate dashboard
+
+`certificates/` is the staff dashboard at `rhytara.com/certificates` for
+issuing Certificate of Authenticity PDFs. It replaces running the local
+`certificate-automation/` service. It is a static page; a Supabase project
+holds the staff logins, the certificate history and the stored PDFs, and the
+PDF is rendered in the browser from `certificates/template/` (the same
+template the local service used). The page is `noindex` and not linked from
+the site.
+
+One-time setup:
+
+1. Create a Supabase project. In the SQL editor, run
+   `certificates/supabase-setup.sql`, then add each staff login email to the
+   staff list with the `insert into public.staff` line at the end of that file.
+2. In Authentication → Users, add each staff user with a password (or invite
+   them). In Authentication → URL Configuration, set the Site URL to
+   `https://rhytara.com/certificates/`, so invite and password-reset links
+   return to the dashboard. Turning off public sign-ups is recommended. It is
+   not required for security: accounts not on the staff list can't read or
+   write anything.
+3. Put the project URL and anon key (Project Settings → API) in
+   `certificates/config.js` and deploy.
+
+Certificates can't be deleted from the dashboard, and an issued
+certificate's order, design, edition and SKU are fixed by the database. Only
+the customer's name can be corrected in the dashboard, which regenerates the
+PDF. Design names, SKU prefixes and edition sizes live in
+`certificates/designs.js`.
+
 ## Asset notes
 
 ### Images

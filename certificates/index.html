@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Rhytara Certificates</title>
+<link rel="icon" href="assets/rhytara-logo.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="setupGate" class="token-gate hidden">
+    <div class="token-card">
+      <h1>Rhytara Certificates</h1>
+      <p>This dashboard isn't connected to its Supabase project yet. Add the project URL and anon key to <code>certificates/config.js</code>.</p>
+    </div>
+  </div>
+
+  <div id="loginGate" class="token-gate hidden">
+    <form id="loginForm" class="token-card">
+      <h1>Rhytara Certificates</h1>
+      <p>Sign in with your staff account.</p>
+      <input id="loginEmail" type="email" placeholder="Email" autocomplete="username" required />
+      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button id="loginSubmit" type="submit" class="btn btn-primary btn-block">Sign in</button>
+      <button id="forgotBtn" type="button" class="link-btn">Forgot password?</button>
+      <p id="loginMessage" class="token-error" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="passwordGate" class="token-gate hidden">
+    <form id="passwordForm" class="token-card">
+      <h1>Set a new password</h1>
+      <p>Choose a password for this account (at least 8 characters).</p>
+      <input id="newPassword" type="password" placeholder="New password" autocomplete="new-password" minlength="8" required />
+      <button type="submit" class="btn btn-primary btn-block">Save password</button>
+      <p id="passwordMessage" class="token-error" role="alert"></p>
+    </form>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Rhytara Certificates</h1>
+        <span class="badge">PDF only — download and send manually</span>
+      </div>
+      <div class="topbar-actions">
+        <span id="userEmail" class="muted user-email"></span>
+        <button id="refreshBtn" class="btn btn-ghost">↻ Refresh</button>
+        <button id="logoutBtn" class="btn btn-ghost">Sign out</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="stats-row" id="statsRow"></section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>By design</h2>
+        </div>
+        <div class="table-wrap">
+          <table id="designTable" class="table">
+            <thead>
+              <tr><th>Design</th><th>Code</th><th>Issued</th><th>Edition size</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Issue a new certificate</h2>
+        </div>
+        <form id="issueForm" class="issue-form">
+          <div class="issue-grid">
+            <label>
+              <span>Order number</span>
+              <input id="f_orderNumber" type="text" placeholder="e.g. #1042" required />
+            </label>
+            <label>
+              <span>Design</span>
+              <select id="f_designName" required>
+                <option value="">Select a design…</option>
+              </select>
+            </label>
+            <label>
+              <span>Customer first name</span>
+              <input id="f_firstName" type="text" required />
+            </label>
+            <label>
+              <span>Customer last name</span>
+              <input id="f_lastName" type="text" />
+            </label>
+            <label class="span-2">
+              <span>Customer email (for your records — not sent automatically)</span>
+              <input id="f_email" type="email" required />
+            </label>
+            <label class="span-2">
+              <span>SKU of the physical saree</span>
+              <input id="f_sku" type="text" class="mono" placeholder="e.g. RHY-EOE-GRS-001/250" autocomplete="off" spellcheck="false" required />
+              <span id="f_skuHint" class="field-hint">Select a design to suggest its full SKU and next known edition number. Confirm it matches the physical SKU label.</span>
+            </label>
+          </div>
+          <div class="issue-actions">
+            <button type="submit" id="issueSubmit" class="btn btn-primary">Generate certificate</button>
+            <span id="issueStatus" class="inline-status" aria-live="polite"></span>
+          </div>
+          <p id="issueError" class="form-error" role="alert"></p>
+          <p class="hint">This generates the PDF, saves it to the certificate history and shows Preview and Download buttons — download it and attach it to your own email to send.</p>
+          <div id="issueResult" class="issue-result" hidden>
+            <button type="button" id="issuePreviewBtn" class="btn btn-primary">Preview certificate</button>
+            <button type="button" id="issueDownloadBtn" class="btn btn-ghost">Download</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Certificates</h2>
+        </div>
+        <div class="filter-bar">
+          <input id="searchInput" type="text" placeholder="Search name, email, order #, design, SKU…" />
+          <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option value="generated">Ready to download</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+          </select>
+          <select id="designFilter">
+            <option value="">All designs</option>
+          </select>
+          <button id="filterApply" class="btn btn-secondary">Apply</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Design</th>
+                <th>Edition</th>
+                <th>SKU</th>
+                <th>Issued</th>
+                <th>Status</th>
+                <th>Certificate</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="certTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button id="prevPage" class="btn btn-ghost">‹ Prev</button>
+          <span id="pageInfo"></span>
+          <button id="nextPage" class="btn btn-ghost">Next ›</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="designs.js"></script>
+  <script src="cert-render.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
