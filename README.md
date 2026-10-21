@@ -115,11 +115,14 @@ omits promotional and available labels on product cards, retaining Sold Out.
 The Featured page's Times Square photo is anchored to the top-right of its
 frame so the artwork billboard stays visible across screen sizes.
 
-The "Exhibited in, Featured in" marquee includes the original 12 photographs
-and all 14 uploads from the `16 oct images` folder. Web copies live in
-`assets/images/featured/october-16`; source uploads remain unchanged. Images
+The "Exhibited in, Featured in" marquee includes the original 12 photographs,
+all 14 uploads from the `16 oct images` folder, and the 6 photographs from the
+`London Exhibit` folder that were not already shown (its other 12 match the
+16 October set). Web copies live in `assets/images/featured/october-16` and
+`assets/images/featured/london`; source uploads remain unchanged. The 32 tiles
+are in a shuffled order with no two neighbours from the same shoot. Images
 retain their full frame and open in the existing lightbox. The marquee duration
-is 156 seconds to preserve its scrolling pace with the larger set.
+is 192 seconds to preserve its scrolling pace with the larger set.
 
 The Times Square Digital Showcase exhibition entry previews the first
 16 October upload on hover or keyboard focus, using the same floating-image
