@@ -17,11 +17,11 @@ live copy. Requires `node` (used only to parse the JS object literal).
 
 | Handle | Title | Price (USD) | Inventory |
 |---|---|---|---|
-| `echoes-of-earth` | Echoes Of Earth | 295 / 310 by width | 1 |
-| `grounding-nature` | Grounding Nature | 295 / 310 by width | 1 |
-| `magical-pansies` | Magical Pansies | 295 / 310 by width | 1 |
-| `purple-petals-reverie` | Purple Petals Reverie | 295 / 310 by width | 1 |
-| `shifting-glacier` | Shifting Glacier | 295 / 310 by width | 1 |
+| `echoes-of-earth` | Echoes Of Earth | 325 / 345 by width | 1 |
+| `grounding-nature` | Grounding Nature | 325 / 345 by width | 1 |
+| `magical-pansies` | Magical Pansies | 325 / 345 by width | 1 |
+| `purple-petals-reverie` | Purple Petals Reverie | 325 / 345 by width | 1 |
+| `shifting-glacier` | Shifting Glacier | 325 / 345 by width | 1 |
 | `rhytara-gift-card` | Rhytara Gift Card | 100 / 150 | untracked |
 
 Images are pulled from `raw.githubusercontent.com` at import time — all 23

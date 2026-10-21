@@ -7,8 +7,8 @@
   'use strict';
 
   var USD_ENCODING_RATE = 84;
-  var OFFER_PCT = 15;
-  var OFFER_END = new Date('2026-10-21T23:59:59+05:30');
+  var OFFER_PCT = 10;
+  var OFFER_END = new Date('2026-11-21T23:59:59+05:30');
 
   function fmt(inrAmt) {
     return '$ ' + Math.round(inrAmt / USD_ENCODING_RATE).toLocaleString('en-US');

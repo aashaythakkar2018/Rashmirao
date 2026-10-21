@@ -19,7 +19,7 @@
   "products": {
     "product": {
       "sold_out": "Sold",
-      "tax_note": "Tax included · Insured worldwide shipping",
+      "tax_note": "Tax and shipping included",
       "quantity": "Quantity",
       "payment_methods": "We accept"
     }

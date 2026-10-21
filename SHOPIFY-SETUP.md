@@ -27,11 +27,11 @@ disabled with a notice. Nothing breaks, so you can deploy at any point.
 
    | Handle | Title | Price (USD) |
    |---|---|---|
-   | `echoes-of-earth` | Echoes Of Earth | 295 / 310 by width |
-   | `grounding-nature` | Grounding Nature | 295 / 310 by width |
-   | `magical-pansies` | Magical Pansies | 295 / 310 by width |
-   | `purple-petals-reverie` | Purple Petals Reverie | 295 / 310 by width |
-   | `shifting-glacier` | Shifting Glacier | 295 / 310 by width |
+   | `echoes-of-earth` | Echoes Of Earth | 325 / 345 by width |
+   | `grounding-nature` | Grounding Nature | 325 / 345 by width |
+   | `magical-pansies` | Magical Pansies | 325 / 345 by width |
+   | `purple-petals-reverie` | Purple Petals Reverie | 325 / 345 by width |
+   | `shifting-glacier` | Shifting Glacier | 325 / 345 by width |
 
    Gift cards are **not** imported from the CSV. The gift card is one native
    Shopify gift card product (Products → Gift cards), created in the admin:

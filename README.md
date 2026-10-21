@@ -97,6 +97,12 @@ request is made. Catalogue and cart amounts retain their legacy internal
 encoding of 84 units per USD, matching the Shopify integration; this is not a
 live exchange rate. Gift cards remain $100 and $150, without the launch offer.
 
+Sarees list at $325 (44 inch width) and $345 (48 inch width). The launch offer
+in `assets/js/currency.js` takes 10% off ($292.50 and $310.50) until
+21 November 2026, 23:59 IST. Prices are shown with tax and shipping included.
+The cart and checkout use Shopify's own prices and automatic discount, so those
+must be updated in Shopify admin to match.
+
 The homepage artist portrait uses a shorter responsive frame with a centered
 top-and-bottom crop. The original image file is unchanged.
 

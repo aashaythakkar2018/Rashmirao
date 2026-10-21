@@ -22,7 +22,7 @@ OUT = os.path.join(ROOT, "shopify", "products.csv")
 
 VENDOR = "Rhytara"
 INR_PER_USD = 84
-SAREE_PRICES_USD = {"44 inch": 295, "48 inch": 310}
+SAREE_PRICES_USD = {"44 inch": 325, "48 inch": 345}
 # Shopify pulls images over HTTP at import time, so they must be public URLs.
 # The repo is public, so raw.githubusercontent serves them directly.
 IMAGE_BASE = "https://raw.githubusercontent.com/aashaythakkar2018/Rashmirao/main/"

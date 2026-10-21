@@ -882,7 +882,7 @@
         <span class="pi-price" id="productPrice"></span>
         <span class="pi-price-label" id="priceLabel">MRP (USD)</span>
       </div>
-      <p class="pi-tax-note">Tax and shipping excluded</p>
+      <p class="pi-tax-note">Tax and shipping included</p>
 
       <div class="pi-availability" id="pi-avail">
         <span class="avail-dot"></span>
@@ -1175,7 +1175,7 @@
         handle: 'echoes-of-earth',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 24780,
+        priceInr: 27300,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1199,7 +1199,7 @@
         handle: 'grounding-nature',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 24780,
+        priceInr: 27300,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1222,7 +1222,7 @@
         handle: 'magical-pansies',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 24780,
+        priceInr: 27300,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1246,7 +1246,7 @@
         handle: 'purple-petals-reverie',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 24780,
+        priceInr: 27300,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1269,7 +1269,7 @@
         handle: 'shifting-glacier',
         category: 'Wearable Art · Limited Edition',
         medium: 'Nature’s Rhythm — Limited Edition Wearable Art',
-        priceInr: 24780,
+        priceInr: 27300,
         sold: false,
         badge: 'Limited Edition · 250 Worldwide',
         edition: 'Limited Edition · 250 pieces worldwide',
@@ -1764,7 +1764,7 @@
         .forEach(p => p.classList.remove('active'))
       btn.classList.add('active')
       if (group === 'size' && P.category.indexOf('Wearable') !== -1) {
-        selectedPriceInr = (btn.textContent.indexOf('48 inch') !== -1 ? 310 : 295) * 84
+        selectedPriceInr = (btn.textContent.indexOf('48 inch') !== -1 ? 345 : 325) * 84
         updatePrices()
         if (typeof applyLiveStateForSelectedPill === 'function') applyLiveStateForSelectedPill()
       }
