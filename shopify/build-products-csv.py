@@ -22,7 +22,7 @@ OUT = os.path.join(ROOT, "shopify", "products.csv")
 
 VENDOR = "Rhytara"
 INR_PER_USD = 84
-SAREE_PRICES_USD = {"44 inch": 295, "58 inch": 310}
+SAREE_PRICES_USD = {"44 inch": 295, "48 inch": 310}
 # Shopify pulls images over HTTP at import time, so they must be public URLs.
 # The repo is public, so raw.githubusercontent serves them directly.
 IMAGE_BASE = "https://raw.githubusercontent.com/aashaythakkar2018/Rashmirao/main/"
@@ -182,7 +182,7 @@ def main():
         # Wearable art is sold by fabric width (the site's Print Size option);
         # originals are one-of-one, so they take Shopify's default variant.
         if wearable:
-            variants = [("Width", "44 inch"), ("Width", "58 inch")]
+            variants = [("Width", "44 inch"), ("Width", "48 inch")]
         else:
             variants = [("Title", "Default Title")]
 

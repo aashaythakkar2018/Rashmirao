@@ -27,7 +27,9 @@
     var variants = product && product.variants ? product.variants : [];
     return variants.find(function (variant) {
       return (variant.selectedOptions || []).some(function (option) {
-        return option.value === optionValue;
+        // Shopify variants created before the rename are still called "58 inch".
+        var value = option.value === '58 inch' ? '48 inch' : option.value;
+        return value === optionValue;
       });
     }) || variants[0];
   }
@@ -35,7 +37,7 @@
   /**
    * Adds a variant to the cart, but only after checking Shopify's own,
    * up-to-the-second availableForSale for THAT exact variant - not just
-   * the product overall (a product can show "in stock" because its 58
+   * the product overall (a product can show "in stock" because its 48
    * inch is available while the 44 inch someone actually wants is sold
    * out). This is what a customer used to be able to add to their cart
    * and only discover was unavailable at Shopify's final checkout step.
@@ -128,7 +130,7 @@
     // so this still works if that global isn't set for some reason.
     var handle = window.CURRENT_PRODUCT_HANDLE || ID_TO_HANDLE[pid] || params.get('handle');
     var sizeButton = document.querySelector('.option-pill.active');
-    var optionValue = sizeButton && sizeButton.textContent.indexOf('58 inch') !== -1 ? '58 inch' : '44 inch';
+    var optionValue = sizeButton && sizeButton.textContent.indexOf('48 inch') !== -1 ? '48 inch' : '44 inch';
     var title = document.getElementById('pi-title');
     return addProduct(handle, title ? title.textContent : 'Product', optionValue);
   };

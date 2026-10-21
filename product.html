@@ -897,7 +897,7 @@
         <div class="option-label">Print Size</div>
         <div class="option-pills">
           <button class="option-pill active" onclick="selectPill(this,'size')">44 inch width <span style="font-size:9px;opacity:.6;margin-left:4px;">Standard</span></button>
-          <button class="option-pill" onclick="selectPill(this,'size')">58 inch width</button>
+          <button class="option-pill" onclick="selectPill(this,'size')">48 inch width</button>
         </div>
       </div>
 
@@ -1441,11 +1441,16 @@
        (needs the unauthenticated_read_product_inventory Storefront scope),
        everything just stays exactly as populatePage() already rendered -
        nothing here can make the page worse than the static fallback. */
-    var liveVariantsBySize = {}; // '44 inch' | '58 inch' -> { id, availableForSale }
+    var liveVariantsBySize = {}; // '44 inch' | '48 inch' -> { id, availableForSale }
     var liveQuantities = {};     // variant id -> number
 
     function sizeLabelFromPill(pill) {
-      return pill && pill.textContent.indexOf('58 inch') !== -1 ? '58 inch' : '44 inch';
+      return pill && pill.textContent.indexOf('48 inch') !== -1 ? '48 inch' : '44 inch';
+    }
+
+    // Shopify variants created before the rename are still called "58 inch".
+    function normalizeSizeLabel(value) {
+      return value === '58 inch' ? '48 inch' : value;
     }
 
     function applyLiveStateForSelectedPill() {
@@ -1500,7 +1505,7 @@
         if (!liveProduct || !liveProduct.variants) return
         liveProduct.variants.forEach(function (v) {
           var opt = (v.selectedOptions || []).find(function (o) { return /size|width/i.test(o.name) })
-          var size = opt ? opt.value : null
+          var size = opt ? normalizeSizeLabel(opt.value) : null
           if (!size) return
           liveVariantsBySize[size] = v
           if (v.availableForSale === false) markPillSoldOut(size)
@@ -1759,7 +1764,7 @@
         .forEach(p => p.classList.remove('active'))
       btn.classList.add('active')
       if (group === 'size' && P.category.indexOf('Wearable') !== -1) {
-        selectedPriceInr = (btn.textContent.indexOf('58 inch') !== -1 ? 310 : 295) * 84
+        selectedPriceInr = (btn.textContent.indexOf('48 inch') !== -1 ? 310 : 295) * 84
         updatePrices()
         if (typeof applyLiveStateForSelectedPill === 'function') applyLiveStateForSelectedPill()
       }

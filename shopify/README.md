@@ -44,7 +44,7 @@ These were inferred from the site. Check them against what you actually want:
 2. **Sold work is published with 0 inventory.** `magical-pansies` imports as
    active and sold-out rather than hidden, matching how the site still shows
    it. Set `Status` to `draft` if it should come off the storefront.
-3. **The saree has two width variants** (44 inch / 58 inch) at the same
+3. **The saree has two width variants** (44 inch / 48 inch) at the same
    price, from the Print Size pills on the product page. The originals are
    one-of-one and use Shopify's default single variant. If the widths should
    be priced differently, edit the two `shifting-glacier` rows.

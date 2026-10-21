@@ -136,7 +136,7 @@ locales/              UI strings
   contact page. It now reads `cart.items`, persists, and submits to Shopify
   checkout.
 - **Product options only render when the product has them.** The static
-  product page showed a "Print Size" choice (44 / 58 inch width) on every
+  product page showed a "Print Size" choice (44 / 48 inch width) on every
   product, including one-of-one paintings that have no such option.
 - **The currency toggle is Shopify's**, not a live FX display. Checkout always
   charges in the market's currency, so a display-only toggle would have shown
