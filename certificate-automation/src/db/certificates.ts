@@ -1,4 +1,5 @@
 import { pool } from './pool';
+import { getCertificateStorage } from '../services/storage';
 
 export type CertificateStatus = 'pending' | 'processing' | 'generated' | 'emailed' | 'failed';
 
@@ -115,6 +116,33 @@ export async function markFailed(id: number, errorMessage: string) {
 export async function getCertificateById(id: number): Promise<Certificate | null> {
   const res = await pool.query<Certificate>(`SELECT * FROM certificates WHERE id = $1`, [id]);
   return res.rows[0] ?? null;
+}
+
+export async function deleteCertificate(id: number): Promise<boolean> {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const result = await client.query<Certificate>(
+      'SELECT * FROM certificates WHERE id = $1 FOR UPDATE', [id]
+    );
+    const cert = result.rows[0];
+    if (!cert) {
+      await client.query('ROLLBACK');
+      return false;
+    }
+    if (cert.status === 'pending' || cert.status === 'processing') {
+      throw new Error('Certificate generation is in progress. Wait for it to finish before deleting.');
+    }
+    if (cert.storage_key) await getCertificateStorage().deleteCertificate(cert.storage_key);
+    await client.query('DELETE FROM certificates WHERE id = $1', [id]);
+    await client.query('COMMIT');
+    return true;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 }
 
 export async function updateCertificateCustomerName(

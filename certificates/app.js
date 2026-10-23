@@ -330,6 +330,7 @@
         '<div class="action-btns">' +
         '<button class="btn btn-sm btn-primary" data-action="email" data-id="' + cert.id + '">Send by email</button>' +
         '<button class="btn btn-sm btn-ghost" data-action="edit" data-id="' + cert.id + '">Correct name</button>' +
+        '<button class="btn btn-sm btn-danger" data-action="delete" data-id="' + cert.id + '" aria-label="Permanently delete certificate" title="Permanently delete certificate"><span aria-hidden="true">&#128465;</span></button>' +
         '</div>';
     }
 
@@ -399,6 +400,10 @@
 
     var total = res.count || 0;
     var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (state.page > totalPages) {
+      state.page = totalPages;
+      return loadCertificates();
+    }
     $('pageInfo').textContent = 'Page ' + state.page + ' of ' + totalPages + ' — ' + total + ' total';
     $('prevPage').disabled = state.page <= 1;
     $('nextPage').disabled = state.page >= totalPages;
@@ -415,6 +420,30 @@
     if (!btn) return;
     var action = btn.dataset.action;
     var cert = rowsById[btn.dataset.id];
+
+    if (action === 'delete') {
+      if (!window.confirm('Permanently delete the certificate for ' + cert.sku + ' (order ' +
+        cert.order_number + ')? Its PDF and email history will be deleted, and the SKU can be issued again. This cannot be undone.')) return;
+      btn.disabled = true;
+      try {
+        var removed = await sb.storage.from(BUCKET).remove([cert.pdf_path]);
+        if (removed.error) throw new Error('Could not delete the PDF: ' + removed.error.message);
+        var deleted = await sb.rpc('delete_certificate', { certificate_id: cert.id });
+        if (deleted.error) throw new Error('Could not delete the register entry. The PDF may already be removed; retry deletion. ' + deleted.error.message);
+        if (state.lastIssued && state.lastIssued.id === cert.id) {
+          state.lastIssued = null;
+          state.lastIssuedName = '';
+          $('issueResult').hidden = true;
+        }
+        state.editingId = null;
+        toast('Certificate and saved PDF permanently deleted.');
+        refreshAll();
+      } catch (err) {
+        toast(err.message, true);
+        btn.disabled = false;
+      }
+      return;
+    }
 
     if (action === 'preview') { openPdf(cert, false, openBlankTab()); return; }
     if (action === 'email') { openSendDialog(cert, ''); return; }

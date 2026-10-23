@@ -88,6 +88,11 @@ service). It shows:
   *Regenerate PDF* to get a corrected certificate reflecting the fix.
 - **Retry a failed one** — if PDF generation failed (a transient
   render/upload error), the same *Regenerate PDF* button tries again.
+- **Delete a certificate** - the dustbin asks for confirmation, then permanently
+  removes its saved PDF and database record so the SKU can be issued again.
+  Certificates currently generating cannot be deleted. The record is kept if
+  PDF removal fails; retry if a later database failure interrupted deletion.
+  Copies already downloaded or emailed cannot be recalled.
 
 It auto-refreshes every 15 seconds so multiple staff members see the same
 up-to-date list.
@@ -222,6 +227,13 @@ of it as `ornament-corner.png` / `ornament-crown.png`. It shows:
 background) and it appears above the signature line on every certificate
 generated or regenerated after that. Until then the line is left blank for
 a hand signature — a signature is never fabricated.
+
+The signature is displayed at 22 mm high with its original proportions,
+without stretching or cropping. The browser dashboard uses the same sizing.
+Existing saved PDFs need to be regenerated to pick up layout changes.
+
+The RHYTARA intellectual-property disclaimer is printed below the signature
+and edition seal in both certificate generators.
 
 The medium and provenance wording live in
 [`src/services/certificate/templateData.ts`](src/services/certificate/templateData.ts)

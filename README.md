@@ -181,10 +181,25 @@ One-time setup:
 3. Put the project URL and anon key (Project Settings → API) in
    `certificates/config.js` and deploy.
 
-The register is append-only and PDFs can't be deleted. To correct a misspelt
-name, use "Correct name" in the dashboard: it replaces that certificate's PDF
+To correct a misspelt name, use "Correct name" in the dashboard: it replaces that certificate's PDF
 and keeps its order, edition, SKU and date of issue. Design names, SKU
 prefixes and edition sizes live in `certificates/designs.js`.
+
+Both certificate generators display the signature at 22 mm high, preserving
+the original image proportions without stretching or cropping it. This applies
+to newly generated or regenerated PDFs; existing saved PDFs are unchanged.
+
+Certificates include the RHYTARA intellectual-property disclaimer below the
+signature and edition seal. Existing PDFs must be regenerated to include it.
+
+The dustbin action asks for confirmation, then permanently deletes the stored
+PDF, email history and register entry, allowing the SKU to be issued again.
+Downloaded or previously emailed copies are not recalled. Re-run
+`certificates/supabase-setup.sql` in the Supabase SQL editor before using
+deletion on an existing deployment: it adds the staff-only storage delete
+policy and guarded `delete_certificate` RPC. The RPC only removes the record
+after its PDF has been removed. A partial failure is shown as an error; retry
+deletion to finish. No existing certificates are deleted by the setup script.
 
 "Send by email" calls the `send-certificate` Supabase Edge Function
 (`certificates/functions/send-certificate/`), which emails the stored PDF

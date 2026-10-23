@@ -6,6 +6,7 @@ import {
   getCertificateStats,
   updateCertificateCustomerName,
   getCertificateById,
+  deleteCertificate,
 } from '../db/certificates';
 import {
   issueCertificate,
@@ -209,4 +210,18 @@ dashboardApiRouter.get('/certificates/:id', async (req, res) => {
   const cert = await getCertificateById(id);
   if (!cert) return res.status(404).json({ error: 'Not found' });
   res.json({ job: cert });
+});
+
+dashboardApiRouter.delete('/certificates/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id < 1) return res.status(400).json({ error: 'Invalid id' });
+  try {
+    if (!await deleteCertificate(id)) return res.status(404).json({ error: 'Certificate not found' });
+    logger.info('Dashboard: certificate permanently deleted', { certificateId: id });
+    res.json({ ok: true });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    logger.error('Dashboard: delete certificate failed', { certificateId: id, error: message });
+    res.status(422).json({ error: message + ' Deletion did not complete; retry if the PDF was already removed.' });
+  }
 });

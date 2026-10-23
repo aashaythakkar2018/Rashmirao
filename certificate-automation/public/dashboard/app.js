@@ -250,6 +250,10 @@
     }
     actions += '<button class="btn btn-sm btn-primary" data-action="regenerate" data-id="' + cert.id + '">' +
       (cert.status === 'generated' ? 'Regenerate PDF' : 'Generate PDF') + '</button>';
+    if (cert.status !== 'processing' && cert.status !== 'pending') {
+      actions += '<button class="btn btn-sm btn-danger" data-action="delete" data-id="' + cert.id +
+        '" aria-label="Permanently delete certificate" title="Permanently delete certificate"><span aria-hidden="true">&#128465;</span></button>';
+    }
     actions += '</div>';
     if (cert.error_message) {
       actions += '<div class="muted" style="margin-top:6px;max-width:220px;font-size:11px;">' + esc(cert.error_message) + '</div>';
@@ -285,6 +289,10 @@
         '<tr><td colspan="8" class="muted" style="text-align:center;padding:24px;">No certificates match these filters.</td></tr>';
 
       var totalPages = Math.max(1, Math.ceil(result.total / state.pageSize));
+      if (state.page > totalPages) {
+        state.page = totalPages;
+        return loadCertificates();
+      }
       document.getElementById('pageInfo').textContent = 'Page ' + state.page + ' of ' + totalPages + ' — ' + result.total + ' total';
       document.getElementById('prevPage').disabled = state.page <= 1;
       document.getElementById('nextPage').disabled = state.page >= totalPages;
@@ -305,6 +313,22 @@
     if (!btn) return;
     var action = btn.dataset.action;
     var id = btn.dataset.id ? Number(btn.dataset.id) : null;
+
+    if (action === 'delete') {
+      if (!window.confirm('Permanently delete this certificate and its saved PDF? The SKU can be issued again. This cannot be undone.')) return;
+      btn.disabled = true;
+      try {
+        await api('/certificates/' + id, { method: 'DELETE' });
+        document.getElementById('issueResult').hidden = true;
+        state.editingId = null;
+        toast('Certificate and saved PDF permanently deleted.');
+        refreshAll();
+      } catch (err) {
+        toast('Could not delete certificate: ' + err.message, true);
+        btn.disabled = false;
+      }
+      return;
+    }
 
     if (action === 'edit') {
       state.editingId = id;

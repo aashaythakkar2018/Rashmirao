@@ -38,7 +38,7 @@ html, body {
   width: 297mm;
   height: 210mm;
   overflow: hidden;
-  padding: 16mm 30mm 15mm;
+  padding: 14mm 30mm 12mm;
   display: flex;
   flex-direction: column;
   background:
@@ -118,9 +118,10 @@ html, body {
   flex: 1;
   display: grid;
   grid-template-columns: 54mm 1fr;
+  grid-template-rows: minmax(0, 1fr);
   gap: 11mm;
   align-items: center;
-  margin: 6mm 6mm 0;
+  margin: 4mm 6mm 0;
   min-height: 0;
 }
 
@@ -176,7 +177,7 @@ html, body {
   display: grid;
   grid-template-columns: 30mm 1fr;
   align-items: baseline;
-  padding: 1.35mm 0;
+  padding: 1.1mm 0;
   border-bottom: 0.3mm solid rgba(138, 82, 38, 0.18);
 }
 .facts > div.is-hidden { display: none; }
@@ -204,10 +205,21 @@ html, body {
   flex-direction: column;
   width: 68mm;
 }
+.disclaimer {
+  flex: none;
+  margin: 3mm 14mm 0;
+  font-family: var(--sans);
+  font-size: 6pt;
+  line-height: 1.4;
+  color: var(--muted);
+}
 .signature img {
-  height: 13mm;
+  display: block;
+  align-self: flex-start;
+  flex: none;
+  height: 22mm;
   width: auto;
-  max-width: 60mm;
+  max-width: 68mm;
   object-fit: contain;
   object-position: left bottom;
 }

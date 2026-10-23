@@ -12,8 +12,8 @@
 -- email is in public.staff. That holds even if public sign-ups are left on,
 -- and the anon key embedded in the page grants nothing by itself.
 --
--- The register is append-only: rows can be added but never edited or
--- deleted, and PDFs can be replaced (to correct a name) but never deleted.
+-- Staff can permanently delete a certificate's PDF, then use the guarded
+-- delete_certificate function to remove its register entry and email history.
 
 -- --------------------------------------------------------------- staff --
 create table if not exists public.staff (
@@ -116,6 +116,41 @@ create policy "staff replace certificate pdfs" on storage.objects
   for update to authenticated
   using (bucket_id = 'certificates' and public.is_staff())
   with check (bucket_id = 'certificates' and public.is_staff());
+
+drop policy if exists "staff delete certificate pdfs" on storage.objects;
+create policy "staff delete certificate pdfs" on storage.objects
+  for delete to authenticated
+  using (bucket_id = 'certificates' and public.is_staff());
+
+create or replace function public.delete_certificate(certificate_id bigint)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  certificate_path text;
+begin
+  if not public.is_staff() then
+    raise exception 'Staff access required';
+  end if;
+  select pdf_path into certificate_path from public.certificates
+    where id = certificate_id for update;
+  if not found then
+    raise exception 'Certificate not found';
+  end if;
+  if exists (
+    select 1 from storage.objects
+    where bucket_id = 'certificates' and name = certificate_path
+  ) then
+    raise exception 'Delete the saved PDF before deleting its register entry';
+  end if;
+  delete from public.certificate_emails where certificate_emails.certificate_id = delete_certificate.certificate_id;
+  delete from public.certificates where id = certificate_id;
+end;
+$$;
+revoke all on function public.delete_certificate(bigint) from public, anon;
+grant execute on function public.delete_certificate(bigint) to authenticated;
 
 -- ------------------------------------------------------ staff list --
 -- Add everyone who should use the dashboard (their Supabase login email):
