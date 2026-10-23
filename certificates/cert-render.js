@@ -19,8 +19,6 @@ window.RhytaraCertRender = (function () {
   // certificate.css already falls back to these when Didot / Baskerville
   // aren't installed (anything but a Mac); loading them keeps it consistent.
   var FONTS = 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=Playfair+Display:ital@0;1&display=block';
-  // No signature file yet: the line prints blank for a hand signature.
-  var BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   var ARTIST_NAME = 'Rashmi Rao';
   var MEDIUM = 'Limited-edition wearable art saree, georgette satin';
   var PAGE_PX = { w: 1123, h: 794 }; // 297 x 210 mm at 96 dpi
@@ -80,17 +78,18 @@ window.RhytaraCertRender = (function () {
     var data = {};
     Object.keys(textValues).forEach(function (k) { data[k] = esc(textValues[k]); });
     data.sku_row_class = cert.sku ? '' : 'is-hidden';
-    data.signature_url = BLANK;
     return Promise.all([
       dataUri('assets/rhytara-logo.png'),
+      dataUri('assets/rashmi-rao-signature.png'),
       dataUri('assets/ornament-crown.png'),
       dataUri('assets/ornament-corner.png'),
       dataUri('assets/artwork/' + encodeURIComponent(code) + '.jpg'),
     ]).then(function (uris) {
       data.logo_url = uris[0];
-      data.crown_url = uris[1];
-      data.corner_url = uris[2];
-      data.artwork_image_url = uris[3];
+      data.signature_url = uris[1];
+      data.crown_url = uris[2];
+      data.corner_url = uris[3];
+      data.artwork_image_url = uris[4];
       return data;
     });
   }
