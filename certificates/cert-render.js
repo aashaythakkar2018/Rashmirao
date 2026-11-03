@@ -53,9 +53,24 @@ window.RhytaraCertRender = (function () {
     return String(n).padStart(String(total).length, '0') + '/' + total;
   }
 
-  /** Date of first issue, so a regenerated PDF keeps its original date. */
-  function formatIssueDate(iso) {
-    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  /** Medium printed unless staff typed another. */
+  function defaultMedium() { return MEDIUM; }
+
+  /** Provenance printed unless staff typed another. */
+  function defaultProvenance(design) {
+    var collection = (design && design.collection) || "Nature's Rhythm";
+    return 'From ' + ARTIST_NAME + "'s original artwork, " + collection + ' solo exhibition';
+  }
+
+  /**
+   * The date of issue: the one staff chose (a "YYYY-MM-DD" date, read as a
+   * calendar day so no timezone can shift it), else the day the row was
+   * created. Either way a regenerated PDF keeps its original date.
+   */
+  function formatIssueDate(cert) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(cert.issue_date || '');
+    var date = m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(cert.created_at);
+    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   function templateData(cert, design) {
@@ -69,11 +84,11 @@ window.RhytaraCertRender = (function () {
       edition_total: String(cert.edition_total),
       sku: cert.sku || '',
       artist_name: ARTIST_NAME,
-      medium: MEDIUM,
-      origin: 'From ' + ARTIST_NAME + "'s original artwork, " + collection + ' solo exhibition',
+      medium: cert.medium || MEDIUM,
+      origin: cert.provenance || defaultProvenance(design),
       customer_full_name: name,
       order_number: cert.order_number,
-      issue_date: formatIssueDate(cert.created_at),
+      issue_date: formatIssueDate(cert),
     };
     var data = {};
     Object.keys(textValues).forEach(function (k) { data[k] = esc(textValues[k]); });
@@ -196,5 +211,10 @@ window.RhytaraCertRender = (function () {
     }
   }
 
-  return { renderPdf: renderPdf, formatEdition: formatEdition };
+  return {
+    renderPdf: renderPdf,
+    formatEdition: formatEdition,
+    defaultMedium: defaultMedium,
+    defaultProvenance: defaultProvenance,
+  };
 })();

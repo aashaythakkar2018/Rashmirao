@@ -61,6 +61,12 @@ create table if not exists public.certificates (
   constraint certificates_design_edition_key unique (design_code, certificate_number),
   constraint certificates_sku_key unique (sku)
 );
+-- What the certificate prints for these three fields, as staff typed them.
+-- Nullable: older certificates fall back to created_at and the standard wording.
+alter table public.certificates add column if not exists issue_date date;
+alter table public.certificates add column if not exists medium text;
+alter table public.certificates add column if not exists provenance text;
+
 create index if not exists certificates_created_at_idx on public.certificates (created_at desc);
 
 alter table public.certificates enable row level security;

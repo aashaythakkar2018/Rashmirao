@@ -96,6 +96,19 @@
               <input id="f_sku" type="text" class="mono" placeholder="e.g. RHY-EOE-GRS-001/250" autocomplete="off" spellcheck="false" required />
               <span id="f_skuHint" class="field-hint">Select a design to suggest its full SKU and next known edition number. Confirm it matches the physical SKU label.</span>
             </label>
+            <label>
+              <span>Date of issue</span>
+              <input id="f_issueDate" type="date" required />
+            </label>
+            <label>
+              <span>Medium</span>
+              <input id="f_medium" type="text" autocomplete="off" required />
+            </label>
+            <label class="span-2">
+              <span>Provenance</span>
+              <input id="f_provenance" type="text" autocomplete="off" required />
+              <span class="field-hint">Date, medium and provenance are pre-filled with the usual wording. Edit them if this piece differs; they are printed exactly as typed here.</span>
+            </label>
           </div>
           <div class="issue-actions">
             <button type="submit" id="issueSubmit" class="btn btn-primary">Generate certificate</button>

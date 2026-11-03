@@ -196,6 +196,29 @@
     return Math.max(design.lastKnownEditionNumber || 0, state.issued[design.code] || 0) + 1;
   }
 
+  /** Today as the "YYYY-MM-DD" a date input takes, in the viewer's own timezone. */
+  function todayInputValue() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  /** Pre-fills date, medium and provenance with the usual wording; staff can edit them. */
+  function fillCertificateDefaults(keepEdited) {
+    var design = findDesign($('f_designName').value);
+    var provenance = $('f_provenance');
+    // Only overwrite provenance while it is still the untouched default, so a
+    // hand-typed value survives switching design.
+    if (!keepEdited || !provenance.value || provenance.dataset.auto === provenance.value) {
+      provenance.value = window.RhytaraCertRender.defaultProvenance(design);
+      provenance.dataset.auto = provenance.value;
+    }
+    if (!keepEdited) {
+      $('f_medium').value = window.RhytaraCertRender.defaultMedium();
+      $('f_issueDate').value = todayInputValue();
+    }
+  }
+
   function updateSkuSuggestion() {
     var design = findDesign($('f_designName').value);
     var skuInput = $('f_sku');
@@ -216,7 +239,10 @@
     hint.textContent = 'Suggested next SKU based on known sold pieces and issued certificates. Confirm the complete SKU matches the physical label.';
   }
 
-  $('f_designName').addEventListener('change', updateSkuSuggestion);
+  $('f_designName').addEventListener('change', function () {
+    updateSkuSuggestion();
+    fillCertificateDefaults(true);
+  });
   // Typing a SKU whose design code is known picks that design for you.
   $('f_sku').addEventListener('input', function (e) {
     var match = /^RHY-([A-Z]{2,5})-/.exec(e.target.value.replace(/\s+/g, '').toUpperCase());
@@ -502,7 +528,14 @@
       edition_total: parsed.editionTotal,
       sku: parsed.sku,
       created_at: new Date().toISOString(),
+      issue_date: $('f_issueDate').value,
+      medium: $('f_medium').value.trim(),
+      provenance: $('f_provenance').value.trim(),
     };
+    if (!record.issue_date || !record.medium || !record.provenance) {
+      error.textContent = 'Fill in the date of issue, medium and provenance.';
+      return;
+    }
     var duplicate = design.name + ' edition ' + pad(parsed.editionNumber, parsed.editionTotal) + ' (' + parsed.sku + ') already has a certificate.';
     record.pdf_path = design.code + '/' + pdfFileName(record);
 
@@ -528,12 +561,27 @@
 
       status.textContent = 'Recording it…';
       var ins = await sb.from('certificates').insert(record).select().single();
-      if (ins.error) throw new Error(ins.error.code === '23505' ? duplicate : 'Could not record the certificate: ' + ins.error.message);
+      if (ins.error && /issue_date|medium|provenance/.test(ins.error.message)) {
+        // The register has no columns for the three typed fields yet (see
+        // supabase-setup.sql). The PDF already carries what was typed, so
+        // record the rest; a later PDF replacement uses the standard wording.
+        var plain = Object.assign({}, record);
+        delete plain.issue_date; delete plain.medium; delete plain.provenance;
+        ins = await sb.from('certificates').insert(plain).select().single();
+      }
+      if (ins.error) {
+        // The PDF was uploaded but not registered. Remove that unregistered
+        // copy so a retry is not blocked by "already backed up"; nothing
+        // registered is ever touched.
+        await sb.storage.from(BUCKET).remove([record.pdf_path]);
+        throw new Error(ins.error.code === '23505' ? duplicate : 'Could not record the certificate (nothing was saved - your entries are kept, try again): ' + ins.error.message);
+      }
 
       state.lastIssued = ins.data;
       state.lastIssuedName = $('f_firstName').value.trim();
       $('issueResult').hidden = false;
       $('issueForm').reset();
+      fillCertificateDefaults(false);
       toast('Certificate ready and backed up — preview or download it below the form.');
       state.page = 1;
       refreshAll();
@@ -632,5 +680,6 @@
 
   // ------------------------------------------------------------- boot ---
   fillDesignSelects();
+  fillCertificateDefaults(false);
   sb.auth.getSession().then(function (res) { enter(res.data.session); });
 })();
