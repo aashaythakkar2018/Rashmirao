@@ -4,11 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Rhytara — Certificate Dashboard</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400&display=swap" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="tokenGate" class="token-gate">
     <div class="token-card">
+      <img class="token-logo" src="rhytara-logo.png" alt="Rhytara" width="120" height="132" />
       <h1>Rhytara Certificate Dashboard</h1>
       <p>Enter the admin token for this backend (set as <code>ADMIN_API_TOKEN</code> in its environment).</p>
       <input id="tokenInput" type="password" placeholder="Admin token" autocomplete="off" />
@@ -20,7 +25,11 @@
   <div id="app" class="app hidden">
     <header class="topbar">
       <div class="topbar-title">
-        <h1>Rhytara Certificates</h1>
+        <img class="brand-logo" src="rhytara-logo.png" alt="Rhytara" width="53" height="58" />
+        <div class="brand-text">
+          <h1>Rhytara</h1>
+          <span class="brand-sub">Certificates of Authenticity</span>
+        </div>
         <span id="modeBadge" class="badge"></span>
       </div>
       <div class="topbar-actions">
