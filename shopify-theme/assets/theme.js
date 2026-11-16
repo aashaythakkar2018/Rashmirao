@@ -286,4 +286,9 @@
   syncNavOffset();
   watchScrollState();
   window.addEventListener('resize', syncNavOffset, { passive: true });
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted && document.getElementById('ProductForm')) {
+      window.location.reload();
+    }
+  });
 }());
