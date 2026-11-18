@@ -162,3 +162,12 @@ grant execute on function public.delete_certificate(bigint) to authenticated;
 -- Add everyone who should use the dashboard (their Supabase login email):
 --
 --   insert into public.staff (email) values ('someone@example.com') on conflict do nothing;
+
+-- --------------------------------------------------- table privileges --
+-- Newer Supabase projects no longer hand out table privileges by default, so
+-- grant exactly what the dashboard uses. The row-level security policies above
+-- still decide who gets through: only signed-in staff, never the anon role.
+grant select on public.staff to authenticated;
+grant select, insert on public.certificates to authenticated;
+grant select, insert on public.certificate_emails to authenticated;
+grant usage, select on all sequences in schema public to authenticated;

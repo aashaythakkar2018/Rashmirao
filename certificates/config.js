@@ -4,6 +4,6 @@
  * staff list by the row-level security in supabase-setup.sql.
  */
 window.RHYTARA_CERTS_CONFIG = {
-  supabaseUrl: 'https://zdmmlziaqkkmhklrbyqp.supabase.co',
-  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkbW1semlhcWtrbWhrbHJieXFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzOTQ2MzYsImV4cCI6MjEwNzk3MDYzNn0.uxOkZ6hTScJyqCy0OhuV7ABJUUMOpJQq8WoPw-yvzvI'
+  supabaseUrl: 'https://vyaewmdudeiarggbrkjn.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5YWV3bWR1ZGVpYXJnZ2Jya2puIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5ODI0OTMsImV4cCI6MjExMDU1ODQ5M30.IqxfQZBz3SS2mDzApTk1bkqADdILHPkTAdq5kb-0Z50'
 };
