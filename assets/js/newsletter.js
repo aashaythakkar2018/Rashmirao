@@ -6,6 +6,137 @@
  */
 (function () {
   'use strict';
+
+  var POPUP_KEY = 'rhytara_lead_popup_v1';
+  var POPUP_COOLDOWN = 30 * 24 * 60 * 60 * 1000;
+
+  function popupSuppressed() {
+    try {
+      var last = Number(localStorage.getItem(POPUP_KEY) || 0);
+      return last && Date.now() - last < POPUP_COOLDOWN;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function suppressPopup() {
+    try { localStorage.setItem(POPUP_KEY, String(Date.now())); } catch (e) {}
+  }
+
+  function initLeadPopup() {
+    if (popupSuppressed()) return;
+
+    var popup = document.createElement('dialog');
+    popup.id = 'leadPopup';
+    popup.className = 'lead-popup';
+    popup.setAttribute('aria-labelledby', 'leadPopupTitle');
+    popup.setAttribute('aria-describedby', 'leadPopupText');
+    popup.innerHTML =
+      '<div class="lead-popup-panel">' +
+        '<button type="button" class="lead-popup-close" id="leadPopupClose" aria-label="Close">Close</button>' +
+        '<div class="lead-popup-copy">' +
+          '<p class="lead-popup-kicker">Join the Rhytara circle</p>' +
+          '<h2 id="leadPopupTitle">New works, thoughtfully shared.</h2>' +
+          '<p id="leadPopupText">Receive first look updates on new releases, exhibitions and studio stories.</p>' +
+        '</div>' +
+        '<form class="lead-popup-form" id="leadPopupForm" novalidate>' +
+          '<div class="lead-popup-field">' +
+            '<label for="leadFirstName">First name</label>' +
+            '<input id="leadFirstName" name="firstName" type="text" autocomplete="given-name" maxlength="80" required>' +
+          '</div>' +
+          '<div class="lead-popup-field">' +
+            '<label for="leadEmail">Email address</label>' +
+            '<input id="leadEmail" name="email" type="email" autocomplete="email" maxlength="254" required>' +
+          '</div>' +
+          '<input type="checkbox" name="botcheck" id="leadPopupHoney" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">' +
+          '<button type="submit" class="lead-popup-submit" id="leadPopupSubmit">Join the circle</button>' +
+          '<p class="lead-popup-status" id="leadPopupStatus" aria-live="polite"></p>' +
+        '</form>' +
+        '<p class="lead-popup-privacy">By joining, you agree to receive occasional Rhytara updates. Unsubscribe anytime.</p>' +
+      '</div>';
+    document.body.appendChild(popup);
+
+    var form = document.getElementById('leadPopupForm');
+    var nameInput = document.getElementById('leadFirstName');
+    var emailInput = document.getElementById('leadEmail');
+    var submit = document.getElementById('leadPopupSubmit');
+    var status = document.getElementById('leadPopupStatus');
+    var close = document.getElementById('leadPopupClose');
+
+    function closePopup() {
+      suppressPopup();
+      if (typeof popup.close === 'function') popup.close();
+      else popup.removeAttribute('open');
+    }
+
+    close.addEventListener('click', closePopup);
+    popup.addEventListener('cancel', function (e) {
+      e.preventDefault();
+      closePopup();
+    });
+    popup.addEventListener('click', function (e) {
+      if (e.target === popup) closePopup();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var firstName = nameInput.value.trim();
+      var email = emailInput.value.trim();
+      if (!firstName) {
+        status.textContent = 'Please enter your first name.';
+        nameInput.focus();
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        status.textContent = 'Please enter a valid email address.';
+        emailInput.focus();
+        return;
+      }
+      if (document.getElementById('leadPopupHoney').checked) return;
+
+      submit.disabled = true;
+      submit.textContent = 'Joining...';
+      status.textContent = '';
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: 'e83decf9-acf1-4f4f-bd51-9b5671adcc21',
+          subject: 'Rhytara circle sign-up · ' + firstName + ' · ' + email,
+          from_name: 'Rhytara Website',
+          replyto: email,
+          Form: 'Storefront lead popup',
+          'First name': firstName,
+          Email: email,
+          Page: location.href
+        })
+      }).then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok || data.success === false) throw new Error(data.message);
+        });
+      }).then(function () {
+        suppressPopup();
+        submit.textContent = 'You’re on the list';
+        status.textContent = 'Thank you. Watch your inbox for Rhytara updates.';
+        form.reset();
+        setTimeout(closePopup, 2200);
+      }).catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Join the circle';
+        status.textContent = 'Sorry, that did not go through. Please try again.';
+      });
+    });
+
+    window.setTimeout(function () {
+      if (document.hidden || document.querySelector('dialog[open]')) return;
+      if (typeof popup.showModal === 'function') popup.showModal();
+      else popup.setAttribute('open', '');
+      nameInput.focus();
+    }, 8000);
+  }
+
+  initLeadPopup();
+
   if (document.getElementById('nlForm')) return;
   var footer = document.querySelector('footer');
   if (!footer) return;
