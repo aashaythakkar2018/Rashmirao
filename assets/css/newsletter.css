@@ -35,7 +35,38 @@
 @media (max-width: 480px) { .nl-band { padding: 56px 20px; } }
 
 /* Storefront lead popup */
+.lead-popup-launcher {
+  position: fixed;
+  z-index: 550;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 0;
+  background: var(--olive, #6d7550);
+  color: #fff;
+  padding: 18px 12px;
+  cursor: pointer;
+  font: 500 10px var(--ff-sans, 'Jost', sans-serif);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  box-shadow: 0 4px 16px rgba(17, 17, 17, .14);
+  transition: background .2s, padding .2s;
+}
+.lead-popup-launcher:hover {
+  background: var(--olive-dk, #565d3e);
+  padding-top: 21px;
+  padding-bottom: 21px;
+}
+.lead-popup-launcher:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -5px;
+}
 .lead-popup {
+  position: fixed;
+  inset: 0;
+  margin: auto;
   width: min(720px, calc(100vw - 32px));
   max-width: none;
   padding: 0;
@@ -143,6 +174,15 @@
   font: 300 10px/1.5 var(--ff-sans, 'Jost', sans-serif);
 }
 @media (max-width: 620px) {
+  .lead-popup-launcher {
+    top: auto;
+    right: 14px;
+    bottom: 14px;
+    transform: none;
+    padding: 13px 18px;
+    writing-mode: horizontal-tb;
+  }
+  .lead-popup-launcher:hover { padding: 13px 18px; }
   .lead-popup { width: calc(100vw - 24px); }
   .lead-popup-panel {
     grid-template-columns: 1fr;

@@ -7,25 +7,7 @@
 (function () {
   'use strict';
 
-  var POPUP_KEY = 'rhytara_lead_popup_v1';
-  var POPUP_COOLDOWN = 30 * 24 * 60 * 60 * 1000;
-
-  function popupSuppressed() {
-    try {
-      var last = Number(localStorage.getItem(POPUP_KEY) || 0);
-      return last && Date.now() - last < POPUP_COOLDOWN;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function suppressPopup() {
-    try { localStorage.setItem(POPUP_KEY, String(Date.now())); } catch (e) {}
-  }
-
   function initLeadPopup() {
-    if (popupSuppressed()) return;
-
     var popup = document.createElement('dialog');
     popup.id = 'leadPopup';
     popup.className = 'lead-popup';
@@ -54,6 +36,16 @@
         '</form>' +
         '<p class="lead-popup-privacy">By joining, you agree to receive occasional Rhytara updates. Unsubscribe anytime.</p>' +
       '</div>';
+
+    var launcher = document.createElement('button');
+    launcher.type = 'button';
+    launcher.id = 'leadPopupLauncher';
+    launcher.className = 'lead-popup-launcher';
+    launcher.setAttribute('aria-haspopup', 'dialog');
+    launcher.setAttribute('aria-controls', popup.id);
+    launcher.textContent = 'Join the circle';
+
+    document.body.appendChild(launcher);
     document.body.appendChild(popup);
 
     var form = document.getElementById('leadPopupForm');
@@ -63,13 +55,20 @@
     var status = document.getElementById('leadPopupStatus');
     var close = document.getElementById('leadPopupClose');
 
+    function openPopup() {
+      if (typeof popup.showModal === 'function') popup.showModal();
+      else popup.setAttribute('open', '');
+      nameInput.focus();
+    }
+
     function closePopup() {
-      suppressPopup();
       if (typeof popup.close === 'function') popup.close();
       else popup.removeAttribute('open');
     }
 
+    launcher.addEventListener('click', openPopup);
     close.addEventListener('click', closePopup);
+    popup.addEventListener('close', function () { launcher.focus(); });
     popup.addEventListener('cancel', function (e) {
       e.preventDefault();
       closePopup();
@@ -115,7 +114,6 @@
           if (!res.ok || data.success === false) throw new Error(data.message);
         });
       }).then(function () {
-        suppressPopup();
         submit.textContent = 'You’re on the list';
         status.textContent = 'Thank you. Watch your inbox for Rhytara updates.';
         form.reset();
@@ -127,12 +125,7 @@
       });
     });
 
-    window.setTimeout(function () {
-      if (document.hidden || document.querySelector('dialog[open]')) return;
-      if (typeof popup.showModal === 'function') popup.showModal();
-      else popup.setAttribute('open', '');
-      nameInput.focus();
-    }, 8000);
+    if (location.pathname === '/' || /\/index\.html$/.test(location.pathname)) openPopup();
   }
 
   initLeadPopup();
