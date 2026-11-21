@@ -151,8 +151,19 @@
       </div>
 
       {%- if product.available and section.settings.show_dynamic_checkout -%}
+        {%- comment -%}
+          Theme-owned "buy now" instead of {{ form | payment_button }}. Shopify's
+          dynamic button kept a stale checkout/"redirecting" state after the
+          buyer came back from checkout, so it could not be clicked again until
+          the browser cache was cleared. This reads the variant and quantity at
+          click time, prepares a fresh one-item cart, and opens checkout directly.
+        {%- endcomment -%}
         <div class="pi-dynamic-checkout">
-          {{ form | payment_button }}
+          <button type="button" class="btn-olive" id="buyNowBtn"
+                  data-label="{{ section.settings.buy_now_label | default: 'Purchase Now' | escape }}"
+                  {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+            {{ section.settings.buy_now_label | default: 'Purchase Now' }}
+          </button>
         </div>
       {%- endif -%}
     {%- endform -%}
@@ -289,6 +300,8 @@
       btnAdd.disabled = !match.available;
       btnAdd.textContent = match.available ? {{ section.settings.add_to_cart_label | json }} : 'Sold';
     }
+    var btnBuy = document.getElementById('buyNowBtn');
+    if (btnBuy) btnBuy.disabled = !match.available;
     if (history.replaceState) {
       history.replaceState({}, '', '?variant=' + match.id);
     }
@@ -301,6 +314,42 @@
     var qty = qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1;
     addToCart(document.getElementById('variantSelect').value, qty);
   });
+
+  /* "Purchase Now": skip the cart and go straight to checkout with exactly
+     the variant + quantity showing right now. Nothing is cached between
+     clicks, so changing the quantity after coming back from checkout works. */
+  (function () {
+    var buyBtn = document.getElementById('buyNowBtn');
+    if (!buyBtn) return;
+    function resetBuyBtn() {
+      buyBtn.removeAttribute('aria-busy');
+      buyBtn.textContent = buyBtn.dataset.label;
+      var sel = document.getElementById('variantSelect');
+      var opt = sel && sel.options[sel.selectedIndex];
+      buyBtn.disabled = !!(opt && opt.disabled);
+    }
+    buyBtn.addEventListener('click', function () {
+      var variantId = document.getElementById('variantSelect').value;
+      var qtyInput = document.getElementById('ProductQuantity');
+      var qty = Math.max(1, qtyInput ? (parseInt(qtyInput.value, 10) || 1) : 1);
+      if (qtyInput) qtyInput.value = qty;
+      if (!variantId) return;
+      buyBtn.disabled = true;
+      buyBtn.setAttribute('aria-busy', 'true');
+      if (!window.buyNow) {
+        resetBuyBtn();
+        if (window.showToast) window.showToast('Checkout is unavailable');
+        return;
+      }
+      window.buyNow(variantId, qty).catch(function (error) {
+        resetBuyBtn();
+        if (window.showToast) window.showToast(error.message || 'Checkout is unavailable');
+      });
+    });
+    /* Back/forward cache restores the page exactly as it was left - busy and
+       disabled - so always hand the buyer a working button again. */
+    window.addEventListener('pageshow', resetBuyBtn);
+  }());
 
   window.recordRecentlyViewed({{ product.handle | json }});
   window.renderRecentlyViewed({{ product.handle | json }});
@@ -341,6 +390,7 @@
     { "type": "text", "id": "recommendations_heading", "label": "Recommendations heading", "default": "You May Also Like" },
     { "type": "text", "id": "recently_viewed_heading", "label": "Recently viewed heading", "default": "Recently Viewed" },
     { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button (Shop Pay, PayPal, etc.)", "default": true },
+    { "type": "text", "id": "buy_now_label", "label": "Purchase Now button label", "default": "Purchase Now" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show accepted payment icons", "default": true }
   ],
   "blocks": [

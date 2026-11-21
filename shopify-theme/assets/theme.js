@@ -98,6 +98,7 @@
     el.classList.add('show');
     setTimeout(function () { el.classList.remove('show'); }, 2200);
   }
+  window.showToast = toast;
 
   window.openCart = function (e) {
     // The cart icon is a real link to /cart, so it still works without JS.
@@ -167,6 +168,32 @@
           });
       })
       .catch(function () { toast('Could not add to cart'); });
+  };
+
+  window.buyNow = function (variantId, quantity) {
+    if (!variantId) return Promise.reject(new Error('No variant selected'));
+    var item = { items: [{ id: String(variantId), quantity: quantity || 1 }] };
+
+    return fetch(routes.cart_clear_url || '/cart/clear.js', {
+      method: 'POST',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin'
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error('Could not prepare checkout');
+        return fetch(routes.cart_add_url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(item)
+        });
+      })
+      .then(function (r) {
+        return r.json().then(function (data) {
+          if (!r.ok) throw new Error(data.description || data.message || 'Could not prepare checkout');
+          window.location.assign('/checkout');
+        });
+      });
   };
 
   window.changeCartLine = function (line, quantity) {
